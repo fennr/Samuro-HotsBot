@@ -1,0 +1,374 @@
+{
+  "id": 70,
+  "shortName": "garrosh",
+  "hyperlinkId": "Garrosh",
+  "attributeId": "Garr",
+  "cHeroId": "Garrosh",
+  "cUnitId": "HeroGarrosh",
+  "name": "Garrosh",
+  "icon": "garrosh.png",
+  "role": "Warrior",
+  "expandedRole": "Tank",
+  "type": "Melee",
+  "releaseDate": "2017-08-08",
+  "releasePatch": "2.27.0.56175",
+  "tags": [
+    "BodyBlocker",
+    "EnergyImportant",
+    "Ganker",
+    "Overconfident",
+    "RoleTank"
+  ],
+  "abilities": {
+    "Garrosh": [
+      {
+        "uid": "449148",
+        "name": "Groundbreaker",
+        "description": "Deal 81 (+4% per level) damage to enemies in an area. Heroes hit on the outer edge are Stunned for 0.5 seconds and then Slowed by 40% for 2 seconds.",
+        "hotkey": "Q",
+        "abilityId": "Garrosh|Q1",
+        "cooldown": 8,
+        "manaCost": 40,
+        "icon": "storm_ui_icon_garrosh_groundbreaker.png",
+        "type": "basic"
+      },
+      {
+        "uid": "aa0321",
+        "name": "Bloodthirst",
+        "description": "Deal 156 (+4% per level) damage to an enemy and heal for 10% of Garrosh's missing Health. Healing is increased by 100% against Heroes.",
+        "hotkey": "W",
+        "abilityId": "Garrosh|W1",
+        "cooldown": 12,
+        "manaCost": 55,
+        "icon": "storm_ui_icon_garrosh_bloodthirst.png",
+        "type": "basic"
+      },
+      {
+        "uid": "2967d2",
+        "name": "Wrecking Ball",
+        "description": "Throw a nearby enemy Hero, Minion, or Mercenary to the target location, dealing 91 (+4% per level) damage to enemies near the impact and Slowing them by 30% for 2.5 seconds.",
+        "hotkey": "E",
+        "abilityId": "Garrosh|E1",
+        "cooldown": 16,
+        "manaCost": 60,
+        "icon": "storm_ui_icon_garrosh_wrecking_ball.png",
+        "type": "basic"
+      },
+      {
+        "uid": "fe030a",
+        "name": "Warlord's Challenge",
+        "description": "Silence nearby Heroes and force them to attack Garrosh for 2 seconds.",
+        "hotkey": "R",
+        "abilityId": "Garrosh|R1",
+        "cooldown": 50,
+        "manaCost": 40,
+        "icon": "storm_ui_icon_garrosh_warlords_challenge.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "a04c13",
+        "name": "Decimate",
+        "description": "Deal 50 (+4% per level) damage to nearby enemies and Slow them by 40% for 1.5 seconds. Deals 100% more damage to Heroes, and each Hero hit reduces the cooldown by 1 second.  Stores up to 3 charges.",
+        "hotkey": "R",
+        "abilityId": "Garrosh|R2",
+        "cooldown": 8,
+        "manaCost": 25,
+        "icon": "storm_ui_icon_garrosh_decimate.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "aa733e",
+        "name": "Armor Up",
+        "description": "Garrosh gains 1 Armor for every 2% of maximum Health missing.",
+        "trait": true,
+        "abilityId": "Garrosh|D1",
+        "icon": "storm_ui_icon_garrosh_armor_up.png",
+        "type": "trait"
+      }
+    ]
+  },
+  "talents": {
+    "1": [
+      {
+        "tooltipId": "GarroshGroundbreakerWarbreaker",
+        "talentTreeId": "GarroshGroundbreakerWarbreaker",
+        "name": "Warbreaker",
+        "description": "Quest: Stun Heroes with Groundbreaker.  Reward: After Stunning 5 Heroes, Groundbreaker's Stun deals an additional 165 (+4% per level) damage over 3 seconds to Heroes.  Reward: After Stunning 15 Heroes, permanently reduce Groundbreaker's cooldown by 2 seconds.",
+        "icon": "storm_ui_icon_garrosh_groundbreaker.png",
+        "type": "Q",
+        "sort": 1,
+        "isQuest": true,
+        "abilityId": "Garrosh|Q1",
+        "abilityLinks": [
+          "Garrosh|Q1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshWreckingBallUnrivaledStrength",
+        "talentTreeId": "GarroshWreckingBallUnrivaledStrength",
+        "name": "Unrivaled Strength",
+        "description": "Increase Wrecking Ball's throw range by 25% and its damage by 125%.",
+        "icon": "storm_ui_icon_garrosh_wrecking_ball.png",
+        "type": "E",
+        "sort": 2,
+        "abilityId": "Garrosh|E1",
+        "abilityLinks": [
+          "Garrosh|E1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshArmorUpBodyCheck",
+        "talentTreeId": "GarroshArmorUpBodyCheck",
+        "name": "Body Check",
+        "description": "Activate to deal 111 (+4% per level) damage to a target enemy and Slow them by 35% for 3 seconds. Enemy Heroes hit receive 30% reduced healing for 3 seconds.",
+        "icon": "storm_ui_icon_garrosh_slam.png",
+        "type": "Active",
+        "sort": 3,
+        "cooldown": 15,
+        "abilityId": "Garrosh|Active"
+      }
+    ],
+    "4": [
+      {
+        "tooltipId": "GarroshBloodthirstInFortheKill",
+        "talentTreeId": "GarroshBloodthirstInFortheKill",
+        "name": "In For the Kill",
+        "description": "Increase Bloodthirst's damage against non-Heroes by 70%. Killing enemies with Bloodthirst resets its cooldown and refunds its Mana cost.",
+        "icon": "storm_ui_icon_garrosh_bloodthirst.png",
+        "type": "W",
+        "sort": 1,
+        "abilityId": "Garrosh|W1",
+        "abilityLinks": [
+          "Garrosh|W1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshBloodthirstThirstforBattle",
+        "talentTreeId": "GarroshBloodthirstThirstforBattle",
+        "name": "Thirst for Battle",
+        "description": "Basic Attacks against Heroes reduce the cooldown of Bloodthirst by 2 seconds.",
+        "icon": "storm_ui_icon_garrosh_bloodthirst_var1.png",
+        "type": "W",
+        "sort": 2,
+        "abilityId": "Garrosh|W1",
+        "abilityLinks": [
+          "Garrosh|W1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshIndomitable",
+        "talentTreeId": "GarroshIndomitable",
+        "name": "Indomitable",
+        "description": "Activate to become Unstoppable for 1.5 seconds.",
+        "icon": "storm_ui_icon_garrosh_indomitablel.png",
+        "type": "Active",
+        "sort": 3,
+        "cooldown": 40,
+        "abilityId": "Garrosh|Active"
+      }
+    ],
+    "7": [
+      {
+        "tooltipId": "GarroshGroundbreakerIntimidation",
+        "talentTreeId": "GarroshGroundbreakerIntimidation",
+        "name": "Intimidation",
+        "description": "Groundbreaker reduces the Attack Speed of Heroes hit by 40% for 4 seconds.",
+        "icon": "storm_ui_icon_garrosh_groundbreaker.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Garrosh|Q1",
+        "abilityLinks": [
+          "Garrosh|Q1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshOppressor",
+        "talentTreeId": "GarroshOppressor",
+        "name": "Oppressor",
+        "description": "Basic Attacks against Heroes reduce the target's Spell Power by 40% for 2.5 seconds.",
+        "icon": "storm_ui_icon_talent_autoattack_slow.png",
+        "type": "Passive",
+        "sort": 2,
+        "abilityId": "Garrosh|Passive"
+      },
+      {
+        "tooltipId": "GarroshWreckingBallIntotheFray",
+        "talentTreeId": "GarroshWreckingBallIntotheFray",
+        "name": "Into the Fray",
+        "description": "Activate to throw a nearby ally and grant them 25 Armor for 3 seconds. Deals 91 (+4% per level) damage to nearby enemies upon impact and Slows them by 30% for 2.5 seconds.  While in flight, allied Heroes are Unstoppable.",
+        "icon": "storm_ui_icon_garrosh_intothefray.png",
+        "type": "Active",
+        "sort": 3,
+        "cooldown": 45,
+        "abilityId": "Garrosh|Active"
+      }
+    ],
+    "10": [
+      {
+        "tooltipId": "GarroshWarlordsChallenge",
+        "talentTreeId": "GarroshHeroicAbilityWarlordsChallenge",
+        "name": "Warlord's Challenge",
+        "description": "Silence nearby Heroes and force them to attack Garrosh for 2 seconds.",
+        "icon": "storm_ui_icon_garrosh_warlords_challenge.png",
+        "type": "Heroic",
+        "sort": 1,
+        "cooldown": 50,
+        "abilityId": "Garrosh|R1",
+        "abilityLinks": [
+          "Garrosh|R1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshDecimate",
+        "talentTreeId": "GarroshHeroicAbilityDecimate",
+        "name": "Decimate",
+        "description": "Deal 50 (+4% per level) damage to nearby enemies and Slow them by 40% for 1.5 seconds. Deals 100% more damage to Heroes, and each Hero hit reduces the cooldown by 1 second.  Stores up to 3 charges.",
+        "icon": "storm_ui_icon_garrosh_decimate.png",
+        "type": "Heroic",
+        "sort": 2,
+        "cooldown": 8,
+        "abilityId": "Garrosh|R2",
+        "abilityLinks": [
+          "Garrosh|R2"
+        ]
+      }
+    ],
+    "13": [
+      {
+        "tooltipId": "GarroshGroundbreakerDefensiveMeasures",
+        "talentTreeId": "GarroshGroundbreakerDefensiveMeasures",
+        "name": "Defensive Measures",
+        "description": "If Groundbreaker Stuns a Hero, Garrosh gains a 350 (+4% per level) Shield for 6 seconds.",
+        "icon": "storm_ui_icon_garrosh_groundbreaker.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Garrosh|Q1",
+        "abilityLinks": [
+          "Garrosh|Q1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshBloodthirstBloodcraze",
+        "talentTreeId": "GarroshBloodthirstBloodcraze",
+        "name": "Bloodcraze",
+        "description": "When hitting a Hero, Bloodthirst heals for an additional 15% of Garrosh's maximum Health over 3 seconds.",
+        "icon": "storm_ui_icon_garrosh_bloodthirst.png",
+        "type": "W",
+        "sort": 2,
+        "abilityId": "Garrosh|W1",
+        "abilityLinks": [
+          "Garrosh|W1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshArmorUpDoubleUp",
+        "talentTreeId": "GarroshArmorUpDoubleUp",
+        "name": "Double Up",
+        "description": "Armor Up can be activated to increase its Armor bonus by 100% for 3 seconds.",
+        "icon": "storm_ui_icon_garrosh_armor_up.png",
+        "type": "Trait",
+        "sort": 3,
+        "cooldown": 30,
+        "abilityId": "Garrosh|D1",
+        "abilityLinks": [
+          "Garrosh|D1"
+        ]
+      }
+    ],
+    "16": [
+      {
+        "tooltipId": "GarroshGroundbreakerMortalCombo",
+        "talentTreeId": "GarroshGroundbreakerMortalCombo",
+        "name": "Mortal Combo",
+        "description": "Hitting a Hero with Groundbreaker's Stun and throwing them with Wrecking Ball within 3 seconds reduces Wrecking Ball's cooldown by 10 seconds, regardless of order.",
+        "icon": "storm_ui_icon_garrosh_wrecking_ball.png",
+        "type": "E",
+        "sort": 1,
+        "abilityId": "Garrosh|E1",
+        "abilityLinks": [
+          "Garrosh|E1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshWreckingBallEarthshaker",
+        "talentTreeId": "GarroshWreckingBallEarthshaker",
+        "name": "Earthshaker",
+        "description": "Wrecking Ball Stuns enemies near the impact area for 0.5 seconds.",
+        "icon": "storm_ui_icon_garrosh_intothefray.png",
+        "type": "E",
+        "sort": 2,
+        "abilityId": "Garrosh|E1",
+        "abilityLinks": [
+          "Garrosh|E1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshArmorUpSeasonedSoldier",
+        "talentTreeId": "GarroshArmorUpSeasonedSoldier",
+        "name": "Seasoned Soldier",
+        "description": "Gain 5% maximum Health, increase Groundbreaker's Slow duration by 1 second, and Bloodthirst gains an additional charge.",
+        "icon": "storm_ui_icon_garrosh_armor_up.png",
+        "type": "Active",
+        "sort": 3,
+        "abilityId": "Garrosh|Active",
+        "abilityLinks": [
+          "Garrosh|D1"
+        ]
+      }
+    ],
+    "20": [
+      {
+        "tooltipId": "GarroshWarlordsChallengeDeathWish",
+        "talentTreeId": "GarroshWarlordsChallengeDeathWish",
+        "name": "Death Wish",
+        "description": "Increase the duration of Warlord's Challenge by 0.5 seconds.  If an enemy Hero is killed while Taunted by Warlord's Challenge, its cooldown is reduced by 45 seconds.",
+        "icon": "storm_ui_icon_garrosh_warlords_challenge.png",
+        "type": "Heroic",
+        "sort": 1,
+        "abilityId": "Garrosh|R1",
+        "abilityLinks": [
+          "Garrosh|R1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshDecimateDeadlyCalm",
+        "talentTreeId": "GarroshDecimateDeadlyCalm",
+        "name": "Deadly Calm",
+        "description": "Heroes hit by Decimate deal 40% less damage for 3 seconds.",
+        "icon": "storm_ui_icon_garrosh_decimate.png",
+        "type": "Heroic",
+        "sort": 2,
+        "abilityId": "Garrosh|R2",
+        "abilityLinks": [
+          "Garrosh|R2"
+        ]
+      },
+      {
+        "tooltipId": "GarroshWreckingBallTitanicMight",
+        "talentTreeId": "GarroshWreckingBallTitanicMight",
+        "name": "Titanic Might",
+        "description": "Wrecking Ball now throws the 2 closest enemies.",
+        "icon": "storm_ui_icon_garrosh_wrecking_ball.png",
+        "type": "E",
+        "sort": 3,
+        "abilityId": "Garrosh|E1",
+        "abilityLinks": [
+          "Garrosh|E1"
+        ]
+      },
+      {
+        "tooltipId": "GarroshArmorUpInnerRage",
+        "talentTreeId": "GarroshArmorUpInnerRage",
+        "name": "Inner Rage",
+        "description": "Body Check gains an additional charge and its healing reduction is increased by an additional 45%.",
+        "icon": "storm_ui_icon_garrosh_slam.png",
+        "type": "Active",
+        "sort": 4,
+        "abilityId": "Garrosh|Active",
+        "abilityLinks": [
+          "Garrosh|11"
+        ]
+      }
+    ]
+  }
+}

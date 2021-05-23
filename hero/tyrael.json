@@ -1,0 +1,377 @@
+{
+  "id": 18,
+  "shortName": "tyrael",
+  "hyperlinkId": "Tyrael",
+  "attributeId": "Tyrl",
+  "cHeroId": "Tyrael",
+  "cUnitId": "HeroTyrael",
+  "name": "Tyrael",
+  "icon": "tyrael.png",
+  "role": "Warrior",
+  "expandedRole": "Tank",
+  "type": "Melee",
+  "releaseDate": "2014-03-13",
+  "releasePatch": "0.1.1.00000",
+  "tags": [
+    "BodyBlocker",
+    "EnergyImportant",
+    "Escaper",
+    "Ganker",
+    "Overconfident",
+    "RoleAutoAttacker",
+    "RoleTank"
+  ],
+  "abilities": {
+    "Tyrael": [
+      {
+        "uid": "368e56",
+        "name": "El'druin's Might",
+        "description": "Throw El'druin to the target area, dealing 110 (+4% per level) damage to nearby enemies and Slowing them by 25% for 2.5 seconds. It can be reactivated within 5 seconds to teleport Tyrael to El'druin and Slow nearby enemies again.",
+        "hotkey": "Q",
+        "abilityId": "Tyrael|Q1",
+        "cooldown": 12,
+        "manaCost": 45,
+        "icon": "storm_ui_icon_tyrael_eldruinsmight_a.png",
+        "type": "basic"
+      },
+      {
+        "uid": "c78476",
+        "name": "Righteousness",
+        "description": "Shields Tyrael for 336 (+4% per level) damage and nearby allied Heroes and Minions for 40% as much for 4 seconds.",
+        "hotkey": "W",
+        "abilityId": "Tyrael|W1",
+        "cooldown": 9,
+        "manaCost": 45,
+        "icon": "storm_ui_icon_tyrael_righteousness.png",
+        "type": "basic"
+      },
+      {
+        "uid": "3e3a5d",
+        "name": "Smite",
+        "description": "Rake target area for 150 (+4% per level) damage. Allies moving through the targeted area gain 25% increased Movement Speed for 2 seconds.",
+        "hotkey": "E",
+        "abilityId": "Tyrael|E1",
+        "cooldown": 6,
+        "manaCost": 45,
+        "icon": "storm_ui_icon_tyrael_smite.png",
+        "type": "basic"
+      },
+      {
+        "uid": "ad72bc",
+        "name": "Judgment",
+        "description": "After 0.75 seconds, charge an enemy Hero, dealing 150 (+4% per level) damage and Stunning them for 1.5 seconds. Nearby enemies are knocked away and take 75 (+4% per level) damage.",
+        "hotkey": "R",
+        "abilityId": "Tyrael|R1",
+        "cooldown": 70,
+        "manaCost": 80,
+        "icon": "storm_ui_icon_tyrael_judgement.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "c143ab",
+        "name": "Sanctification",
+        "description": "After 0.5 seconds create a field of holy energy that makes allied Heroes Invulnerable. Lasts 3 seconds.",
+        "hotkey": "R",
+        "abilityId": "Tyrael|R2",
+        "cooldown": 90,
+        "manaCost": 75,
+        "icon": "storm_ui_icon_tyrael_sanctification.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "ffd447",
+        "name": "Archangel's Wrath",
+        "description": "Upon dying, become Invulnerable and gain 20% Movement Speed for 4 seconds. Upon expiration, explode, dealing 450 (+4% per level) damage and reducing Tyrael's death timer by 10% per enemy Hero hit. Archangel's Wrath reduces nearby enemy Heroes' damage by  50% while active and for  3 seconds when it expires.",
+        "trait": true,
+        "abilityId": "Tyrael|D1",
+        "icon": "storm_ui_icon_tyrael_archangelswrath.png",
+        "type": "trait"
+      }
+    ]
+  },
+  "talents": {
+    "1": [
+      {
+        "tooltipId": "TyraelSalvation",
+        "talentTreeId": "TyraelSalvation",
+        "name": "Salvation",
+        "description": "Increase the Shield amount Tyrael gains from Righteousness by 40% and heal Tyrael for 140 (+4% per level) Health if his Shield is destroyed. Does not increase the Shield amount gained by allies.",
+        "icon": "storm_ui_icon_tyrael_righteousness.png",
+        "type": "W",
+        "sort": 1,
+        "abilityId": "Tyrael|W1",
+        "abilityLinks": [
+          "Tyrael|W1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelJusticeForAll",
+        "talentTreeId": "TyraelJusticeForAll",
+        "name": "Justice for All",
+        "description": "Increase the Shield applied to allies by Righteousness to 80% of the Shield gained by Tyrael.",
+        "icon": "storm_ui_icon_tyrael_righteousness_var1.png",
+        "type": "W",
+        "sort": 2,
+        "abilityId": "Tyrael|W1",
+        "abilityLinks": [
+          "Tyrael|W1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelArdentRestoration",
+        "talentTreeId": "TyraelArdentRestoration",
+        "name": "Ardent Restoration",
+        "description": "Dealing damage to a Hero heals Tyrael for 20 (+4% per level) Health over 5 seconds. Dealing damage resets this timer, and the heal amount stacks up to 10 times.  Quest: Every Regeneration Globe gathered increases this heal amount by 1%.",
+        "icon": "storm_ui_icon_talent_regenerationmaster.png",
+        "type": "Passive",
+        "sort": 3,
+        "isQuest": true,
+        "abilityId": "Tyrael|Passive"
+      }
+    ],
+    "4": [
+      {
+        "tooltipId": "TyraelStalwartAngel",
+        "talentTreeId": "TyraelStalwartAngel",
+        "name": "Stalwart Angel",
+        "description": "Gain 25 Armor while El'druin's Might is active, and for 3 seconds after teleporting.",
+        "icon": "storm_ui_icon_tyrael_eldruinsmight_a.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Tyrael|Q1",
+        "abilityLinks": [
+          "Tyrael|Q1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelElDruinsMightBoundByLawTalent",
+        "talentTreeId": "TyraelElDruinsMightBoundByLaw",
+        "name": "Bound by Law",
+        "description": "Heroes hit by El'druin's Might heal Tyrael for 3% of his maximum Health. Tyrael's Basic Attacks against enemies Slowed by El'druin's Might increase the Slow duration by 1 second, up to 4 seconds.",
+        "icon": "storm_ui_icon_tyrael_eldruinsmight_b.png",
+        "type": "Q",
+        "sort": 2,
+        "abilityId": "Tyrael|Q1",
+        "abilityLinks": [
+          "Tyrael|Q1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelDivineVigor",
+        "talentTreeId": "TyraelDivineVigor",
+        "name": "Divine Vigor",
+        "description": "If Smite hits an enemy, Tyrael's Basic Attacks within the next 4 seconds heal for 70% of the damage dealt.",
+        "icon": "storm_ui_icon_tyrael_smite.png",
+        "type": "E",
+        "sort": 3,
+        "abilityId": "Tyrael|E1",
+        "abilityLinks": [
+          "Tyrael|E1"
+        ]
+      }
+    ],
+    "7": [
+      {
+        "tooltipId": "TyraelRighteousnessReciprocateTalent",
+        "talentTreeId": "TyraelMasteryRighteousnessReciprocate",
+        "name": "Reciprocate",
+        "description": "When Tyrael's Shield from Righteousness expires or is destroyed, it deals 190 (+4% per level) damage to nearby enemies.",
+        "icon": "storm_ui_icon_tyrael_righteousness.png",
+        "type": "W",
+        "sort": 1,
+        "abilityId": "Tyrael|W1",
+        "abilityLinks": [
+          "Tyrael|W1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelSmitePurgeEvilTalent",
+        "talentTreeId": "TyraelMasteryPurgeEvil",
+        "name": "Purge Evil",
+        "description": "Each enemy Hero hit by Smite increases Tyrael's Basic Attack damage by 60% for 4 seconds.",
+        "icon": "storm_ui_icon_tyrael_smite.png",
+        "type": "E",
+        "sort": 2,
+        "abilityId": "Tyrael|E1",
+        "abilityLinks": [
+          "Tyrael|E1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelSmiteSwiftRetributionTalent",
+        "talentTreeId": "TyraelMasterySwiftRetribution",
+        "name": "Swift Retribution",
+        "description": "Smite grants 20% more Movement Speed and also grants 25% Attack Speed for 2 seconds.",
+        "icon": "storm_ui_icon_tyrael_smite_a.png",
+        "type": "E",
+        "sort": 3,
+        "abilityId": "Tyrael|E1",
+        "abilityLinks": [
+          "Tyrael|E1"
+        ]
+      }
+    ],
+    "10": [
+      {
+        "tooltipId": "TyraelJudgment",
+        "talentTreeId": "TyraelHeroicAbilityJudgement",
+        "name": "Judgment",
+        "description": "After 0.75 seconds, charge an enemy Hero, dealing 150 (+4% per level) damage and Stunning them for 1.5 seconds. Nearby enemies are knocked away and take 75 (+4% per level) damage.",
+        "icon": "storm_ui_icon_tyrael_judgement.png",
+        "type": "Heroic",
+        "sort": 1,
+        "cooldown": 70,
+        "abilityId": "Tyrael|R1",
+        "abilityLinks": [
+          "Tyrael|R1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelSanctificationStationary",
+        "talentTreeId": "TyraelHeroicAbilitySanctification",
+        "name": "Sanctification",
+        "description": "After 0.5 seconds create a field of holy energy that makes allied Heroes Invulnerable. Lasts 3 seconds.",
+        "icon": "storm_ui_icon_tyrael_sanctification.png",
+        "type": "Heroic",
+        "sort": 2,
+        "cooldown": 90,
+        "abilityId": "Tyrael|R2",
+        "abilityLinks": [
+          "Tyrael|R2"
+        ]
+      }
+    ],
+    "13": [
+      {
+        "tooltipId": "TyraelElDruinsMightSwordOfJusticeTalent",
+        "talentTreeId": "TyraelMasteryElDruinsMightSwordOfJustice",
+        "name": "Sword of Justice",
+        "description": "Upon teleporting using El'druin's Might, El'druin swaps places with Tyrael, and El'druin's Might can be reactivated to teleport an additional time.",
+        "icon": "storm_ui_icon_tyrael_eldruinsmight_a.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Tyrael|Q1",
+        "abilityLinks": [
+          "Tyrael|Q1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelElDruinsMightHolyGroundTalent",
+        "talentTreeId": "TyraelMasteryHolyGround",
+        "name": "Holy Ground",
+        "description": "Create a ring for 3 seconds that blocks enemies from entering the area teleported to using El'druin's Might.",
+        "icon": "storm_ui_icon_tyrael_eldruinsmight_b.png",
+        "type": "Q",
+        "sort": 2,
+        "abilityId": "Tyrael|Q1",
+        "abilityLinks": [
+          "Tyrael|Q1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelRighteousnessLawAndOrderTalent",
+        "talentTreeId": "TyraelMasteryLawAndOrder",
+        "name": "Law and Order",
+        "description": "Each enemy Hero hit by Smite reduces the cooldown of Righteousness by 1 second. Each allied Hero Shielded by Righteousness increases the damage of the next Smite by 35%.",
+        "icon": "storm_ui_icon_tyrael_zealous_conviction.png",
+        "type": "Passive",
+        "sort": 3,
+        "abilityId": "Tyrael|Passive",
+        "abilityLinks": [
+          "Tyrael|E1",
+          "Tyrael|W1"
+        ]
+      }
+    ],
+    "16": [
+      {
+        "tooltipId": "TyraelElDruinsMightHoradricReforgingTalent",
+        "talentTreeId": "TyraelHoradricReforging",
+        "name": "Horadric Reforging",
+        "description": "Tyrael's Basic Attacks reduce the cooldown of El'druin's Might by 2 seconds.",
+        "icon": "storm_ui_icon_tyrael_eldruinsmight_a.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Tyrael|Q1",
+        "abilityLinks": [
+          "Tyrael|Q1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelBurningHalo",
+        "talentTreeId": "TyraelBurningHalo",
+        "name": "Burning Halo",
+        "description": "Both Tyrael and El'druin deal 18 (+4% per level) damage per second to nearby enemies. Teleporting increases this damage from Tyrael by 150% for 2 seconds.",
+        "icon": "storm_ui_icon_tyrael_eldruinsmight_b.png",
+        "type": "Q",
+        "sort": 2,
+        "abilityId": "Tyrael|Q1",
+        "abilityLinks": [
+          "Tyrael|Q1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelSmiteTheWicked",
+        "talentTreeId": "TyraelSmiteTheWicked",
+        "name": "Smite the Wicked",
+        "description": "While El'druin's Might is active, and for 2 seconds after teleporting, Smite's cooldown recharges 125% faster.",
+        "icon": "storm_ui_icon_tyrael_smite.png",
+        "type": "E",
+        "sort": 3,
+        "abilityId": "Tyrael|E1",
+        "abilityLinks": [
+          "Tyrael|E1"
+        ]
+      }
+    ],
+    "20": [
+      {
+        "tooltipId": "TyraelJudgmentAngelOfJusticeTalent",
+        "talentTreeId": "TyraelMasteryJudgmentAngelofJustice",
+        "name": "Angel of Justice",
+        "description": "Increases the cast range of Judgment by 50%, and reduces the cooldown by 40 seconds.",
+        "icon": "storm_ui_icon_tyrael_judgement.png",
+        "type": "Heroic",
+        "sort": 1,
+        "abilityId": "Tyrael|R1",
+        "abilityLinks": [
+          "Tyrael|R1"
+        ]
+      },
+      {
+        "tooltipId": "TyraelSanctificationHolyArenaTalent",
+        "talentTreeId": "TyraelMasterySanctificationHolyArena",
+        "name": "Holy Arena",
+        "description": "Increase the duration of Sanctification by 1 second and increase the damage of allies inside by 25%.",
+        "icon": "storm_ui_icon_tyrael_sanctification.png",
+        "type": "Heroic",
+        "sort": 2,
+        "abilityId": "Tyrael|R2",
+        "abilityLinks": [
+          "Tyrael|R2"
+        ]
+      },
+      {
+        "tooltipId": "TyraelSealofElDruin",
+        "talentTreeId": "TyraelSealOfElDruin",
+        "name": "Seal of El'druin",
+        "description": "Using a Basic Ability grants 50% Attack Speed for 3 seconds.",
+        "icon": "storm_ui_icon_talent_autoattack_speed.png",
+        "type": "Passive",
+        "sort": 3,
+        "abilityId": "Tyrael|Passive"
+      },
+      {
+        "tooltipId": "TyraelDefenseOfTheAngels",
+        "talentTreeId": "TyraelDefenseOfTheAngels",
+        "name": "Defense of the Angels",
+        "description": "Activate to gain 50 Armor for 3 seconds.  Each time Tyrael damages an enemy Hero with a Basic Attack or Basic Ability, increase the duration of this Armor bonus by 0.5 seconds.",
+        "icon": "storm_ui_icon_talent_hardenedshield.png",
+        "type": "Active",
+        "sort": 4,
+        "cooldown": 60,
+        "abilityId": "Tyrael|Active"
+      }
+    ]
+  }
+}

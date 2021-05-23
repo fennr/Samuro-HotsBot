@@ -1,0 +1,385 @@
+{
+  "id": 9,
+  "shortName": "malfurion",
+  "hyperlinkId": "Malfurion",
+  "attributeId": "Malf",
+  "cHeroId": "Malfurion",
+  "cUnitId": "HeroMalfurion",
+  "name": "Malfurion",
+  "icon": "malfurion.png",
+  "role": "Support",
+  "expandedRole": "Healer",
+  "type": "Ranged",
+  "releaseDate": "2014-03-13",
+  "releasePatch": "0.1.1.00000",
+  "tags": [
+    "AllyHealer",
+    "EnergyImportant",
+    "Helper",
+    "RoleSupport",
+    "SelfHealer"
+  ],
+  "abilities": {
+    "Malfurion": [
+      {
+        "uid": "ff74fd",
+        "name": "Regrowth",
+        "description": "Heal an allied Hero for 380 (+4% per level) Health over 20 seconds.",
+        "hotkey": "Q",
+        "abilityId": "Malfurion|Q1",
+        "cooldown": 5,
+        "manaCost": 35,
+        "icon": "storm_ui_icon_malfurion_regrowth.png",
+        "type": "basic"
+      },
+      {
+        "uid": "895dcf",
+        "name": "Moonfire",
+        "description": "Deal 90 (+4% per level) damage to enemies in an area and reveal them for 2 seconds.  Allies with an active Regrowth are healed for 130 (+4% per level) Health for each enemy Hero hit by Moonfire.",
+        "hotkey": "W",
+        "abilityId": "Malfurion|W1",
+        "cooldown": 3,
+        "manaCost": 10,
+        "icon": "storm_ui_icon_malfurion_moonfire.png",
+        "type": "basic"
+      },
+      {
+        "uid": "699cfb",
+        "name": "Entangling Roots",
+        "description": "Root enemy Heroes in an area for 1.25 seconds, and deal 117 (+4% per level) damage over the duration. Affected area grows over 3 seconds.",
+        "hotkey": "E",
+        "abilityId": "Malfurion|E1",
+        "cooldown": 12,
+        "manaCost": 65,
+        "icon": "storm_ui_icon_malfurion_entanglingroots.png",
+        "type": "basic"
+      },
+      {
+        "uid": "c1042b",
+        "name": "Tranquility",
+        "description": "Heal nearby allied Heroes for 80 (+4% per level) Health per second for 8 seconds. Allies affected by Regrowth within Tranquility's area gain 10 Armor.",
+        "hotkey": "R",
+        "abilityId": "Malfurion|R1",
+        "cooldown": 80,
+        "manaCost": 80,
+        "icon": "storm_ui_icon_malfurion_tranquility.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "d55c5b",
+        "name": "Twilight Dream",
+        "description": "After 0.5 seconds, deal 310 (+4% per level) damage in a large area around Malfurion, Silencing enemies making them unable to use Abilities for 3 seconds.",
+        "hotkey": "R",
+        "abilityId": "Malfurion|R2",
+        "cooldown": 90,
+        "manaCost": 100,
+        "icon": "storm_ui_icon_malfurion_twilightdream.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "e7b6e6",
+        "name": "Innervate",
+        "description": "Grant an allied Hero 20% of their maximum Mana over 5 seconds. While affected by Innervate, their Basic Ability cooldowns recharge 50% faster.  Cannot be used on Heroes that do not use Mana.",
+        "hotkey": "D",
+        "trait": true,
+        "abilityId": "Malfurion|D1",
+        "cooldown": 25,
+        "icon": "storm_ui_icon_malfurion_innerrvate.png",
+        "type": "trait"
+      }
+    ]
+  },
+  "talents": {
+    "1": [
+      {
+        "tooltipId": "MalfurionEntanglingRootsDeepRootsTalent",
+        "talentTreeId": "MalfurionEntanglingRootsDeepRootsTalent",
+        "name": "Deep Roots",
+        "description": "Entangling Roots grows 25% larger, and persist on the ground 40% longer.  Repeatable Quest: Every time an enemy Hero becomes Rooted, gain 10 Mana permanently.",
+        "icon": "storm_ui_icon_malfurion_entanglingroots.png",
+        "type": "E",
+        "sort": 1,
+        "isQuest": true,
+        "abilityId": "Malfurion|E1",
+        "abilityLinks": [
+          "Malfurion|E1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionEntanglingRootsVengefulRootsTalent",
+        "talentTreeId": "MalfurionMasteryVengefulRoots",
+        "name": "Vengeful Roots",
+        "description": "Entangling Roots spawns a Treant that deals 58 damage per second and lasts 10 seconds.  Repeatable Quest: Hitting enemy Heroes with Entangling Roots permanently increases the Treant's Basic Attack damage by 7.",
+        "icon": "storm_ui_icon_malfurion_entanglingroots_b.png",
+        "type": "E",
+        "sort": 2,
+        "isQuest": true,
+        "abilityId": "Malfurion|E1",
+        "abilityLinks": [
+          "Malfurion|E1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionEntanglingRootsEmeraldDreams",
+        "talentTreeId": "MalfurionEntanglingRootsEmeraldDreams",
+        "name": "Emerald Dreams",
+        "description": "Entangling Roots Sleeps enemy Heroes for 2 seconds after its Root expires.",
+        "icon": "storm_ui_icon_malfurion_entanglingroots_a.png",
+        "type": "E",
+        "sort": 3
+      }
+    ],
+    "4": [
+      {
+        "tooltipId": "MalfurionRejuvenationTalent",
+        "talentTreeId": "MalfurionRejuvenation",
+        "name": "Rejuvenation",
+        "description": "Casting Regrowth on an ally also grants Malfurion its effect for 50% normal duration.",
+        "icon": "storm_ui_icon_malfurion_regrowth.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Malfurion|Q1",
+        "abilityLinks": [
+          "Malfurion|Q1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionMoonfireCelestialAlignmentTalent",
+        "talentTreeId": "MalfurionCelestialAlignment",
+        "name": "Celestial Alignment",
+        "description": "Increase Moonfire's reveal duration by 3 seconds. Malfurion's Basic Attacks against Heroes revealed by Moonfire deal 75% more damage.",
+        "icon": "storm_ui_icon_malfurion_moonfire.png",
+        "type": "W",
+        "sort": 2,
+        "abilityId": "Malfurion|W1",
+        "abilityLinks": [
+          "Malfurion|W1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionInnervateShandosClarityTalent",
+        "talentTreeId": "MalfurionCombatStyleShandosClarity",
+        "name": "Shan'do's Clarity",
+        "description": "Gain a second charge of Innervate. Its cooldown recharges 25% faster per ally affected by Regrowth.",
+        "icon": "storm_ui_icon_malfurion_innerrvate.png",
+        "type": "Trait",
+        "sort": 3,
+        "abilityId": "Malfurion|D1",
+        "abilityLinks": [
+          "Malfurion|D1"
+        ]
+      }
+    ],
+    "7": [
+      {
+        "tooltipId": "MalfurionMoonfireWildGrowthTalent",
+        "talentTreeId": "MalfurionWildGrowthTalent",
+        "name": "Wild Growth",
+        "description": "Each Hero hit by Moonfire extends the duration of currently active Regrowths by 1 second.",
+        "icon": "storm_ui_icon_malfurion_wildgrowth.png",
+        "type": "Passive",
+        "sort": 1,
+        "abilityId": "Malfurion|Passive",
+        "abilityLinks": [
+          "Malfurion|Q1",
+          "Malfurion|W1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionEntanglingRootsTenaciousRootsTalent",
+        "talentTreeId": "MalfurionMasteryTenaciousRootsEntanglingRoots",
+        "name": "Tenacious Roots",
+        "description": "Increase the Root duration of Entangling Roots by 25%. When Malfurion is Stunned, the cooldown of Entangling Roots is instantly reset. This can only occur every 10 seconds.",
+        "icon": "storm_ui_icon_malfurion_entanglingroots.png",
+        "type": "E",
+        "sort": 2,
+        "abilityId": "Malfurion|E1",
+        "abilityLinks": [
+          "Malfurion|E1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionNaturesCure",
+        "talentTreeId": "MalfurionNaturesCureRegrowth",
+        "name": "Nature's Cure",
+        "description": "Activate to remove all Stuns, Roots, and Slows from allies affected by Regrowth.",
+        "icon": "storm_ui_icon_malfurion_regrowth.png",
+        "type": "Active",
+        "sort": 3,
+        "cooldown": 45,
+        "abilityId": "Malfurion|Active",
+        "abilityLinks": [
+          "Malfurion|Q1"
+        ]
+      }
+    ],
+    "10": [
+      {
+        "tooltipId": "MalfurionTranquility",
+        "talentTreeId": "MalfurionHeroicAbilityTranquility",
+        "name": "Tranquility",
+        "description": "Heal nearby allied Heroes for 80 (+4% per level) Health per second for 8 seconds. Allies affected by Regrowth within Tranquility's area gain 10 Armor.",
+        "icon": "storm_ui_icon_malfurion_tranquility.png",
+        "type": "Heroic",
+        "sort": 1,
+        "cooldown": 80,
+        "abilityId": "Malfurion|R1",
+        "abilityLinks": [
+          "Malfurion|R1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionTwilightDream",
+        "talentTreeId": "MalfurionHeroicAbilityTwilightDream",
+        "name": "Twilight Dream",
+        "description": "After 0.5 seconds, deal 310 (+4% per level) damage in a large area around Malfurion, Silencing enemies making them unable to use Abilities for 3 seconds.",
+        "icon": "storm_ui_icon_malfurion_twilightdream.png",
+        "type": "Heroic",
+        "sort": 2,
+        "cooldown": 90,
+        "abilityId": "Malfurion|R2",
+        "abilityLinks": [
+          "Malfurion|R2"
+        ]
+      }
+    ],
+    "13": [
+      {
+        "tooltipId": "MalfurionRegrowthNaturesSwiftnessTalent",
+        "talentTreeId": "MalfurionRegrowthNaturesSwiftness",
+        "name": "Nature's Swiftness",
+        "description": "Malfurion gains 6% Movement Speed for every active Regrowth.",
+        "icon": "storm_ui_icon_malfurion_regrowth.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Malfurion|Q1",
+        "abilityLinks": [
+          "Malfurion|Q1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionMoonfireHinderingMoonfireTalent",
+        "talentTreeId": "MalfurionMasteryHinderingMoonfire",
+        "name": "Hindering Moonfire",
+        "description": "Moonfire Slows Heroes hit by 25% for 3 seconds.",
+        "icon": "storm_ui_icon_malfurion_moonfire.png",
+        "type": "W",
+        "sort": 2,
+        "abilityId": "Malfurion|W1",
+        "abilityLinks": [
+          "Malfurion|W1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionRevitalizeInnervateTalent",
+        "talentTreeId": "MalfurionRevitalizeInnervateTalent",
+        "name": "Revitalize",
+        "description": "Using Innervate also grants Malfurion 80 Mana and causes his Basic Ability cooldowns to refresh 50% faster for 5 seconds.",
+        "icon": "storm_ui_icon_malfurion_innerrvate.png",
+        "type": "Trait",
+        "sort": 3,
+        "abilityId": "Malfurion|D1",
+        "abilityLinks": [
+          "Malfurion|D1"
+        ]
+      }
+    ],
+    "16": [
+      {
+        "tooltipId": "MalfurionYserasGift",
+        "talentTreeId": "MalfurionYserasGift",
+        "name": "Ysera's Gift",
+        "description": "While Malfurion is above 75% Health, Regrowth's healing-over-time is increased by 60%.",
+        "icon": "storm_ui_icon_malfurion_regrowth.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Malfurion|Q1",
+        "abilityLinks": [
+          "Malfurion|Q1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionRegrowthNaturesBalanceTalent",
+        "talentTreeId": "MalfurionRegrowthNaturesBalance",
+        "name": "Nature's Balance",
+        "description": "Increase Moonfire's area by 25% and Regrowth's duration by 3 seconds.",
+        "icon": "storm_ui_icon_malfurion_wildgrowth.png",
+        "type": "Passive",
+        "sort": 2,
+        "abilityId": "Malfurion|Passive",
+        "abilityLinks": [
+          "Malfurion|Q1",
+          "Malfurion|W1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionMoonfireMoonlitHarmonyTalent",
+        "talentTreeId": "MalfurionMoonfireMoonlitHarmonyTalent",
+        "name": "Moonlit Harmony",
+        "description": "Increase Moonfire's heal by 15% per ally affected by Regrowth.",
+        "icon": "storm_ui_icon_malfurion_wildgrowth_a.png",
+        "type": "Passive",
+        "sort": 3,
+        "abilityId": "Malfurion|Passive",
+        "abilityLinks": [
+          "Malfurion|Q1",
+          "Malfurion|W1"
+        ]
+      }
+    ],
+    "20": [
+      {
+        "tooltipId": "MalfurionTranquilitySerenityTalent",
+        "talentTreeId": "MalfurionMasterySerenity",
+        "name": "Serenity",
+        "description": "Each enemy Hero hit by Moonfire reduces the cooldown of Tranquility by 3 seconds. Increase Tranquility's healing by 10% per ally affected by Regrowth.",
+        "icon": "storm_ui_icon_malfurion_tranquility.png",
+        "type": "Heroic",
+        "sort": 1,
+        "abilityId": "Malfurion|R1",
+        "abilityLinks": [
+          "Malfurion|R1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionTwilightDreamAstralCommunionTalent",
+        "talentTreeId": "MalfurionMasteryAstralCommunion",
+        "name": "Astral Communion",
+        "description": "Activate to Channel for 1 second, and then instantly teleport and cast Twilight Dream at the targeted location.  Cooldown is shared with Twilight Dream.  Passive: Increase Twilight Dream's Silence duration to 4 seconds.",
+        "icon": "storm_ui_icon_malfurion_twilightdream.png",
+        "type": "Heroic",
+        "sort": 2,
+        "abilityId": "Malfurion|R2",
+        "abilityLinks": [
+          "Malfurion|R2"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionRegrowthMoonfireLifebloomTalent",
+        "talentTreeId": "MalfurionLifebloomRegrowth",
+        "name": "Lifebloom",
+        "description": "Casting Regrowth instantly heals its target for 10% of their missing Health.",
+        "icon": "storm_ui_icon_malfurion_regrowth.png",
+        "type": "Q",
+        "sort": 3,
+        "abilityId": "Malfurion|Q1",
+        "abilityLinks": [
+          "Malfurion|Q1"
+        ]
+      },
+      {
+        "tooltipId": "MalfurionMoonfireLunarShowerTalent",
+        "talentTreeId": "MalfurionMasteryLunarShower",
+        "name": "Lunar Shower",
+        "description": "If Moonfire hits a Hero, its cooldown is reduced by 1 second and the next Moonfire within 6 seconds deals 20% more damage. This damage bonus stacks up to 60%.",
+        "icon": "storm_ui_icon_malfurion_moonfire_a.png",
+        "type": "W",
+        "sort": 4,
+        "abilityId": "Malfurion|W1",
+        "abilityLinks": [
+          "Malfurion|W1"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,356 @@
+{
+  "id": 40,
+  "shortName": "kharazim",
+  "hyperlinkId": "Kharazim",
+  "attributeId": "Monk",
+  "cHeroId": "Monk",
+  "cUnitId": "HeroMonk",
+  "name": "Kharazim",
+  "icon": "kharazim.png",
+  "role": "Support",
+  "expandedRole": "Healer",
+  "type": "Melee",
+  "releaseDate": "2015-08-18",
+  "releasePatch": "1.13.0.37117",
+  "tags": [
+    "AllyHealer",
+    "EnergyImportant",
+    "Escaper",
+    "Ganker",
+    "Overconfident",
+    "RoleSupport",
+    "SelfHealer"
+  ],
+  "abilities": {
+    "Kharazim": [
+      {
+        "uid": "6d4c81",
+        "name": "Radiant Dash",
+        "description": "Jump to an allied or enemy unit. Enemies are immediately hit with a Basic Attack.  Stores up to 2 charges.",
+        "hotkey": "Q",
+        "abilityId": "Kharazim|Q1",
+        "cooldown": 12,
+        "manaCost": 25,
+        "icon": "storm_ui_icon_monk_dash.png",
+        "type": "basic"
+      },
+      {
+        "uid": "8c1b7e",
+        "name": "Breath of Heaven",
+        "description": "Heal nearby Heroes for 285 (+4% per level) and give them 15% Movement Speed for 3 seconds.",
+        "hotkey": "W",
+        "abilityId": "Kharazim|W1",
+        "cooldown": 10,
+        "manaCost": 65,
+        "icon": "storm_ui_icon_monk_breath0fheaven.png",
+        "type": "basic"
+      },
+      {
+        "uid": "fd0ae1",
+        "name": "Deadly Reach",
+        "description": "Kharazim's next Basic Attack increases his Attack Speed and Attack Range by 100% for 2 seconds.",
+        "hotkey": "E",
+        "abilityId": "Kharazim|E1",
+        "cooldown": 10,
+        "manaCost": 45,
+        "icon": "storm_ui_icon_monk_deadlyreach.png",
+        "type": "basic"
+      },
+      {
+        "uid": "7e3a11",
+        "name": "Seven-Sided Strike",
+        "description": "Become Invulnerable and strike 7 times over 2 seconds. Each strike hits the highest Health nearby Hero for 7% of their maximum Health.",
+        "hotkey": "R",
+        "abilityId": "Kharazim|R1",
+        "cooldown": 50,
+        "manaCost": 77,
+        "icon": "storm_ui_icon_monk_sevensidedstrike.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "e790cd",
+        "name": "Divine Palm",
+        "description": "Protect an allied Hero from death, causing them to be healed for 1200 (+4% per level) if they take fatal damage in the next 3 seconds.",
+        "hotkey": "R",
+        "abilityId": "Kharazim|R2",
+        "cooldown": 50,
+        "manaCost": 50,
+        "icon": "storm_ui_icon_monk_divinepalm.png",
+        "type": "heroic"
+      },
+      {
+        "uid": "49a3fa",
+        "name": "Pick Your Trait",
+        "description": "Choose between Transcendence, Iron Fists, and Insight from the Talents panel.",
+        "trait": true,
+        "abilityId": "Kharazim|D1",
+        "icon": "storm_ui_icon_monk_trait1.png",
+        "type": "trait"
+      }
+    ]
+  },
+  "talents": {
+    "1": [
+      {
+        "tooltipId": "MonkTranscendenceTalent",
+        "talentTreeId": "MonkTranscendence",
+        "name": "Transcendence",
+        "description": "Every 3rd Basic Attack heals the lowest nearby allied Hero for 104 (+4% per level) and gives 25% increased Move Speed for 2.5 seconds.",
+        "icon": "storm_ui_icon_monk_trait_transcendence.png",
+        "type": "Trait",
+        "sort": 1
+      },
+      {
+        "tooltipId": "MonkIronFistsTalent",
+        "talentTreeId": "MonkIronFists",
+        "name": "Iron Fists",
+        "description": "Every 3rd Basic Attack deals 110% bonus damage and gives 25% increased Move Speed for 2.5 seconds.",
+        "icon": "storm_ui_icon_monk_trait_ironfist.png",
+        "type": "Trait",
+        "sort": 2
+      },
+      {
+        "tooltipId": "MonkInsightTalent",
+        "talentTreeId": "MonkInsight",
+        "name": "Insight",
+        "description": "Quest: Every 3rd Basic Attack restores 14 (+4% per level) Mana, grants a stack of Insight, and gives 25% increased Movement Speed for 2.5 seconds.  Reward: Upon getting 100 stacks of Insight, every 3rd attack also reduces Basic Ability cooldowns by 1.75 seconds.",
+        "icon": "storm_ui_icon_monk_trait_insight.png",
+        "type": "Trait",
+        "sort": 3,
+        "isQuest": true
+      }
+    ],
+    "4": [
+      {
+        "tooltipId": "MonkSpiritAlly",
+        "talentTreeId": "MonkSpiritAlly",
+        "name": "Spirit Ally",
+        "description": "Place a Spirit Ally that heals allied Heroes in a large area around it for 2% of their maximum Health every second. Has 150 (+4% per level) Health and lasts 10 seconds. Kharazim can Radiant Dash to Spirit Allies.",
+        "icon": "storm_ui_icon_monk_allyspirit.png",
+        "type": "Active",
+        "sort": 1,
+        "cooldown": 45,
+        "abilityId": "Kharazim|Active"
+      },
+      {
+        "tooltipId": "MonkEarthAlly",
+        "talentTreeId": "MonkEarthAlly",
+        "name": "Earth Ally",
+        "description": "Place an Earth Ally that grants nearby allied Heroes 50 Physical Armor against Heroic Basic Attacks, reducing damage taken by 50%. Has 400 (+4% per level) Health and lasts 10 seconds.  Kharazim can Radiant Dash to Earth Allies.",
+        "icon": "storm_ui_icon_monk_allyearth.png",
+        "type": "Active",
+        "sort": 2,
+        "cooldown": 45,
+        "abilityId": "Kharazim|Active"
+      },
+      {
+        "tooltipId": "MonkAirAlly",
+        "talentTreeId": "MonkAirAlly",
+        "name": "Air Ally",
+        "description": "Place an Air Ally that gives allied Heroes 15% Spell Power, grants vision, and reveals a large area around it. Has 200 (+4% per level) Health and lasts 10 seconds. Kharazim can Radiant Dash to Air Allies.",
+        "icon": "storm_ui_icon_monk_allyair.png",
+        "type": "Active",
+        "sort": 3,
+        "cooldown": 30,
+        "abilityId": "Kharazim|Active"
+      }
+    ],
+    "7": [
+      {
+        "tooltipId": "MonkBlindingSpeedTalent",
+        "talentTreeId": "MonkBlindingSpeedRadiantDash",
+        "name": "Blinding Speed",
+        "description": "Decreases Radiant Dash's cooldown by 2 seconds and increases the maximum number of charges by 1.",
+        "icon": "storm_ui_icon_monk_dash.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Kharazim|Q1",
+        "abilityLinks": [
+          "Kharazim|Q1"
+        ]
+      },
+      {
+        "tooltipId": "MonkHeavenlyZealBreathofHeaven",
+        "talentTreeId": "MonkHeavenlyZealBreathofHeaven",
+        "name": "Heavenly Zeal",
+        "description": "Increases Breath of Heaven's Movement Speed bonus to 30%.  Radiant Dashing to an ally increases the healing they receive from Breath of Heaven by 50% for 3.5 seconds.",
+        "icon": "storm_ui_icon_monk_breath0fheaven.png",
+        "type": "W",
+        "sort": 2,
+        "abilityId": "Kharazim|W1",
+        "abilityLinks": [
+          "Kharazim|W1"
+        ]
+      },
+      {
+        "tooltipId": "MonkBlazingFistsTalent",
+        "talentTreeId": "MonkBlazingFistsDeadlyReach",
+        "name": "Blazing Fists",
+        "description": "Increase the duration of Deadly Reach by 100%.  Every 3rd Basic Attack reduces the cooldown of Deadly Reach by 0.75 seconds.",
+        "icon": "storm_ui_icon_monk_deadlyreach.png",
+        "type": "E",
+        "sort": 3,
+        "abilityId": "Kharazim|E1",
+        "abilityLinks": [
+          "Kharazim|E1"
+        ]
+      }
+    ],
+    "10": [
+      {
+        "tooltipId": "MonkDivinePalm",
+        "talentTreeId": "MonkHeroicAbilityDivinePalm",
+        "name": "Divine Palm",
+        "description": "Protect an allied Hero from death, causing them to be healed for 1200 (+4% per level) if they take fatal damage in the next 3 seconds.",
+        "icon": "storm_ui_icon_monk_divinepalm.png",
+        "type": "Heroic",
+        "sort": 1,
+        "cooldown": 50,
+        "abilityId": "Kharazim|R2",
+        "abilityLinks": [
+          "Kharazim|R2"
+        ]
+      },
+      {
+        "tooltipId": "MonkSevenSidedStrike",
+        "talentTreeId": "MonkHeroicAbilitySevenSidedStrike",
+        "name": "Seven-Sided Strike",
+        "description": "Become Invulnerable and strike 7 times over 2 seconds. Each strike hits the highest Health nearby Hero for 7% of their maximum Health.",
+        "icon": "storm_ui_icon_monk_sevensidedstrike.png",
+        "type": "Heroic",
+        "sort": 2,
+        "cooldown": 50,
+        "abilityId": "Kharazim|R1",
+        "abilityLinks": [
+          "Kharazim|R1"
+        ]
+      }
+    ],
+    "13": [
+      {
+        "tooltipId": "MonkQuicksilverTalent",
+        "talentTreeId": "MonkQuicksilverRadiantDash",
+        "name": "Quicksilver",
+        "description": "Radiant Dashing to an ally gives Kharazim and the target 30% bonus Movement Speed for 3 seconds.",
+        "icon": "storm_ui_icon_monk_dash.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Kharazim|Q1",
+        "abilityLinks": [
+          "Kharazim|Q1"
+        ]
+      },
+      {
+        "tooltipId": "GenericSpellShieldTalent",
+        "talentTreeId": "GenericTalentSpellShield",
+        "name": "Spell Shield",
+        "description": "Every 30 seconds, gain 50 Spell Armor against the next enemy Ability and subsequent Abilities for 3 seconds, reducing the damage taken by 50%.  Can be toggled to allow or prevent this talent from triggering automatically.",
+        "icon": "storm_ui_icon_talent_spellshield.png",
+        "type": "Active",
+        "sort": 2,
+        "abilityId": "Kharazim|Active"
+      },
+      {
+        "tooltipId": "MonkSixthSense",
+        "talentTreeId": "MonkSixthSense",
+        "name": "Sixth Sense",
+        "description": "While Stunned or Rooted, gain 75 Physical Armor against Hero Basic Attacks for 4 seconds, reducing their damage by 75%.",
+        "icon": "storm_ui_icon_talent_relentless.png",
+        "type": "Passive",
+        "sort": 3,
+        "abilityId": "Kharazim|Passive"
+      }
+    ],
+    "16": [
+      {
+        "tooltipId": "MonkCleansingTouch",
+        "talentTreeId": "MonkCleansingTouchRadiantDash",
+        "name": "Cleansing Touch",
+        "description": "Radiant Dashing to an ally makes them Unstoppable for 1 second.",
+        "icon": "storm_ui_icon_monk_dash.png",
+        "type": "Q",
+        "sort": 1,
+        "abilityId": "Kharazim|Q1",
+        "abilityLinks": [
+          "Kharazim|Q1"
+        ]
+      },
+      {
+        "tooltipId": "MonkWayoftheHundredFistsTalent",
+        "talentTreeId": "MonkWayoftheHundredFistsRadiantDash",
+        "name": "Way of the Hundred Fists",
+        "description": "Radiant Dashing to an enemy launches a rapid volley of 6 Basic Attacks dealing 45% damage each.",
+        "icon": "storm_ui_icon_monk_dash_a.png",
+        "type": "Q",
+        "sort": 2,
+        "abilityId": "Kharazim|Q1",
+        "abilityLinks": [
+          "Kharazim|Q1"
+        ]
+      },
+      {
+        "tooltipId": "MonkEchoofHeavenTalent",
+        "talentTreeId": "MonkEchoofHeavenBreathofHeaven",
+        "name": "Echo of Heaven",
+        "description": "Breath of Heaven heals 75% of its normal amount, but heals a second time 3 seconds later.",
+        "icon": "storm_ui_icon_monk_breath0fheaven.png",
+        "type": "W",
+        "sort": 3,
+        "abilityId": "Kharazim|W1",
+        "abilityLinks": [
+          "Kharazim|W1"
+        ]
+      }
+    ],
+    "20": [
+      {
+        "tooltipId": "MonkPeacefulReposeTalent",
+        "talentTreeId": "MonkPeacefulReposeDivinePalm",
+        "name": "Peaceful Repose",
+        "description": "Divine Palm's healing amount is increased by 75% and its cooldown is set to 5 seconds if the Hero does not die.",
+        "icon": "storm_ui_icon_monk_divinepalm.png",
+        "type": "Heroic",
+        "sort": 1,
+        "abilityId": "Kharazim|R2",
+        "abilityLinks": [
+          "Kharazim|R2"
+        ]
+      },
+      {
+        "tooltipId": "MonkElevenSidedStrikeTalent",
+        "talentTreeId": "MonkElevenSidedStrikeSevenSidedStrike",
+        "name": "Transgression",
+        "description": "Seven-Sided Strike hits 4 additional times.",
+        "icon": "storm_ui_icon_monk_sevensidedstrike.png",
+        "type": "Heroic",
+        "sort": 2,
+        "abilityId": "Kharazim|R1",
+        "abilityLinks": [
+          "Kharazim|R1"
+        ]
+      },
+      {
+        "tooltipId": "GenericStormShield",
+        "talentTreeId": "GenericTalentStormShield",
+        "name": "Storm Shield",
+        "description": "Activate to give all nearby allied Heroes a Shield for 20% of their max Health for 3 seconds.",
+        "icon": "storm_ui_icon_talent_stormshield.png",
+        "type": "Active",
+        "sort": 3,
+        "cooldown": 45,
+        "abilityId": "Kharazim|Active"
+      },
+      {
+        "tooltipId": "MonkEpiphany",
+        "talentTreeId": "MonkEpiphany",
+        "name": "Epiphany",
+        "description": "Activate to restore 33% of Kharazim's maximum Mana and refill 2 charges of Radiant Dash.",
+        "icon": "storm_ui_icon_kharazim_epiphany.png",
+        "type": "Active",
+        "sort": 4,
+        "cooldown": 60,
+        "abilityId": "Kharazim|Active"
+      }
+    ]
+  }
+}
