@@ -19,12 +19,12 @@ class Help(commands.Cog, name="help"):
     @commands.command(name="help")
     async def help(self, context):
         """
-        List all commands from every Cog the bot has loaded.
+        Список всех команд из каждого модуля
         """
         prefix = config["bot_prefix"]
         if not isinstance(prefix, str):
             prefix = prefix[0]
-        embed = discord.Embed(title="Help", description="List of available commands:", color=config["success"])
+        embed = discord.Embed(title="Help", description="Список доступных команд:", color=config["success"])
         for i in self.bot.cogs:
             cog = self.bot.get_cog(i.lower())
             commands = cog.get_commands()

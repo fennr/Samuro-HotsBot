@@ -1,6 +1,6 @@
-bot_prefix: "YOUR_BOT_PREFIX_HERE"
-token: "YOUR_BOT_TOKEN_HERE"
-application_id: "YOUR_APPLICATION_ID"
+bot_prefix: "!"
+token: "NjY0MzY4MTg0NzkwNjE0MDE2.XhWDFg.LcrvjofJY-2yM0C7Pz-Savk7w98"
+application_id: "664368184790614016"
 owners:
   - 123456789
   - 987654321
