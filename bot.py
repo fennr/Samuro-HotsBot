@@ -71,7 +71,7 @@ async def on_ready():
 # Setup the game status task of the bot
 @tasks.loop(minutes=1.0)
 async def status_task():
-    statuses = ["with you!", "with Krypton!", f"{config['bot_prefix']}help", "with humans!"]
+    statuses = ["рускую рулетку", f"{config['bot_prefix']}help", "хотсевич"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
