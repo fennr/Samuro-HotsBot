@@ -59,7 +59,7 @@ class general(commands.Cog, name="general"):
         """
         await context.send("Я отправил личное сообщение!")
         await context.author.send(
-            f"Добавить Пропера на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['application_id']}&scope=bot&permissions=19456")
+            f"Добавить Самуро на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['application_id']}&scope=bot&permissions=19456")
 
     @commands.command(name="ping")
     async def ping(self, context):
