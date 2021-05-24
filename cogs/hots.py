@@ -77,7 +77,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="hero")
     async def hots_hero(self, context, *args):
         """
-        Актуальные билды для героя, указать героя
+        Актуальные билды для героя | указать героя
         """
         heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
         blizzhero_url = 'https://blizzardheroes.ru/guides/'
@@ -96,8 +96,6 @@ class hots(commands.Cog, name="hots"):
             wrong_hero_list = []
             if hero is None:
                 wrong_hero_list = find_wrong_hero(args[0])
-                print(wrong_hero_list)
-                print(len(wrong_hero_list))
                 if len(wrong_hero_list) > 1:
                     embed = discord.Embed(
                         title="Возможно вы имели в виду:",
@@ -150,7 +148,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="skill")
     async def hots_skill(self, context, *args):
         """
-        Информация о скиллах героя, указать героя
+        Информация о скиллах героя | указать героя
         """
         # json с данными по всем героям
         heroes_json_file = 'data/heroesdata.json'
@@ -175,11 +173,8 @@ class hots(commands.Cog, name="hots"):
         else:
             hero_list = []
             hero = find_hero(args[0])
-            print(hero)
-            print(hero_list)
             if hero is None:
                 hero_list = find_wrong_hero(args[0])
-                print(len(hero_list))
             if hero is not None or len(hero_list) == 1:
                 if len(hero_list) == 1:
                     hero = hero_list[0]
@@ -237,7 +232,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="talent")
     async def hots_talent(self, context, *args):
         """
-        Информация о талантах героя, указать героя и уровень
+        Информация о талантах героя | указать героя и уровень
         """
         # json с данными по всем героям
         heroes_json_file = 'data/heroesdata.json'
@@ -260,9 +255,6 @@ class hots(commands.Cog, name="hots"):
             )
         else:
             hero_list = []
-            hero = find_hero(args[0])
-            print(hero)
-            print(hero_list)
             if hero is None:
                 hero_list = find_wrong_hero(args[0])
             if hero is not None or len(hero_list) == 1:

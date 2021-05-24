@@ -26,7 +26,7 @@ class general(commands.Cog, name="general"):
         Получить информацию о боте
         """
         embed = discord.Embed(
-            description="Бот для хотсеров",
+            description="Бот с информацией по героям хотса",
             color=config["success"]
         )
         embed.set_author(
@@ -42,11 +42,24 @@ class general(commands.Cog, name="general"):
             value=f"{config['bot_prefix']}",
             inline=False
         )
+        embed.add_field(
+            name="Написать автору:",
+            value="fennr.github.io",
+            inline=False
+        )
         embed.set_footer(
             text=f"Информация для {context.message.author}"
         )
         await context.send(embed=embed)
 
+    @commands.command(name="invite")
+    async def invite(self, context):
+        """
+        Получить ссылку для приглашения бота на свой канал
+        """
+        await context.send("Я отправил личное сообщение!")
+        await context.author.send(
+            f"Добавить Пропера на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['application_id']}&scope=bot&permissions=8")
 
     @commands.command(name="ping")
     async def ping(self, context):
