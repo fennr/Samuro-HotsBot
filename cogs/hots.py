@@ -25,7 +25,7 @@ def create_ru_list_heroes(filename):
     ru_heroes_list = []
     #heroes_txt = urlopen(filename.download_url).read()
     #heroes_txt = heroes_txt.decode('cp1251').splitlines()
-    with open(filename, 'r') as heroes_txt:
+    with open(filename, 'r', encoding='cp1251') as heroes_txt:
         for line in heroes_txt:
             if len(line) > 0:
                 hero_ru, tail = line.split(sep='/', maxsplit=1)
