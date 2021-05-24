@@ -188,7 +188,7 @@ class hots(commands.Cog, name="hots"):
                 if len(hero_list) == 1:
                     hero = hero_list[0]
                 # json по отдельному герою, содержит более детальную информацию
-                hero_json_file = 'hero/' + hero['name'] + '.json'
+                hero_json_file = 'hero/' + hero['name'].lower() + '.json'
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 full_hero = heroes_data[hero_data['cHeroId']]
