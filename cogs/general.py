@@ -73,8 +73,8 @@ class general(commands.Cog, name="general"):
         """
         poll_title = " ".join(args)
         embed = discord.Embed(
-            title="Опрос!",
-            description=f"{poll_title}",
+            title=f"{poll_title}",
+            #description=f"{poll_title}",
             color=config["success"]
         )
         embed.set_footer(
