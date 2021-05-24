@@ -4,7 +4,7 @@ import json
 
 import yaml
 import discord
-from github import Github
+#from github import Github
 from urllib.request import urlopen
 import re
 from discord.ext import commands
@@ -17,29 +17,30 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
-TOKEN = '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'
-g = Github(TOKEN)
-repo = g.get_user().get_repo('discord-bot')
+#TOKEN = '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'
+#g = Github(TOKEN)
+#repo = g.get_user().get_repo('discord-bot')
 
 def create_ru_list_heroes(filename):
     ru_heroes_list = []
-    heroes_txt = urlopen(filename.download_url).read()
-    heroes_txt = heroes_txt.decode('cp1251').splitlines()
-    for line in heroes_txt:
-        if len(line) > 0:
-            hero_ru, tail = line.split(sep='/', maxsplit=1)
-            hero_en, tail = tail.split(sep=' — ', maxsplit=1)
-            stlk_url, tail = tail.split(sep=' ', maxsplit=1)
-            tail = tail[1:-1]
-            shortbuild, hero_name = tail.split(sep=',')
-            heroes = dict(name_ru=hero_ru, name_en=hero_en, name=hero_name, build=shortbuild, url=stlk_url)
-            ru_heroes_list.append(heroes)
+    #heroes_txt = urlopen(filename.download_url).read()
+    #heroes_txt = heroes_txt.decode('cp1251').splitlines()
+    with open(filename, 'r') as heroes_txt:
+        for line in heroes_txt:
+            if len(line) > 0:
+                hero_ru, tail = line.split(sep='/', maxsplit=1)
+                hero_en, tail = tail.split(sep=' — ', maxsplit=1)
+                stlk_url, tail = tail.split(sep=' ', maxsplit=1)
+                tail = tail[1:-2]
+                shortbuild, hero_name = tail.split(sep=',')
+                heroes = dict(name_ru=hero_ru, name_en=hero_en, name=hero_name, build=shortbuild, url=stlk_url)
+                ru_heroes_list.append(heroes)
 
     return ru_heroes_list
 
 def find_hero(hero_name):
     hero_name = hero_name.capitalize()
-    stlk_file = repo.get_contents('data/stlk_builds.txt')
+    stlk_file = 'data/stlk_builds.txt'
     heroes_list = create_ru_list_heroes(stlk_file)
     for hero in heroes_list:
         if (hero['name_ru'] == hero_name) or (hero['name'] == hero_name):
@@ -48,7 +49,7 @@ def find_hero(hero_name):
 
 def find_wrong_hero(hero_name):
     hero_name = hero_name.capitalize()
-    stlk_file = repo.get_contents('data/stlk_builds.txt')
+    stlk_file = 'data/stlk_builds.txt'
     heroes_list = create_ru_list_heroes(stlk_file)
     wrong_list = []
     for hero in heroes_list:
@@ -181,7 +182,6 @@ class hots(commands.Cog, name="hots"):
         else:
             hero_list = []
             hero = find_hero(args[0])
-            print(hero)
             if hero is None:
                 hero_list = find_wrong_hero(args[0])
             if hero is not None or len(hero_list) == 1:
@@ -264,13 +264,14 @@ class hots(commands.Cog, name="hots"):
             )
         else:
             hero_list = []
+            hero = find_hero(args[0])
             if hero is None:
                 hero_list = find_wrong_hero(args[0])
             if hero is not None or len(hero_list) == 1:
                 if len(hero_list) == 1:
                     hero = hero_list[0]
                 # json по отдельному герою, содержит более детальную информацию
-                hero_json_file = 'hero/' + hero['name'] + '.json'
+                hero_json_file = 'hero/' + hero['name'].lower() + '.json'
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 full_hero = heroes_data[hero_data['cHeroId']]
