@@ -99,7 +99,7 @@ class hots(commands.Cog, name="hots"):
             )
             embed.add_field(
                 name="Пример:",
-                value="!hero Самуро",
+                value=f"{config['bot_prefix']}hero Самуро",
                 inline=False
             )
         else:
@@ -115,7 +115,7 @@ class hots(commands.Cog, name="hots"):
                     for wrong_hero in wrong_hero_list:
                         embed.add_field(
                             name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
-                            value="Введи: !hero {}".format(wrong_hero['name_ru']),
+                            value=f"Введи: {config['bot_prefix']}hero {}".format(wrong_hero['name_ru']),
                             inline=False
                         )
                     embed.set_footer(
@@ -188,7 +188,7 @@ class hots(commands.Cog, name="hots"):
             )
             embed.add_field(
                 name="Пример:",
-                value="!skill Самуро",
+                value=f"{config['bot_prefix']}skill Самуро",
                 inline=False
             )
         else:
@@ -236,7 +236,7 @@ class hots(commands.Cog, name="hots"):
                 for wrong_hero in hero_list:
                     embed.add_field(
                         name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
-                        value="Введи: !skill {}".format(wrong_hero['name_ru']),
+                        value=f"Введи: {config['bot_prefix']}skill {}".format(wrong_hero['name_ru']),
                         inline=False
                     )
                 embed.set_footer(
@@ -271,7 +271,7 @@ class hots(commands.Cog, name="hots"):
             )
             embed.add_field(
                 name="Пример:",
-                value="!talent Самуро 13",
+                value=f"{config['bot_prefix']}talent Самуро 13",
                 inline=False
             )
         else:
@@ -328,7 +328,7 @@ class hots(commands.Cog, name="hots"):
                 for wrong_hero in hero_list:
                     embed.add_field(
                         name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
-                        value="Введи: !talent {} #лвла".format(wrong_hero['name_ru']),
+                        value=f"Введи: {config['bot_prefix']}talent {} #лвла".format(wrong_hero['name_ru']),
                         inline=False
                     )
                 embed.set_footer(
