@@ -134,7 +134,7 @@ async def on_command_error(context, error):
     elif isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(
             title="Ошибка! Такой команды не существует",
-            description="Воспользуйтесь справкой по команде !help",
+            description=f"Воспользуйтесь справкой по команде {config['bot_prefix']}help",
             color=config["error"]
         )
         await context.send(embed=embed)

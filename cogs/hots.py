@@ -115,7 +115,7 @@ class hots(commands.Cog, name="hots"):
                     for wrong_hero in wrong_hero_list:
                         embed.add_field(
                             name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
-                            value=f"Введи: {config['bot_prefix']}hero {}".format(wrong_hero['name_ru']),
+                            value=f"Введи: {config['bot_prefix']}hero {wrong_hero['name_ru']}",
                             inline=False
                         )
                     embed.set_footer(
@@ -236,7 +236,7 @@ class hots(commands.Cog, name="hots"):
                 for wrong_hero in hero_list:
                     embed.add_field(
                         name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
-                        value=f"Введи: {config['bot_prefix']}skill {}".format(wrong_hero['name_ru']),
+                        value=f"Введи: {config['bot_prefix']}skill {wrong_hero['name_ru']}",
                         inline=False
                     )
                 embed.set_footer(
@@ -328,7 +328,7 @@ class hots(commands.Cog, name="hots"):
                 for wrong_hero in hero_list:
                     embed.add_field(
                         name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
-                        value=f"Введи: {config['bot_prefix']}talent {} #лвла".format(wrong_hero['name_ru']),
+                        value=f"Введи: {config['bot_prefix']}talent {wrong_hero['name_ru']} #лвла",
                         inline=False
                     )
                 embed.set_footer(
