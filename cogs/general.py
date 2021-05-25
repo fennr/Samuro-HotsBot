@@ -30,7 +30,7 @@ class general(commands.Cog, name="general"):
             color=config["success"]
         )
         embed.set_author(
-            name="Mr Propper"
+            name="Samuro"
         )
         embed.add_field(
             name="Автор:",
@@ -43,8 +43,8 @@ class general(commands.Cog, name="general"):
             inline=False
         )
         embed.add_field(
-            name="Написать автору:",
-            value="fennr.github.io",
+            name="Мой телеграм:",
+            value="https://t.me/fenn_r",
             inline=False
         )
         embed.set_footer(

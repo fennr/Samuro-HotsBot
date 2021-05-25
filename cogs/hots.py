@@ -88,11 +88,13 @@ class hots(commands.Cog, name="hots"):
         """
         Актуальные билды для героя | указать героя
         """
+        heroeshearth_top_url = 'https://heroeshearth.com/hero/'
+        heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
         heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
         blizzhero_url = 'https://blizzardheroes.ru/guides/'
         if len(args) == 0:
             embed = discord.Embed(
-                title="После команды введите имя героя",
+                title="После команды введите имя героя на русском или английском",
                 color=config["error"]
             )
             embed.add_field(
@@ -130,7 +132,17 @@ class hots(commands.Cog, name="hots"):
                     name='{} / {}'.format(hero['name'], hero['name_ru'])
                 )
                 embed.add_field(
-                    name="Stalk build: {}".format(hero['build']),
+                    name="HeroesHearth (лучший билд):",
+                    value="{}{}".format(heroeshearth_top_url, hero['name']),
+                    inline=False
+                )
+                embed.add_field(
+                    name="HeroesHearth (все билды):",
+                    value="{}{}".format(heroeshearth_all_url, hero['name']),
+                    inline=False
+                )
+                embed.add_field(
+                    name="Подборка Сталка: {}".format(hero['build']),
                     value="{}".format(hero['url']),
                 )
                 embed.add_field(
@@ -139,7 +151,7 @@ class hots(commands.Cog, name="hots"):
                     inline=False
                 )
                 embed.add_field(
-                    name="blizzhero:",
+                    name="Blizzhero: [ru]",
                     value="{}{}".format(blizzhero_url, hero['name']),
                     inline=False
                 )
