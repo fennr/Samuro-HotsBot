@@ -90,6 +90,7 @@ class hots(commands.Cog, name="hots"):
         """
         heroeshearth_top_url = 'https://heroeshearth.com/hero/'
         heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
+        icy_veins_url = 'https://www.icy-veins.com/heroes/' # + '-build-guide'
         heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
         blizzhero_url = 'https://blizzardheroes.ru/guides/'
         if len(args) == 0:
@@ -132,13 +133,14 @@ class hots(commands.Cog, name="hots"):
                     name='{} / {}'.format(hero['name'], hero['name_ru'])
                 )
                 embed.add_field(
-                    name="HeroesHearth (лучший билд):",
+                    name="HeroesHearth (лучшая подборка билдов):",
                     value="{}{}".format(heroeshearth_top_url, hero['name']),
                     inline=False
                 )
+                icy_veins_url_full = icy_veins_url + hero['name'].lower() + '-build-guide'
                 embed.add_field(
-                    name="HeroesHearth (все билды):",
-                    value="{}{}".format(heroeshearth_all_url, hero['name']),
+                    name="Icy Veins (очень подробный разбор героя):",
+                    value="{}".format(icy_veins_url_full),
                     inline=False
                 )
                 embed.add_field(
@@ -146,12 +148,12 @@ class hots(commands.Cog, name="hots"):
                     value="{}".format(hero['url']),
                 )
                 embed.add_field(
-                    name="Heroesfire:",
+                    name="Heroesfire: (пользовательские билды)",
                     value="{}{}".format(heroesfire_url, hero['name']),
                     inline=False
                 )
                 embed.add_field(
-                    name="Blizzhero: [ru]",
+                    name="Blizzhero: (ру сайт)",
                     value="{}{}".format(blizzhero_url, hero['name']),
                     inline=False
                 )
