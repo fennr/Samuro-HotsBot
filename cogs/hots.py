@@ -88,6 +88,7 @@ class hots(commands.Cog, name="hots"):
         """
         Актуальные билды для героя | указать героя
         """
+        heroespn_url = 'https://heroespatchnotes.com/hero/' # + '.html'
         heroeshearth_top_url = 'https://heroeshearth.com/hero/'
         heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
         icy_veins_url = 'https://www.icy-veins.com/heroes/' # + '-build-guide'
@@ -131,6 +132,12 @@ class hots(commands.Cog, name="hots"):
                 )
                 embed.set_author(
                     name='{} / {}'.format(hero['name'], hero['name_ru'])
+                )
+                heroespn_url_full = heroespn_url + hero['name'].lower() + '.html'
+                embed.add_field(
+                    name="Последние патчноуты героя:",
+                    value="{}".format(heroespn_url_full),
+                    inline=False
                 )
                 embed.add_field(
                     name="HeroesHearth (лучшая подборка билдов):",
