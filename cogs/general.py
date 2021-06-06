@@ -8,6 +8,9 @@ import aiohttp
 import discord
 import yaml
 from discord.ext import commands
+from discord_slash import cog_ext, SlashContext
+
+guild_ids = [845658540341592096] # Put your server ID in this array.
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -48,7 +51,7 @@ class general(commands.Cog, name="general"):
             inline=False
         )
         embed.set_footer(
-            text=f"Информация для {context.message.author}"
+            text=f"Информация для {context.author}"
         )
         await context.send(embed=embed)
 
@@ -57,9 +60,9 @@ class general(commands.Cog, name="general"):
         """
         Получить ссылку для приглашения бота на свой канал
         """
-        await context.send("Я отправил личное сообщение!")
+        await context.send("Я отправил ссылку в личку")
         await context.author.send(
-            f"Добавить Самуро на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['application_id']}&scope=bot&permissions=19456")
+            f"Добавить Самуро на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['application_id']}&permissions=2147502080&scope=bot%20applications.commands")
 
     @commands.command(name="ping")
     async def ping(self, context):
@@ -75,7 +78,7 @@ class general(commands.Cog, name="general"):
             inline=True
         )
         embed.set_footer(
-            text=f"Pong request by {context.message.author}"
+            text=f"Pong request by {context.author}"
         )
         await context.send(embed=embed)
 

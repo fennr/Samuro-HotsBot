@@ -15,6 +15,7 @@ import discord
 import yaml
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
+from discord_slash import SlashCommand # Importing the newly installed library.
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -55,6 +56,7 @@ intents.members = True
 intents = discord.Intents.default()
 
 bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
+slash = SlashCommand(bot, sync_commands=True)
 
 
 # The code in this even is executed when the bot is ready

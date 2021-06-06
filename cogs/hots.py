@@ -8,6 +8,7 @@ import discord
 from urllib.request import urlopen
 import re
 from discord.ext import commands
+from discord_slash import cog_ext, SlashContext
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -82,6 +83,8 @@ class hots(commands.Cog, name="hots"):
     def __init__(self, bot):
         self.bot = bot
 
+    guild_ids = [845658540341592096]  # Put your server ID in this array.
+
     # Here you can just add your own commands, you'll always need to provide "self" as first parameter.
     @commands.command(name="hero")
     async def hots_hero(self, context, *args):
@@ -121,7 +124,7 @@ class hots(commands.Cog, name="hots"):
                             inline=False
                         )
                     embed.set_footer(
-                        text=f"Информация для {context.message.author}"
+                        text=f"Информация для {context.author}"
                     )
                 elif len(wrong_hero_list) == 1:
                     hero = wrong_hero_list[0]
@@ -165,7 +168,7 @@ class hots(commands.Cog, name="hots"):
                     inline=False
                 )
                 embed.set_footer(
-                    text=f"Информация для {context.message.author}"
+                    text=f"Информация для {context.author}" #context.message.author если использовать без slash
                 )
             elif len(wrong_hero_list) == 0:
                 embed = discord.Embed(
@@ -249,7 +252,7 @@ class hots(commands.Cog, name="hots"):
                         inline=False
                     )
                 embed.set_footer(
-                    text=f"Информация для {context.message.author}"
+                    text=f"Информация для {context.author}"
                 )
             elif len(hero_list) == 0:
                 embed = discord.Embed(
@@ -341,7 +344,7 @@ class hots(commands.Cog, name="hots"):
                         inline=False
                     )
                 embed.set_footer(
-                    text=f"Информация для {context.message.author}"
+                    text=f"Информация для {context.author}"
                 )
             elif len(hero_list) == 0:
                 embed = discord.Embed(
