@@ -13,6 +13,10 @@
 * В папке gamestrings взять файл __gamestrings*ruru.json__, заменить содержимое **gamestrings.json**
 * Файл с переводом геров основан на спаршеных билдах **[стулка](https://vk.com/@st_lk-builds-roles)**
 
+## Планы
+
+* Добавить какие герои изменены в последнем патче на основе [heroespatchnotes](https://heroespatchnotes.com/feed/patch-summary.xml)
+
 ## License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE.md](LICENSE.md) file for details

@@ -162,7 +162,8 @@ class hots(commands.Cog, name="hots"):
                             inline=False
                         )
                     embed.set_footer(
-                        text=f"Информация для {context.author}"
+                        #text=f"Информация для {context.author}"
+                        text=f"Текущий патч: {config['patch']}"
                     )
                 elif len(wrong_hero_list) == 1:
                     hero = wrong_hero_list[0]
@@ -206,7 +207,8 @@ class hots(commands.Cog, name="hots"):
                     inline=False
                 )
                 embed.set_footer(
-                    text=f"Информация для {context.author}"  # context.message.author если использовать без slash
+                    #text=f"Информация для {context.author}"  # context.message.author если использовать без slash
+                    text =f"Текущий патч: {config['patch']}"
                 )
             elif len(wrong_hero_list) == 0:
                 embed = discord.Embed(
@@ -291,7 +293,8 @@ class hots(commands.Cog, name="hots"):
                         inline=False
                     )
                 embed.set_footer(
-                    text=f"Информация для {context.author}"
+                    #text=f"Информация для {context.author}"
+                    text=f"Текущий патч: {config['patch']}"
                 )
             elif len(hero_list) == 0:
                 embed = discord.Embed(
@@ -383,7 +386,8 @@ class hots(commands.Cog, name="hots"):
                         inline=False
                     )
                 embed.set_footer(
-                    text=f"Информация для {context.author}"
+                    #text=f"Информация для {context.author}"
+                    text=f"Текущий патч: {config['patch']}"
                 )
             elif len(hero_list) == 0:
                 embed = discord.Embed(
@@ -392,7 +396,7 @@ class hots(commands.Cog, name="hots"):
                 )
         await context.send(embed=embed)
 
-    @commands.command(name="pn")
+    @commands.command(name="patchnotes")
     async def hots_notes(self, context):
         """
         Информация по патчноутам

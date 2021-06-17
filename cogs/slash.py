@@ -34,7 +34,9 @@ class Slash(commands.Cog, name="slash"):
     async def slash_talent(self, ctx: SlashContext, hero, lvl):
         await hots.hots.hots_talent(self, ctx, hero, lvl)
 
-
+    @cog_ext.cog_slash(name="patchnotes", description="Описание последнего обновления")
+    async def slash_pn(self, ctx: SlashContext):
+        await hots.hots.hots_notes(self, ctx)
 
 def setup(bot):
     bot.add_cog(Slash(bot))
