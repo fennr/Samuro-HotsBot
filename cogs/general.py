@@ -10,7 +10,7 @@ import yaml
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 
-guild_ids = [845658540341592096] # Put your server ID in this array.
+guild_ids = [845658540341592096]  # Put your server ID in this array.
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -90,7 +90,7 @@ class general(commands.Cog, name="general"):
         poll_title = " ".join(args)
         embed = discord.Embed(
             title=f"{poll_title}",
-            #description=f"{poll_title}",
+            # description=f"{poll_title}",
             color=config["success"]
         )
         embed.set_footer(
@@ -108,12 +108,13 @@ class general(commands.Cog, name="general"):
         """
         answers = ['Несомненно', 'Совершенно верно', 'Без сомнения',
                    'Да - определенно', 'Насколько я понимаю, да', 'Скорее всего', 'Да',
-                   'Знаки говорят да', 'Ответ в тумане, спроси еще раз', 'Спроси еще раз позднее', 'Лучше я не буду говорить',
+                   'Знаки говорят да', 'Ответ в тумане, спроси еще раз', 'Спроси еще раз позднее',
+                   'Лучше я не буду говорить',
                    'Не могу сейчас сказать', 'Сконцентрируйся и спроси позже', 'Не расчитывай на это', 'Мой ответ нет',
                    'Мои источники говорят нет', 'Прогнозы не очень хорошие', 'Очень сомнительно']
         embed = discord.Embed(
-            #title="**Мой ответ:**",
-            title=f"{answers[random.randint(0, len(answers))]}", #description
+            # title="**Мой ответ:**",
+            title=f"{answers[random.randint(0, len(answers))]}",  # description
             color=config["success"]
         )
         embed.set_footer(

@@ -30,7 +30,7 @@ class Slash(commands.Cog, name="slash"):
     async def slash_skill(self, ctx: SlashContext, hero):
         await hots.hots.hots_skill(self, ctx, hero)
 
-    @cog_ext.cog_slash(name="talent", description="Описание талантов героя")
+    @cog_ext.cog_slash(name="talent", description="Описание талантов героя %lvl% уровня")
     async def slash_talent(self, ctx: SlashContext, hero, lvl):
         await hots.hots.hots_talent(self, ctx, hero, lvl)
 

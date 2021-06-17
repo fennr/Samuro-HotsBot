@@ -1,14 +1,11 @@
-import os
-import sys
 import json
-
-import yaml
-import discord
-#from github import Github
-from urllib.request import urlopen
+import os
 import re
+import sys
+
+import discord
+import yaml
 from discord.ext import commands
-from discord_slash import cog_ext, SlashContext
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -18,14 +15,24 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
-#TOKEN = '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'
-#g = Github(TOKEN)
-#repo = g.get_user().get_repo('discord-bot')
+# TOKEN = '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'
+# g = Github(TOKEN)
+# repo = g.get_user().get_repo('discord-bot')
+short_patch = config["patch"][-5:]
+
+gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
+heroes_json_file = 'data/heroesdata.json'
 
 def create_ru_list_heroes(filename):
+    """
+    Генерирует список героев на русском
+
+    :param filename: Путь до файла
+    :return: Список геров (list)
+    """
     ru_heroes_list = []
-    #heroes_txt = urlopen(filename.download_url).read()
-    #heroes_txt = heroes_txt.decode('cp1251').splitlines()
+    # heroes_txt = urlopen(filename.download_url).read()
+    # heroes_txt = heroes_txt.decode('cp1251').splitlines()
     with open(filename, 'r', encoding='cp1251') as heroes_txt:
         for line in heroes_txt:
             if len(line) > 0:
@@ -39,7 +46,14 @@ def create_ru_list_heroes(filename):
 
     return ru_heroes_list
 
+
 def find_hero(hero_name):
+    """
+    Поиск героя по имени на русском или английском
+
+    :param hero_name:Имя героя (string)
+    :return: Имя героя (string)
+    """
     hero_name = hero_name.capitalize()
     stlk_file = 'data/stlk_builds.txt'
     heroes_list = create_ru_list_heroes(stlk_file)
@@ -48,23 +62,44 @@ def find_hero(hero_name):
             return hero
     return None
 
+
 def find_wrong_hero(hero_name):
+    """
+    Поиск героя на русском или английском, с возможностью ошибки
+
+    :param hero_name: Имя героя (string)
+    :return: Список героев (list)
+    """
     hero_name = hero_name.capitalize()
     stlk_file = 'data/stlk_builds.txt'
     heroes_list = create_ru_list_heroes(stlk_file)
     wrong_list = []
     for hero in heroes_list:
         if (hero['name_ru'][:3] == hero_name[:3]) or (hero['name'][:3] == hero_name[:3]) or \
-        (hero['name_ru'][-3:] == hero_name[-3:]) or (hero['name'][-3:] == hero_name[-3:]):
+                (hero['name_ru'][-3:] == hero_name[-3:]) or (hero['name'][-3:] == hero_name[-3:]):
             wrong_list.append(hero)
     return wrong_list
 
+
 def cleanhtml(raw_html):
-  cleanr = re.compile('<.*?>')
-  cleantext = re.sub(cleanr, '', raw_html)
-  return per_lvl(cleantext)
+    """
+    Удаляет html теги из текста
+
+    :param raw_html: Строка
+    :return: Строка без </.*?>
+    """
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, '', raw_html)
+    return per_lvl(cleantext)
+
 
 def per_lvl(raw_text):
+    """
+    Заменяет ~~ на проценты в тексте
+
+    :param raw_text: Строка с ~~*~~
+    :return: Строка с % за уровень
+    """
     match = re.search('~~.{3,5}~~', raw_text)
     if match:
         cleanr = re.compile('~~.{3,5}~~')
@@ -89,12 +124,15 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="hero")
     async def hots_hero(self, context, *args):
         """
-        Актуальные билды для героя | указать героя
+        Актуальные билды для героя
+
+        :param context:
+        :param args: Имя героя
         """
-        heroespn_url = 'https://heroespatchnotes.com/hero/' # + '.html'
+        heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
         heroeshearth_top_url = 'https://heroeshearth.com/hero/'
         heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
-        icy_veins_url = 'https://www.icy-veins.com/heroes/' # + '-build-guide'
+        icy_veins_url = 'https://www.icy-veins.com/heroes/'  # + '-build-guide'
         heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
         blizzhero_url = 'https://blizzardheroes.ru/guides/'
         if len(args) == 0:
@@ -168,7 +206,7 @@ class hots(commands.Cog, name="hots"):
                     inline=False
                 )
                 embed.set_footer(
-                    text=f"Информация для {context.author}" #context.message.author если использовать без slash
+                    text=f"Информация для {context.author}"  # context.message.author если использовать без slash
                 )
             elif len(wrong_hero_list) == 0:
                 embed = discord.Embed(
@@ -181,15 +219,16 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="skill")
     async def hots_skill(self, context, *args):
         """
-        Информация о скиллах героя | указать героя
+        Информация о скиллах героя
+
+        :param context:
+        :param args: Имя героя
         """
         # json с данными по всем героям
-        heroes_json_file = 'data/heroesdata.json'
         with open(heroes_json_file) as heroes_json:
             heroes_data = json.load(heroes_json)
 
         # json с внутриигровыми строками перевода текста
-        gamestrings_json_file = 'data/gamestrings.json'
         with open(gamestrings_json_file, encoding='utf-8') as ru_json:
             ru_data = json.load(ru_json)
 
@@ -266,14 +305,14 @@ class hots(commands.Cog, name="hots"):
     async def hots_talent(self, context, *args):
         """
         Информация о талантах героя | указать героя и уровень
+
+        :rtype: object
         """
         # json с данными по всем героям
-        heroes_json_file = 'data/heroesdata.json'
         with open(heroes_json_file) as heroes_json:
             heroes_data = json.load(heroes_json)
 
         # json с внутриигровыми строками перевода текста
-        gamestrings_json_file = 'data/gamestrings.json'
         with open(gamestrings_json_file, encoding='utf-8') as ru_json:
             ru_data = json.load(ru_json)
         if len(args) < 2:
@@ -357,9 +396,12 @@ class hots(commands.Cog, name="hots"):
     async def hots_notes(self, context):
         """
         Информация по патчноутам
+
+        :rtype: object
         """
         patchlink = 'https://heroespatchnotes.com/patch/summary.html'
         await context.send(patchlink)
+
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.
 def setup(bot):
