@@ -275,11 +275,16 @@ class hots(commands.Cog, name="hots"):
                     ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
 
                     ability_desc = hero_data['abilities'][hero['name']][i]['description']
+                    ability_cooldown = cleanhtml(ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
+                    cooldown_title, cooldown_time = ability_cooldown.split(':', 1)
                     ability_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
                     embed.add_field(
                         name='{} / {} ({})'.format(ability_name, ability_name_ru, ability_hotkey),
-                        value="{}".format(ability_desc_ru),
+                        value="{}: _{}_\n{}".format(cooldown_title, cooldown_time, ability_desc_ru),
                         inline=False
+                    )
+                    embed.set_footer(
+                        text=f"Текущий патч: {config['patch']}"
                     )
             elif len(hero_list) > 1:
                 embed = discord.Embed(
@@ -368,6 +373,9 @@ class hots(commands.Cog, name="hots"):
                             name='{} / {} ({})'.format(talent_name, talent_name_ru, talent_hotkey),
                             value="{}".format(talent_desc_ru),
                             inline=False
+                        )
+                        embed.set_footer(
+                            text=f"Текущий патч: {config['patch']}"
                         )
                 else:
                     embed = discord.Embed(
