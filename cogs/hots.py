@@ -168,13 +168,56 @@ class hots(commands.Cog, name="hots"):
                 elif len(wrong_hero_list) == 1:
                     hero = wrong_hero_list[0]
             if hero is not None:
+                with open(heroes_json_file) as heroes_json:
+                    heroes_data = json.load(heroes_json)
+                with open(gamestrings_json_file, encoding='utf-8') as ru_json:
+                    ru_data = json.load(ru_json)
+                hero_json_file = 'hero/' + hero['name'].lower() + '.json'
+                with open(hero_json_file) as hero_json:
+                    hero_data = json.load(hero_json)
+                hero_name = hero_data['cHeroId']
+                hero_unit = ru_data['gamestrings']['unit']
+                hero_description = hero_unit['description'][hero_name]
+                hero_difficulty = hero_unit['difficulty'][hero_name]
+                hero_expandedrole = hero_unit['expandedrole'][hero_name]
+
+                full_hero = heroes_data[hero_data['cHeroId']]
+                hero_life = full_hero['life']['amount']
+                hero_energy = None
+                try:
+                    hero_energy = full_hero['energy']['amount']
+                    hero_energytype = hero_unit['energytype'][hero_name]
+                except:
+                    pass
+
                 embed = discord.Embed(
-                    title="Билды по герою:",
+                    title='{} / {} ({})'.format(hero['name'], hero['name_ru'], hero_expandedrole), #title="Описание героя:",
                     color=config["success"]
                 )
-                embed.set_author(
+                '''embed.set_author(
                     name='{} / {}'.format(hero['name'], hero['name_ru'])
+                )'''
+                embed.add_field(
+                    name="Описание",
+                    value="{}".format(hero_description),
+                    inline=False
                 )
+                embed.add_field(
+                    name="Сложность",
+                    value="{}".format(hero_difficulty),
+                    inline=True
+                )
+                embed.add_field(
+                    name="Здоровье",
+                    value="{}".format(hero_life),
+                    inline=True
+                )
+                if hero_energy is not None:
+                    embed.add_field(
+                        name="{}".format(hero_energytype),
+                        value="{}".format(hero_energy),
+                        inline=True
+                    )
                 heroespn_url_full = heroespn_url + hero['name'].lower() + '.html'
                 embed.add_field(
                     name="Последние патчноуты героя:",
