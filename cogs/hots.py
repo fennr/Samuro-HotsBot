@@ -3,9 +3,13 @@ import os
 import re
 import sys
 
+import requests
 import discord
 import yaml
 from discord.ext import commands
+
+import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -22,6 +26,7 @@ short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
 heroes_json_file = 'data/heroesdata.json'
+stlk_file = 'data/stlk_builds.txt'
 
 def create_ru_list_heroes(filename):
     """
@@ -110,6 +115,13 @@ def per_lvl(raw_text):
     else:
         return raw_text
 
+def return_hero(hero_name):
+    hero = find_hero(hero_name)
+    if hero is None:
+        wrong_hero_list = []
+        wrong_hero_list = find_wrong_hero(hero_name)
+        if len(wrong_hero_list) == 1:
+            pass
 
 # Here we name the cog and create a new class for the cog.
 
@@ -454,8 +466,47 @@ class hots(commands.Cog, name="hots"):
 
         :rtype: object
         """
+        patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
+
         patchlink = 'https://heroespatchnotes.com/patch/summary.html'
-        await context.send(patchlink)
+        heroes_list = create_ru_list_heroes(stlk_file)
+        print(heroes_list)
+        response = requests.get(patch_summary)
+        tree = ET.fromstring(response.text)
+
+        embed = discord.Embed(
+            title="Патчноут",
+            color=config["info"]
+        )
+        embed.add_field(
+            name="Список всех патчей",
+            value=f"{patchlink}",
+            inline=False
+        )
+        for child in tree.find('{http://www.w3.org/2005/Atom}entry'):
+            if child.tag == '{http://www.w3.org/2005/Atom}title':
+                title = child.text
+            if child.tag == '{http://www.w3.org/2005/Atom}content':
+                # print(child.text)
+                soup = BeautifulSoup(child.text, 'html.parser')
+                herolinks = ''
+                for link in soup.findAll('a'):
+                    hero_url = link.get('href')
+                    hero = find_hero(link.text)
+                    if hero is not None:
+                        herolinks = herolinks + '[' + hero['name_ru'] + '](' + hero_url + '), '
+                        #print('Герой: {} \nПоследние изменения: {}'.format(hero['name_ru'], hero_url))
+                herolinks = herolinks[:-2]
+                embed.add_field(
+                    name=f"Последние измененные герои ({title})",
+                    value=f"{herolinks}",
+                    inline=False
+                )
+        embed.set_footer(
+            # text=f"Информация для {context.author}"
+            text=f"Текущий патч: {config['patch']}"
+        )
+        await context.send(embed=embed)
 
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.
