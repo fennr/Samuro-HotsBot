@@ -29,7 +29,7 @@ class general(commands.Cog, name="general"):
         Получить информацию о боте
         """
         embed = discord.Embed(
-            description="Бот с информацией по героям хотса",
+            description="Бот с информацией по героям, скиллам и талантам хотса",
             color=config["success"]
         )
         embed.set_author(
@@ -46,8 +46,8 @@ class general(commands.Cog, name="general"):
             inline=False
         )
         embed.add_field(
-            name="Мой телеграм:",
-            value="https://t.me/fenn_r",
+            name="Баги и пожелания",
+            value="Можно направлять мне в личку",
             inline=False
         )
         embed.set_footer(
@@ -82,7 +82,7 @@ class general(commands.Cog, name="general"):
         )
         await context.send(embed=embed)
 
-    @commands.command(name="poll")
+    '''@commands.command(name="poll")
     async def poll(self, context, *args):
         """
         Создать опрос
@@ -99,9 +99,9 @@ class general(commands.Cog, name="general"):
         embed_message = await context.send(embed=embed)
         await embed_message.add_reaction("👍")
         await embed_message.add_reaction("👎")
-        await embed_message.add_reaction("🤷")
+        await embed_message.add_reaction("🤷")'''
 
-    @commands.command(name="8ball")
+    '''@commands.command(name="8ball")
     async def eight_ball(self, context, *args):
         """
         Спроси бота о чем угодно
@@ -120,7 +120,7 @@ class general(commands.Cog, name="general"):
         embed.set_footer(
             text=f"Ответ для: {context.message.author}"
         )
-        await context.send(embed=embed)
+        await context.send(embed=embed)'''
 
 
 def setup(bot):

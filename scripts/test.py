@@ -90,5 +90,9 @@ def find_hero2(hero_name):
 
 
 if __name__ == '__main__':
-    hero = find_hero2('Самуро')
-    print(hero)
+    #hero = find_hero2('Самуро')
+    #print(hero)
+    response = requests.get('https://heroespatchnotes.com/patch/summary.html')
+    soup = BeautifulSoup(response.text, 'html.parser')
+    print(soup.ol.li.a)
+

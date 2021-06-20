@@ -150,12 +150,71 @@ class hots(commands.Cog, name="hots"):
     guild_ids = [845658540341592096]  # Put your server ID in this array.
 
     # Here you can just add your own commands, you'll always need to provide "self" as first parameter.
+
+    @commands.command(name="patchnotes")
+    async def hots_notes(self, context):
+        """
+        Информация по патчноутам
+        Список измененных в последнем патче героев (кликабельно)
+
+        """
+        patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
+
+        patchlink = 'https://heroespatchnotes.com/patch/summary.html'
+        heroes_list = create_ru_list_heroes(stlk_file)
+        print(heroes_list)
+        response = requests.get(patch_summary)
+        tree = ET.fromstring(response.text)
+
+        embed = discord.Embed(
+            title="Патчноут",
+            color=config["info"]
+        )
+        embed.add_field(
+            name="Список всех патчей",
+            value=f"{patchlink}",
+            inline=False
+        )
+        response = requests.get('https://heroespatchnotes.com/patch/summary.html')
+        soup = BeautifulSoup(response.text, 'html.parser')
+        embed.add_field(
+            name="Последний патч",
+            value=f"[{soup.ol.li.a.text}]({soup.ol.li.a['href']})",
+            inline=False
+        )
+        print(soup.ol.li.a)
+        for child in tree.find('{http://www.w3.org/2005/Atom}entry'):
+            if child.tag == '{http://www.w3.org/2005/Atom}title':
+                title = child.text
+            if child.tag == '{http://www.w3.org/2005/Atom}content':
+                # print(child.text)
+                soup = BeautifulSoup(child.text, 'html.parser')
+                herolinks = ''
+                for link in soup.findAll('a'):
+                    hero_url = link.get('href')
+                    hero = find_hero(link.text)
+                    if hero is not None:
+                        herolinks = herolinks + '[' + hero['name_ru'] + '](' + hero_url + '), '
+                        # print('Герой: {} \nПоследние изменения: {}'.format(hero['name_ru'], hero_url))
+                herolinks = herolinks[:-2]
+                embed.add_field(
+                    name=f"Последние измененные герои ({title})",
+                    value=f"{herolinks}",
+                    inline=False
+                )
+        embed.set_footer(
+            # text=f"Информация для {context.author}"
+            text=f"Текущий патч: {config['patch']}"
+        )
+        await context.send(embed=embed)
+
+
     @commands.command(name="hero")
     async def hots_hero(self, context, *args):
         """
-        Актуальные билды для героя
-
+        Описание героя и ссылки на билды и разборы
         :param args: Имя героя
+
         """
 
         heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
@@ -291,8 +350,8 @@ class hots(commands.Cog, name="hots"):
     async def hots_skill(self, context, *args):
         """
         Информация о скиллах героя
-
         :param args: Имя героя
+
         """
         # json с данными по всем героям
         with open(heroes_json_file) as heroes_json:
@@ -385,8 +444,8 @@ class hots(commands.Cog, name="hots"):
     async def hots_talent(self, context, *args):
         """
         Информация о талантах героя
-
         :param args: Имя героя и уровень талантов
+
         """
         # json с данными по всем героям
         with open(heroes_json_file) as heroes_json:
@@ -472,54 +531,6 @@ class hots(commands.Cog, name="hots"):
                         title="Ошибка! Выберете правильный уровень таланта",
                         color=config["error"]
                     )
-        await context.send(embed=embed)
-
-    @commands.command(name="patchnotes")
-    async def hots_notes(self, context):
-        """
-        Информация по патчноутам
-
-        """
-        patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
-
-        patchlink = 'https://heroespatchnotes.com/patch/summary.html'
-        heroes_list = create_ru_list_heroes(stlk_file)
-        print(heroes_list)
-        response = requests.get(patch_summary)
-        tree = ET.fromstring(response.text)
-
-        embed = discord.Embed(
-            title="Патчноут",
-            color=config["info"]
-        )
-        embed.add_field(
-            name="Список всех патчей",
-            value=f"{patchlink}",
-            inline=False
-        )
-        for child in tree.find('{http://www.w3.org/2005/Atom}entry'):
-            if child.tag == '{http://www.w3.org/2005/Atom}title':
-                title = child.text
-            if child.tag == '{http://www.w3.org/2005/Atom}content':
-                # print(child.text)
-                soup = BeautifulSoup(child.text, 'html.parser')
-                herolinks = ''
-                for link in soup.findAll('a'):
-                    hero_url = link.get('href')
-                    hero = find_hero(link.text)
-                    if hero is not None:
-                        herolinks = herolinks + '[' + hero['name_ru'] + '](' + hero_url + '), '
-                        #print('Герой: {} \nПоследние изменения: {}'.format(hero['name_ru'], hero_url))
-                herolinks = herolinks[:-2]
-                embed.add_field(
-                    name=f"Последние измененные герои ({title})",
-                    value=f"{herolinks}",
-                    inline=False
-                )
-        embed.set_footer(
-            # text=f"Информация для {context.author}"
-            text=f"Текущий патч: {config['patch']}"
-        )
         await context.send(embed=embed)
 
 
