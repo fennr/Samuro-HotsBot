@@ -1,0 +1,90 @@
+Abathur:Аба, Абажур, Шапка
+Alarak:Ала
+Alexstrasza:Жиростраза
+Ana: Бабуля, Бабка
+Anduin:Андрей
+Anubarak:Ануб, Жук
+Artanis:Артем
+Arthas:
+Auriel:
+Azmodan:Азмодаун, Баскетболист
+Firebat:Блейзер
+FaerieDragon:Светка, Света
+Amazon:
+Chen:
+Cho:
+Chromie:Хромая
+Deathwing:Смертобро
+Deckard:Дед
+Dehaka:
+Diablo:Дибло
+DVa:Дива, Дивуля, Два
+L90ETC:етц
+Falstad:Попугай
+Fenix:
+Gall:
+Garrosh:
+Tinker:Газик, Газ
+Genji:Гей
+Greymane:Серый
+Guldan:
+Hanzo:
+Hogger:Хогер, хоггер
+Illidan:Илюша
+Imperius:
+Jaina:
+Crusader:Джоха, джоана
+Junkrat:Крыса
+Kaelthas:КТ
+KelThuzad:КТЗ, келтузед
+Kerrigan:Сара
+Monk:Монк, монах, керамзит
+Leoric:Лео
+LiLi:Мохнатка
+Wizard:
+LostVikings:Викинги
+Medic:Моралес
+Lucio:Лусек
+Dryad:Коза
+Maiev:
+Malfurion:Малф
+MalGanis:
+Malthael:
+Medivh:
+MeiOW:
+Mephisto:Меф
+Muradin:Мура
+Murky:Мурки, Мурка
+WitchDoctor:
+Nova:
+Orphea:
+Probius:Пробка
+NexusHunter:
+Ragnaros:Рагна
+Raynor:Джимми
+Rehgar:
+Rexxar:Миша
+Samuro:
+SgtHammer:Хаммер, Танк
+Barbarian:
+Stitches:
+Stukov:
+Sylvanas:
+Tassadar:
+Butcher:Мясо
+Thrall:
+Tracer:
+Tychus:Такос
+Tyrael:
+Tyrande:
+Uther:
+Valeera:
+DemonHunter:
+Varian:
+Whitemane:
+Necromancer:
+Yrel:
+Zagara:
+Zarya:
+Zeratul:Зера
+Zuljin:

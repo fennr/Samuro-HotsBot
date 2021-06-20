@@ -1,10 +1,14 @@
 import requests
+import json
 import urllib.request
 import xml.etree.ElementTree as ET
+from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
 from bs4 import BeautifulSoup
 
 patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
 stlk_file = 'c:\\Users\\Viktor\\Documents\\GitHub\\discord-bot\\data\\stlk_builds.txt'
+heroes_ru_json_file = 'data/heroesdata_ru.json'
+
 
 def create_ru_list_heroes(filename):
     """
@@ -29,6 +33,7 @@ def create_ru_list_heroes(filename):
 
     return ru_heroes_list
 
+
 def find_hero(hero_name):
     """
     Поиск героя по имени на русском или английском
@@ -44,18 +49,19 @@ def find_hero(hero_name):
             return hero
     return None
 
+
 def last_patch_notes():
     heroes_list = create_ru_list_heroes(stlk_file)
     print(heroes_list)
     response = requests.get(patch_summary)
     tree = ET.fromstring(response.text)
-    #print(tree)
+    # print(tree)
     for child in tree.find('{http://www.w3.org/2005/Atom}entry'):
         if child.tag == '{http://www.w3.org/2005/Atom}title':
             title = child.text
             print(title)
         if child.tag == '{http://www.w3.org/2005/Atom}content':
-            #print(child.text)
+            # print(child.text)
             soup = BeautifulSoup(child.text, 'html.parser')
             for link in soup.findAll('a'):
                 hero_url = link.get('href')
@@ -64,5 +70,25 @@ def last_patch_notes():
                     print('Герой: {} \nПоследние изменения: {}'.format(hero['name_ru'], hero_url))
 
 
+def find_hero2(hero_name):
+    hero_name = hero_name.capitalize()
+    good_distance = 3
+    with open(heroes_ru_json_file, encoding='utf-8') as heroes_ru_json:
+        heroes_ru_list = json.load(heroes_ru_json)
+    print(heroes_ru_list)
+    for i in range(1, good_distance):
+        for hero, data in heroes_ru_list.items():
+            if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
+                    (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i):
+                #print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i))
+                return data
+            for nick in data['nick']:
+                if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i+1:
+                    #print('{} -> {} -> {}  | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i+1))
+                    return data
+    return None
+
+
 if __name__ == '__main__':
-    last_patch_notes()
+    hero = find_hero2('Самуро')
+    print(hero)

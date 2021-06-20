@@ -2,11 +2,13 @@ import json
 import os
 import re
 import sys
-
-import requests
-import discord
 import yaml
+import requests
+
+import discord
 from discord.ext import commands
+
+from pyxdameraulevenshtein import damerau_levenshtein_distance
 
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
@@ -18,15 +20,12 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-
-# TOKEN = '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'
-# g = Github(TOKEN)
-# repo = g.get_user().get_repo('discord-bot')
 short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
 heroes_json_file = 'data/heroesdata.json'
 stlk_file = 'data/stlk_builds.txt'
+heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 def create_ru_list_heroes(filename):
     """
@@ -63,8 +62,27 @@ def find_hero(hero_name):
     stlk_file = 'data/stlk_builds.txt'
     heroes_list = create_ru_list_heroes(stlk_file)
     for hero in heroes_list:
-        if (hero['name_ru'] == hero_name) or (hero['name'] == hero_name):
+        if (hero['name_ru'] == hero_name) or (hero['name'] == hero_name) or (hero['name_en'] == hero_name):
             return hero
+    return None
+
+
+def find_hero2(hero_name):
+    hero_name = hero_name.capitalize()
+    good_distance = 3
+    with open(heroes_ru_json_file, encoding='utf-8') as heroes_ru_json:
+        heroes_ru_list = json.load(heroes_ru_json)
+    #print(heroes_ru_list)
+    for i in range(1, good_distance):
+        for hero, data in heroes_ru_list.items():
+            if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
+                    (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i):
+                #print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i))
+                return data
+            for nick in data['nick']:
+                if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i+1:
+                    #print('{} -> {} -> {}  | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i+1))
+                    return data
     return None
 
 
@@ -81,7 +99,8 @@ def find_wrong_hero(hero_name):
     wrong_list = []
     for hero in heroes_list:
         if (hero['name_ru'][:3] == hero_name[:3]) or (hero['name'][:3] == hero_name[:3]) or \
-                (hero['name_ru'][-3:] == hero_name[-3:]) or (hero['name'][-3:] == hero_name[-3:]):
+                (hero['name_ru'][-3:] == hero_name[-3:]) or (hero['name'][:3] == hero_name[:3]) or \
+                (hero['name_en'][-3:] == hero_name[-3:]) or (hero['name_en'][:3] == hero_name[:3]):
             wrong_list.append(hero)
     return wrong_list
 
@@ -115,14 +134,6 @@ def per_lvl(raw_text):
     else:
         return raw_text
 
-def return_hero(hero_name):
-    hero = find_hero(hero_name)
-    if hero is None:
-        wrong_hero_list = []
-        wrong_hero_list = find_wrong_hero(hero_name)
-        if len(wrong_hero_list) == 1:
-            pass
-
 # Here we name the cog and create a new class for the cog.
 
 class hots(commands.Cog, name="hots"):
@@ -138,15 +149,16 @@ class hots(commands.Cog, name="hots"):
         """
         Актуальные билды для героя
 
-        :param context:
         :param args: Имя героя
         """
+
         heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
         heroeshearth_top_url = 'https://heroeshearth.com/hero/'
         heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
         icy_veins_url = 'https://www.icy-veins.com/heroes/'  # + '-build-guide'
         heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
         blizzhero_url = 'https://blizzardheroes.ru/guides/'
+
         if len(args) == 0:
             embed = discord.Embed(
                 title="После команды введите имя героя на русском или английском",
@@ -158,7 +170,7 @@ class hots(commands.Cog, name="hots"):
                 inline=False
             )
         else:
-            hero = find_hero(args[0])
+            hero = find_hero2(args[0])
             wrong_hero_list = []
             if hero is None:
                 wrong_hero_list = find_wrong_hero(args[0])
@@ -184,7 +196,7 @@ class hots(commands.Cog, name="hots"):
                     heroes_data = json.load(heroes_json)
                 with open(gamestrings_json_file, encoding='utf-8') as ru_json:
                     ru_data = json.load(ru_json)
-                hero_json_file = 'hero/' + hero['name'].lower() + '.json'
+                hero_json_file = 'hero/' + hero['name_en'].lower() + '.json'
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 hero_name = hero_data['cHeroId']
@@ -203,7 +215,7 @@ class hots(commands.Cog, name="hots"):
                     pass
 
                 embed = discord.Embed(
-                    title='{} / {} ({})'.format(hero['name'], hero['name_ru'], hero_expandedrole), #title="Описание героя:",
+                    title='{} / {} ({})'.format(hero['name_en'], hero['name_ru'], hero_expandedrole), #title="Описание героя:",
                     color=config["success"]
                 )
                 '''embed.set_author(
@@ -230,7 +242,7 @@ class hots(commands.Cog, name="hots"):
                         value="{}".format(hero_energy),
                         inline=True
                     )
-                heroespn_url_full = heroespn_url + hero['name'].lower() + '.html'
+                heroespn_url_full = heroespn_url + hero['name_en'].lower() + '.html'
                 embed.add_field(
                     name="Последние патчноуты героя:",
                     value="{}".format(heroespn_url_full),
@@ -238,27 +250,23 @@ class hots(commands.Cog, name="hots"):
                 )
                 embed.add_field(
                     name="HeroesHearth (лучшая подборка билдов):",
-                    value="{}{}".format(heroeshearth_top_url, hero['name']),
+                    value="{}{}".format(heroeshearth_top_url, hero['name_en']),
                     inline=False
                 )
-                icy_veins_url_full = icy_veins_url + hero['name'].lower() + '-build-guide'
+                icy_veins_url_full = icy_veins_url + hero['name_en'].lower() + '-build-guide'
                 embed.add_field(
                     name="Icy Veins (очень подробный разбор героя):",
                     value="{}".format(icy_veins_url_full),
                     inline=False
                 )
                 embed.add_field(
-                    name="Подборка Сталка: {}".format(hero['build']),
-                    value="{}".format(hero['url']),
-                )
-                embed.add_field(
                     name="Heroesfire: (пользовательские билды)",
-                    value="{}{}".format(heroesfire_url, hero['name']),
+                    value="{}{}".format(heroesfire_url, hero['name_en']),
                     inline=False
                 )
                 embed.add_field(
                     name="Blizzhero: (ру сайт)",
-                    value="{}{}".format(blizzhero_url, hero['name']),
+                    value="{}{}".format(blizzhero_url, hero['name_en']),
                     inline=False
                 )
                 embed.set_footer(
@@ -278,7 +286,6 @@ class hots(commands.Cog, name="hots"):
         """
         Информация о скиллах героя
 
-        :param context:
         :param args: Имя героя
         """
         # json с данными по всем героям
@@ -301,14 +308,14 @@ class hots(commands.Cog, name="hots"):
             )
         else:
             hero_list = []
-            hero = find_hero(args[0])
+            hero = find_hero2(args[0])
             if hero is None:
                 hero_list = find_wrong_hero(args[0])
             if hero is not None or len(hero_list) == 1:
                 if len(hero_list) == 1:
                     hero = hero_list[0]
                 # json по отдельному герою, содержит более детальную информацию
-                hero_json_file = 'hero/' + hero['name'].lower() + '.json'
+                hero_json_file = 'hero/' + hero['name_en'].lower() + '.json'
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 full_hero = heroes_data[hero_data['cHeroId']]
@@ -321,7 +328,7 @@ class hots(commands.Cog, name="hots"):
                 )
                 for i in range(len(ability)):  # считываем все абилки
                     # считываем файл с переводом
-                    ability_name = hero_data['abilities'][hero['name']][i]['name'].replace(' ', '')
+                    ability_name = hero_data['abilities'][hero['name_en']][i]['name'].replace(' ', '')
                     ability_nameID = ability[i]['nameId']
                     ability_buttonID = ability[i]['buttonId']
                     ability_hotkey = ability[i]['abilityType']
@@ -329,7 +336,7 @@ class hots(commands.Cog, name="hots"):
                                           ability_buttonID + '|' + ability_hotkey + '|False'
                     ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
 
-                    ability_desc = hero_data['abilities'][hero['name']][i]['description']
+                    ability_desc = hero_data['abilities'][hero['name_en']][i]['description']
                     ability_cooldown = cleanhtml(ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
                     cooldown_title, cooldown_time = ability_cooldown.split(':', 1)
                     ability_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
@@ -367,9 +374,9 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="talent")
     async def hots_talent(self, context, *args):
         """
-        Информация о талантах героя | указать героя и уровень
+        Информация о талантах героя
 
-        :rtype: object
+        :param args: Имя героя и уровень талантов
         """
         # json с данными по всем героям
         with open(heroes_json_file) as heroes_json:
@@ -390,14 +397,14 @@ class hots(commands.Cog, name="hots"):
             )
         else:
             hero_list = []
-            hero = find_hero(args[0])
+            hero = find_hero2(args[0])
             if hero is None:
                 hero_list = find_wrong_hero(args[0])
             if hero is not None or len(hero_list) == 1:
                 if len(hero_list) == 1:
                     hero = hero_list[0]
                 # json по отдельному герою, содержит более детальную информацию
-                hero_json_file = 'hero/' + hero['name'].lower() + '.json'
+                hero_json_file = 'hero/' + hero['name_en'].lower() + '.json'
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 full_hero = heroes_data[hero_data['cHeroId']]
@@ -464,7 +471,6 @@ class hots(commands.Cog, name="hots"):
         """
         Информация по патчноутам
 
-        :rtype: object
         """
         patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
 

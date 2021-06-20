@@ -17,6 +17,8 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand # Importing the newly installed library.
 
+from scripts import heroes_ru_names
+
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
 else:
@@ -111,8 +113,10 @@ async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
     split = fullCommandName.split(" ")
     executedCommand = str(split[0])
+    # {ctx.channel.id} {ctx.message.id}
+    # {ctx.guild.name} {ctx.message.guild.id}
     print(
-        f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})")
+        f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})") #{ctx.guild.name} {ctx.message.guild.id}
 
 
 # The code in this event is executed every time a valid commands catches an error
@@ -142,6 +146,7 @@ async def on_command_error(context, error):
         await context.send(embed=embed)
     raise error
 
-
+#Генерируем файл с именами героев
+heroes_ru_names.create_heroes_ru_data()
 # Run the bot with the token
 bot.run(config["token"])

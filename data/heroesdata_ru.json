@@ -1,0 +1,609 @@
+{
+    "Abathur": {
+        "name_en": "Abathur",
+        "name_ru": "Абатур",
+        "nick": [
+            "Аба",
+            "Абажур",
+            "Шапка"
+        ]
+    },
+    "Alarak": {
+        "name_en": "Alarak",
+        "name_ru": "Аларак",
+        "nick": [
+            "Ала"
+        ]
+    },
+    "Alexstrasza": {
+        "name_en": "Alexstrasza",
+        "name_ru": "Алекстраза",
+        "nick": [
+            "Жиростраза"
+        ]
+    },
+    "Ana": {
+        "name_en": "Ana",
+        "name_ru": "Ана",
+        "nick": [
+            "Бабуля",
+            "Бабка"
+        ]
+    },
+    "Anduin": {
+        "name_en": "Anduin",
+        "name_ru": "Андуин",
+        "nick": [
+            "Андрей"
+        ]
+    },
+    "Anubarak": {
+        "name_en": "Anub'arak",
+        "name_ru": "АнубАрак",
+        "nick": [
+            "Ануб",
+            "Жук"
+        ]
+    },
+    "Artanis": {
+        "name_en": "Artanis",
+        "name_ru": "Артанис",
+        "nick": [
+            "Артем"
+        ]
+    },
+    "Arthas": {
+        "name_en": "Arthas",
+        "name_ru": "Артас",
+        "nick": [
+            ""
+        ]
+    },
+    "Auriel": {
+        "name_en": "Auriel",
+        "name_ru": "Ауриэль",
+        "nick": [
+            ""
+        ]
+    },
+    "Azmodan": {
+        "name_en": "Azmodan",
+        "name_ru": "Азмодан",
+        "nick": [
+            "Азмодаун",
+            "Баскетболист"
+        ]
+    },
+    "Firebat": {
+        "name_en": "Blaze",
+        "name_ru": "Блэйз",
+        "nick": []
+    },
+    "FaerieDragon": {
+        "name_en": "Brightwing",
+        "name_ru": "Светик",
+        "nick": []
+    },
+    "Amazon": {
+        "name_en": "Cassia",
+        "name_ru": "Кассия",
+        "nick": []
+    },
+    "Chen": {
+        "name_en": "Chen",
+        "name_ru": "Чень",
+        "nick": [
+            ""
+        ]
+    },
+    "Cho": {
+        "name_en": "Cho",
+        "name_ru": "ЧоГалл",
+        "nick": []
+    },
+    "Chromie": {
+        "name_en": "Chromie",
+        "name_ru": "Хроми",
+        "nick": [
+            "Хромая"
+        ]
+    },
+    "Deathwing": {
+        "name_en": "Deathwing",
+        "name_ru": "Смертокрыл",
+        "nick": [
+            "Смертобро"
+        ]
+    },
+    "Deckard": {
+        "name_en": "Deckard",
+        "name_ru": "Декард Каин",
+        "nick": [
+            "Дед"
+        ]
+    },
+    "Dehaka": {
+        "name_en": "Dehaka",
+        "name_ru": "Дехака",
+        "nick": [
+            ""
+        ]
+    },
+    "Diablo": {
+        "name_en": "Diablo",
+        "name_ru": "Диабло",
+        "nick": [
+            "Дибло"
+        ]
+    },
+    "DVa": {
+        "name_en": "D.Va",
+        "name_ru": "Дива",
+        "nick": [
+            "Дива",
+            "Дивуля",
+            "Два"
+        ]
+    },
+    "L90ETC": {
+        "name_en": "E.T.C.",
+        "name_ru": "ETC",
+        "nick": []
+    },
+    "Falstad": {
+        "name_en": "Falstad",
+        "name_ru": "Фалстад",
+        "nick": [
+            "Попугай"
+        ]
+    },
+    "Fenix": {
+        "name_en": "Fenix",
+        "name_ru": "Феникс",
+        "nick": [
+            ""
+        ]
+    },
+    "Gall": {
+        "name_en": "Gall",
+        "name_ru": "Галл",
+        "nick": [
+            ""
+        ]
+    },
+    "Garrosh": {
+        "name_en": "Garrosh",
+        "name_ru": "Гаррош",
+        "nick": [
+            ""
+        ]
+    },
+    "Tinker": {
+        "name_en": "Gazlowe",
+        "name_ru": "Газлоу",
+        "nick": []
+    },
+    "Genji": {
+        "name_en": "Genji",
+        "name_ru": "Гэндзи",
+        "nick": [
+            "Гей"
+        ]
+    },
+    "Greymane": {
+        "name_en": "Greymane",
+        "name_ru": "Седогрив",
+        "nick": [
+            "Серый"
+        ]
+    },
+    "Guldan": {
+        "name_en": "Gul'dan",
+        "name_ru": "Гулдан",
+        "nick": [
+            ""
+        ]
+    },
+    "Hanzo": {
+        "name_en": "Hanzo",
+        "name_ru": "Хандзо",
+        "nick": [
+            ""
+        ]
+    },
+    "Hogger": {
+        "name_en": "Hogger",
+        "name_ru": "Дробитель",
+        "nick": [
+            "Хогер",
+            "Хоггер"
+        ]
+    },
+    "Illidan": {
+        "name_en": "Illidan",
+        "name_ru": "Иллидан",
+        "nick": [
+            "Илюша"
+        ]
+    },
+    "Imperius": {
+        "name_en": "Imperius",
+        "name_ru": "Империй",
+        "nick": [
+            ""
+        ]
+    },
+    "Jaina": {
+        "name_en": "Jaina",
+        "name_ru": "Джайна",
+        "nick": [
+            ""
+        ]
+    },
+    "Crusader": {
+        "name_en": "Johanna",
+        "name_ru": "Джоанна",
+        "nick": []
+    },
+    "Junkrat": {
+        "name_en": "Junkrat",
+        "name_ru": "Крысавчик",
+        "nick": [
+            "Крыса"
+        ]
+    },
+    "Kaelthas": {
+        "name_en": "Kael'thas",
+        "name_ru": "КельТас",
+        "nick": [
+            "Кт"
+        ]
+    },
+    "KelThuzad": {
+        "name_en": "Kel'Thuzad",
+        "name_ru": "КелТузад",
+        "nick": [
+            "Ктз",
+            "Келтузед"
+        ]
+    },
+    "Kerrigan": {
+        "name_en": "Kerrigan",
+        "name_ru": "Керриган",
+        "nick": [
+            "Сара"
+        ]
+    },
+    "Monk": {
+        "name_en": "Kharazim",
+        "name_ru": "Каразим",
+        "nick": []
+    },
+    "Leoric": {
+        "name_en": "Leoric",
+        "name_ru": "Леорик",
+        "nick": [
+            "Лео"
+        ]
+    },
+    "LiLi": {
+        "name_en": "Li Li",
+        "name_ru": "Лили",
+        "nick": [
+            "Мохнатка"
+        ]
+    },
+    "Wizard": {
+        "name_en": "Li-Ming",
+        "name_ru": "Ли-Минг",
+        "nick": []
+    },
+    "LostVikings": {
+        "name_en": "The Lost Vikings",
+        "name_ru": "Потерявшиеся викинги",
+        "nick": [
+            "Викинги"
+        ]
+    },
+    "Medic": {
+        "name_en": "Lt. Morales",
+        "name_ru": "лейтенант Моралес",
+        "nick": []
+    },
+    "Lucio": {
+        "name_en": "LГєcio",
+        "name_ru": "Лусио",
+        "nick": [
+            "Лусек"
+        ]
+    },
+    "Dryad": {
+        "name_en": "Lunara",
+        "name_ru": "Лунара",
+        "nick": []
+    },
+    "Maiev": {
+        "name_en": "Maiev",
+        "name_ru": "Майев",
+        "nick": [
+            ""
+        ]
+    },
+    "Malfurion": {
+        "name_en": "Malfurion",
+        "name_ru": "Малфурион",
+        "nick": [
+            "Малф"
+        ]
+    },
+    "MalGanis": {
+        "name_en": "Mal'Ganis",
+        "name_ru": "Малганис",
+        "nick": [
+            ""
+        ]
+    },
+    "Malthael": {
+        "name_en": "Malthael",
+        "name_ru": "Малтаэль",
+        "nick": [
+            ""
+        ]
+    },
+    "Medivh": {
+        "name_en": "Medivh",
+        "name_ru": "Медив",
+        "nick": [
+            ""
+        ]
+    },
+    "MeiOW": {
+        "name_en": "Mei",
+        "name_ru": "Мэй",
+        "nick": []
+    },
+    "Mephisto": {
+        "name_en": "Mephisto",
+        "name_ru": "Мефисто",
+        "nick": [
+            "Меф"
+        ]
+    },
+    "Muradin": {
+        "name_en": "Muradin",
+        "name_ru": "Мурадин",
+        "nick": [
+            "Мура"
+        ]
+    },
+    "Murky": {
+        "name_en": "Murky",
+        "name_ru": "Мурчаль",
+        "nick": [
+            "Мурки",
+            "Мурка"
+        ]
+    },
+    "WitchDoctor": {
+        "name_en": "Nazeebo",
+        "name_ru": "Назибо",
+        "nick": []
+    },
+    "Nova": {
+        "name_en": "Nova",
+        "name_ru": "Нова",
+        "nick": [
+            ""
+        ]
+    },
+    "Orphea": {
+        "name_en": "Orphea",
+        "name_ru": "Орфея",
+        "nick": [
+            ""
+        ]
+    },
+    "Probius": {
+        "name_en": "Probius",
+        "name_ru": "Пробиус",
+        "nick": [
+            "Пробка"
+        ]
+    },
+    "NexusHunter": {
+        "name_en": "Qhira",
+        "name_ru": "Кахира",
+        "nick": []
+    },
+    "Ragnaros": {
+        "name_en": "Ragnaros",
+        "name_ru": "Рагнарос",
+        "nick": [
+            "Рагна"
+        ]
+    },
+    "Raynor": {
+        "name_en": "Raynor",
+        "name_ru": "Рейнор",
+        "nick": [
+            "Джимми"
+        ]
+    },
+    "Rehgar": {
+        "name_en": "Rehgar",
+        "name_ru": "Регар",
+        "nick": [
+            ""
+        ]
+    },
+    "Rexxar": {
+        "name_en": "Rexxar",
+        "name_ru": "Рексар",
+        "nick": [
+            "Миша"
+        ]
+    },
+    "Samuro": {
+        "name_en": "Samuro",
+        "name_ru": "Самуро",
+        "nick": [
+            ""
+        ]
+    },
+    "SgtHammer": {
+        "name_en": "Sgt. Hammer",
+        "name_ru": "сержант Кувалда",
+        "nick": [
+            "Хаммер",
+            "Танк"
+        ]
+    },
+    "Barbarian": {
+        "name_en": "Sonya",
+        "name_ru": "Соня",
+        "nick": []
+    },
+    "Stitches": {
+        "name_en": "Stitches",
+        "name_ru": "Стежок",
+        "nick": [
+            ""
+        ]
+    },
+    "Stukov": {
+        "name_en": "Stukov",
+        "name_ru": "Стуков",
+        "nick": [
+            ""
+        ]
+    },
+    "Sylvanas": {
+        "name_en": "Sylvanas",
+        "name_ru": "Сильвана",
+        "nick": [
+            ""
+        ]
+    },
+    "Tassadar": {
+        "name_en": "Tassadar",
+        "name_ru": "Тассадар",
+        "nick": [
+            ""
+        ]
+    },
+    "Butcher": {
+        "name_en": "The Butcher",
+        "name_ru": "Мясник",
+        "nick": [
+            "Мясо"
+        ]
+    },
+    "Thrall": {
+        "name_en": "Thrall",
+        "name_ru": "Тралл",
+        "nick": [
+            ""
+        ]
+    },
+    "Tracer": {
+        "name_en": "Tracer",
+        "name_ru": "Трейсер",
+        "nick": [
+            ""
+        ]
+    },
+    "Tychus": {
+        "name_en": "Tychus",
+        "name_ru": "Тайкус",
+        "nick": [
+            "Такос"
+        ]
+    },
+    "Tyrael": {
+        "name_en": "Tyrael",
+        "name_ru": "Тираэль",
+        "nick": [
+            ""
+        ]
+    },
+    "Tyrande": {
+        "name_en": "Tyrande",
+        "name_ru": "Тиранда",
+        "nick": [
+            ""
+        ]
+    },
+    "Uther": {
+        "name_en": "Uther",
+        "name_ru": "Утер",
+        "nick": [
+            ""
+        ]
+    },
+    "Valeera": {
+        "name_en": "Valeera",
+        "name_ru": "Валира",
+        "nick": [
+            ""
+        ]
+    },
+    "DemonHunter": {
+        "name_en": "Valla",
+        "name_ru": "Валла",
+        "nick": []
+    },
+    "Varian": {
+        "name_en": "Varian",
+        "name_ru": "Вариан",
+        "nick": [
+            ""
+        ]
+    },
+    "Whitemane": {
+        "name_en": "Whitemane",
+        "name_ru": "Вайтмейн",
+        "nick": [
+            ""
+        ]
+    },
+    "Necromancer": {
+        "name_en": "Xul",
+        "name_ru": "Зул",
+        "nick": []
+    },
+    "Yrel": {
+        "name_en": "Yrel",
+        "name_ru": "Ирель",
+        "nick": [
+            ""
+        ]
+    },
+    "Zagara": {
+        "name_en": "Zagara",
+        "name_ru": "Загара",
+        "nick": [
+            ""
+        ]
+    },
+    "Zarya": {
+        "name_en": "Zarya",
+        "name_ru": "Заря",
+        "nick": [
+            ""
+        ]
+    },
+    "Zeratul": {
+        "name_en": "Zeratul",
+        "name_ru": "Зератул",
+        "nick": [
+            "Зера"
+        ]
+    },
+    "Zuljin": {
+        "name_en": "Zul'jin",
+        "name_ru": "Зулджин",
+        "nick": [
+            ""
+        ]
+    }
+}
