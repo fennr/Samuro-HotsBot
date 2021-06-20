@@ -319,12 +319,32 @@ class hots(commands.Cog, name="hots"):
                 inline=False
             )
         else:
-            hero_list = []
             hero = find_hero2(args[0])
             if hero is None:
                 hero_list = find_hero2(args[0], allowed_error=4)
-            if len(hero_list) == 1:
-                hero = hero_list[0]
+                if len(hero_list) == 1:
+                    hero = hero_list[0]
+                if len(hero_list) > 1:
+                    embed = discord.Embed(
+                        title="Возможно вы имели в виду:",
+                        color=config["warning"]
+                    )
+                for wrong_hero in hero_list:
+                    embed.add_field(
+                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
+                        value=f"Введи: {config['bot_prefix']}skill {wrong_hero['name_ru']}",
+                        inline=False
+                    )
+                embed.set_footer(
+                    # text=f"Информация для {context.author}"
+                    text=f"Текущий патч: {config['patch']}"
+                )
+                if len(hero_list) == 0:
+                    embed = discord.Embed(
+                        title="Ошибка! Герой не найден",
+                        color=config["error"]
+                    )
+            if hero is not None:
                 # json по отдельному герою, содержит более детальную информацию
                 hero_json_file = 'hero/' + hero['name_json']
                 with open(hero_json_file) as hero_json:
@@ -359,27 +379,6 @@ class hots(commands.Cog, name="hots"):
                     embed.set_footer(
                         text=f"Текущий патч: {config['patch']}"
                     )
-            elif len(hero_list) > 1:
-                embed = discord.Embed(
-                    title="Возможно вы имели в виду:",
-                    color=config["warning"]
-                )
-                for wrong_hero in hero_list:
-                    embed.add_field(
-                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-                        value=f"Введи: {config['bot_prefix']}skill {wrong_hero['name_ru']}",
-                        inline=False
-                    )
-                embed.set_footer(
-                    #text=f"Информация для {context.author}"
-                    text=f"Текущий патч: {config['patch']}"
-                )
-            elif len(hero_list) == 0:
-                embed = discord.Embed(
-                    title="Ошибка! Герой не найден",
-                    color=config["error"]
-                )
-
         await context.send(embed=embed)
 
     @commands.command(name="talent")
