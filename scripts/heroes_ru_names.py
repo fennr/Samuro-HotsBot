@@ -91,24 +91,27 @@ def create_heroes_ru_data():
             with open(path, 'r') as read_file:
                 hero_data = json.load(read_file)
             count += 1
-            '''with open(nicknames_file, 'a', encoding='utf-8') as file_nicks:
-                file_nicks.write(hero_data['cHeroId'] + ':\n')'''
             hero_nick = find_nick(hero_data['cHeroId'])
+            #print(hero_nick)
             try:
                 hero = find_hero(hero_data['cHeroId'])
-                hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''), nick=hero_nick['nick'])
+                hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
+                                 name_json=hero_json, nick=hero_nick['nick'])
             except:
                 try:
                     hero = find_hero(hero_data['name'])
-                    hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''), nick=[])
+                    hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
+                                     name_json=hero_json, nick=hero_nick['nick'])
                 except:
                     try:
                         hero = find_hero(hero_data['hyperlinkId'])
-                        hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''), nick=[])
+                        hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
+                                         name_json=hero_json, nick=hero_nick['nick'])
                     except:
                         print('{}, {}, {}'.format(hero_data['cHeroId'], hero_data['name'], hero_data['hyperlinkId'] ))
                         #print(hero)
-                        hero_dict = dict(name_en=hero_data['name'], name_ru='Error', nick=[])
+                        hero_dict = dict(name_en=hero_data['name'], name_ru='Error',
+                                         name_json=hero_json, nick=hero_nick['nick'])
 
             full_dict[hero_data['cHeroId']] = hero_dict
 

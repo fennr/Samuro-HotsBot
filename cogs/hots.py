@@ -67,9 +67,10 @@ def find_hero(hero_name):
     return None
 
 
-def find_hero2(hero_name):
+def find_hero2(hero_name, allowed_error=3):
     hero_name = hero_name.capitalize()
-    good_distance = 3
+    good_distance = allowed_error
+    wrong_hero_list = []
     with open(heroes_ru_json_file, encoding='utf-8') as heroes_ru_json:
         heroes_ru_list = json.load(heroes_ru_json)
     #print(heroes_ru_list)
@@ -77,13 +78,24 @@ def find_hero2(hero_name):
         for hero, data in heroes_ru_list.items():
             if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
                     (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i):
-                #print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i))
-                return data
-            for nick in data['nick']:
-                if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i+1:
-                    #print('{} -> {} -> {}  | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i+1))
+                print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i-1))
+                if allowed_error <= 3:
                     return data
-    return None
+                else:
+                    wrong_hero_list.append(data)
+                    break
+            for nick in data['nick']:
+                if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i:
+                    print('{} -> {} -> {}  | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i-1))
+                    if allowed_error <= 3:
+                        return data
+                    else:
+                        wrong_hero_list.append(data)
+                        break
+    if allowed_error <= 3:
+        return None
+    else:
+        return wrong_hero_list
 
 
 def find_wrong_hero(hero_name):
@@ -171,32 +183,37 @@ class hots(commands.Cog, name="hots"):
             )
         else:
             hero = find_hero2(args[0])
-            wrong_hero_list = []
             if hero is None:
-                wrong_hero_list = find_wrong_hero(args[0])
-                if len(wrong_hero_list) > 1:
+                hero_list = find_hero2(args[0], allowed_error=4)
+                if len(hero_list) == 1:
+                    hero = hero_list[0]
+                if len(hero_list) == 0:
+                    embed = discord.Embed(
+                        title="Ошибка! Герой не найден",
+                        color=config["error"]
+                    )
+                if len(hero_list) > 1:
+                    hero = None
                     embed = discord.Embed(
                         title="Возможно вы имели в виду:",
                         color=config["warning"]
                     )
-                    for wrong_hero in wrong_hero_list:
+                    for wrong_hero in hero_list:
                         embed.add_field(
-                            name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
+                            name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
                             value=f"Введи: {config['bot_prefix']}hero {wrong_hero['name_ru']}",
                             inline=False
                         )
                     embed.set_footer(
-                        #text=f"Информация для {context.author}"
+                        # text=f"Информация для {context.author}"
                         text=f"Текущий патч: {config['patch']}"
                     )
-                elif len(wrong_hero_list) == 1:
-                    hero = wrong_hero_list[0]
             if hero is not None:
                 with open(heroes_json_file) as heroes_json:
                     heroes_data = json.load(heroes_json)
                 with open(gamestrings_json_file, encoding='utf-8') as ru_json:
                     ru_data = json.load(ru_json)
-                hero_json_file = 'hero/' + hero['name_en'].lower() + '.json'
+                hero_json_file = 'hero/' + hero['name_json']
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 hero_name = hero_data['cHeroId']
@@ -242,41 +259,36 @@ class hots(commands.Cog, name="hots"):
                         value="{}".format(hero_energy),
                         inline=True
                     )
-                heroespn_url_full = heroespn_url + hero['name_en'].lower() + '.html'
+                heroespn_url_full = heroespn_url + hero['name_en'].lower().replace(' ', '') + '.html'
                 embed.add_field(
                     name="Последние патчноуты героя:",
                     value="{}".format(heroespn_url_full),
                     inline=False
                 )
                 embed.add_field(
-                    name="HeroesHearth (лучшая подборка билдов):",
-                    value="{}{}".format(heroeshearth_top_url, hero['name_en']),
+                    name="HeroesHearth / лучшая подборка билдов:",
+                    value="{}{}".format(heroeshearth_top_url, hero['name_en'].replace(' ', '-')),
                     inline=False
                 )
-                icy_veins_url_full = icy_veins_url + hero['name_en'].lower() + '-build-guide'
+                icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-') + '-build-guide'
                 embed.add_field(
-                    name="Icy Veins (очень подробный разбор героя):",
+                    name="Icy Veins / очень подробный разбор героя:",
                     value="{}".format(icy_veins_url_full),
                     inline=False
                 )
                 embed.add_field(
-                    name="Heroesfire: (пользовательские билды)",
-                    value="{}{}".format(heroesfire_url, hero['name_en']),
+                    name="Heroesfire / Пользовательские билды",
+                    value="{}{}".format(heroesfire_url, hero['name_en'].replace(' ', '-')),
                     inline=False
                 )
                 embed.add_field(
-                    name="Blizzhero: (ру сайт)",
-                    value="{}{}".format(blizzhero_url, hero['name_en']),
+                    name="Blizzhero / ру сайт",
+                    value="{}{}".format(blizzhero_url, hero['name_en'].replace(' ', '')),
                     inline=False
                 )
                 embed.set_footer(
                     #text=f"Информация для {context.author}"  # context.message.author если использовать без slash
                     text =f"Текущий патч: {config['patch']}"
-                )
-            elif len(wrong_hero_list) == 0:
-                embed = discord.Embed(
-                    title="Ошибка! Герой не найден",
-                    color=config["error"]
                 )
 
         await context.send(embed=embed)
@@ -310,12 +322,11 @@ class hots(commands.Cog, name="hots"):
             hero_list = []
             hero = find_hero2(args[0])
             if hero is None:
-                hero_list = find_wrong_hero(args[0])
-            if hero is not None or len(hero_list) == 1:
-                if len(hero_list) == 1:
-                    hero = hero_list[0]
+                hero_list = find_hero2(args[0], allowed_error=4)
+            if len(hero_list) == 1:
+                hero = hero_list[0]
                 # json по отдельному герою, содержит более детальную информацию
-                hero_json_file = 'hero/' + hero['name_en'].lower() + '.json'
+                hero_json_file = 'hero/' + hero['name_json']
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 full_hero = heroes_data[hero_data['cHeroId']]
@@ -355,7 +366,7 @@ class hots(commands.Cog, name="hots"):
                 )
                 for wrong_hero in hero_list:
                     embed.add_field(
-                        name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
+                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
                         value=f"Введи: {config['bot_prefix']}skill {wrong_hero['name_ru']}",
                         inline=False
                     )
@@ -396,15 +407,15 @@ class hots(commands.Cog, name="hots"):
                 inline=False
             )
         else:
-            hero_list = []
             hero = find_hero2(args[0])
             if hero is None:
-                hero_list = find_wrong_hero(args[0])
+                hero_list = []
+                hero_list = find_hero2(args[0], allowed_error=4)
             if hero is not None or len(hero_list) == 1:
                 if len(hero_list) == 1:
                     hero = hero_list[0]
                 # json по отдельному герою, содержит более детальную информацию
-                hero_json_file = 'hero/' + hero['name_en'].lower() + '.json'
+                hero_json_file = 'hero/' + hero['name_json']
                 with open(hero_json_file) as hero_json:
                     hero_data = json.load(hero_json)
                 full_hero = heroes_data[hero_data['cHeroId']]
@@ -451,7 +462,7 @@ class hots(commands.Cog, name="hots"):
                 )
                 for wrong_hero in hero_list:
                     embed.add_field(
-                        name="{} / {}".format(wrong_hero['name'], wrong_hero['name_ru']),
+                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
                         value=f"Введи: {config['bot_prefix']}talent {wrong_hero['name_ru']} #лвла",
                         inline=False
                     )

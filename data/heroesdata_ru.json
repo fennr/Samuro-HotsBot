@@ -2,6 +2,7 @@
     "Abathur": {
         "name_en": "Abathur",
         "name_ru": "Абатур",
+        "name_json": "abathur.json",
         "nick": [
             "Аба",
             "Абажур",
@@ -11,13 +12,15 @@
     "Alarak": {
         "name_en": "Alarak",
         "name_ru": "Аларак",
+        "name_json": "alarak.json",
         "nick": [
-            "Ала"
+            ""
         ]
     },
     "Alexstrasza": {
         "name_en": "Alexstrasza",
         "name_ru": "Алекстраза",
+        "name_json": "alexstrasza.json",
         "nick": [
             "Жиростраза"
         ]
@@ -25,6 +28,7 @@
     "Ana": {
         "name_en": "Ana",
         "name_ru": "Ана",
+        "name_json": "ana.json",
         "nick": [
             "Бабуля",
             "Бабка"
@@ -33,6 +37,7 @@
     "Anduin": {
         "name_en": "Anduin",
         "name_ru": "Андуин",
+        "name_json": "anduin.json",
         "nick": [
             "Андрей"
         ]
@@ -40,6 +45,7 @@
     "Anubarak": {
         "name_en": "Anub'arak",
         "name_ru": "АнубАрак",
+        "name_json": "anubarak.json",
         "nick": [
             "Ануб",
             "Жук"
@@ -48,6 +54,7 @@
     "Artanis": {
         "name_en": "Artanis",
         "name_ru": "Артанис",
+        "name_json": "artanis.json",
         "nick": [
             "Артем"
         ]
@@ -55,6 +62,7 @@
     "Arthas": {
         "name_en": "Arthas",
         "name_ru": "Артас",
+        "name_json": "arthas.json",
         "nick": [
             ""
         ]
@@ -62,6 +70,7 @@
     "Auriel": {
         "name_en": "Auriel",
         "name_ru": "Ауриэль",
+        "name_json": "auriel.json",
         "nick": [
             ""
         ]
@@ -69,6 +78,7 @@
     "Azmodan": {
         "name_en": "Azmodan",
         "name_ru": "Азмодан",
+        "name_json": "azmodan.json",
         "nick": [
             "Азмодаун",
             "Баскетболист"
@@ -77,33 +87,49 @@
     "Firebat": {
         "name_en": "Blaze",
         "name_ru": "Блэйз",
-        "nick": []
+        "name_json": "blaze.json",
+        "nick": [
+            "Блейзер"
+        ]
     },
     "FaerieDragon": {
         "name_en": "Brightwing",
         "name_ru": "Светик",
-        "nick": []
+        "name_json": "brightwing.json",
+        "nick": [
+            "Светка",
+            "Света",
+            "Бв"
+        ]
     },
     "Amazon": {
         "name_en": "Cassia",
         "name_ru": "Кассия",
-        "nick": []
+        "name_json": "cassia.json",
+        "nick": [
+            ""
+        ]
     },
     "Chen": {
         "name_en": "Chen",
         "name_ru": "Чень",
+        "name_json": "chen.json",
         "nick": [
-            ""
+            "Панда"
         ]
     },
     "Cho": {
         "name_en": "Cho",
         "name_ru": "ЧоГалл",
-        "nick": []
+        "name_json": "chogall.json",
+        "nick": [
+            ""
+        ]
     },
     "Chromie": {
         "name_en": "Chromie",
         "name_ru": "Хроми",
+        "name_json": "chromie.json",
         "nick": [
             "Хромая"
         ]
@@ -111,6 +137,7 @@
     "Deathwing": {
         "name_en": "Deathwing",
         "name_ru": "Смертокрыл",
+        "name_json": "deathwing.json",
         "nick": [
             "Смертобро"
         ]
@@ -118,6 +145,7 @@
     "Deckard": {
         "name_en": "Deckard",
         "name_ru": "Декард Каин",
+        "name_json": "deckard.json",
         "nick": [
             "Дед"
         ]
@@ -125,6 +153,7 @@
     "Dehaka": {
         "name_en": "Dehaka",
         "name_ru": "Дехака",
+        "name_json": "dehaka.json",
         "nick": [
             ""
         ]
@@ -132,6 +161,7 @@
     "Diablo": {
         "name_en": "Diablo",
         "name_ru": "Диабло",
+        "name_json": "diablo.json",
         "nick": [
             "Дибло"
         ]
@@ -139,6 +169,7 @@
     "DVa": {
         "name_en": "D.Va",
         "name_ru": "Дива",
+        "name_json": "dva.json",
         "nick": [
             "Дива",
             "Дивуля",
@@ -148,11 +179,15 @@
     "L90ETC": {
         "name_en": "E.T.C.",
         "name_ru": "ETC",
-        "nick": []
+        "name_json": "etc.json",
+        "nick": [
+            "Етц"
+        ]
     },
     "Falstad": {
         "name_en": "Falstad",
         "name_ru": "Фалстад",
+        "name_json": "falstad.json",
         "nick": [
             "Попугай"
         ]
@@ -160,6 +195,7 @@
     "Fenix": {
         "name_en": "Fenix",
         "name_ru": "Феникс",
+        "name_json": "fenix.json",
         "nick": [
             ""
         ]
@@ -167,6 +203,7 @@
     "Gall": {
         "name_en": "Gall",
         "name_ru": "Галл",
+        "name_json": "gall.json",
         "nick": [
             ""
         ]
@@ -174,6 +211,7 @@
     "Garrosh": {
         "name_en": "Garrosh",
         "name_ru": "Гаррош",
+        "name_json": "garrosh.json",
         "nick": [
             ""
         ]
@@ -181,11 +219,16 @@
     "Tinker": {
         "name_en": "Gazlowe",
         "name_ru": "Газлоу",
-        "nick": []
+        "name_json": "gazlowe.json",
+        "nick": [
+            "Газик",
+            "Газ"
+        ]
     },
     "Genji": {
         "name_en": "Genji",
         "name_ru": "Гэндзи",
+        "name_json": "genji.json",
         "nick": [
             "Гей"
         ]
@@ -193,6 +236,7 @@
     "Greymane": {
         "name_en": "Greymane",
         "name_ru": "Седогрив",
+        "name_json": "greymane.json",
         "nick": [
             "Серый"
         ]
@@ -200,6 +244,7 @@
     "Guldan": {
         "name_en": "Gul'dan",
         "name_ru": "Гулдан",
+        "name_json": "guldan.json",
         "nick": [
             ""
         ]
@@ -207,6 +252,7 @@
     "Hanzo": {
         "name_en": "Hanzo",
         "name_ru": "Хандзо",
+        "name_json": "hanzo.json",
         "nick": [
             ""
         ]
@@ -214,6 +260,7 @@
     "Hogger": {
         "name_en": "Hogger",
         "name_ru": "Дробитель",
+        "name_json": "hogger.json",
         "nick": [
             "Хогер",
             "Хоггер"
@@ -222,6 +269,7 @@
     "Illidan": {
         "name_en": "Illidan",
         "name_ru": "Иллидан",
+        "name_json": "illidan.json",
         "nick": [
             "Илюша"
         ]
@@ -229,6 +277,7 @@
     "Imperius": {
         "name_en": "Imperius",
         "name_ru": "Империй",
+        "name_json": "imperius.json",
         "nick": [
             ""
         ]
@@ -236,6 +285,7 @@
     "Jaina": {
         "name_en": "Jaina",
         "name_ru": "Джайна",
+        "name_json": "jaina.json",
         "nick": [
             ""
         ]
@@ -243,11 +293,16 @@
     "Crusader": {
         "name_en": "Johanna",
         "name_ru": "Джоанна",
-        "nick": []
+        "name_json": "johanna.json",
+        "nick": [
+            "Джоха",
+            "Джоана"
+        ]
     },
     "Junkrat": {
         "name_en": "Junkrat",
         "name_ru": "Крысавчик",
+        "name_json": "junkrat.json",
         "nick": [
             "Крыса"
         ]
@@ -255,13 +310,16 @@
     "Kaelthas": {
         "name_en": "Kael'thas",
         "name_ru": "КельТас",
+        "name_json": "kaelthas.json",
         "nick": [
-            "Кт"
+            "Кт",
+            "Кель"
         ]
     },
     "KelThuzad": {
         "name_en": "Kel'Thuzad",
         "name_ru": "КелТузад",
+        "name_json": "kelthuzad.json",
         "nick": [
             "Ктз",
             "Келтузед"
@@ -270,6 +328,7 @@
     "Kerrigan": {
         "name_en": "Kerrigan",
         "name_ru": "Керриган",
+        "name_json": "kerrigan.json",
         "nick": [
             "Сара"
         ]
@@ -277,11 +336,17 @@
     "Monk": {
         "name_en": "Kharazim",
         "name_ru": "Каразим",
-        "nick": []
+        "name_json": "kharazim.json",
+        "nick": [
+            "Монк",
+            "Монах",
+            "Керамзит"
+        ]
     },
     "Leoric": {
         "name_en": "Leoric",
         "name_ru": "Леорик",
+        "name_json": "leoric.json",
         "nick": [
             "Лео"
         ]
@@ -289,6 +354,7 @@
     "LiLi": {
         "name_en": "Li Li",
         "name_ru": "Лили",
+        "name_json": "lili.json",
         "nick": [
             "Мохнатка"
         ]
@@ -296,23 +362,36 @@
     "Wizard": {
         "name_en": "Li-Ming",
         "name_ru": "Ли-Минг",
-        "nick": []
+        "name_json": "liming.json",
+        "nick": [
+            "Минг",
+            "Сорка"
+        ]
     },
     "LostVikings": {
         "name_en": "The Lost Vikings",
         "name_ru": "Потерявшиеся викинги",
+        "name_json": "lostviking.json",
         "nick": [
-            "Викинги"
+            "Викинги",
+            "Олаф",
+            "Эрик",
+            "Балеог"
         ]
     },
     "Medic": {
         "name_en": "Lt. Morales",
         "name_ru": "лейтенант Моралес",
-        "nick": []
+        "name_json": "ltmorales.json",
+        "nick": [
+            "Моралес",
+            "Медик"
+        ]
     },
     "Lucio": {
         "name_en": "LГєcio",
         "name_ru": "Лусио",
+        "name_json": "lucio.json",
         "nick": [
             "Лусек"
         ]
@@ -320,11 +399,15 @@
     "Dryad": {
         "name_en": "Lunara",
         "name_ru": "Лунара",
-        "nick": []
+        "name_json": "lunara.json",
+        "nick": [
+            "Коза"
+        ]
     },
     "Maiev": {
         "name_en": "Maiev",
         "name_ru": "Майев",
+        "name_json": "maiev.json",
         "nick": [
             ""
         ]
@@ -332,6 +415,7 @@
     "Malfurion": {
         "name_en": "Malfurion",
         "name_ru": "Малфурион",
+        "name_json": "malfurion.json",
         "nick": [
             "Малф"
         ]
@@ -339,6 +423,7 @@
     "MalGanis": {
         "name_en": "Mal'Ganis",
         "name_ru": "Малганис",
+        "name_json": "malganis.json",
         "nick": [
             ""
         ]
@@ -346,6 +431,7 @@
     "Malthael": {
         "name_en": "Malthael",
         "name_ru": "Малтаэль",
+        "name_json": "malthael.json",
         "nick": [
             ""
         ]
@@ -353,6 +439,7 @@
     "Medivh": {
         "name_en": "Medivh",
         "name_ru": "Медив",
+        "name_json": "medivh.json",
         "nick": [
             ""
         ]
@@ -360,11 +447,15 @@
     "MeiOW": {
         "name_en": "Mei",
         "name_ru": "Мэй",
-        "nick": []
+        "name_json": "mei.json",
+        "nick": [
+            ""
+        ]
     },
     "Mephisto": {
         "name_en": "Mephisto",
         "name_ru": "Мефисто",
+        "name_json": "mephisto.json",
         "nick": [
             "Меф"
         ]
@@ -372,6 +463,7 @@
     "Muradin": {
         "name_en": "Muradin",
         "name_ru": "Мурадин",
+        "name_json": "muradin.json",
         "nick": [
             "Мура"
         ]
@@ -379,6 +471,7 @@
     "Murky": {
         "name_en": "Murky",
         "name_ru": "Мурчаль",
+        "name_json": "murky.json",
         "nick": [
             "Мурки",
             "Мурка"
@@ -387,18 +480,24 @@
     "WitchDoctor": {
         "name_en": "Nazeebo",
         "name_ru": "Назибо",
-        "nick": []
+        "name_json": "nazeebo.json",
+        "nick": [
+            ""
+        ]
     },
     "Nova": {
         "name_en": "Nova",
         "name_ru": "Нова",
+        "name_json": "nova.json",
         "nick": [
-            ""
+            "Призрак",
+            "Вдова"
         ]
     },
     "Orphea": {
         "name_en": "Orphea",
         "name_ru": "Орфея",
+        "name_json": "orphea.json",
         "nick": [
             ""
         ]
@@ -406,6 +505,7 @@
     "Probius": {
         "name_en": "Probius",
         "name_ru": "Пробиус",
+        "name_json": "probius.json",
         "nick": [
             "Пробка"
         ]
@@ -413,11 +513,15 @@
     "NexusHunter": {
         "name_en": "Qhira",
         "name_ru": "Кахира",
-        "nick": []
+        "name_json": "qhira.json",
+        "nick": [
+            ""
+        ]
     },
     "Ragnaros": {
         "name_en": "Ragnaros",
         "name_ru": "Рагнарос",
+        "name_json": "ragnaros.json",
         "nick": [
             "Рагна"
         ]
@@ -425,6 +529,7 @@
     "Raynor": {
         "name_en": "Raynor",
         "name_ru": "Рейнор",
+        "name_json": "raynor.json",
         "nick": [
             "Джимми"
         ]
@@ -432,6 +537,7 @@
     "Rehgar": {
         "name_en": "Rehgar",
         "name_ru": "Регар",
+        "name_json": "rehgar.json",
         "nick": [
             ""
         ]
@@ -439,6 +545,7 @@
     "Rexxar": {
         "name_en": "Rexxar",
         "name_ru": "Рексар",
+        "name_json": "rexxar.json",
         "nick": [
             "Миша"
         ]
@@ -446,6 +553,7 @@
     "Samuro": {
         "name_en": "Samuro",
         "name_ru": "Самуро",
+        "name_json": "samuro.json",
         "nick": [
             ""
         ]
@@ -453,6 +561,7 @@
     "SgtHammer": {
         "name_en": "Sgt. Hammer",
         "name_ru": "сержант Кувалда",
+        "name_json": "sgthammer.json",
         "nick": [
             "Хаммер",
             "Танк"
@@ -461,18 +570,24 @@
     "Barbarian": {
         "name_en": "Sonya",
         "name_ru": "Соня",
-        "nick": []
+        "name_json": "sonya.json",
+        "nick": [
+            ""
+        ]
     },
     "Stitches": {
         "name_en": "Stitches",
         "name_ru": "Стежок",
+        "name_json": "stitches.json",
         "nick": [
-            ""
+            "Стич",
+            "Пудж"
         ]
     },
     "Stukov": {
         "name_en": "Stukov",
         "name_ru": "Стуков",
+        "name_json": "stukov.json",
         "nick": [
             ""
         ]
@@ -480,6 +595,7 @@
     "Sylvanas": {
         "name_en": "Sylvanas",
         "name_ru": "Сильвана",
+        "name_json": "sylvanas.json",
         "nick": [
             ""
         ]
@@ -487,6 +603,7 @@
     "Tassadar": {
         "name_en": "Tassadar",
         "name_ru": "Тассадар",
+        "name_json": "tassadar.json",
         "nick": [
             ""
         ]
@@ -494,6 +611,7 @@
     "Butcher": {
         "name_en": "The Butcher",
         "name_ru": "Мясник",
+        "name_json": "thebutcher.json",
         "nick": [
             "Мясо"
         ]
@@ -501,6 +619,7 @@
     "Thrall": {
         "name_en": "Thrall",
         "name_ru": "Тралл",
+        "name_json": "thrall.json",
         "nick": [
             ""
         ]
@@ -508,6 +627,7 @@
     "Tracer": {
         "name_en": "Tracer",
         "name_ru": "Трейсер",
+        "name_json": "tracer.json",
         "nick": [
             ""
         ]
@@ -515,6 +635,7 @@
     "Tychus": {
         "name_en": "Tychus",
         "name_ru": "Тайкус",
+        "name_json": "tychus.json",
         "nick": [
             "Такос"
         ]
@@ -522,13 +643,15 @@
     "Tyrael": {
         "name_en": "Tyrael",
         "name_ru": "Тираэль",
+        "name_json": "tyrael.json",
         "nick": [
-            ""
+            "Архангел"
         ]
     },
     "Tyrande": {
         "name_en": "Tyrande",
         "name_ru": "Тиранда",
+        "name_json": "tyrande.json",
         "nick": [
             ""
         ]
@@ -536,6 +659,7 @@
     "Uther": {
         "name_en": "Uther",
         "name_ru": "Утер",
+        "name_json": "uther.json",
         "nick": [
             ""
         ]
@@ -543,18 +667,23 @@
     "Valeera": {
         "name_en": "Valeera",
         "name_ru": "Валира",
+        "name_json": "valeera.json",
         "nick": [
-            ""
+            "Рога"
         ]
     },
     "DemonHunter": {
         "name_en": "Valla",
         "name_ru": "Валла",
-        "nick": []
+        "name_json": "valla.json",
+        "nick": [
+            ""
+        ]
     },
     "Varian": {
         "name_en": "Varian",
         "name_ru": "Вариан",
+        "name_json": "varian.json",
         "nick": [
             ""
         ]
@@ -562,18 +691,23 @@
     "Whitemane": {
         "name_en": "Whitemane",
         "name_ru": "Вайтмейн",
+        "name_json": "whitemane.json",
         "nick": [
-            ""
+            "Инквизитор"
         ]
     },
     "Necromancer": {
         "name_en": "Xul",
         "name_ru": "Зул",
-        "nick": []
+        "name_json": "xul.json",
+        "nick": [
+            ""
+        ]
     },
     "Yrel": {
         "name_en": "Yrel",
         "name_ru": "Ирель",
+        "name_json": "yrel.json",
         "nick": [
             ""
         ]
@@ -581,6 +715,7 @@
     "Zagara": {
         "name_en": "Zagara",
         "name_ru": "Загара",
+        "name_json": "zagara.json",
         "nick": [
             ""
         ]
@@ -588,6 +723,7 @@
     "Zarya": {
         "name_en": "Zarya",
         "name_ru": "Заря",
+        "name_json": "zarya.json",
         "nick": [
             ""
         ]
@@ -595,6 +731,7 @@
     "Zeratul": {
         "name_en": "Zeratul",
         "name_ru": "Зератул",
+        "name_json": "zeratul.json",
         "nick": [
             "Зера"
         ]
@@ -602,6 +739,7 @@
     "Zuljin": {
         "name_en": "Zul'jin",
         "name_ru": "Зулджин",
+        "name_json": "zuljin.json",
         "nick": [
             ""
         ]
