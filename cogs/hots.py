@@ -156,7 +156,7 @@ class hots(commands.Cog, name="hots"):
         """
         Информация по патчноутам
         Список измененных в последнем патче героев (кликабельно)
-
+        -----
         """
         patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
 
@@ -214,7 +214,7 @@ class hots(commands.Cog, name="hots"):
         """
         Описание героя и ссылки на билды и разборы
         :param args: Имя героя
-
+        -----
         """
 
         heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
@@ -351,7 +351,7 @@ class hots(commands.Cog, name="hots"):
         """
         Информация о скиллах героя
         :param args: Имя героя
-
+        -----
         """
         # json с данными по всем героям
         with open(heroes_json_file) as heroes_json:
@@ -445,7 +445,7 @@ class hots(commands.Cog, name="hots"):
         """
         Информация о талантах героя
         :param args: Имя героя и уровень талантов
-
+        -----
         """
         # json с данными по всем героям
         with open(heroes_json_file) as heroes_json:
