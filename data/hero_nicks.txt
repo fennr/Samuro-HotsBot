@@ -12,7 +12,7 @@ Firebat:Блейзер
 FaerieDragon:Светка, Света, БВ
 Amazon:
 Chen:Панда
-Cho:
+Cho:Чо
 Chromie:Хромая
 Deathwing:Смертобро
 Deckard:Дед
