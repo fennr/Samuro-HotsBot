@@ -36,14 +36,14 @@ Jaina:
 Crusader:Джоха, джоана
 Junkrat:Крыса
 Kaelthas:КТ, Кель
-KelThuzad:КТЗ, келтузед
+KelThuzad:КТЗ, келтузед, KTZ
 Kerrigan:Сара
 Monk:Монк, монах, керамзит
 Leoric:Лео
 LiLi:Мохнатка, Панда
 Wizard:Минг, Сорка
 LostVikings:Викинги, Олаф, Эрик, Балеог
-Medic:Моралес, Медик
+Medic:Моралес, Медик, morales
 Lucio:Лусек
 Dryad:Коза
 Maiev:
@@ -55,12 +55,12 @@ MeiOW:
 Mephisto:Меф
 Muradin:Мура
 Murky:Мурки, Мурка
-WitchDoctor:
+WitchDoctor:Nazibo
 Nova:Призрак, Вдова
 Orphea:
 Probius:Пробка
-NexusHunter:
-Ragnaros:Рагна
+NexusHunter:Qhira
+Ragnaros:Рагна, Ragna
 Raynor:Джимми
 Rehgar:
 Rexxar:Миша
@@ -79,10 +79,10 @@ Tyrael:Архангел
 Tyrande:
 Uther:
 Valeera:Рога
-DemonHunter:
+DemonHunter: DH, ДХ, Valla
 Varian:
 Whitemane:Инквизитор
-Necromancer:
+Necromancer:Zul
 Yrel:
 Zagara:
 Zarya:

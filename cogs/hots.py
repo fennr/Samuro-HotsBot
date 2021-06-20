@@ -77,7 +77,8 @@ def find_hero2(hero_name, allowed_error=5):
         if len(hero_list) == 0:
             for hero, data in heroes_ru_list.items():
                 if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
-                        (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i):
+                        (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i) or \
+                        (damerau_levenshtein_distance(hero_name, hero.capitalize()) < i):
                     # print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i-1))
                     if data not in hero_list:
                         hero_list.append(data)
@@ -251,7 +252,7 @@ class hots(commands.Cog, name="hots"):
                         value="{}".format(hero_energy),
                         inline=True
                     )
-                heroespn_url_full = heroespn_url + hero['name_en'].lower().replace(' ', '') + '.html'
+                heroespn_url_full = heroespn_url + hero['name_en'].lower().replace(' ', '').replace('.', '') + '.html'
                 embed.add_field(
                     name="Последние патчноуты героя:",
                     value="{}".format(heroespn_url_full),
@@ -259,10 +260,11 @@ class hots(commands.Cog, name="hots"):
                 )
                 embed.add_field(
                     name="HeroesHearth / лучшая подборка билдов:",
-                    value="{}{}".format(heroeshearth_top_url, hero['name_en'].replace(' ', '-')),
+                    value="{}{}".format(heroeshearth_top_url, hero['name_en'].replace(' ', '-').replace('.', '')),
                     inline=False
                 )
-                icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-') + '-build-guide'
+                icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.', '-') + '-build-guide'
+                icy_veins_url_full = icy_veins_url_full.replace('--', '-')
                 embed.add_field(
                     name="Icy Veins / очень подробный разбор героя:",
                     value="{}".format(icy_veins_url_full),
@@ -270,12 +272,12 @@ class hots(commands.Cog, name="hots"):
                 )
                 embed.add_field(
                     name="Heroesfire / Пользовательские билды",
-                    value="{}{}".format(heroesfire_url, hero['name_en'].replace(' ', '-')),
+                    value="{}{}".format(heroesfire_url, hero['name_en'].replace(' ', '-').replace('.', '')),
                     inline=False
                 )
                 embed.add_field(
                     name="Blizzhero / ру сайт",
-                    value="{}{}".format(blizzhero_url, hero['name_en'].replace(' ', '')),
+                    value="{}{}".format(blizzhero_url, hero['name_en'].replace(' ', '').replace('.','')),
                     inline=False
                 )
                 embed.set_footer(
