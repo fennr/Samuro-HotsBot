@@ -4,24 +4,24 @@ Alexstrasza:Жиростраза
 Ana: Бабуля, Бабка
 Anduin:Андрей
 Anubarak:Ануб, Жук
-Artanis:Артем
+Artanis:
 Arthas:
 Auriel:
 Azmodan:Азмодаун, Баскетболист
-Firebat:Блейзер
+Firebat:Блейзер, Пожарник
 FaerieDragon:Светка, Света, БВ
 Amazon:
-Chen:Панда
+Chen:Пандарен, Пивовар
 Cho:Чо
 Chromie:Хромая
 Deathwing:Смертобро
 Deckard:Дед
 Dehaka:
-Diablo:Дибло
+Diablo:
 DVa:Дива, Дивуля, Два
 L90ETC:етц
 Falstad:Попугай
-Fenix:
+Fenix:Паук
 Gall:
 Garrosh:
 Tinker:Газик, Газ
@@ -40,7 +40,7 @@ KelThuzad:КТЗ, келтузед
 Kerrigan:Сара
 Monk:Монк, монах, керамзит
 Leoric:Лео
-LiLi:Мохнатка
+LiLi:Мохнатка, Панда
 Wizard:Минг, Сорка
 LostVikings:Викинги, Олаф, Эрик, Балеог
 Medic:Моралес, Медик
@@ -48,9 +48,9 @@ Lucio:Лусек
 Dryad:Коза
 Maiev:
 Malfurion:Малф
-MalGanis:
-Malthael:
-Medivh:
+MalGanis:Дезлорд
+Malthael:Смерть
+Medivh:Ворон
 MeiOW:
 Mephisto:Меф
 Muradin:Мура
@@ -73,7 +73,7 @@ Sylvanas:
 Tassadar:
 Butcher:Мясо
 Thrall:
-Tracer:
+Tracer:Трейса
 Tychus:Такос
 Tyrael:Архангел
 Tyrande:
@@ -87,4 +87,4 @@ Yrel:
 Zagara:
 Zarya:
 Zeratul:Зера
-Zuljin:
+Zuljin:Троль
