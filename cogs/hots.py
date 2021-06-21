@@ -74,18 +74,20 @@ def find_hero2(hero_name, allowed_error=5):
         heroes_ru_list = json.load(heroes_ru_json)
     #print(heroes_ru_list)
     for i in range(1, allowed_error):
+        if (len(hero_name) < 3) and i > 1: #исключить поиск коротких слов
+            break
         if len(hero_list) == 0:
             for hero, data in heroes_ru_list.items():
                 if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
                         (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i) or \
                         (damerau_levenshtein_distance(hero_name, hero.capitalize()) < i):
-                    # print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i-1))
+                    print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i-1))
                     if data not in hero_list:
                         hero_list.append(data)
                 if (allowed_error - i) > 1: #чтобы по прозвищам поиск был более строгий
                     for nick in data['nick']:
                         if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i and data not in hero_list:
-                            # print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i-1))
+                            print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i-1))
                             if data not in hero_list:
                                 hero_list.append(data)
                                 break
