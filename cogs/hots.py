@@ -219,6 +219,7 @@ class hots(commands.Cog, name="hots"):
         -----
         """
 
+        global hero_energytype
         heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
         heroeshearth_top_url = 'https://heroeshearth.com/hero/'
         heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
@@ -313,7 +314,8 @@ class hots(commands.Cog, name="hots"):
                         value="{}".format(hero_energy),
                         inline=True
                     )
-                heroespn_url_full = heroespn_url + hero['name_en'].lower().replace(' ', '').replace('.', '') + '.html'
+                default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
+                heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
                 embed.add_field(
                     name="Последние патчноуты героя:",
                     value="{}".format(heroespn_url_full),
@@ -321,10 +323,10 @@ class hots(commands.Cog, name="hots"):
                 )
                 embed.add_field(
                     name="HeroesHearth / лучшая подборка билдов:",
-                    value="{}{}".format(heroeshearth_top_url, hero['name_en'].replace(' ', '-').replace('.', '')),
+                    value="{}{}".format(heroeshearth_top_url, default_hero_name.replace(' ', '-')),
                     inline=False
                 )
-                icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.', '-') + '-build-guide'
+                icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.', '-').replace("'", "") + '-build-guide'
                 icy_veins_url_full = icy_veins_url_full.replace('--', '-')
                 embed.add_field(
                     name="Icy Veins / очень подробный разбор героя:",
@@ -333,12 +335,12 @@ class hots(commands.Cog, name="hots"):
                 )
                 embed.add_field(
                     name="Heroesfire / Пользовательские билды",
-                    value="{}{}".format(heroesfire_url, hero['name_en'].replace(' ', '-').replace('.', '')),
+                    value="{}{}".format(heroesfire_url, default_hero_name.replace(' ', '-')),
                     inline=False
                 )
                 embed.add_field(
                     name="Blizzhero / ру сайт",
-                    value="{}{}".format(blizzhero_url, hero['name_en'].replace(' ', '').replace('.','')),
+                    value="{}{}".format(blizzhero_url, default_hero_name.replace(' ', '')),
                     inline=False
                 )
                 embed.set_footer(

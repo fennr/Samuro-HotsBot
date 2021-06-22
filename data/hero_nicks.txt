@@ -1,5 +1,5 @@
 Abathur:Аба, Абажур, Шапка
-Alarak:
+Alarak: свч, чсв
 Alexstrasza:Жиростраза
 Ana: Бабуля, Бабка
 Anduin:Андрей
@@ -10,7 +10,7 @@ Auriel:
 Azmodan:Азмодаун, Баскетболист
 Firebat:Блейзер, Пожарник
 FaerieDragon:Светка, Света, БВ
-Amazon:
+Amazon:амазонка
 Chen:Пандарен, Пивовар
 Cho:Чо
 Chromie:Хромая
@@ -35,7 +35,7 @@ Imperius:
 Jaina:
 Crusader:Джоха, джоана
 Junkrat:Крыса
-Kaelthas:КТ, Кель
+Kaelthas:КТ, Кель, каэль, kael
 KelThuzad:КТЗ, келтузед, KTZ
 Kerrigan:Сара
 Monk:Монк, монах, керамзит
@@ -61,7 +61,7 @@ Orphea:
 Probius:Пробка
 NexusHunter:Qhira
 Ragnaros:Рагна, Ragna
-Raynor:Джимми
+Raynor:Джимми, Ковбой
 Rehgar:
 Rexxar:Миша
 Samuro:
@@ -70,7 +70,7 @@ Barbarian:
 Stitches:Стич, Пудж
 Stukov:
 Sylvanas:
-Tassadar:
+Tassadar:Тамплиер
 Butcher:Мясо
 Thrall:
 Tracer:Трейса
@@ -86,5 +86,5 @@ Necromancer:Zul
 Yrel:
 Zagara:
 Zarya:
-Zeratul:Зера
+Zeratul:Зера, Неразим
 Zuljin:Троль
