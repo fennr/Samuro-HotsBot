@@ -1,6 +1,6 @@
-Abathur:Аба, Абажур, Шапка
+Abathur:Аба, Шапка
 Alarak: свч, чсв
-Alexstrasza:Жиростраза
+Alexstrasza:
 Ana: Бабуля, Бабка
 Anduin:Андрей
 Anubarak:Ануб, Жук

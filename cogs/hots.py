@@ -274,11 +274,13 @@ class hots(commands.Cog, name="hots"):
                 hero_name = hero_data['cHeroId']
                 hero_unit = ru_data['gamestrings']['unit']
                 hero_description = hero_unit['description'][hero_name]
-                hero_difficulty = hero_unit['difficulty'][hero_name]
+                #hero_difficulty = hero_unit['difficulty'][hero_name]
                 hero_expandedrole = hero_unit['expandedrole'][hero_name]
 
                 full_hero = heroes_data[hero_data['cHeroId']]
-                hero_life = full_hero['life']['amount']
+                hero_damage = full_hero['weapons'][0]
+                hero_complexity = int(full_hero['ratings']['complexity'])
+                hero_life = int(full_hero['life']['amount'])
                 hero_energy = None
                 try:
                     hero_energy = full_hero['energy']['amount']
@@ -298,22 +300,39 @@ class hots(commands.Cog, name="hots"):
                     value="{}".format(hero_description),
                     inline=False
                 )
-                embed.add_field(
+                '''embed.add_field(
                     name="Сложность",
-                    value="{}".format(hero_difficulty),
+                    value="{} / 10".format(hero_complexity),
                     inline=True
-                )
+                )'''
                 embed.add_field(
                     name="Здоровье",
                     value="{}".format(hero_life),
-                    inline=True
+                    inline=False
                 )
-                if hero_energy is not None:
+                '''if hero_energy is not None:
                     embed.add_field(
                         name="{}".format(hero_energytype),
                         value="{}".format(hero_energy),
                         inline=True
-                    )
+                    )'''
+                embed.add_field(
+                    name="Автоатаки",
+                    value="{} урона".format(int(hero_damage['damage'])),
+                    inline=True
+                )
+                embed.insert_field_at(
+                    index=4,
+                    name="Каждые",
+                    value="{} сек.".format(hero_damage['period']),
+                    inline=True
+                )
+                embed.insert_field_at(
+                    index=5,
+                    name="Дальность",
+                    value="{} м.".format(hero_damage['range']),
+                    inline=True
+                )
                 default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
                 heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
                 embed.add_field(
@@ -407,8 +426,10 @@ class hots(commands.Cog, name="hots"):
                     hero_data = json.load(hero_json)
                 full_hero = heroes_data[hero_data['cHeroId']]
                 basic_ability = full_hero['abilities']['basic']
+                trait_ability = full_hero['abilities']['trait']
+                #print(trait_ability)
                 heroic_ability = full_hero['abilities']['heroic']
-                ability = basic_ability + heroic_ability
+                ability = basic_ability + trait_ability + heroic_ability
                 embed = discord.Embed(
                     title="Способности героя {}:".format(hero['name_ru']),
                     color=config["success"]
@@ -419,9 +440,14 @@ class hots(commands.Cog, name="hots"):
                     ability_nameID = ability[i]['nameId']
                     ability_buttonID = ability[i]['buttonId']
                     ability_hotkey = ability[i]['abilityType']
-                    full_talent_name_en = ability_nameID + '|' + \
-                                          ability_buttonID + '|' + ability_hotkey + '|False'
-                    ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
+                    try:
+                        full_talent_name_en = ability_nameID + '|' + \
+                                              ability_buttonID + '|' + ability_hotkey + '|False'
+                        ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
+                    except:
+                        full_talent_name_en = ability_nameID + '|' + \
+                                              ability_buttonID + '|' + ability_hotkey + '|True'
+                        ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
                     try: # может не быть кулдауна
                         #ability_desc = hero_data['abilities'][hero_data['cHeroId']][i]['description']
                         ability_cooldown = cleanhtml(ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
