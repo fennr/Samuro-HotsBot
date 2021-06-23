@@ -440,6 +440,28 @@ class hots(commands.Cog, name="hots"):
                     ability_nameID = ability[i]['nameId']
                     ability_buttonID = ability[i]['buttonId']
                     ability_hotkey = ability[i]['abilityType']
+                    if len(args) > 1: #если есть аргумент с кнопками
+                        abil_keys = args[1].upper()
+                        good_key = {'Й': 'Q', 'Ц': 'W', 'У': 'E', 'В': 'D', 'К': 'R'}
+                        keys = []
+                        for abil_key in abil_keys:
+                            if abil_key in good_key.keys():
+                                abil_key = good_key.get(abil_key)
+                            if abil_key not in good_key.values():
+                                embed = discord.Embed(
+                                    title="Ошибка выбора клавиши".format(),
+                                    color=config["error"]
+                                )
+                                embed.add_field(
+                                    name='После имени введите клавиши нужных способности (можно на русском)',
+                                    value="Например: #skill самуро qwe|йцу",
+                                    inline=False
+                                )
+                            abil_key = 'Trait' if abil_key == 'D' else abil_key
+                            abil_key = 'Heroic' if abil_key == 'R' else abil_key
+                            keys.append(abil_key)
+                        if ability_hotkey not in keys:
+                            continue
                     try:
                         full_talent_name_en = ability_nameID + '|' + \
                                               ability_buttonID + '|' + ability_hotkey + '|False'
@@ -448,11 +470,11 @@ class hots(commands.Cog, name="hots"):
                         full_talent_name_en = ability_nameID + '|' + \
                                               ability_buttonID + '|' + ability_hotkey + '|True'
                         ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
+                    ability_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
                     try: # может не быть кулдауна
                         #ability_desc = hero_data['abilities'][hero_data['cHeroId']][i]['description']
                         ability_cooldown = cleanhtml(ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
                         cooldown_title, cooldown_time = ability_cooldown.split(':', 1)
-                        ability_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
                         embed.add_field(
                             name='{} / {} ({})'.format(ability_name, ability_name_ru, ability_hotkey),
                             value="{}: _{}_\n{}".format(cooldown_title, cooldown_time, ability_desc_ru),
