@@ -68,6 +68,7 @@ async def on_ready():
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
+    #print(f"All servers: {bot.guilds}")
     print("-------------------")
     status_task.start()
 

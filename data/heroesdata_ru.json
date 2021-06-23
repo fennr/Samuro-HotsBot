@@ -14,7 +14,8 @@
         "name_ru": "Аларак",
         "name_json": "alarak.json",
         "nick": [
-            ""
+            "Свч",
+            "Чсв"
         ]
     },
     "Alexstrasza": {
@@ -108,7 +109,7 @@
         "name_ru": "Кассия",
         "name_json": "cassia.json",
         "nick": [
-            ""
+            "Амазонка"
         ]
     },
     "Chen": {
@@ -315,7 +316,9 @@
         "name_json": "kaelthas.json",
         "nick": [
             "Кт",
-            "Кель"
+            "Кель",
+            "Каэль",
+            "Kael"
         ]
     },
     "KelThuzad": {
@@ -537,7 +540,8 @@
         "name_ru": "Рейнор",
         "name_json": "raynor.json",
         "nick": [
-            "Джимми"
+            "Джимми",
+            "Ковбой"
         ]
     },
     "Rehgar": {
@@ -611,7 +615,7 @@
         "name_ru": "Тассадар",
         "name_json": "tassadar.json",
         "nick": [
-            ""
+            "Тамплиер"
         ]
     },
     "Butcher": {
@@ -741,7 +745,8 @@
         "name_ru": "Зератул",
         "name_json": "zeratul.json",
         "nick": [
-            "Зера"
+            "Зера",
+            "Неразим"
         ]
     },
     "Zuljin": {

@@ -42,7 +42,7 @@ Monk:Монк, монах, керамзит
 Leoric:Лео
 LiLi:Мохнатка, Панда
 Wizard:Минг, Сорка
-LostVikings:Викинги, Олаф, Эрик, Балеог
+LostVikings:Викинги, Олаф, Эрик, Балеог, tlv, vikings, потерявшиеся
 Medic:Моралес, Медик, morales
 Lucio:Лусек
 Dryad:Коза
