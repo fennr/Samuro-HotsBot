@@ -16,6 +16,7 @@ import yaml
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand # Importing the newly installed library.
+from discord.ext.commands import has_permissions, MissingPermissions
 
 from scripts import heroes_ru_names
 

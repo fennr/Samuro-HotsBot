@@ -10,6 +10,8 @@ from discord.ext import commands
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
 
+from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
+
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 
@@ -219,7 +221,6 @@ class hots(commands.Cog, name="hots"):
         -----
         """
 
-        global hero_energytype
         heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
         heroeshearth_top_url = 'https://heroeshearth.com/hero/'
         heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
@@ -369,11 +370,13 @@ class hots(commands.Cog, name="hots"):
 
         await context.send(embed=embed)
 
+
     @commands.command(name="skill")
     async def hots_skill(self, context, *args):
         """
         Информация о скиллах героя
         :param args: Имя героя
+        :опционально: Буквы скиллов, чтобы вывести не все
         -----
         """
         # json с данными по всем героям
