@@ -103,7 +103,7 @@ class ExampleCog(Cog, name='heroes'):
                     # text=f"Текущий патч: {config['patch']}"
                 )
             if hero is not None:
-                embed = heroes_description(hero, ctx.author)
+                embed = builds(hero, ctx.author)
                 default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
                 heroespn_url = 'https://heroespatchnotes.com/hero/'
                 heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
@@ -114,8 +114,8 @@ class ExampleCog(Cog, name='heroes'):
                     Button(style=ButtonStyle.blue, label=lastpn_label),
                 ]
                 hero_buttons = [
-                    Button(style=ButtonStyle.grey, label=descrp_label, disabled=True),
-                    Button(style=ButtonStyle.grey, label=builds_label),
+                    Button(style=ButtonStyle.grey, label=descrp_label),
+                    Button(style=ButtonStyle.grey, label=builds_label, disabled=True),
                     Button(style=ButtonStyle.URL, label=patchn_label, url=heroespn_url_full),
                 ]
                 await ctx.send(
