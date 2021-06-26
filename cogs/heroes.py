@@ -2,13 +2,12 @@ import os
 import sys
 import yaml
 import json
-import discord
-from discord.ext import commands
+from discord import Embed
 from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
-from hots.function import open_hero, find_heroes, cleanhtml, per_lvl
-from hots.heroes import heroics, heroes_description, builds
+from hots.function import open_hero, find_heroes
+from hots.heroes import heroes_description, builds
 from hots.skills import skill, skills
 from hots.talents import talents
 from hots.patchnotes import last_pn
@@ -32,13 +31,13 @@ with open(gamestrings_json_file, encoding='utf-8') as ru_json:
 
 # menu
 heroes_label = 'Герой'
-skills_label = 'Способности'
+skills_label = 'Скиллы'
 talent_label = 'Таланты'
-lastpn_label = 'Последний патч'
+lastpn_label = 'Патч'
 
 # hero
-descrp_label = 'Характеристики'
-patchn_label = 'Патчноуты героя'
+descrp_label = 'Описание'
+patchn_label = 'Патчноуты'
 builds_label = 'Билды'
 
 # skills
@@ -55,6 +54,7 @@ lvl_13_label = '13'
 lvl_16_label = '16'
 lvl_20_label = '20'
 
+
 class ExampleCog(Cog, name='heroes'):
     def __init__(self, bot):
         self.bot = bot
@@ -66,8 +66,9 @@ class ExampleCog(Cog, name='heroes'):
         Указать имя героя
         -----
         """
+        global hero
         if len(args) == 0:
-            embed = discord.Embed(
+            embed = Embed(
                 title="После команды введите имя героя на русском или английском",
                 color=config["error"]
             )
@@ -81,13 +82,13 @@ class ExampleCog(Cog, name='heroes'):
             if len(hero_list) == 1:
                 hero = hero_list[0]
             elif len(hero_list) == 0:
-                embed = discord.Embed(
+                embed = Embed(
                     title="Ошибка! Герой не найден",
                     color=config["error"]
                 )
             elif len(hero_list) > 1:
                 hero = None
-                embed = discord.Embed(
+                embed = Embed(
                     title="Возможно вы имели в виду:",
                     color=config["warning"]
                 )
@@ -99,7 +100,7 @@ class ExampleCog(Cog, name='heroes'):
                     )
                 embed.set_footer(
                     text=f"Информация для: {ctx.author}"
-                    #text=f"Текущий патч: {config['patch']}"
+                    # text=f"Текущий патч: {config['patch']}"
                 )
             if hero is not None:
                 embed = heroes_description(hero, ctx.author)
@@ -124,81 +125,6 @@ class ExampleCog(Cog, name='heroes'):
                         menu_buttons
                     ],
                 )
-
-    @command(hame='skill')
-    async def skill2(self, ctx, *args):
-        if len(args) == 0:
-            embed = discord.Embed(
-                title="После команды введите имя героя на русском или английском",
-                color=config["error"]
-            )
-            embed.add_field(
-                name="Пример:",
-                value=f"_{config['bot_prefix']}skills2 Самуро",
-                inline=False
-            )
-        else:
-            hero_list = find_heroes(args[0])
-            if len(hero_list) == 1:
-                hero = hero_list[0]
-            elif len(hero_list) == 0:
-                embed = discord.Embed(
-                    title="Ошибка! Герой не найден",
-                    color=config["error"]
-                )
-            elif len(hero_list) > 1:
-                hero = None
-                embed = discord.Embed(
-                    title="Возможно вы имели в виду:",
-                    color=config["warning"]
-                )
-                for wrong_hero in hero_list:
-                    embed.add_field(
-                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-                        value=f"Введи: {config['bot_prefix']}hero {wrong_hero['name_ru']}",
-                        inline=False
-                    )
-                embed.set_footer(
-                    # text=f"Информация для {context.author}"
-                    text=f"Текущий патч: {config['patch']}"
-                )
-            if hero is not None:
-                embed = skill(hero)
-                qwe_label = 'Базовые'
-                heroic_label = "Героические"
-                trait_label = 'Особые'
-                heroes_label = 'Герой'
-                talent_label = 'Таланты'
-                await ctx.send(
-                    embed=embed,
-                    components=[
-                        [
-                            Button(style=ButtonStyle.grey, label=qwe_label),
-                            Button(style=ButtonStyle.grey, label=heroic_label),
-                            Button(style=ButtonStyle.grey, label=trait_label),
-                        ],
-                        [
-                            Button(style=ButtonStyle.blue, label=heroes_label),
-                            Button(style=ButtonStyle.blue, label=talent_label),
-                        ]
-                    ],
-                )
-
-    @command(name='button')
-    async def buttontest(self, ctx):
-        await ctx.send(
-            "Here is an example of a button",
-            components=[
-                [
-                    Button(style=ButtonStyle.grey, label="EMOJI", emoji="😂"),
-                    Button(style=ButtonStyle.green, label="GREEN"),
-                    Button(style=ButtonStyle.red, label="RED"),
-                    Button(style=ButtonStyle.grey, label="GREY", disabled=True),
-                ],
-                Button(style=ButtonStyle.blue, label="BLUE"),
-                Button(style=ButtonStyle.URL, label="URL", url="https://www.example.com"),
-            ],
-        )
 
     @Cog.listener()
     async def on_button_click(self, res):

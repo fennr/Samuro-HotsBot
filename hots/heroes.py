@@ -3,7 +3,6 @@ import sys
 import yaml
 import json
 from discord import Embed
-from hots.function import open_hero, find_heroes, cleanhtml, per_lvl
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -71,7 +70,6 @@ def heroes_description(hero, author):
     hero_name = hero_data['cHeroId']
     hero_unit = ru_data['gamestrings']['unit']
     hero_description = hero_unit['description'][hero_name]
-    # hero_difficulty = hero_unit['difficulty'][hero_name]
     hero_expandedrole = hero_unit['expandedrole'][hero_name]
 
     embed = Embed(
