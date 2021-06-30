@@ -3,6 +3,7 @@ import sys
 import yaml
 import json
 from discord import Embed
+from hots.function import add_thumbnail
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -132,7 +133,7 @@ def heroes_description(hero, author):
         )
     except:
         print("Нет оружия")
-
+    embed = add_thumbnail(hero, embed)
     embed.set_footer(
         text=f"Информация для: {author}"  # context.message.author если использовать без slash
         # text=f"Текущий патч: {config['patch']}"

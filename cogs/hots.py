@@ -7,6 +7,7 @@ import requests
 
 import discord
 from discord.ext import commands
+from hots.function import add_thumbnail
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
 
@@ -279,7 +280,10 @@ class hots(commands.Cog, name="hots"):
                 hero_expandedrole = hero_unit['expandedrole'][hero_name]
 
                 full_hero = heroes_data[hero_data['cHeroId']]
-                hero_damage = full_hero['weapons'][0]
+                try:
+                    hero_damage = full_hero['weapons'][0]
+                except:
+                    pass
                 hero_complexity = int(full_hero['ratings']['complexity'])
                 hero_life = int(full_hero['life']['amount'])
                 hero_energy = None
@@ -317,23 +321,26 @@ class hots(commands.Cog, name="hots"):
                         value="{}".format(hero_energy),
                         inline=True
                     )'''
-                embed.add_field(
-                    name="Автоатаки",
-                    value="{} урона".format(int(hero_damage['damage'])),
-                    inline=True
-                )
-                embed.insert_field_at(
-                    index=4,
-                    name="Каждые",
-                    value="{} сек.".format(hero_damage['period']),
-                    inline=True
-                )
-                embed.insert_field_at(
-                    index=5,
-                    name="Дальность",
-                    value="{} м.".format(hero_damage['range']),
-                    inline=True
-                )
+                try:
+                    embed.add_field(
+                        name="Автоатаки",
+                        value="{} урона".format(int(hero_damage['damage'])),
+                        inline=True
+                    )
+                    embed.insert_field_at(
+                        index=4,
+                        name="Каждые",
+                        value="{} сек.".format(hero_damage['period']),
+                        inline=True
+                    )
+                    embed.insert_field_at(
+                        index=5,
+                        name="Дальность",
+                        value="{} м.".format(hero_damage['range']),
+                        inline=True
+                    )
+                except:
+                    pass
                 default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
                 heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
                 embed.add_field(
@@ -363,6 +370,7 @@ class hots(commands.Cog, name="hots"):
                     value="{}{}".format(blizzhero_url, default_hero_name.replace(' ', '')),
                     inline=False
                 )
+                embed = add_thumbnail(hero, embed)
                 embed.set_footer(
                     #text=f"Информация для {context.author}"  # context.message.author если использовать без slash
                     text =f"Текущий патч: {config['patch']}"

@@ -12,6 +12,15 @@ def open_hero(hero_name):
         if hero_name == data['name_en'] or hero_name == data['name_ru'] or hero_name == hero:
             return data
 
+def add_thumbnail(hero, embed):
+    thumb_url = 'https://nexuscompendium.com/images/portrait/'
+    hero_name = hero['name_en'].lower().replace('.', '').replace("'", "").replace(' ', '-')
+    url = thumb_url + hero_name + '.png'
+    print(url)
+    embed.set_thumbnail(
+        url=url
+    )
+    return embed
 
 def find_heroes(hero_name, allowed_error=5):
     hero_name = hero_name.capitalize()
