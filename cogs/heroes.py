@@ -11,6 +11,7 @@ from hots.heroes import heroes_description, builds
 from hots.skills import skill, skills
 from hots.talents import talents
 from hots.patchnotes import last_pn
+from hots.nexuscompendium import weekly_rotation
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -55,9 +56,21 @@ lvl_16_label = '16'
 lvl_20_label = '20'
 
 
-class ExampleCog(Cog, name='heroes'):
+class Heroes(Cog, name='heroes'):
     def __init__(self, bot):
         self.bot = bot
+
+
+    @command(name='rotate')
+    async def rotation(self, ctx):
+        """
+        Список героев еженедельной ротации
+        """
+        embed = weekly_rotation()
+        await ctx.send(
+            embed=embed
+        )
+
 
     @command(name='data')
     async def data(self, ctx, *args):
@@ -277,4 +290,4 @@ class ExampleCog(Cog, name='heroes'):
 
 def setup(bot):
     DiscordComponents(bot)  # If you have this in an on_ready() event you can remove this line.
-    bot.add_cog(ExampleCog(bot))
+    bot.add_cog(Heroes(bot))

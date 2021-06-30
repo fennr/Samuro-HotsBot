@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
-from cogs import general, help, hots
+from cogs import general, help, hots, heroes
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 
@@ -13,6 +13,14 @@ class Slash(commands.Cog, name="slash"):
     @cog_ext.cog_slash(name="info", description="Описание бота")
     async def slash_info(self, ctx: SlashContext):
         await general.general.info(self, ctx)
+
+    @cog_ext.cog_slash(name="rotate", description="Список героев еженедельной ротации")
+    async def slash_rotate(self, ctx: SlashContext):
+        await heroes.heroes.rotation(self, ctx)
+
+    @cog_ext.cog_slash(name="data", description="Полные данные по герою")
+    async def slash_data(self, ctx: SlashContext, hero):
+        await heroes.heroes.data(self, ctx, hero)
 
     @cog_ext.cog_slash(name="invite", description="Пригласить бота на свой канал")
     async def slash_invite(self, ctx: SlashContext):
@@ -37,6 +45,7 @@ class Slash(commands.Cog, name="slash"):
     @cog_ext.cog_slash(name="patchnotes", description="Описание последнего обновления")
     async def slash_pn(self, ctx: SlashContext):
         await hots.hots.hots_notes(self, ctx)
+
 
 def setup(bot):
     bot.add_cog(Slash(bot))
