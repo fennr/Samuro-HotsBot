@@ -3,7 +3,7 @@ import sys
 import yaml
 import json
 from discord import Embed
-from hots.function import add_thumbnail
+from hots.function import add_thumbnail, cleanhtml
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -80,7 +80,7 @@ def heroes_description(hero, author):
     )
     embed.add_field(
         name="Описание",
-        value="{}".format(hero_description),
+        value="{}".format(cleanhtml(hero_description)),
         inline=False
     )
     embed.add_field(
