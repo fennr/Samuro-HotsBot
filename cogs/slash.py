@@ -16,15 +16,15 @@ class Slash(commands.Cog, name="slash"):
 
     @cog_ext.cog_slash(name="rotate", description="Список героев еженедельной ротации")
     async def slash_rotate(self, ctx: SlashContext):
-        await heroes.heroes.rotation(self, ctx)
+        await heroes.Heroes.rotation(self, ctx)
 
     @cog_ext.cog_slash(name="data", description="Полные данные по герою")
     async def slash_data(self, ctx: SlashContext, hero):
-        await heroes.heroes.data(self, ctx, hero)
+        await heroes.Heroes.data(self, ctx, hero)
 
     @cog_ext.cog_slash(name="streams", description="Онлайн стримы на твиче")
     async def slash_streams(self, ctx: SlashContext, count):
-        await heroes.heroes.streams(self, ctx, count)
+        await heroes.Heroes.streams(self, ctx, count)
 
     @cog_ext.cog_slash(name="invite", description="Пригласить бота на свой канал")
     async def slash_invite(self, ctx: SlashContext):
