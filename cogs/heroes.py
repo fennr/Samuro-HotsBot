@@ -144,7 +144,9 @@ class Heroes(Cog, name='heroes'):
     @command(name='streams')
     async def streams(self, ctx, *args):
         """
-        Стримы по убыв. зрителей, указать количество
+        Онлайн стримы на твиче
+        Указать количество
+        -----
         """
         if len(args) == 1:
             embed = get_streams(args[0])

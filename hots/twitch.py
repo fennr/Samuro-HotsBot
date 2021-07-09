@@ -11,7 +11,7 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-def get_streams(first = 6):
+def get_streams(first = 5):
     twitch_app_key = 'podhxqero17w9mlhuxr67xt13dw10i'
     twitch_sec_token = '16lwbqc8b42eh67aq2m3c2lxnxkuy0'
     twitch = Twitch(twitch_app_key, twitch_sec_token)
@@ -31,7 +31,7 @@ def get_streams(first = 6):
         if count < max:
             link = '[' + stream['title'] + '](' + url + stream['user_login'] + ')'
             embed.add_field(
-                name=f"{stream['user_name']}",
+                name=f"{count+1}. {stream['user_name']}",
                 value=f"{link}\nЗрителей: {stream['viewer_count']}",
                 inline=False
             )
