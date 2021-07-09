@@ -65,7 +65,7 @@ class Heroes(Cog, name='heroes'):
     @command(name='rotate')
     async def rotation(self, ctx):
         """
-        Список героев еженедельной ротации
+        -  Список героев еженедельной ротации
         """
         embed = weekly_rotation()
         await ctx.send(
@@ -76,9 +76,7 @@ class Heroes(Cog, name='heroes'):
     @command(name='data')
     async def data(self, ctx, *args):
         """
-        Единый интерфейс описания героя
-        Указать имя героя
-        -----
+        :hero: - Полное описания героя
         """
         global hero
         if len(args) == 0:
@@ -144,9 +142,7 @@ class Heroes(Cog, name='heroes'):
     @command(name='streams')
     async def streams(self, ctx, *args):
         """
-        Онлайн стримы на твиче
-        Указать количество
-        -----
+        :cnt: - Онлайн стримы на твиче
         """
         if len(args) == 1 and args[0].isdigit():
             embed = get_streams(int(args[0]))

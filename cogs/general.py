@@ -8,7 +8,6 @@ import aiohttp
 import discord
 import yaml
 from discord.ext import commands
-from discord_slash import cog_ext, SlashContext
 
 guild_ids = [845658540341592096]  # Put your server ID in this array.
 
@@ -26,7 +25,7 @@ class general(commands.Cog, name="general"):
     @commands.command(name="info", aliases=["botinfo"])
     async def info(self, context):
         """
-        Получить информацию о боте
+        - Получить информацию о боте
         """
         embed = discord.Embed(
             description="Бот с информацией по героям, скиллам и талантам хотса",
@@ -58,7 +57,7 @@ class general(commands.Cog, name="general"):
     @commands.command(name="invite")
     async def invite(self, context):
         """
-        Получить ссылку для приглашения бота на свой канал
+        - Получить ссылку для приглашения бота на свой канал
         """
         await context.send("Я отправил ссылку в личку")
         await context.author.send(
@@ -67,7 +66,7 @@ class general(commands.Cog, name="general"):
     @commands.command(name="ping")
     async def ping(self, context):
         """
-        Проверка жив ли бот
+        - Проверка жив ли бот
         """
         embed = discord.Embed(
             color=config["success"]
@@ -81,30 +80,6 @@ class general(commands.Cog, name="general"):
             text=f"Pong request by {context.author}"
         )
         await context.send(embed=embed)
-
-    @commands.command(name="test")
-    async def test(self, context):
-        embed = discord.Embed(
-            color=config["success"]
-        )
-        '''        
-        async for member in context.guild.fetch_members():
-            print(member)
-            embed.add_field(
-                name=f"Проверка",
-                value=f"{member.mention}"
-            )'''
-        user_id = 261177857126957056
-        user = await context.guild.query_members(query='MACHUKU', cache=True)
-        print(user)
-        embed.add_field(
-            name=f"Проверка",
-            value=f"{user[0].mention}"
-        )
-        embed_message = await context.send(embed=embed)
-        await embed_message.add_reaction("👍")
-        await embed_message.add_reaction("👎")
-        await embed_message.add_reaction("🤷")
 
 
     '''@commands.command(name="poll")

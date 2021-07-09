@@ -19,19 +19,23 @@ class Help(commands.Cog, name="help"):
     @commands.command(name="help")
     async def help(self, context):
         """
-        Список всех команд из каждого модуля
+        - Список всех команд из каждого модуля
         """
         prefix = config["bot_prefix"]
+        descr = "Дополнительные параметры:\n" \
+                "**:hero:** - имя героя\n" \
+                "**:lvl:** - уровень героя\n" \
+                "**:cnt:** - количество (необ.)"
         if not isinstance(prefix, str):
             prefix = prefix[0]
-        embed = discord.Embed(title="Help", description="Список доступных команд:", color=config["success"])
+        embed = discord.Embed(title="Help", description=f"{descr}", color=config["success"])
         for i in self.bot.cogs:
             if i != 'slash':
                 cog = self.bot.get_cog(i.lower())
                 commands = cog.get_commands()
                 command_list = [command.name for command in commands]
                 command_description = [command.help for command in commands]
-                help_text = '\n'.join(f'{prefix}{n} - {h}' for n, h in zip(command_list, command_description))
+                help_text = '\n'.join(f'{prefix}{n} {h}' for n, h in zip(command_list, command_description))
                 embed.add_field(name=i.capitalize(), value=f'```{help_text}```', inline=False)
         await context.send(embed=embed)
 

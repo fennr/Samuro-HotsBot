@@ -159,9 +159,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="patchnotes")
     async def hots_notes(self, context):
         """
-        Информация по патчноутам
-        Список измененных в последнем патче героев (кликабельно)
-        -----
+        - Информация по патчноутам
         """
         patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
 
@@ -217,9 +215,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="hero")
     async def hots_hero(self, context, *args):
         """
-        Описание героя и ссылки на билды и разборы
-        :param args: Имя героя
-        -----
+        :hero: - Описание героя, билды, разборы
         """
 
         heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
@@ -382,10 +378,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="skill")
     async def hots_skill(self, context, *args):
         """
-        Информация о скиллах героя
-        :param args: Имя героя
-        :опционально: Буквы скиллов, чтобы вывести не все
-        -----
+        :hero: - Скиллы героя
         """
         # json с данными по всем героям
         with open(heroes_json_file) as heroes_json:
@@ -506,9 +499,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="talent")
     async def hots_talent(self, context, *args):
         """
-        Информация о талантах героя
-        :param args: Имя героя и уровень талантов
-        -----
+        :hero: :lvl: - Таланты героя :lvl: уровня
         """
         # json с данными по всем героям
         with open(heroes_json_file) as heroes_json:
