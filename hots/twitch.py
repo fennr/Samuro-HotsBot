@@ -22,12 +22,13 @@ def get_streams(first = 6):
     url = 'https://www.twitch.tv/'
     response_channels = twitch.get_streams(game_id=hots_id, language=language)
     count = 0
+    max = int(first)
     embed = Embed(
         title='Стримы онлайн',
         color=config["success"]
     )
     for stream in response_channels['data']:
-        if count < first:
+        if count < max:
             link = '[' + stream['title'] + '](' + url + stream['user_login'] + ')'
             embed.add_field(
                 name=f"{stream['user_name']}",
