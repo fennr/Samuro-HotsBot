@@ -148,9 +148,9 @@ class Heroes(Cog, name='heroes'):
         Указать количество
         -----
         """
-        if len(args) == 1:
-            embed = get_streams(args[0])
-        else:
+        if len(args) == 1 and args[0].isDigit():
+            embed = get_streams(int(args[0]))
+        else
             embed = get_streams()
         await ctx.send(
             embed=embed
