@@ -12,6 +12,7 @@ from hots.skills import skill, skills
 from hots.talents import talents
 from hots.patchnotes import last_pn
 from hots.nexuscompendium import weekly_rotation
+from hots.twitch import get_streams
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -138,6 +139,20 @@ class Heroes(Cog, name='heroes'):
                         menu_buttons
                     ],
                 )
+
+
+    @command(name='streams')
+    async def streams(self, ctx, *args):
+        """
+        Стримы по убыв. зрителей, указать количество
+        """
+        if len(args) == 1:
+            embed = get_streams(args[0])
+        else:
+            embed = get_streams()
+        await ctx.send(
+            embed=embed
+        )
 
     @Cog.listener()
     async def on_button_click(self, res):

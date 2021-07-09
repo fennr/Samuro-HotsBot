@@ -82,6 +82,31 @@ class general(commands.Cog, name="general"):
         )
         await context.send(embed=embed)
 
+    @commands.command(name="test")
+    async def test(self, context):
+        embed = discord.Embed(
+            color=config["success"]
+        )
+        '''        
+        async for member in context.guild.fetch_members():
+            print(member)
+            embed.add_field(
+                name=f"Проверка",
+                value=f"{member.mention}"
+            )'''
+        user_id = 261177857126957056
+        user = await context.guild.query_members(query='MACHUKU', cache=True)
+        print(user)
+        embed.add_field(
+            name=f"Проверка",
+            value=f"{user[0].mention}"
+        )
+        embed_message = await context.send(embed=embed)
+        await embed_message.add_reaction("👍")
+        await embed_message.add_reaction("👎")
+        await embed_message.add_reaction("🤷")
+
+
     '''@commands.command(name="poll")
     async def poll(self, context, *args):
         """

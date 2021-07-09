@@ -56,6 +56,7 @@ intents.members = True
 """
 
 intents = discord.Intents.default()
+intents.members = True
 
 bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
 slash = SlashCommand(bot, sync_commands=True)
@@ -150,4 +151,5 @@ async def on_command_error(context, error):
 #Генерируем файл с именами героев
 heroes_ru_names.create_heroes_ru_data()
 # Run the bot with the token
+
 bot.run(config["token"])

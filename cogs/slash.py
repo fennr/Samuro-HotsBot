@@ -22,6 +22,10 @@ class Slash(commands.Cog, name="slash"):
     async def slash_data(self, ctx: SlashContext, hero):
         await heroes.heroes.data(self, ctx, hero)
 
+    @cog_ext.cog_slash(name="streams", description="Онлайн стримы на твиче")
+    async def slash_streams(self, ctx: SlashContext, count):
+        await heroes.heroes.streams(self, ctx, count)
+
     @cog_ext.cog_slash(name="invite", description="Пригласить бота на свой канал")
     async def slash_invite(self, ctx: SlashContext):
         await general.general.invite(self, ctx)

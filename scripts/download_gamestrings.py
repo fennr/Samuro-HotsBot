@@ -5,13 +5,13 @@ import sys
 import yaml
 
 # Only if you want to use variables that are in the config.yaml file.
-if not os.path.isfile("../config.yaml"):
+if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
 else:
-    with open("../config.yaml") as file:
+    with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-file = '../data/gamestrings'
+file = 'data/gamestrings'
 patch = config["patch"]
 
 def download_gamestrings(filename, patch_number):
