@@ -150,7 +150,7 @@ class Heroes(Cog, name='heroes'):
         """
         if len(args) == 1 and args[0].isDigit():
             embed = get_streams(int(args[0]))
-        else
+        else:
             embed = get_streams()
         await ctx.send(
             embed=embed
