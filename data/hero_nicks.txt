@@ -15,7 +15,7 @@ Chen:Пандарен, Пивовар
 Cho:Чо
 Chromie:Хромая
 Deathwing:Смертобро
-Deckard:Дед
+Deckard:Дед, Декард
 Dehaka:
 Diablo:
 DVa:Дива, Дивуля, Два

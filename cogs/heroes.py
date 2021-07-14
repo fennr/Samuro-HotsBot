@@ -215,13 +215,13 @@ class Heroes(Cog, name='heroes'):
             menu_buttons
         ]
 
-        if res.component.label == descrp_label or \
-                res.component.label == heroes_label:
+        if res.component.label == descrp_label:
             embed = heroes_description(hero, author)
             components = hero_components
             components[0][0] = Button(style=ButtonStyle.grey, label=descrp_label, disabled=True)
             components[1][0] = Button(style=ButtonStyle.blue, label=heroes_label, disabled=True)
-        if res.component.label == builds_label:
+        if res.component.label == builds_label or \
+                res.component.label == heroes_label:
             embed = builds(hero, author)
             components = hero_components
             components[0][1] = Button(style=ButtonStyle.grey, label=builds_label, disabled=True)

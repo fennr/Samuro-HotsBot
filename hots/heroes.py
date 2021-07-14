@@ -113,12 +113,12 @@ def builds(hero, author, embed=None):
     heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
     if embed is None:
         embed = Embed(
-            title='{} / {} : Билды и гайды'.format(hero['name_en'], hero['name_ru'], ),  # title="Описание героя:",
+            title='{} / {} : Билды'.format(hero['name_en'], hero['name_ru'], ),  # title="Описание героя:",
             color=config["success"]
         )
     icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.',
-                                                                                                       '-').replace("'",
-                                                                                                                    "") + '-build-guide'
+                                                                                           '-').replace("'",
+                                                                                                        "") + '-build-guide'
     icy_veins_url_full = icy_veins_url_full.replace('--', '-')
     embed.add_field(
         name="Ссылки",
