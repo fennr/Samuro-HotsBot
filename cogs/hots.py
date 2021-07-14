@@ -8,6 +8,7 @@ import requests
 import discord
 from discord.ext import commands
 from hots.function import add_thumbnail
+from hots.heroes import builds
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
 
@@ -29,6 +30,7 @@ gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
 heroes_json_file = 'data/heroesdata.json'
 stlk_file = 'data/stlk_builds.txt'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
+
 
 def create_ru_list_heroes(filename):
     """
@@ -75,22 +77,23 @@ def find_hero2(hero_name, allowed_error=5):
     hero_list = []
     with open(heroes_ru_json_file, encoding='utf-8') as heroes_ru_json:
         heroes_ru_list = json.load(heroes_ru_json)
-    #print(heroes_ru_list)
+    # print(heroes_ru_list)
     for i in range(1, allowed_error):
-        if (len(hero_name) < 3) and i > 1: #исключить поиск коротких слов
+        if (len(hero_name) < 3) and i > 1:  # исключить поиск коротких слов
             break
         if len(hero_list) == 0:
             for hero, data in heroes_ru_list.items():
                 if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
                         (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i) or \
                         (damerau_levenshtein_distance(hero_name, hero.capitalize()) < i):
-                    print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i-1))
+                    print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i - 1))
                     if data not in hero_list:
                         hero_list.append(data)
-                if (allowed_error - i) > 1: #чтобы по прозвищам поиск был более строгий
+                if (allowed_error - i) > 1:  # чтобы по прозвищам поиск был более строгий
                     for nick in data['nick']:
                         if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i and data not in hero_list:
-                            print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i-1))
+                            print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'],
+                                                                                  i - 1))
                             if data not in hero_list:
                                 hero_list.append(data)
                                 break
@@ -144,6 +147,7 @@ def per_lvl(raw_text):
         return cleantext
     else:
         return raw_text
+
 
 # Here we name the cog and create a new class for the cog.
 
@@ -211,20 +215,11 @@ class hots(commands.Cog, name="hots"):
         )
         await context.send(embed=embed)
 
-
     @commands.command(name="hero")
     async def hots_hero(self, context, *args):
         """
         :hero: - Описание героя, билды, разборы
         """
-
-        heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
-        heroeshearth_top_url = 'https://heroeshearth.com/hero/'
-        heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
-        icy_veins_url = 'https://www.icy-veins.com/heroes/'  # + '-build-guide'
-        heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
-        blizzhero_url = 'https://blizzardheroes.ru/guides/'
-
         if len(args) == 0:
             embed = discord.Embed(
                 title="После команды введите имя героя на русском или английском",
@@ -272,7 +267,7 @@ class hots(commands.Cog, name="hots"):
                 hero_name = hero_data['cHeroId']
                 hero_unit = ru_data['gamestrings']['unit']
                 hero_description = hero_unit['description'][hero_name]
-                #hero_difficulty = hero_unit['difficulty'][hero_name]
+                # hero_difficulty = hero_unit['difficulty'][hero_name]
                 hero_expandedrole = hero_unit['expandedrole'][hero_name]
 
                 full_hero = heroes_data[hero_data['cHeroId']]
@@ -288,92 +283,25 @@ class hots(commands.Cog, name="hots"):
                     hero_energytype = hero_unit['energytype'][hero_name]
                 except:
                     pass
-
                 embed = discord.Embed(
-                    title='{} / {} ({})'.format(hero['name_en'], hero['name_ru'], hero_expandedrole), #title="Описание героя:",
+                    title='{} / {} ({})'.format(hero['name_en'], hero['name_ru'], hero_expandedrole),
+                    # title="Описание героя:",
                     color=config["success"]
                 )
-                '''embed.set_author(
-                    name='{} / {}'.format(hero['name'], hero['name_ru'])
-                )'''
                 embed.add_field(
                     name="Описание",
                     value="{}".format(hero_description),
                     inline=False
                 )
-                '''embed.add_field(
+                embed.add_field(
                     name="Сложность",
                     value="{} / 10".format(hero_complexity),
                     inline=True
-                )'''
-                embed.add_field(
-                    name="Здоровье",
-                    value="{}".format(hero_life),
-                    inline=False
                 )
-                '''if hero_energy is not None:
-                    embed.add_field(
-                        name="{}".format(hero_energytype),
-                        value="{}".format(hero_energy),
-                        inline=True
-                    )'''
-                try:
-                    embed.add_field(
-                        name="Автоатаки",
-                        value="{} урона".format(int(hero_damage['damage'])),
-                        inline=True
-                    )
-                    embed.insert_field_at(
-                        index=4,
-                        name="Каждые",
-                        value="{} сек.".format(hero_damage['period']),
-                        inline=True
-                    )
-                    embed.insert_field_at(
-                        index=5,
-                        name="Дальность",
-                        value="{} м.".format(hero_damage['range']),
-                        inline=True
-                    )
-                except:
-                    pass
-                default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
-                heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
-                embed.add_field(
-                    name="Последние патчноуты героя:",
-                    value="{}".format(heroespn_url_full),
-                    inline=False
-                )
-                embed.add_field(
-                    name="HeroesHearth / лучшая подборка билдов:",
-                    value="{}{}".format(heroeshearth_top_url, default_hero_name.replace(' ', '-')),
-                    inline=False
-                )
-                icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.', '-').replace("'", "") + '-build-guide'
-                icy_veins_url_full = icy_veins_url_full.replace('--', '-')
-                embed.add_field(
-                    name="Icy Veins / очень подробный разбор героя:",
-                    value="{}".format(icy_veins_url_full),
-                    inline=False
-                )
-                embed.add_field(
-                    name="Heroesfire / Пользовательские билды",
-                    value="{}{}".format(heroesfire_url, default_hero_name.replace(' ', '-')),
-                    inline=False
-                )
-                embed.add_field(
-                    name="Blizzhero / ру сайт",
-                    value="{}{}".format(blizzhero_url, default_hero_name.replace(' ', '')),
-                    inline=False
-                )
+                embed = builds(hero, context.author, embed)
                 embed = add_thumbnail(hero, embed)
-                embed.set_footer(
-                    #text=f"Информация для {context.author}"  # context.message.author если использовать без slash
-                    text =f"Текущий патч: {config['patch']}"
-                )
 
         await context.send(embed=embed)
-
 
     @commands.command(name="skill")
     async def hots_skill(self, context, *args):
@@ -431,7 +359,7 @@ class hots(commands.Cog, name="hots"):
                 full_hero = heroes_data[hero_data['cHeroId']]
                 basic_ability = full_hero['abilities']['basic']
                 trait_ability = full_hero['abilities']['trait']
-                #print(trait_ability)
+                # print(trait_ability)
                 heroic_ability = full_hero['abilities']['heroic']
                 ability = basic_ability + trait_ability + heroic_ability
                 embed = discord.Embed(
@@ -444,7 +372,7 @@ class hots(commands.Cog, name="hots"):
                     ability_nameID = ability[i]['nameId']
                     ability_buttonID = ability[i]['buttonId']
                     ability_hotkey = ability[i]['abilityType']
-                    if len(args) > 1: #если есть аргумент с кнопками
+                    if len(args) > 1:  # если есть аргумент с кнопками
                         abil_keys = args[1].upper()
                         good_key = {'Й': 'Q', 'Ц': 'W', 'У': 'E', 'В': 'D', 'К': 'R'}
                         keys = []
@@ -475,9 +403,10 @@ class hots(commands.Cog, name="hots"):
                                               ability_buttonID + '|' + ability_hotkey + '|True'
                         ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
                     ability_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
-                    try: # может не быть кулдауна
-                        #ability_desc = hero_data['abilities'][hero_data['cHeroId']][i]['description']
-                        ability_cooldown = cleanhtml(ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
+                    try:  # может не быть кулдауна
+                        # ability_desc = hero_data['abilities'][hero_data['cHeroId']][i]['description']
+                        ability_cooldown = cleanhtml(
+                            ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
                         cooldown_title, cooldown_time = ability_cooldown.split(':', 1)
                         embed.add_field(
                             name='{} / {} ({})'.format(ability_name, ability_name_ru, ability_hotkey),

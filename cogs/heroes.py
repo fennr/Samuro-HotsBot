@@ -294,7 +294,7 @@ class Heroes(Cog, name='heroes'):
             )
         else:
             error_text = 'Команда вызвана другим пользователем, взаимодействие невозможно\n' \
-                         'Вызовите команду для получения информации по герою'
+                         'Введите /data :hero: для получения информации по герою'
             await res.respond(
                 type=InteractionType.ChannelMessageWithSource, content=f"{error_text}"
             )

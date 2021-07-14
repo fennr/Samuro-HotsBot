@@ -23,45 +23,6 @@ with open(gamestrings_json_file, encoding='utf-8') as ru_json:
     ru_data = json.load(ru_json)
 
 
-def heroics(hero):
-    hero_json_file = 'hero/' + hero['name_json']
-    with open(hero_json_file) as hero_json:
-        hero_data = json.load(hero_json)
-    full_hero = heroes_data[hero_data['cHeroId']]
-    embed = Embed(
-        title='{} / {} : Характеристики'.format(hero['name_en'], hero['name_ru']),  # title="Описание героя:",
-        color=config["success"]
-    )
-    hero_life = int(full_hero['life']['amount'])
-    embed.add_field(
-        name="Здоровье",
-        value="{}".format(hero_life),
-        inline=False
-    )
-    try:
-        hero_damage = full_hero['weapons'][0]
-        embed.add_field(
-            name="Автоатаки",
-            value="{} урона".format(int(hero_damage['damage'])),
-            inline=True
-        )
-        embed.insert_field_at(
-            index=4,
-            name="Каждые",
-            value="{} сек.".format(hero_damage['period']),
-            inline=True
-        )
-        embed.insert_field_at(
-            index=5,
-            name="Дальность",
-            value="{} м.".format(hero_damage['range']),
-            inline=True
-        )
-    except:
-        print("Нет оружия")
-    return embed
-
-
 def heroes_description(hero, author):
     hero_json_file = 'hero/' + hero['name_json']
     with open(hero_json_file) as hero_json:
@@ -141,7 +102,7 @@ def heroes_description(hero, author):
     return embed
 
 
-def builds(hero, author):
+def builds(hero, author, embed=None):
     heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
     heroeshearth_top_url = 'https://heroeshearth.com/hero/'
     heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
@@ -150,35 +111,33 @@ def builds(hero, author):
     blizzhero_url = 'https://blizzardheroes.ru/guides/'
     default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
     heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
-    embed = Embed(
-        title='{} / {} : Билды и гайды'.format(hero['name_en'], hero['name_ru'], ),  # title="Описание героя:",
-        color=config["success"]
-    )
-    embed.add_field(
-        name="Последние патчноуты:",
-        value="{}".format(heroespn_url_full),
-        inline=False
-    )
-    embed.add_field(
-        name="HeroesHearth : Подборка билдов:",
-        value="{}{}".format(heroeshearth_top_url, default_hero_name.replace(' ', '-')),
-        inline=False
-    )
-    icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.', '-').replace("'",
-                                                                                                             "") + '-build-guide'
+    if embed is None:
+        embed = Embed(
+            title='{} / {} : Билды и гайды'.format(hero['name_en'], hero['name_ru'], ),  # title="Описание героя:",
+            color=config["success"]
+        )
+    icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.',
+                                                                                                       '-').replace("'",
+                                                                                                                    "") + '-build-guide'
     icy_veins_url_full = icy_veins_url_full.replace('--', '-')
     embed.add_field(
-        name="Icy Veins : Разбор героя:",
-        value="{}".format(icy_veins_url_full),
-        inline=False
-    )
-    embed.add_field(
-        name="Heroesfire : Пользовательские билды",
-        value="{}{}".format(heroesfire_url, default_hero_name.replace(' ', '-')),
+        name="Ссылки",
+        value="[Патчноуты героя]({})\n" \
+              "[Подборка билдов от HeroesHearth]({})\n" \
+              "[Разбор героя от IcyVeins]({})\n" \
+              "[Пользовательские билды HeroesFire]({})\n" \
+              "[Пользовательские билды BlizHero]({})".format(
+            heroespn_url_full,
+            heroeshearth_top_url + default_hero_name.replace(' ', '-'),
+            icy_veins_url_full,
+            heroesfire_url + default_hero_name.replace(' ', '-'),
+            blizzhero_url + default_hero_name.replace(' ', '')
+        ),
         inline=False
     )
     embed.set_footer(
         text=f"Информация для: {author}"  # context.message.author если использовать без slash
         # text=f"Текущий патч: {config['patch']}"
     )
+
     return embed
