@@ -65,7 +65,7 @@ Raynor:Джимми, Ковбой
 Rehgar:
 Rexxar:Миша
 Samuro:
-SgtHammer:Хаммер, Танк
+SgtHammer:Хаммер, Танк, Сержант, Кувалда
 Barbarian:
 Stitches:Стич, Пудж
 Stukov:
