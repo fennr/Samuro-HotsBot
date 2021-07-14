@@ -149,7 +149,8 @@
         "name_ru": "Декард Каин",
         "name_json": "deckard.json",
         "nick": [
-            "Дед"
+            "Дед",
+            "Декард"
         ]
     },
     "Dehaka": {
@@ -576,7 +577,9 @@
         "name_json": "sgthammer.json",
         "nick": [
             "Хаммер",
-            "Танк"
+            "Танк",
+            "Сержант",
+            "Кувалда"
         ]
     },
     "Barbarian": {

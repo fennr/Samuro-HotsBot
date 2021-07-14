@@ -220,6 +220,7 @@ class hots(commands.Cog, name="hots"):
         """
         :hero: - Описание героя, билды, разборы
         """
+        hero = None
         if len(args) == 0:
             embed = discord.Embed(
                 title="После команды введите имя героя на русском или английском",
@@ -231,8 +232,8 @@ class hots(commands.Cog, name="hots"):
                 inline=False
             )
         else:
-            hero = None
-            hero_list = find_hero2(args[0])
+            hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
+            hero_list = find_hero2(hero_name)
             if len(hero_list) == 1:
                 hero = hero_list[0]
             elif len(hero_list) == 0:
@@ -241,7 +242,6 @@ class hots(commands.Cog, name="hots"):
                     color=config["error"]
                 )
             elif len(hero_list) > 1:
-                hero = None
                 embed = discord.Embed(
                     title="Возможно вы имели в виду:",
                     color=config["warning"]

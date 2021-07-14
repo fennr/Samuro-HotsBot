@@ -78,7 +78,7 @@ class Heroes(Cog, name='heroes'):
         """
         :hero: - Полное описания героя
         """
-        global hero
+        hero = None
         if len(args) == 0:
             embed = Embed(
                 title="После команды введите имя героя на русском или английском",
@@ -90,7 +90,8 @@ class Heroes(Cog, name='heroes'):
                 inline=False
             )
         else:
-            hero_list = find_heroes(args[0])
+            hero_name = ' '.join(map(str, args)) # для имен из нескольких слов
+            hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
                 hero = hero_list[0]
             elif len(hero_list) == 0:
@@ -99,7 +100,6 @@ class Heroes(Cog, name='heroes'):
                     color=config["error"]
                 )
             elif len(hero_list) > 1:
-                hero = None
                 embed = Embed(
                     title="Возможно вы имели в виду:",
                     color=config["warning"]
@@ -137,6 +137,9 @@ class Heroes(Cog, name='heroes'):
                         menu_buttons
                     ],
                 )
+            await ctx.send(
+                embed=embed
+            )
 
 
     @command(name='streams')
