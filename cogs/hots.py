@@ -290,7 +290,7 @@ class hots(commands.Cog, name="hots"):
                 )
                 embed.add_field(
                     name="Описание",
-                    value="{}".format(hero_description),
+                    value="{}".format(cleanhtml(hero_description)),
                     inline=False
                 )
                 embed.add_field(
