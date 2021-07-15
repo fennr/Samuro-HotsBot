@@ -20,18 +20,23 @@ heroes_json_file = 'data/heroesdata.json'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 
-def last_pn(hero, author):
+def last_pn(hero=None, author=''):
     patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
 
     patchlink = 'https://heroespatchnotes.com/patch/summary.html'
 
     response = requests.get(patch_summary)
     tree = ET.fromstring(response.text)
-
-    embed = Embed(
-        title="{} / {} : Последний патч".format(hero['name_en'], hero['name_ru']),
-        color=config["info"]
-    )
+    if hero is not None:
+        embed = Embed(
+            title="{} / {} : Последний патч".format(hero['name_en'], hero['name_ru']),
+            color=config["info"]
+        )
+    else:
+        embed = Embed(
+            title="Патчноут",
+            color=config["info"]
+        )
     embed.add_field(
         name="Список всех патчей",
         value=f"{patchlink}",
