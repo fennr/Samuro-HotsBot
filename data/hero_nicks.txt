@@ -1,8 +1,8 @@
-Abathur:Аба, Шапка
-Alarak: свч, чсв
+Abathur:
+Alarak:
 Alexstrasza:
-Ana: Бабуля, Бабка
-Anduin:Андрей
+Ana: Бабка
+Anduin:
 Anubarak:Ануб, Жук
 Artanis:
 Arthas:
@@ -24,20 +24,20 @@ Falstad:Попугай
 Fenix:Паук
 Gall:
 Garrosh:
-Tinker:Газик, Газ
-Genji:Гей
+Tinker:Газик
+Genji:Генжи
 Greymane:Серый
 Guldan:
 Hanzo:
-Hogger:Хогер, хоггер
+Hogger:Хогер
 Illidan:Илюша
 Imperius:
 Jaina:
-Crusader:Джоха, джоана
+Crusader:
 Junkrat:Крыса
 Kaelthas:КТ, Кель, каэль, kael
 KelThuzad:КТЗ, келтузед, KTZ
-Kerrigan:Сара
+Kerrigan:
 Monk:Монк, монах, керамзит
 Leoric:Лео
 LiLi:Мохнатка, Панда
@@ -45,16 +45,16 @@ Wizard:Минг, Сорка
 LostVikings:Викинги, Олаф, Эрик, Балеог, tlv, vikings, потерявшиеся
 Medic:Моралес, Медик, morales
 Lucio:Лусек
-Dryad:Коза
+Dryad:Коза, Дриада
 Maiev:
-Malfurion:Малф
+Malfurion:
 MalGanis:Дезлорд
 Malthael:Смерть
 Medivh:Ворон
 MeiOW:
-Mephisto:Меф
-Muradin:Мура
-Murky:Мурки, Мурка
+Mephisto:
+Muradin:
+Murky:Мурки
 WitchDoctor:Nazibo
 Nova:Призрак, Вдова
 Orphea:
@@ -86,5 +86,5 @@ Necromancer:Zul
 Yrel:
 Zagara:
 Zarya:
-Zeratul:Зера, Неразим
-Zuljin:Троль
+Zeratul:Неразим
+Zuljin:Тролль

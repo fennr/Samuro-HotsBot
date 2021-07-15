@@ -18,9 +18,9 @@ class Slash(commands.Cog, name="slash"):
     async def slash_rotate(self, ctx: SlashContext):
         await heroes.Heroes.rotation(self, ctx)
 
-    @cog_ext.cog_slash(name="data", description="Полные данные по герою")
+    '''@cog_ext.cog_slash(name="data", description="Полные данные по герою")
     async def slash_data(self, ctx: SlashContext, hero):
-        await heroes.Heroes.data(self, ctx, hero)
+        await heroes.Heroes.data(self, ctx, hero)'''
 
     @cog_ext.cog_slash(name="streams", description="Онлайн стримы на твиче")
     async def slash_streams(self, ctx: SlashContext, cnt):

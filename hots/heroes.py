@@ -23,6 +23,79 @@ with open(gamestrings_json_file, encoding='utf-8') as ru_json:
     ru_data = json.load(ru_json)
 
 
+def args_not_found(command, lvl=''):
+    embed = Embed(
+        title="Ошибка! Введите все аргументы",
+        color=config["error"]
+    )
+    embed.add_field(
+        name="Пример:",
+        value=f"_{config['bot_prefix']}{command} Самуро {lvl}_",
+        inline=False
+    )
+    embed.set_footer(
+        text=f"#help для просмотра справки по командам"  # context.message.author если использовать без slash
+    )
+    return embed
+
+def hero_not_found(author):
+    embed = Embed(
+        title="Ошибка! Герой не найден",
+        color=config["error"]
+    )
+    embed.set_footer(
+        text=f"Информация для: {author}"
+    )
+    return embed
+
+def find_more_heroes(hero_list, author, command='hero', lvl=''):
+    embed = Embed(
+        title="Возможно вы имели в виду:",
+        color=config["warning"]
+    )
+    for wrong_hero in hero_list:
+        embed.add_field(
+            name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
+            value=f"Введи: {config['bot_prefix']}{command} {wrong_hero['name_ru']} {lvl}",
+            inline=False
+        )
+    embed.set_footer(
+        text=f"Информация для: {author}"
+    )
+    return embed
+
+
+def heroes_description_short(hero, author):
+    hero_json_file = 'hero/' + hero['name_json']
+    with open(hero_json_file) as hero_json:
+        hero_data = json.load(hero_json)
+    hero_name = hero_data['cHeroId']
+    hero_unit = ru_data['gamestrings']['unit']
+    hero_description = hero_unit['description'][hero_name]
+    hero_expandedrole = hero_unit['expandedrole'][hero_name]
+
+    full_hero = heroes_data[hero_data['cHeroId']]
+
+    hero_complexity = int(full_hero['ratings']['complexity'])
+
+    embed = Embed(
+        title='{} / {} ({})'.format(hero['name_en'], hero['name_ru'], hero_expandedrole),
+        # title="Описание героя:",
+        color=config["success"]
+    )
+    embed.add_field(
+        name="Описание",
+        value="{}".format(cleanhtml(hero_description)),
+        inline=False
+    )
+    embed.add_field(
+        name="Сложность",
+        value="{} / 10".format(hero_complexity),
+        inline=True
+    )
+    return embed
+
+
 def heroes_description(hero, author):
     hero_json_file = 'hero/' + hero['name_json']
     with open(hero_json_file) as hero_json:

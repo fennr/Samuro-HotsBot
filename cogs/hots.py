@@ -7,8 +7,9 @@ import requests
 
 import discord
 from discord.ext import commands
-from hots.function import add_thumbnail
-from hots.heroes import builds
+from hots.function import add_thumbnail, cleanhtml, per_lvl, find_heroes
+from hots.heroes import builds, hero_not_found, find_more_heroes, heroes_description_short, args_not_found
+from hots.talents import talents, wrong_talent_lvl, read_talent_lvl
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
 
@@ -54,22 +55,6 @@ def create_ru_list_heroes(filename):
                 ru_heroes_list.append(heroes)
 
     return ru_heroes_list
-
-
-def find_hero(hero_name):
-    """
-    Поиск героя по имени на русском или английском
-
-    :param hero_name:Имя героя (string)
-    :return: Имя героя (string)
-    """
-    hero_name = hero_name.capitalize()
-    stlk_file = 'data/stlk_builds.txt'
-    heroes_list = create_ru_list_heroes(stlk_file)
-    for hero in heroes_list:
-        if (hero['name_ru'] == hero_name) or (hero['name'] == hero_name) or (hero['name_en'] == hero_name):
-            return hero
-    return None
 
 
 def find_hero2(hero_name, allowed_error=5):
@@ -119,46 +104,12 @@ def find_wrong_hero(hero_name):
     return wrong_list
 
 
-def cleanhtml(raw_html):
-    """
-    Удаляет html теги из текста
-
-    :param raw_html: Строка
-    :return: Строка без </.*?>
-    """
-    cleanr = re.compile('<.*?>')
-    cleantext = re.sub(cleanr, '', raw_html)
-    return per_lvl(cleantext)
-
-
-def per_lvl(raw_text):
-    """
-    Заменяет ~~ на проценты в тексте
-
-    :param raw_text: Строка с ~~*~~
-    :return: Строка с % за уровень
-    """
-    match = re.search('~~.{3,5}~~', raw_text)
-    if match:
-        cleanr = re.compile('~~.{3,5}~~')
-        left, dig, right = raw_text.split('~~', maxsplit=2)
-        dig = float(dig) * 100
-        cleantext = re.sub(cleanr, '(+{}% за лвл)'.format(dig), raw_text)
-        return cleantext
-    else:
-        return raw_text
-
-
-# Here we name the cog and create a new class for the cog.
-
 class hots(commands.Cog, name="hots"):
 
     def __init__(self, bot):
         self.bot = bot
 
     guild_ids = [845658540341592096]  # Put your server ID in this array.
-
-    # Here you can just add your own commands, you'll always need to provide "self" as first parameter.
 
     @commands.command(name="patchnotes")
     async def hots_notes(self, context):
@@ -199,7 +150,7 @@ class hots(commands.Cog, name="hots"):
                 herolinks = ''
                 for link in soup.findAll('a'):
                     hero_url = link.get('href')
-                    hero = find_hero(link.text)
+                    hero = find_heroes(link.text)
                     if hero is not None:
                         herolinks = herolinks + '[' + hero['name_ru'] + '](' + hero_url + '), '
                         # print('Герой: {} \nПоследние изменения: {}'.format(hero['name_ru'], hero_url))
@@ -222,85 +173,20 @@ class hots(commands.Cog, name="hots"):
         """
         hero = None
         if len(args) == 0:
-            embed = discord.Embed(
-                title="После команды введите имя героя на русском или английском",
-                color=config["error"]
-            )
-            embed.add_field(
-                name="Пример:",
-                value=f"_{config['bot_prefix']}hero Самуро_",
-                inline=False
-            )
+            embed = args_not_found('hero')
         else:
             hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
-            hero_list = find_hero2(hero_name)
+            hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
                 hero = hero_list[0]
-            elif len(hero_list) == 0:
-                embed = discord.Embed(
-                    title="Ошибка! Герой не найден",
-                    color=config["error"]
-                )
             elif len(hero_list) > 1:
-                embed = discord.Embed(
-                    title="Возможно вы имели в виду:",
-                    color=config["warning"]
-                )
-                for wrong_hero in hero_list:
-                    embed.add_field(
-                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-                        value=f"Введи: {config['bot_prefix']}hero {wrong_hero['name_ru']}",
-                        inline=False
-                    )
-                embed.set_footer(
-                    # text=f"Информация для {context.author}"
-                    text=f"Текущий патч: {config['patch']}"
-                )
+                embed = find_more_heroes(hero_list, context.author)
             if hero is not None:
-                with open(heroes_json_file) as heroes_json:
-                    heroes_data = json.load(heroes_json)
-                with open(gamestrings_json_file, encoding='utf-8') as ru_json:
-                    ru_data = json.load(ru_json)
-                hero_json_file = 'hero/' + hero['name_json']
-                with open(hero_json_file) as hero_json:
-                    hero_data = json.load(hero_json)
-                hero_name = hero_data['cHeroId']
-                hero_unit = ru_data['gamestrings']['unit']
-                hero_description = hero_unit['description'][hero_name]
-                # hero_difficulty = hero_unit['difficulty'][hero_name]
-                hero_expandedrole = hero_unit['expandedrole'][hero_name]
-
-                full_hero = heroes_data[hero_data['cHeroId']]
-                try:
-                    hero_damage = full_hero['weapons'][0]
-                except:
-                    pass
-                hero_complexity = int(full_hero['ratings']['complexity'])
-                hero_life = int(full_hero['life']['amount'])
-                hero_energy = None
-                try:
-                    hero_energy = full_hero['energy']['amount']
-                    hero_energytype = hero_unit['energytype'][hero_name]
-                except:
-                    pass
-                embed = discord.Embed(
-                    title='{} / {} ({})'.format(hero['name_en'], hero['name_ru'], hero_expandedrole),
-                    # title="Описание героя:",
-                    color=config["success"]
-                )
-                embed.add_field(
-                    name="Описание",
-                    value="{}".format(cleanhtml(hero_description)),
-                    inline=False
-                )
-                embed.add_field(
-                    name="Сложность",
-                    value="{} / 10".format(hero_complexity),
-                    inline=True
-                )
+                embed = heroes_description_short(hero, context.author)
                 embed = builds(hero, context.author, embed)
                 embed = add_thumbnail(hero, embed)
-
+            else:
+                embed = hero_not_found(context.author)
         await context.send(embed=embed)
 
     @commands.command(name="skill")
@@ -308,50 +194,24 @@ class hots(commands.Cog, name="hots"):
         """
         :hero: - Скиллы героя
         """
-        # json с данными по всем героям
-        with open(heroes_json_file) as heroes_json:
-            heroes_data = json.load(heroes_json)
-
-        # json с внутриигровыми строками перевода текста
-        with open(gamestrings_json_file, encoding='utf-8') as ru_json:
-            ru_data = json.load(ru_json)
-
         if len(args) == 0:
-            embed = discord.Embed(
-                title="После команды введите имя героя",
-                color=config["error"]
-            )
-            embed.add_field(
-                name="Пример:",
-                value=f"_{config['bot_prefix']}skill Самуро_",
-                inline=False
-            )
+            embed = args_not_found('skill')
         else:
             hero = None
-            hero_list = find_hero2(args[0])
+            hero_list = find_heroes(args[0])
             if len(hero_list) == 1:
                 hero = hero_list[0]
-            elif len(hero_list) > 1:
-                embed = discord.Embed(
-                    title="Возможно вы имели в виду:",
-                    color=config["warning"]
-                )
-                for wrong_hero in hero_list:
-                    embed.add_field(
-                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-                        value=f"Введи: _{config['bot_prefix']}skill {wrong_hero['name_ru']}_",
-                        inline=False
-                    )
-                embed.set_footer(
-                    # text=f"Информация для {context.author}"
-                    text=f"Текущий патч: {config['patch']}"
-                )
             elif len(hero_list) == 0:
-                embed = discord.Embed(
-                    title="Ошибка! Герой не найден",
-                    color=config["error"]
-                )
+                embed = hero_not_found(context.author)
+            elif len(hero_list) > 1:
+                embed = find_more_heroes(hero_list, context.author, 'skill')
             if hero is not None:
+                # json с данными по всем героям
+                with open(heroes_json_file) as heroes_json:
+                    heroes_data = json.load(heroes_json)
+                # json с внутриигровыми строками перевода текста
+                with open(gamestrings_json_file, encoding='utf-8') as ru_json:
+                    ru_data = json.load(ru_json)
                 # json по отдельному герою, содержит более детальную информацию
                 hero_json_file = 'hero/' + hero['name_json']
                 with open(hero_json_file) as hero_json:
@@ -423,6 +283,8 @@ class hots(commands.Cog, name="hots"):
                 embed.set_footer(
                     text=f"Текущий патч: {config['patch']}"
                 )
+            else:
+                embed = hero_not_found(context.author)
         await context.send(embed=embed)
 
     @commands.command(name="talent")
@@ -430,90 +292,23 @@ class hots(commands.Cog, name="hots"):
         """
         :hero: :lvl: - Таланты героя :lvl: уровня
         """
-        # json с данными по всем героям
-        with open(heroes_json_file) as heroes_json:
-            heroes_data = json.load(heroes_json)
-
-        # json с внутриигровыми строками перевода текста
-        with open(gamestrings_json_file, encoding='utf-8') as ru_json:
-            ru_data = json.load(ru_json)
         if len(args) < 2:
-            embed = discord.Embed(
-                title="После команды введите имя героя и уровень таланта",
-                color=config["error"]
-            )
-            embed.add_field(
-                name="Пример:",
-                value=f"_{config['bot_prefix']}talent Самуро 13_",
-                inline=False
-            )
+            embed = args_not_found('talent', ':lvl:')
         else:
             hero = None
-            hero_list = find_hero2(args[0])
+            hero_name, lvl = read_talent_lvl(args)
+            hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
                 hero = hero_list[0]
             elif len(hero_list) > 1:
-                embed = discord.Embed(
-                    title="Возможно вы имели в виду:",
-                    color=config["warning"]
-                )
-                for wrong_hero in hero_list:
-                    embed.add_field(
-                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-                        value=f"_Введи: {config['bot_prefix']}talent {wrong_hero['name_ru']} лвл_",
-                        inline=False
-                    )
-                embed.set_footer(
-                    # text=f"Информация для {context.author}"
-                    text=f"Текущий патч: {config['patch']}"
-                )
-            elif len(hero_list) == 0:
-                embed = discord.Embed(
-                    title="Ошибка! Герой не найден",
-                    color=config["error"]
-                )
+                embed = find_more_heroes(hero_list, context.author, 'talent', ':lvl:')
             if hero is not None:
-                # json по отдельному герою, содержит более детальную информацию
-                hero_json_file = 'hero/' + hero['name_json']
-                with open(hero_json_file) as hero_json:
-                    hero_data = json.load(hero_json)
-                full_hero = heroes_data[hero_data['cHeroId']]
-                level = 'level' + args[1]
-                talents = None
                 try:
-                    talents = full_hero['talents'][level]
+                    embed = talents(hero, lvl, context.author)
                 except:
-                    embed = discord.Embed(
-                        title="Ошибка! Выберете правильный уровень",
-                        color=config["error"]
-                    )
-                embed = discord.Embed(
-                    title="Таланты героя {} на {} уровне:".format(hero['name_ru'], args[1]),
-                    color=config["success"]
-                )
-                if talents is not None:
-                    for i in range(len(talents)):
-                        talent_name = hero_data['talents'][args[1]][i]['name']
-                        talent_nameID = talents[i]['nameId']
-                        talent_buttonID = talents[i]['buttonId']
-                        talent_hotkey = talents[i]['abilityType']
-                        full_talent_name_en = talent_nameID + '|' + \
-                                              talent_buttonID + '|' + talent_hotkey + '|False'
-                        talent_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
-                        talent_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
-                        embed.add_field(
-                            name='{} / {} ({})'.format(talent_name, talent_name_ru, talent_hotkey),
-                            value="{}".format(talent_desc_ru),
-                            inline=False
-                        )
-                        embed.set_footer(
-                            text=f"Текущий патч: {config['patch']}"
-                        )
-                else:
-                    embed = discord.Embed(
-                        title="Ошибка! Выберете правильный уровень таланта",
-                        color=config["error"]
-                    )
+                    embed = wrong_talent_lvl(context.author)
+            else:
+                embed = hero_not_found(context.author)
         await context.send(embed=embed)
 
 

@@ -24,6 +24,28 @@ with open(gamestrings_json_file, encoding='utf-8') as ru_json:
     ru_data = json.load(ru_json)
 
 
+def read_talent_lvl(input):
+    hero_name = ''
+    for word in input:  # для героев из нескольких слов
+        if not word.isdigit():
+            hero_name += word + ' '
+        else:
+            hero_name = hero_name[:-1]
+            lvl = word
+            break
+    return hero_name, lvl
+
+def wrong_talent_lvl(author):
+    embed = Embed(
+        title="Ошибка! Выберете правильный уровень таланта",
+        color=config["error"]
+    )
+    embed.set_footer(
+        text=f"Информация для: {author}"  # context.message.author если использовать без slash
+    )
+    return embed
+
+
 def talents(hero, lvl, author):
     lvl = str(lvl)
     hero_json_file = 'hero/' + hero['name_json']

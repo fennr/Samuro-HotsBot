@@ -7,7 +7,7 @@ from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
 from hots.function import open_hero, find_heroes
-from hots.heroes import heroes_description, builds
+from hots.heroes import heroes_description, builds, hero_not_found, find_more_heroes
 from hots.skills import skill, skills
 from hots.talents import talents
 from hots.patchnotes import last_pn
@@ -95,25 +95,9 @@ class Heroes(Cog, name='heroes'):
             if len(hero_list) == 1:
                 hero = hero_list[0]
             elif len(hero_list) == 0:
-                embed = Embed(
-                    title="Ошибка! Герой не найден",
-                    color=config["error"]
-                )
+                embed = hero_not_found(ctx.author)
             elif len(hero_list) > 1:
-                embed = Embed(
-                    title="Возможно вы имели в виду:",
-                    color=config["warning"]
-                )
-                for wrong_hero in hero_list:
-                    embed.add_field(
-                        name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-                        value=f"Введи: {config['bot_prefix']}hero {wrong_hero['name_ru']}",
-                        inline=False
-                    )
-                embed.set_footer(
-                    text=f"Информация для: {ctx.author}"
-                    # text=f"Текущий патч: {config['patch']}"
-                )
+                embed = find_more_heroes(hero_list, ctx.author, 'data')
             if hero is not None:
                 embed = builds(hero, ctx.author)
                 default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
@@ -137,9 +121,10 @@ class Heroes(Cog, name='heroes'):
                         menu_buttons
                     ],
                 )
-            await ctx.send(
-                embed=embed
-            )
+            else:
+                await ctx.send(
+                    embed=embed
+                )
 
 
     @command(name='streams')
