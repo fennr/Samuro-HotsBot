@@ -23,8 +23,9 @@ class Help(commands.Cog, name="help"):
         """
         prefix = config["bot_prefix"]
         descr = "Дополнительные параметры:\n" \
-                "**:hero:** - имя героя (ru/eng)\n" \
+                "**:hero:** - имя героя (ru|eng)\n" \
                 "**:lvl:** - уровень героя\n" \
+                "**:btn:** - клавиши способности (q|w|e|r|d)\n" \
                 "**:cnt:** - количество (необ.)"
         if not isinstance(prefix, str):
             prefix = prefix[0]

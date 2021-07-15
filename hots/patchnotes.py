@@ -37,11 +37,6 @@ def last_pn(hero=None, author=''):
             title="Патчноут",
             color=config["info"]
         )
-    embed.add_field(
-        name="Список всех патчей",
-        value=f"{patchlink}",
-        inline=False
-    )
     response = requests.get('https://heroespatchnotes.com/patch/summary.html')
     soup = BeautifulSoup(response.text, 'html.parser')
     embed.add_field(

@@ -221,17 +221,17 @@ class Heroes(Cog, name='heroes'):
             components[0][0] = Button(style=ButtonStyle.grey, label=basic_label, disabled=True)
             components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
         if res.component.label == basic_label:
-            embed = skills(hero, 'basic', author)
+            embed = skill(hero, author, 'basic')
             components = skill_components
             components[0][0] = Button(style=ButtonStyle.grey, label=basic_label, disabled=True)
             components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
         if res.component.label == heroic_label:
-            embed = skills(hero, 'heroic', author)
+            embed = skill(hero, author, 'heroic')
             components = skill_components
             components[0][1] = Button(style=ButtonStyle.grey, label=heroic_label, disabled=True)
             components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
         if res.component.label == trait_label:
-            embed = skills(hero, 'trait', author)
+            embed = skill(hero, author, 'trait')
             components = skill_components
             components[0][2] = Button(style=ButtonStyle.grey, label=trait_label, disabled=True)
             components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)

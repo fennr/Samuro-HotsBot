@@ -5,7 +5,6 @@ import json
 from discord import Embed
 from hots.function import open_hero, find_heroes, cleanhtml, per_lvl
 
-
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
 else:
@@ -23,12 +22,41 @@ with open(heroes_json_file) as heroes_json:
 with open(gamestrings_json_file, encoding='utf-8') as ru_json:
     ru_data = json.load(ru_json)
 
-def skill(hero, author):
-    # сюда добавить проверки ввода аргументов, чтобы автоматом выводить нужный тип
-    embed = skills(hero, 'basic', author)
+def wrong_btn_key():
+    embed = Embed(
+        title="Ошибка выбора клавиши".format(),
+        color=config["error"]
+    )
+    embed.add_field(
+        name='После имени введите клавиши нужных способности (можно на русском)',
+        value="Например: #skill самуро qwe|йцу",
+        inline=False
+    )
     return embed
 
-def skills(hero, ability_type, author):
+def read_skill_btn(input):
+    if len(input) == 1:
+        hero_name = input[0]
+        btn = 'QWE'
+    else:
+        hero_name = ' '.join(map(str, input[:-1]))
+        btn = input[-1]
+    return hero_name, btn
+
+
+def skills(hero, author, types=None, btn_key=None):
+    if types is None:
+        types = ['basic']
+    embed = Embed(
+        title="{} / {} : Cпособности".format(hero['name_en'], hero['name_ru']),
+        color=config["success"]
+    )
+    for elem in types:
+        embed = skill(hero, author, elem, embed, btn_key)
+    return embed
+
+
+def skill(hero, author=None, ability_type='basic', embed=None, key=None):
     hero_json_file = 'hero/' + hero['name_json']
     with open(hero_json_file) as hero_json:
         hero_data = json.load(hero_json)
@@ -40,17 +68,32 @@ def skills(hero, ability_type, author):
         type_text = 'Героические'
     else:
         type_text = 'Особые'
-    embed = Embed(
-        title="{} / {} : {} способности".format(hero['name_en'], hero['name_ru'], type_text),
-        color=config["success"]
-    )
+    if embed is None:
+        embed = Embed(
+            title="{} / {} : {} cпособности".format(hero['name_en'], hero['name_ru'], type_text),
+            color=config["success"]
+        )
     for i in range(len(ability)):  # считываем все абилки
         # считываем файл с переводом
         ability_name = hero_data['abilities'][hero_data['hyperlinkId']][i]['name']
         ability_nameID = ability[i]['nameId']
         ability_buttonID = ability[i]['buttonId']
         ability_hotkey = ability[i]['abilityType']
-        try:
+        if key is not None:  # если есть аргумент с кнопками
+            abil_keys = key.upper()
+            good_key = {'Й': 'Q', 'Ц': 'W', 'У': 'E', 'В': 'D', 'К': 'R'}
+            keys = []
+            for abil_key in abil_keys:
+                if abil_key in good_key.keys():
+                    abil_key = good_key.get(abil_key)
+                if abil_key not in good_key.values():
+                    embed = wrong_btn_key()
+                abil_key = 'Trait' if abil_key == 'D' else abil_key
+                abil_key = 'Heroic' if abil_key == 'R' else abil_key
+                keys.append(abil_key)
+            if ability_hotkey not in keys:
+                continue
+        try:  # может быть True и False
             full_talent_name_en = ability_nameID + '|' + \
                                   ability_buttonID + '|' + ability_hotkey + '|False'
             ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
@@ -80,4 +123,3 @@ def skills(hero, ability_type, author):
         # text=f"Текущий патч: {config['patch']}"
     )
     return embed
-
