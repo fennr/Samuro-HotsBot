@@ -18,6 +18,64 @@ else:
 short_patch = config["patch"][-5:]
 
 
+def ranked():
+    url = 'https://nexuscompendium.com/api/currently/ranked'
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
+    response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
+    data = response.json()
+    start_date = data['Ranked']['StartDate']
+    end_date = data['Ranked']['EndDate']
+    name = data['Ranked']['Name'].replace('Season', 'сезон')
+    embed = Embed(
+        title='{} '.format(name),
+        color=config["info"]
+    )
+    embed.add_field(
+        name="Начало сезона",
+        value=f"{start_date}",
+        inline=True
+    )
+    embed.add_field(
+        name="Конец сезона",
+        value=f"{end_date}",
+        inline=True
+    )
+    embed.set_footer(
+        text=f"Текущий патч: {config['patch']}"
+    )
+    return embed
+
+
+
+def sales():
+    url = 'https://nexuscompendium.com/api/currently/sales'
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
+    response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
+    data = response.json()
+    start_date = data['Sale']['StartDate']
+    end_date = data['Sale']['EndDate']
+    heroes = data['Sale']['Heroes']
+    text = ''
+    embed = Embed(
+        title='{} : {} - {}'.format('Скидки на героев', start_date, end_date),
+        color=config["info"]
+    )
+    count = 1
+    for hero in heroes:
+        print(hero['GemPriceNormal'])
+        hero_name = open_hero(hero['Name'])
+        text += str(count) + '. ' + hero_name['name_ru'] + ' - ' + str(hero['GemPrice']) + ' gems\n'
+        count += 1
+    embed.add_field(
+        name="Текущие скидки",
+        value=f"{text}"
+    )
+    embed.set_footer(
+        text=f"Текущий патч: {config['patch']}"
+    )
+    return embed
+
+
 def weekly_rotation():
     url = 'https://nexuscompendium.com/api/currently/herorotation'
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
@@ -28,7 +86,7 @@ def weekly_rotation():
     heroes = data['RotationHero']['Heroes']
     embed = Embed(
         title='{} : {} - {}'.format('Ротация героев', start_date, end_date),
-        color=config["success"]
+        color=config["info"]
     )
     hero_links = ''
     for hero in heroes:
@@ -45,3 +103,6 @@ def weekly_rotation():
     )
 
     return embed
+
+if __name__ == '__main__':
+    heroes = sales()

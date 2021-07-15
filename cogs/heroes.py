@@ -11,7 +11,7 @@ from hots.heroes import heroes_description, builds, hero_not_found, find_more_he
 from hots.skills import skill, skills
 from hots.talents import talents
 from hots.patchnotes import last_pn
-from hots.nexuscompendium import weekly_rotation
+from hots.nexuscompendium import weekly_rotation, sales, ranked
 from hots.twitch import get_streams
 
 # Only if you want to use variables that are in the config.yaml file.
@@ -62,7 +62,7 @@ class Heroes(Cog, name='heroes'):
         self.bot = bot
 
 
-    @command(name='rotate')
+    @command(name='weekly')
     async def rotation(self, ctx):
         """
         -  Список героев еженедельной ротации
@@ -72,6 +72,27 @@ class Heroes(Cog, name='heroes'):
             embed=embed
         )
 
+
+    @command(name='sales')
+    async def sales(self, ctx):
+        """
+        -  Список скидок на героев
+        """
+        embed = sales()
+        await ctx.send(
+            embed=embed
+        )
+
+
+    @command(name='ranked')
+    async def ranked(self, ctx):
+        """
+        -  Информация о сроках текущего сезона
+        """
+        embed = ranked()
+        await ctx.send(
+            embed=embed
+        )
 
     @command(name='data')
     async def data(self, ctx, *args):
