@@ -18,6 +18,10 @@ class Slash(commands.Cog, name="slash"):
     async def slash_rotate(self, ctx: SlashContext):
         await heroes.Heroes.rotation(self, ctx)
 
+    @cog_ext.cog_slash(name="ban", description="Список рекомендуемых к бану героев")
+    async def slash_ban(self, ctx: SlashContext):
+        await heroes.Heroes.ban_list(self, ctx)
+
     '''@cog_ext.cog_slash(name="data", description="Полные данные по герою")
     async def slash_data(self, ctx: SlashContext, hero):
         await heroes.Heroes.data(self, ctx, hero)'''
