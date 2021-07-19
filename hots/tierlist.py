@@ -31,10 +31,10 @@ def ban_heroes(hero=None, author=None):
         next_element = hero.find_next_sibling("span")
         hero = open_hero(next_element.text)
         if isinstance(hero, dict):
-            text += f"{count}. {hero['name_ru']}\n"
+            text += f"* {hero['name_ru']}\n"
             count += 1
     embed.add_field(
-        name="На основе статистики мастер+",
+        name="На основе общей статистики",
         value=f"{text}",
         inline=False
     )
@@ -43,3 +43,7 @@ def ban_heroes(hero=None, author=None):
             text=f"Информация для: {author}"
         )
     return embed
+
+
+if __name__ == '__main__':
+    pass
