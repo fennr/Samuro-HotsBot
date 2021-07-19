@@ -13,6 +13,7 @@ from hots.talents import talents
 from hots.patchnotes import last_pn
 from hots.nexuscompendium import weekly_rotation, sales, ranked
 from hots.twitch import get_streams
+from hots.tierlist import ban_heroes
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -72,6 +73,16 @@ class Heroes(Cog, name='heroes'):
             embed=embed
         )
 
+
+    @command(name='ban')
+    async def ban_list(self, ctx):
+        """
+        - Список героев рекомендуемых к бану
+        """
+        embed = ban_heroes()
+        await ctx.send(
+            embed=embed
+        )
 
     @command(name='sales')
     async def sales(self, ctx):

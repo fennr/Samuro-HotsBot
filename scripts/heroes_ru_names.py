@@ -1,6 +1,8 @@
 import json
 import os
-
+import requests
+from bs4 import BeautifulSoup
+from hots.function import open_hero
 
 def create_ru_list_heroes(filename):
     """
@@ -25,6 +27,7 @@ def create_ru_list_heroes(filename):
 
     return ru_heroes_list
 
+
 def create_nick_list(filename):
     nick_list = []
     with open(filename, 'r', encoding='utf-8') as heroes_txt:
@@ -38,6 +41,36 @@ def create_nick_list(filename):
                 hero_nick = dict(cHeroId=cHeroId, nick=nicks)
                 nick_list.append(hero_nick)
     return nick_list
+
+
+def create_tier_dict():
+    tier_dict = {
+        1: 'S',
+        2: 'A',
+        3: 'B',
+        4: 'C',
+        5: 'D',
+    }
+    # Герои, записанные иначе
+    bug_names = {
+        'Deckard Cain': 'Deckard'
+    }
+
+    response = requests.get('https://www.icy-veins.com/heroes/heroes-of-the-storm-general-tier-list')
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+    tiers_table_html = soup.find_all('div', attrs={'class': 'htl'})
+    count = 1
+    tier_hero_list = []
+    for hero_tier in tiers_table_html:
+        hero_list = hero_tier.find_all('span', attrs={'class': 'hp_50x50'})  # htl_ban_true
+        for heroes in hero_list:
+            next_element = heroes.find_next_sibling("span")
+            name = bug_names.setdefault(next_element.text, next_element.text)
+            tier_hero_list.append([name, tier_dict[count]])
+        count += 1
+    tier_hero_dict = dict(tier_hero_list)
+    return tier_hero_dict
 
 def find_hero(hero_name):
     """
@@ -55,7 +88,6 @@ def find_hero(hero_name):
     return None
 
 
-
 def find_nick(hero_name):
     nicknames_file = 'data/hero_nicks.txt'
     nick_list = create_nick_list(nicknames_file)
@@ -68,7 +100,7 @@ def find_nick(hero_name):
 def create_heroes_ru_data():
     full_dict = {}
     tree = os.walk('hero')
-
+    tier_dict = create_tier_dict()
     heroes_json_file = 'data/heroesdata_ru.json'
     f = open(heroes_json_file, 'w')
     f.close()
@@ -96,22 +128,26 @@ def create_heroes_ru_data():
             try:
                 hero = find_hero(hero_data['cHeroId'])
                 hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
-                                 name_json=hero_json, nick=hero_nick['nick'])
+                                 name_json=hero_json, role=hero_data['expandedRole'],
+                                 tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
             except:
                 try:
                     hero = find_hero(hero_data['name'])
                     hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
-                                     name_json=hero_json, nick=hero_nick['nick'])
+                                     name_json=hero_json, role=hero_data['expandedRole'],
+                                     tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
                 except:
                     try:
                         hero = find_hero(hero_data['hyperlinkId'])
                         hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
-                                         name_json=hero_json, nick=hero_nick['nick'])
+                                         name_json=hero_json, role=hero_data['expandedRole'],
+                                         tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
                     except:
                         print('{}, {}, {}'.format(hero_data['cHeroId'], hero_data['name'], hero_data['hyperlinkId'] ))
                         #print(hero)
                         hero_dict = dict(name_en=hero_data['name'], name_ru='Error',
-                                         name_json=hero_json, nick=hero_nick['nick'])
+                                         name_json=hero_json, role=hero_data['expandedRole'],
+                                         tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
 
             full_dict[hero_data['cHeroId']] = hero_dict
 

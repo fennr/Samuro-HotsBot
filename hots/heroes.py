@@ -93,6 +93,11 @@ def heroes_description_short(hero, author):
         value="{} / 10".format(hero_complexity),
         inline=True
     )
+    embed.add_field(
+        name="Позиция в тир листе",
+        value="Тир {}".format(hero['tier']),
+        inline=True
+    )
     return embed
 
 
