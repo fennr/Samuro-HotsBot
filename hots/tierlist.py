@@ -16,6 +16,7 @@ else:
 short_patch = config["patch"][-5:]
 
 
+
 def ban_heroes(hero=None, author=None):
     response = requests.get('https://www.icy-veins.com/heroes/heroes-of-the-storm-general-tier-list')
     soup = BeautifulSoup(response.text, 'html.parser')

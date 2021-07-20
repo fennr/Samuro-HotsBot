@@ -54,6 +54,7 @@ class general(commands.Cog, name="general"):
         )
         await context.send(embed=embed)
 
+
     @commands.command(name="invite")
     async def invite(self, context):
         """

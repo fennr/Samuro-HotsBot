@@ -13,6 +13,7 @@ import sys
 
 import discord
 import yaml
+import json
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand # Importing the newly installed library.
@@ -103,8 +104,13 @@ async def on_message(message):
     if message.author == bot.user or message.author.bot:
         return
     # Ignores if a command is being executed by a blacklisted user
-
+    with open("blacklist.json") as file:
+        blacklist = json.load(file)
+    if message.author.id in blacklist["ids"]:
+        print(f"banned {message.author}")
+        return
     if message.author.id in config["blacklist"]:
+        print(f"banned {message.author}")
         return
     await bot.process_commands(message)
 

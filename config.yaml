@@ -6,10 +6,10 @@ application_id: "664368184790614016" #prod
 patch: "2.54.2.85311"
 owners:
   - 123456789
-  - 987654321
+  - 196583204164075520
 blacklist:
   - 123456789
-  - 987654321
+  - 123456789
 main_color: 0xD75BF4
 error: 0xE02B2B
 success: 0x42F56C

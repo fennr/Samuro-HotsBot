@@ -38,6 +38,7 @@ def args_not_found(command, lvl=''):
     )
     return embed
 
+
 def hero_not_found(author):
     embed = Embed(
         title="Ошибка! Герой не найден",
@@ -47,6 +48,7 @@ def hero_not_found(author):
         text=f"Информация для: {author}"
     )
     return embed
+
 
 def find_more_heroes(hero_list, author, command='hero', lvl=''):
     embed = Embed(
@@ -78,6 +80,13 @@ def heroes_description_short(hero, author):
 
     hero_complexity = int(full_hero['ratings']['complexity'])
 
+    tier_desc = {
+        'S': '(лучший выбор)',
+        'A': '(сильный выбор)',
+        'B': '(достойный выбор)',
+        'C': '(ситуативный выбор)'
+    }
+
     embed = Embed(
         title='{} / {} ({})'.format(hero['name_en'], hero['name_ru'], hero_expandedrole),
         # title="Описание героя:",
@@ -94,8 +103,8 @@ def heroes_description_short(hero, author):
         inline=True
     )
     embed.add_field(
-        name="Позиция в тир листе",
-        value="Тир {}".format(hero['tier']),
+        name="Позиция в мете",
+        value="Тир {} {}".format(hero['tier'], tier_desc.setdefault(hero['tier'])),
         inline=True
     )
     return embed
