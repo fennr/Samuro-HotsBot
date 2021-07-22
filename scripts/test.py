@@ -1,9 +1,9 @@
-import requests
 import json
-import urllib.request
 import xml.etree.ElementTree as ET
-from pyxdameraulevenshtein import damerau_levenshtein_distance, normalized_damerau_levenshtein_distance
+
+import requests
 from bs4 import BeautifulSoup
+from pyxdameraulevenshtein import damerau_levenshtein_distance
 
 patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
 stlk_file = 'c:\\Users\\Viktor\\Documents\\GitHub\\discord-bot\\data\\stlk_builds.txt'
@@ -80,19 +80,18 @@ def find_hero2(hero_name):
         for hero, data in heroes_ru_list.items():
             if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
                     (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i):
-                #print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i))
+                # print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i))
                 return data
             for nick in data['nick']:
-                if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i+1:
-                    #print('{} -> {} -> {}  | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i+1))
+                if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i + 1:
+                    # print('{} -> {} -> {}  | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'], i+1))
                     return data
     return None
 
 
 if __name__ == '__main__':
-    #hero = find_hero2('Самуро')
-    #print(hero)
+    # hero = find_hero2('Самуро')
+    # print(hero)
     response = requests.get('https://heroespatchnotes.com/patch/summary.html')
     soup = BeautifulSoup(response.text, 'html.parser')
     print(soup.ol.li.a)
-

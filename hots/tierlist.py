@@ -1,9 +1,10 @@
 import os
 import sys
-import yaml
-from discord import Embed
+
 import requests
+import yaml
 from bs4 import BeautifulSoup
+from discord import Embed
 
 from hots.function import open_hero
 
@@ -14,7 +15,6 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 short_patch = config["patch"][-5:]
-
 
 
 def ban_heroes(hero=None, author=None):
@@ -32,7 +32,7 @@ def ban_heroes(hero=None, author=None):
         next_element = hero.find_next_sibling("span")
         hero = open_hero(next_element.text)
         if isinstance(hero, dict):
-            text += f"* {hero['name_ru']}\n"
+            text += f"· {hero['name_ru']}\n"
             count += 1
     embed.add_field(
         name="На основе общей статистики",

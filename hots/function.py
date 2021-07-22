@@ -1,5 +1,6 @@
-import re
 import json
+import re
+
 from pyxdameraulevenshtein import damerau_levenshtein_distance
 
 heroes_ru_json_file = 'data/heroesdata_ru.json'

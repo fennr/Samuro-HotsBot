@@ -1,9 +1,9 @@
 import os
 import sys
-import yaml
 
-from twitchAPI.twitch import Twitch
+import yaml
 from discord import Embed
+from twitchAPI.twitch import Twitch
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -11,7 +11,8 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-def get_streams(first = 5):
+
+def get_streams(first=5):
     twitch_app_key = 'podhxqero17w9mlhuxr67xt13dw10i'
     twitch_sec_token = '16lwbqc8b42eh67aq2m3c2lxnxkuy0'
     twitch = Twitch(twitch_app_key, twitch_sec_token)
@@ -30,10 +31,9 @@ def get_streams(first = 5):
         if count < first:
             link = '[' + stream['title'] + '](' + url + stream['user_login'] + ')'
             embed.add_field(
-                name=f"{count+1}. {stream['user_name']}",
+                name=f"{count + 1}. {stream['user_name']}",
                 value=f"{link}\nЗрителей: {stream['viewer_count']}",
                 inline=False
             )
             count += 1
     return embed
-

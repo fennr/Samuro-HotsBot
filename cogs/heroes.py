@@ -1,20 +1,20 @@
+import json
 import os
 import sys
+
 import yaml
-import json
 from discord import Embed
 from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
 from hots.function import open_hero, find_heroes
 from hots.heroes import heroes_description, builds, hero_not_found, find_more_heroes
-from hots.skills import skill, skills
-from hots.talents import talents
-from hots.patchnotes import last_pn
 from hots.nexuscompendium import weekly_rotation, sales, ranked
-from hots.twitch import get_streams
+from hots.patchnotes import last_pn
+from hots.skills import skill
+from hots.talents import talents
 from hots.tierlist import ban_heroes
-
+from hots.twitch import get_streams
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -26,7 +26,7 @@ else:
 short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata.json'
+heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 
 with open(heroes_json_file) as heroes_json:
     heroes_data = json.load(heroes_json)
@@ -63,7 +63,6 @@ class Heroes(Cog, name='heroes'):
     def __init__(self, bot):
         self.bot = bot
 
-
     @command(name='weekly')
     async def rotation(self, ctx):
         """
@@ -73,7 +72,6 @@ class Heroes(Cog, name='heroes'):
         await ctx.send(
             embed=embed
         )
-
 
     @command(name='ban')
     async def ban_list(self, ctx):
@@ -94,7 +92,6 @@ class Heroes(Cog, name='heroes'):
         await ctx.send(
             embed=embed
         )
-
 
     @command(name='ranked')
     async def ranked(self, ctx):
@@ -123,7 +120,7 @@ class Heroes(Cog, name='heroes'):
                 inline=False
             )
         else:
-            hero_name = ' '.join(map(str, args)) # для имен из нескольких слов
+            hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
             hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
                 hero = hero_list[0]
@@ -158,7 +155,6 @@ class Heroes(Cog, name='heroes'):
                 await ctx.send(
                     embed=embed
                 )
-
 
     @command(name='streams')
     async def streams(self, ctx, *args):

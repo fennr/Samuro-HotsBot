@@ -5,11 +5,11 @@ This is a template to create your own discord bot in python.
 Version: 2.7
 """
 
-import yaml
+import json
 import os
 import sys
-import json
 
+import yaml
 from discord import Embed, Member
 from discord.ext import commands
 

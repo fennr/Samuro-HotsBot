@@ -6,6 +6,7 @@ This is a template to create your own discord bot in python.
 Version: 2.5
 """
 
+import json
 import os
 import platform
 import random
@@ -13,10 +14,9 @@ import sys
 
 import discord
 import yaml
-import json
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
-from discord_slash import SlashCommand # Importing the newly installed library.
+from discord_slash import SlashCommand  # Importing the newly installed library.
 
 from scripts import heroes_ru_names
 
@@ -70,7 +70,7 @@ async def on_ready():
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
-    #print(f"All servers: {bot.guilds}")
+    # print(f"All servers: {bot.guilds}")
     print("-------------------")
     status_task.start()
 
@@ -124,7 +124,7 @@ async def on_command_completion(ctx):
     # {ctx.channel.id} {ctx.message.id}
     # {ctx.guild.name} {ctx.message.guild.id}
     print(
-        f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})") #{ctx.guild.name} {ctx.message.guild.id}
+        f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})")  # {ctx.guild.name} {ctx.message.guild.id}
 
 
 # The code in this event is executed every time a valid commands catches an error
@@ -154,7 +154,8 @@ async def on_command_error(context, error):
         await context.send(embed=embed)
     raise error
 
-#Генерируем файл с именами героев
+
+# Генерируем файл с именами героев
 heroes_ru_names.create_heroes_ru_data()
 # Run the bot with the token
 

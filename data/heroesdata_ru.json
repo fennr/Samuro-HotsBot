@@ -1,5 +1,6 @@
 {
     "Abathur": {
+        "name_id": "Abathur",
         "name_en": "Abathur",
         "name_ru": "Абатур",
         "name_json": "abathur.json",
@@ -10,6 +11,7 @@
         ]
     },
     "Alarak": {
+        "name_id": "Alarak",
         "name_en": "Alarak",
         "name_ru": "Аларак",
         "name_json": "alarak.json",
@@ -20,6 +22,7 @@
         ]
     },
     "Alexstrasza": {
+        "name_id": "Alexstrasza",
         "name_en": "Alexstrasza",
         "name_ru": "Алекстраза",
         "name_json": "alexstrasza.json",
@@ -30,6 +33,7 @@
         ]
     },
     "Ana": {
+        "name_id": "Ana",
         "name_en": "Ana",
         "name_ru": "Ана",
         "name_json": "ana.json",
@@ -40,6 +44,7 @@
         ]
     },
     "Anduin": {
+        "name_id": "Anduin",
         "name_en": "Anduin",
         "name_ru": "Андуин",
         "name_json": "anduin.json",
@@ -50,6 +55,7 @@
         ]
     },
     "Anubarak": {
+        "name_id": "Anubarak",
         "name_en": "Anub'arak",
         "name_ru": "АнубАрак",
         "name_json": "anubarak.json",
@@ -61,6 +67,7 @@
         ]
     },
     "Artanis": {
+        "name_id": "Artanis",
         "name_en": "Artanis",
         "name_ru": "Артанис",
         "name_json": "artanis.json",
@@ -71,6 +78,7 @@
         ]
     },
     "Arthas": {
+        "name_id": "Arthas",
         "name_en": "Arthas",
         "name_ru": "Артас",
         "name_json": "arthas.json",
@@ -81,6 +89,7 @@
         ]
     },
     "Auriel": {
+        "name_id": "Auriel",
         "name_en": "Auriel",
         "name_ru": "Ауриэль",
         "name_json": "auriel.json",
@@ -91,6 +100,7 @@
         ]
     },
     "Azmodan": {
+        "name_id": "Azmodan",
         "name_en": "Azmodan",
         "name_ru": "Азмодан",
         "name_json": "azmodan.json",
@@ -102,6 +112,7 @@
         ]
     },
     "Firebat": {
+        "name_id": "Firebat",
         "name_en": "Blaze",
         "name_ru": "Блэйз",
         "name_json": "blaze.json",
@@ -113,6 +124,7 @@
         ]
     },
     "FaerieDragon": {
+        "name_id": "FaerieDragon",
         "name_en": "Brightwing",
         "name_ru": "Светик",
         "name_json": "brightwing.json",
@@ -125,6 +137,7 @@
         ]
     },
     "Amazon": {
+        "name_id": "Amazon",
         "name_en": "Cassia",
         "name_ru": "Кассия",
         "name_json": "cassia.json",
@@ -135,6 +148,7 @@
         ]
     },
     "Chen": {
+        "name_id": "Chen",
         "name_en": "Chen",
         "name_ru": "Чень",
         "name_json": "chen.json",
@@ -146,6 +160,7 @@
         ]
     },
     "Cho": {
+        "name_id": "Cho",
         "name_en": "Cho",
         "name_ru": "ЧоГалл",
         "name_json": "chogall.json",
@@ -156,6 +171,7 @@
         ]
     },
     "Chromie": {
+        "name_id": "Chromie",
         "name_en": "Chromie",
         "name_ru": "Хроми",
         "name_json": "chromie.json",
@@ -166,6 +182,7 @@
         ]
     },
     "Deathwing": {
+        "name_id": "Deathwing",
         "name_en": "Deathwing",
         "name_ru": "Смертокрыл",
         "name_json": "deathwing.json",
@@ -176,6 +193,7 @@
         ]
     },
     "Deckard": {
+        "name_id": "Deckard",
         "name_en": "Deckard",
         "name_ru": "Декард Каин",
         "name_json": "deckard.json",
@@ -187,6 +205,7 @@
         ]
     },
     "Dehaka": {
+        "name_id": "Dehaka",
         "name_en": "Dehaka",
         "name_ru": "Дехака",
         "name_json": "dehaka.json",
@@ -197,6 +216,7 @@
         ]
     },
     "Diablo": {
+        "name_id": "Diablo",
         "name_en": "Diablo",
         "name_ru": "Диабло",
         "name_json": "diablo.json",
@@ -207,6 +227,7 @@
         ]
     },
     "DVa": {
+        "name_id": "DVa",
         "name_en": "D.Va",
         "name_ru": "Дива",
         "name_json": "dva.json",
@@ -219,6 +240,7 @@
         ]
     },
     "L90ETC": {
+        "name_id": "L90ETC",
         "name_en": "E.T.C.",
         "name_ru": "ETC",
         "name_json": "etc.json",
@@ -229,6 +251,7 @@
         ]
     },
     "Falstad": {
+        "name_id": "Falstad",
         "name_en": "Falstad",
         "name_ru": "Фалстад",
         "name_json": "falstad.json",
@@ -239,6 +262,7 @@
         ]
     },
     "Fenix": {
+        "name_id": "Fenix",
         "name_en": "Fenix",
         "name_ru": "Феникс",
         "name_json": "fenix.json",
@@ -249,6 +273,7 @@
         ]
     },
     "Gall": {
+        "name_id": "Gall",
         "name_en": "Gall",
         "name_ru": "Галл",
         "name_json": "gall.json",
@@ -259,6 +284,7 @@
         ]
     },
     "Garrosh": {
+        "name_id": "Garrosh",
         "name_en": "Garrosh",
         "name_ru": "Гаррош",
         "name_json": "garrosh.json",
@@ -269,6 +295,7 @@
         ]
     },
     "Tinker": {
+        "name_id": "Tinker",
         "name_en": "Gazlowe",
         "name_ru": "Газлоу",
         "name_json": "gazlowe.json",
@@ -279,6 +306,7 @@
         ]
     },
     "Genji": {
+        "name_id": "Genji",
         "name_en": "Genji",
         "name_ru": "Гэндзи",
         "name_json": "genji.json",
@@ -289,6 +317,7 @@
         ]
     },
     "Greymane": {
+        "name_id": "Greymane",
         "name_en": "Greymane",
         "name_ru": "Седогрив",
         "name_json": "greymane.json",
@@ -299,6 +328,7 @@
         ]
     },
     "Guldan": {
+        "name_id": "Guldan",
         "name_en": "Gul'dan",
         "name_ru": "Гулдан",
         "name_json": "guldan.json",
@@ -309,6 +339,7 @@
         ]
     },
     "Hanzo": {
+        "name_id": "Hanzo",
         "name_en": "Hanzo",
         "name_ru": "Хандзо",
         "name_json": "hanzo.json",
@@ -319,6 +350,7 @@
         ]
     },
     "Hogger": {
+        "name_id": "Hogger",
         "name_en": "Hogger",
         "name_ru": "Дробитель",
         "name_json": "hogger.json",
@@ -329,6 +361,7 @@
         ]
     },
     "Illidan": {
+        "name_id": "Illidan",
         "name_en": "Illidan",
         "name_ru": "Иллидан",
         "name_json": "illidan.json",
@@ -339,6 +372,7 @@
         ]
     },
     "Imperius": {
+        "name_id": "Imperius",
         "name_en": "Imperius",
         "name_ru": "Империй",
         "name_json": "imperius.json",
@@ -349,6 +383,7 @@
         ]
     },
     "Jaina": {
+        "name_id": "Jaina",
         "name_en": "Jaina",
         "name_ru": "Джайна",
         "name_json": "jaina.json",
@@ -359,6 +394,7 @@
         ]
     },
     "Crusader": {
+        "name_id": "Crusader",
         "name_en": "Johanna",
         "name_ru": "Джоанна",
         "name_json": "johanna.json",
@@ -369,6 +405,7 @@
         ]
     },
     "Junkrat": {
+        "name_id": "Junkrat",
         "name_en": "Junkrat",
         "name_ru": "Крысавчик",
         "name_json": "junkrat.json",
@@ -379,6 +416,7 @@
         ]
     },
     "Kaelthas": {
+        "name_id": "Kaelthas",
         "name_en": "Kael'thas",
         "name_ru": "КельТас",
         "name_json": "kaelthas.json",
@@ -392,6 +430,7 @@
         ]
     },
     "KelThuzad": {
+        "name_id": "KelThuzad",
         "name_en": "Kel'Thuzad",
         "name_ru": "КелТузад",
         "name_json": "kelthuzad.json",
@@ -404,6 +443,7 @@
         ]
     },
     "Kerrigan": {
+        "name_id": "Kerrigan",
         "name_en": "Kerrigan",
         "name_ru": "Керриган",
         "name_json": "kerrigan.json",
@@ -414,6 +454,7 @@
         ]
     },
     "Monk": {
+        "name_id": "Monk",
         "name_en": "Kharazim",
         "name_ru": "Каразим",
         "name_json": "kharazim.json",
@@ -426,6 +467,7 @@
         ]
     },
     "Leoric": {
+        "name_id": "Leoric",
         "name_en": "Leoric",
         "name_ru": "Леорик",
         "name_json": "leoric.json",
@@ -436,6 +478,7 @@
         ]
     },
     "LiLi": {
+        "name_id": "LiLi",
         "name_en": "Li Li",
         "name_ru": "Лили",
         "name_json": "lili.json",
@@ -447,6 +490,7 @@
         ]
     },
     "Wizard": {
+        "name_id": "Wizard",
         "name_en": "Li-Ming",
         "name_ru": "Ли-Минг",
         "name_json": "liming.json",
@@ -458,6 +502,7 @@
         ]
     },
     "LostVikings": {
+        "name_id": "LostVikings",
         "name_en": "The Lost Vikings",
         "name_ru": "Потерявшиеся викинги",
         "name_json": "lostviking.json",
@@ -474,6 +519,7 @@
         ]
     },
     "Medic": {
+        "name_id": "Medic",
         "name_en": "Lt. Morales",
         "name_ru": "лейтенант Моралес",
         "name_json": "ltmorales.json",
@@ -486,6 +532,7 @@
         ]
     },
     "Lucio": {
+        "name_id": "Lucio",
         "name_en": "LГєcio",
         "name_ru": "Лусио",
         "name_json": "lucio.json",
@@ -496,6 +543,7 @@
         ]
     },
     "Dryad": {
+        "name_id": "Dryad",
         "name_en": "Lunara",
         "name_ru": "Лунара",
         "name_json": "lunara.json",
@@ -507,6 +555,7 @@
         ]
     },
     "Maiev": {
+        "name_id": "Maiev",
         "name_en": "Maiev",
         "name_ru": "Майев",
         "name_json": "maiev.json",
@@ -517,6 +566,7 @@
         ]
     },
     "Malfurion": {
+        "name_id": "Malfurion",
         "name_en": "Malfurion",
         "name_ru": "Малфурион",
         "name_json": "malfurion.json",
@@ -527,6 +577,7 @@
         ]
     },
     "MalGanis": {
+        "name_id": "MalGanis",
         "name_en": "Mal'Ganis",
         "name_ru": "Малганис",
         "name_json": "malganis.json",
@@ -537,6 +588,7 @@
         ]
     },
     "Malthael": {
+        "name_id": "Malthael",
         "name_en": "Malthael",
         "name_ru": "Малтаэль",
         "name_json": "malthael.json",
@@ -547,6 +599,7 @@
         ]
     },
     "Medivh": {
+        "name_id": "Medivh",
         "name_en": "Medivh",
         "name_ru": "Медив",
         "name_json": "medivh.json",
@@ -557,6 +610,7 @@
         ]
     },
     "MeiOW": {
+        "name_id": "MeiOW",
         "name_en": "Mei",
         "name_ru": "Мэй",
         "name_json": "mei.json",
@@ -567,6 +621,7 @@
         ]
     },
     "Mephisto": {
+        "name_id": "Mephisto",
         "name_en": "Mephisto",
         "name_ru": "Мефисто",
         "name_json": "mephisto.json",
@@ -577,6 +632,7 @@
         ]
     },
     "Muradin": {
+        "name_id": "Muradin",
         "name_en": "Muradin",
         "name_ru": "Мурадин",
         "name_json": "muradin.json",
@@ -587,6 +643,7 @@
         ]
     },
     "Murky": {
+        "name_id": "Murky",
         "name_en": "Murky",
         "name_ru": "Мурчаль",
         "name_json": "murky.json",
@@ -597,6 +654,7 @@
         ]
     },
     "WitchDoctor": {
+        "name_id": "WitchDoctor",
         "name_en": "Nazeebo",
         "name_ru": "Назибо",
         "name_json": "nazeebo.json",
@@ -607,6 +665,7 @@
         ]
     },
     "Nova": {
+        "name_id": "Nova",
         "name_en": "Nova",
         "name_ru": "Нова",
         "name_json": "nova.json",
@@ -618,6 +677,7 @@
         ]
     },
     "Orphea": {
+        "name_id": "Orphea",
         "name_en": "Orphea",
         "name_ru": "Орфея",
         "name_json": "orphea.json",
@@ -628,6 +688,7 @@
         ]
     },
     "Probius": {
+        "name_id": "Probius",
         "name_en": "Probius",
         "name_ru": "Пробиус",
         "name_json": "probius.json",
@@ -638,6 +699,7 @@
         ]
     },
     "NexusHunter": {
+        "name_id": "NexusHunter",
         "name_en": "Qhira",
         "name_ru": "Кахира",
         "name_json": "qhira.json",
@@ -648,6 +710,7 @@
         ]
     },
     "Ragnaros": {
+        "name_id": "Ragnaros",
         "name_en": "Ragnaros",
         "name_ru": "Рагнарос",
         "name_json": "ragnaros.json",
@@ -659,6 +722,7 @@
         ]
     },
     "Raynor": {
+        "name_id": "Raynor",
         "name_en": "Raynor",
         "name_ru": "Рейнор",
         "name_json": "raynor.json",
@@ -670,6 +734,7 @@
         ]
     },
     "Rehgar": {
+        "name_id": "Rehgar",
         "name_en": "Rehgar",
         "name_ru": "Регар",
         "name_json": "rehgar.json",
@@ -680,6 +745,7 @@
         ]
     },
     "Rexxar": {
+        "name_id": "Rexxar",
         "name_en": "Rexxar",
         "name_ru": "Рексар",
         "name_json": "rexxar.json",
@@ -690,6 +756,7 @@
         ]
     },
     "Samuro": {
+        "name_id": "Samuro",
         "name_en": "Samuro",
         "name_ru": "Самуро",
         "name_json": "samuro.json",
@@ -700,6 +767,7 @@
         ]
     },
     "SgtHammer": {
+        "name_id": "SgtHammer",
         "name_en": "Sgt. Hammer",
         "name_ru": "сержант Кувалда",
         "name_json": "sgthammer.json",
@@ -713,6 +781,7 @@
         ]
     },
     "Barbarian": {
+        "name_id": "Barbarian",
         "name_en": "Sonya",
         "name_ru": "Соня",
         "name_json": "sonya.json",
@@ -723,6 +792,7 @@
         ]
     },
     "Stitches": {
+        "name_id": "Stitches",
         "name_en": "Stitches",
         "name_ru": "Стежок",
         "name_json": "stitches.json",
@@ -734,6 +804,7 @@
         ]
     },
     "Stukov": {
+        "name_id": "Stukov",
         "name_en": "Stukov",
         "name_ru": "Стуков",
         "name_json": "stukov.json",
@@ -744,6 +815,7 @@
         ]
     },
     "Sylvanas": {
+        "name_id": "Sylvanas",
         "name_en": "Sylvanas",
         "name_ru": "Сильвана",
         "name_json": "sylvanas.json",
@@ -754,6 +826,7 @@
         ]
     },
     "Tassadar": {
+        "name_id": "Tassadar",
         "name_en": "Tassadar",
         "name_ru": "Тассадар",
         "name_json": "tassadar.json",
@@ -764,6 +837,7 @@
         ]
     },
     "Butcher": {
+        "name_id": "Butcher",
         "name_en": "The Butcher",
         "name_ru": "Мясник",
         "name_json": "thebutcher.json",
@@ -774,6 +848,7 @@
         ]
     },
     "Thrall": {
+        "name_id": "Thrall",
         "name_en": "Thrall",
         "name_ru": "Тралл",
         "name_json": "thrall.json",
@@ -784,6 +859,7 @@
         ]
     },
     "Tracer": {
+        "name_id": "Tracer",
         "name_en": "Tracer",
         "name_ru": "Трейсер",
         "name_json": "tracer.json",
@@ -794,6 +870,7 @@
         ]
     },
     "Tychus": {
+        "name_id": "Tychus",
         "name_en": "Tychus",
         "name_ru": "Тайкус",
         "name_json": "tychus.json",
@@ -804,6 +881,7 @@
         ]
     },
     "Tyrael": {
+        "name_id": "Tyrael",
         "name_en": "Tyrael",
         "name_ru": "Тираэль",
         "name_json": "tyrael.json",
@@ -814,6 +892,7 @@
         ]
     },
     "Tyrande": {
+        "name_id": "Tyrande",
         "name_en": "Tyrande",
         "name_ru": "Тиранда",
         "name_json": "tyrande.json",
@@ -824,6 +903,7 @@
         ]
     },
     "Uther": {
+        "name_id": "Uther",
         "name_en": "Uther",
         "name_ru": "Утер",
         "name_json": "uther.json",
@@ -834,6 +914,7 @@
         ]
     },
     "Valeera": {
+        "name_id": "Valeera",
         "name_en": "Valeera",
         "name_ru": "Валира",
         "name_json": "valeera.json",
@@ -844,6 +925,7 @@
         ]
     },
     "DemonHunter": {
+        "name_id": "DemonHunter",
         "name_en": "Valla",
         "name_ru": "Валла",
         "name_json": "valla.json",
@@ -856,6 +938,7 @@
         ]
     },
     "Varian": {
+        "name_id": "Varian",
         "name_en": "Varian",
         "name_ru": "Вариан",
         "name_json": "varian.json",
@@ -866,6 +949,7 @@
         ]
     },
     "Whitemane": {
+        "name_id": "Whitemane",
         "name_en": "Whitemane",
         "name_ru": "Вайтмейн",
         "name_json": "whitemane.json",
@@ -876,6 +960,7 @@
         ]
     },
     "Necromancer": {
+        "name_id": "Necromancer",
         "name_en": "Xul",
         "name_ru": "Зул",
         "name_json": "xul.json",
@@ -886,6 +971,7 @@
         ]
     },
     "Yrel": {
+        "name_id": "Yrel",
         "name_en": "Yrel",
         "name_ru": "Ирель",
         "name_json": "yrel.json",
@@ -896,6 +982,7 @@
         ]
     },
     "Zagara": {
+        "name_id": "Zagara",
         "name_en": "Zagara",
         "name_ru": "Загара",
         "name_json": "zagara.json",
@@ -906,6 +993,7 @@
         ]
     },
     "Zarya": {
+        "name_id": "Zarya",
         "name_en": "Zarya",
         "name_ru": "Заря",
         "name_json": "zarya.json",
@@ -916,6 +1004,7 @@
         ]
     },
     "Zeratul": {
+        "name_id": "Zeratul",
         "name_en": "Zeratul",
         "name_ru": "Зератул",
         "name_json": "zeratul.json",
@@ -926,6 +1015,7 @@
         ]
     },
     "Zuljin": {
+        "name_id": "Zuljin",
         "name_en": "Zul'jin",
         "name_ru": "Зулджин",
         "name_json": "zuljin.json",

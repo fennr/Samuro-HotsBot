@@ -1,10 +1,6 @@
-import json
 import os
-import platform
-import random
 import sys
 
-import aiohttp
 import discord
 import yaml
 from discord.ext import commands
@@ -54,7 +50,6 @@ class general(commands.Cog, name="general"):
         )
         await context.send(embed=embed)
 
-
     @commands.command(name="invite")
     async def invite(self, context):
         """
@@ -81,7 +76,6 @@ class general(commands.Cog, name="general"):
             text=f"Pong request by {context.author}"
         )
         await context.send(embed=embed)
-
 
     '''@commands.command(name="poll")
     async def poll(self, context, *args):

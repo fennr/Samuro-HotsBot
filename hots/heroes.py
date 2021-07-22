@@ -1,8 +1,10 @@
+import json
 import os
 import sys
+
 import yaml
-import json
 from discord import Embed
+
 from hots.function import add_thumbnail, cleanhtml
 
 if not os.path.isfile("config.yaml"):
@@ -14,7 +16,7 @@ else:
 short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata.json'
+heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 with open(heroes_json_file) as heroes_json:
@@ -196,6 +198,7 @@ def builds(hero, author, embed=None):
     icy_veins_url = 'https://www.icy-veins.com/heroes/'  # + '-build-guide'
     heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
     blizzhero_url = 'https://blizzardheroes.ru/guides/'
+    nexuscompendium_url = 'https://nexuscompendium.com/heroes/'
     default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
     heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
     if embed is None:
@@ -212,11 +215,13 @@ def builds(hero, author, embed=None):
         value="[Патчноуты героя]({})\n" \
               "[Подборка билдов от HeroesHearth]({})\n" \
               "[Разбор героя от IcyVeins]({})\n" \
+              "[Описание героя Nexuscompendium]({})\n" \
               "[Пользовательские билды HeroesFire]({})\n" \
               "[Пользовательские билды BlizHero]({})".format(
             heroespn_url_full,
             heroeshearth_top_url + default_hero_name.replace(' ', '-'),
             icy_veins_url_full,
+            nexuscompendium_url + default_hero_name.replace(' ', '-'),
             heroesfire_url + default_hero_name.replace(' ', '-'),
             blizzhero_url + default_hero_name.replace(' ', '')
         ),

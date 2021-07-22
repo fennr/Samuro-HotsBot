@@ -1,11 +1,13 @@
 import os
 import sys
-import yaml
-import requests
-from discord import Embed
-from hots.function import open_hero
 import xml.etree.ElementTree as ET
+
+import requests
+import yaml
 from bs4 import BeautifulSoup
+from discord import Embed
+
+from hots.function import open_hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -16,7 +18,7 @@ else:
 short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata.json'
+heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 
@@ -48,6 +50,7 @@ def last_pn(hero=None, author=''):
     for child in tree.find('{http://www.w3.org/2005/Atom}entry'):
         if child.tag == '{http://www.w3.org/2005/Atom}title':
             title = child.text
+            date, patch_number = title.split(' ', maxsplit=1)
         if child.tag == '{http://www.w3.org/2005/Atom}content':
             # print(child.text)
             soup = BeautifulSoup(child.text, 'html.parser')
@@ -56,11 +59,12 @@ def last_pn(hero=None, author=''):
                 hero_url = link.get('href')
                 hero = open_hero(link.text)
                 if hero is not None:
-                    herolinks = herolinks + '[' + hero['name_ru'] + '](' + hero_url + '), '
+                    # herolinks = herolinks + '[' + hero['name_ru'] + '](' + hero_url + '), '
+                    herolinks += hero['name_ru'] + ', '
                     # print('Герой: {} \nПоследние изменения: {}'.format(hero['name_ru'], hero_url))
             herolinks = herolinks[:-2]
             embed.add_field(
-                name=f"Последние измененные герои ({title})",
+                name=f"Последние измененные герои ({date})",
                 value=f"{herolinks}",
                 inline=False
             )

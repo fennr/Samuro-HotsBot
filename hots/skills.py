@@ -1,9 +1,11 @@
+import json
 import os
 import sys
+
 import yaml
-import json
 from discord import Embed
-from hots.function import open_hero, find_heroes, cleanhtml, per_lvl
+
+from hots.function import cleanhtml
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -22,6 +24,7 @@ with open(heroes_json_file) as heroes_json:
 with open(gamestrings_json_file, encoding='utf-8') as ru_json:
     ru_data = json.load(ru_json)
 
+
 def wrong_btn_key():
     embed = Embed(
         title="Ошибка выбора клавиши".format(),
@@ -33,6 +36,7 @@ def wrong_btn_key():
         inline=False
     )
     return embed
+
 
 def read_skill_btn(input):
     if len(input) == 1:
@@ -57,10 +61,7 @@ def skills(hero, author, types=None, btn_key=None):
 
 
 def skill(hero, author=None, ability_type='basic', embed=None, key=None):
-    hero_json_file = 'hero/' + hero['name_json']
-    with open(hero_json_file) as hero_json:
-        hero_data = json.load(hero_json)
-    full_hero = heroes_data[hero_data['cHeroId']]
+    full_hero = heroes_data[hero['name_id']]
     ability = full_hero['abilities'][ability_type]
     if ability_type == 'basic':
         type_text = 'Базовые'
@@ -75,7 +76,6 @@ def skill(hero, author=None, ability_type='basic', embed=None, key=None):
         )
     for i in range(len(ability)):  # считываем все абилки
         # считываем файл с переводом
-        ability_name = hero_data['abilities'][hero_data['hyperlinkId']][i]['name']
         ability_nameID = ability[i]['nameId']
         ability_buttonID = ability[i]['buttonId']
         ability_hotkey = ability[i]['abilityType']
@@ -107,14 +107,14 @@ def skill(hero, author=None, ability_type='basic', embed=None, key=None):
             ability_cooldown = cleanhtml(ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
             cooldown_title, cooldown_time = ability_cooldown.split(':', 1)
             embed.add_field(
-                name='{} / {} ({})'.format(ability_name, ability_name_ru, ability_hotkey),
+                name='{} ({})'.format(ability_name_ru, ability_hotkey),
                 value="{}: _{}_\n{}".format(cooldown_title, cooldown_time, ability_desc_ru),
                 inline=False
             )
         except:
             print(ability[i])
             embed.add_field(
-                name='{} / {} ({})'.format(ability_name, ability_name_ru, ability_hotkey),
+                name='{} ({})'.format(ability_name_ru, ability_hotkey),
                 value="{}".format(ability_desc_ru),
                 inline=False
             )

@@ -1,8 +1,9 @@
 import json
 import os
+
 import requests
 from bs4 import BeautifulSoup
-from hots.function import open_hero
+
 
 def create_ru_list_heroes(filename):
     """
@@ -35,7 +36,7 @@ def create_nick_list(filename):
             if len(line) > 0:
                 line = line.replace(' ', '').replace('\n', '')
                 cHeroId, nick = line.split(sep=':', maxsplit=1)
-                #print('{} {}'.format(cHeroId, nick))
+                # print('{} {}'.format(cHeroId, nick))
                 nicks = nick.split(',')
                 nicks = [word.capitalize() for word in nicks]
                 hero_nick = dict(cHeroId=cHeroId, nick=nicks)
@@ -72,6 +73,7 @@ def create_tier_dict():
     tier_hero_dict = dict(tier_hero_list)
     return tier_hero_dict
 
+
 def find_hero(hero_name):
     """
     Поиск героя по имени на русском или английском
@@ -79,7 +81,7 @@ def find_hero(hero_name):
     :param hero_name:Имя героя (string)
     :return: Имя героя (string)
     """
-    #hero_name = hero_name.capitalize()
+    # hero_name = hero_name.capitalize()
     stlk_file = 'data/stlk_builds.txt'
     heroes_list = create_ru_list_heroes(stlk_file)
     for hero in heroes_list:
@@ -112,10 +114,10 @@ def create_heroes_ru_data():
     '''
 
     heroes_json_list = list(tree)[0][2]
-    #print(heroes_json_list)
+    # print(heroes_json_list)
     count = 0
     nick_list = create_nick_list(nicknames_file)
-    #print(nick_list)
+    # print(nick_list)
     for hero_json in heroes_json_list:
         hero_dict = {}
         if count < 150:
@@ -124,28 +126,31 @@ def create_heroes_ru_data():
                 hero_data = json.load(read_file)
             count += 1
             hero_nick = find_nick(hero_data['cHeroId'])
-            #print(hero_nick)
+            # print(hero_nick)
             try:
                 hero = find_hero(hero_data['cHeroId'])
-                hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
+                hero_dict = dict(name_id=hero_data['cHeroId'], name_en=hero_data['name'],
+                                 name_ru=hero['name_ru'].replace("`", ''),
                                  name_json=hero_json, role=hero_data['expandedRole'],
                                  tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
             except:
                 try:
                     hero = find_hero(hero_data['name'])
-                    hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
+                    hero_dict = dict(name_id=hero_data['cHeroId'], name_en=hero_data['name'],
+                                     name_ru=hero['name_ru'].replace("`", ''),
                                      name_json=hero_json, role=hero_data['expandedRole'],
                                      tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
                 except:
                     try:
                         hero = find_hero(hero_data['hyperlinkId'])
-                        hero_dict = dict(name_en=hero_data['name'], name_ru=hero['name_ru'].replace("`", ''),
+                        hero_dict = dict(name_id=hero_data['cHeroId'], name_en=hero_data['name'],
+                                         name_ru=hero['name_ru'].replace("`", ''),
                                          name_json=hero_json, role=hero_data['expandedRole'],
                                          tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
                     except:
-                        print('{}, {}, {}'.format(hero_data['cHeroId'], hero_data['name'], hero_data['hyperlinkId'] ))
-                        #print(hero)
-                        hero_dict = dict(name_en=hero_data['name'], name_ru='Error',
+                        print('{}, {}, {}'.format(hero_data['cHeroId'], hero_data['name'], hero_data['hyperlinkId']))
+                        # print(hero)
+                        hero_dict = dict(name_id=hero_data['cHeroId'], name_en=hero_data['name'], name_ru='Error',
                                          name_json=hero_json, role=hero_data['expandedRole'],
                                          tier=tier_dict.setdefault(hero_data['name']), nick=hero_nick['nick'])
 

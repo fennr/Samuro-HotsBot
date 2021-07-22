@@ -1,6 +1,6 @@
-import discord
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
+
 from cogs import general, help, hots, heroes
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
@@ -14,7 +14,7 @@ class Slash(commands.Cog, name="slash"):
     async def slash_info(self, ctx: SlashContext):
         await general.general.info(self, ctx)
 
-    @cog_ext.cog_slash(name="rotate", description="Список героев еженедельной ротации")
+    @cog_ext.cog_slash(name="weekly", description="Список героев еженедельной ротации")
     async def slash_rotate(self, ctx: SlashContext):
         await heroes.Heroes.rotation(self, ctx)
 

@@ -1,16 +1,15 @@
-import json
+import os
 import os
 import sys
-import yaml
 
-from discord import Embed
+import yaml
 from discord.ext import commands
 
-from hots.function import add_thumbnail, cleanhtml, per_lvl, find_heroes
+from hots.function import add_thumbnail, find_heroes
 from hots.heroes import builds, hero_not_found, find_more_heroes, heroes_description_short, args_not_found
+from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
 from hots.talents import talents, wrong_talent_lvl, read_talent_lvl
-from hots.patchnotes import last_pn
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -22,7 +21,7 @@ else:
 short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata.json'
+heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 

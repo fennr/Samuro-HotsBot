@@ -1,19 +1,17 @@
 import os
 import sys
-import yaml
-import json
-from discord import Embed
-from hots.function import open_hero
 
 import requests
+import yaml
+from discord import Embed
 
+from hots.function import open_hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
 else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
-
 
 short_patch = config["patch"][-5:]
 
@@ -44,7 +42,6 @@ def ranked():
         text=f"Текущий патч: {config['patch']}"
     )
     return embed
-
 
 
 def sales():
@@ -98,11 +95,12 @@ def weekly_rotation():
         value=f"{hero_links}"
     )
     embed.set_footer(
-        #text=f"Информация для: {author}"  # context.message.author если использовать без slash
+        # text=f"Информация для: {author}"  # context.message.author если использовать без slash
         text=f"Текущий патч: {config['patch']}"
     )
 
     return embed
+
 
 if __name__ == '__main__':
     heroes = sales()
