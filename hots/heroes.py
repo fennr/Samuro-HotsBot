@@ -201,6 +201,8 @@ def builds(hero, author, embed=None):
     nexuscompendium_url = 'https://nexuscompendium.com/heroes/'
     default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
     heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
+    heroesprofile_url = 'https://www.heroesprofile.com/Global/Talents/?hero='
+    hotslogs_url = 'https://www.hotslogs.com/Sitewide/TalentDetails?Hero='
     if embed is None:
         embed = Embed(
             title='{} / {} : Билды'.format(hero['name_en'], hero['name_ru'], ),  # title="Описание героя:",
@@ -217,13 +219,15 @@ def builds(hero, author, embed=None):
               "[Разбор героя от IcyVeins]({})\n" \
               "[Описание героя Nexuscompendium]({})\n" \
               "[Пользовательские билды HeroesFire]({})\n" \
-              "[Пользовательские билды BlizHero]({})".format(
+              "[Винрейт по талантам HeroesProfile]({})\n" \
+              "[Винрейт по талантам HotsLogs]({})".format(
             heroespn_url_full,
             heroeshearth_top_url + default_hero_name.replace(' ', '-'),
             icy_veins_url_full,
             nexuscompendium_url + default_hero_name.replace(' ', '-'),
             heroesfire_url + default_hero_name.replace(' ', '-'),
-            blizzhero_url + default_hero_name.replace(' ', '')
+            heroesprofile_url + hero['name_en'].replace(' ', '+') + '&league_tier=master,diamond',
+            hotslogs_url + hero['name_en'].replace(' ', '%20')
         ),
         inline=False
     )
