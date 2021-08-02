@@ -4,6 +4,7 @@ token: "NjY0MzY4MTg0NzkwNjE0MDE2.XhWDFg.JEcWWrxjzC1TSVCxvew_cXJY3SE" #prod
 application_id: "664368184790614016" #prod
 #application_id: "661443692447662102" #test
 patch: "2.54.2.85551"
+log: "log_base.log"
 owners:
   - 123456789
   - 196583204164075520

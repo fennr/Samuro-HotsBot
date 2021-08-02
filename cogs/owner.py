@@ -10,7 +10,7 @@ import os
 import sys
 
 import yaml
-from discord import Embed, Member
+from discord import Embed, Member, File
 from discord.ext import commands
 from pprint import pprint
 
@@ -50,6 +50,19 @@ class owner(commands.Cog, name="owner"):
                 color=0xE02B2B
             )
         await context.author.send(embed=embed)
+
+
+    @commands.command(name="getlog")
+    async def getlog(self, ctx):
+        if ctx.message.author.id in config["owners"]:
+            await ctx.author.send(file=File(config['log']))
+        else:
+            embed = Embed(
+                title="Error!",
+                description="You don't have the permission to use this command.",
+                color=0xE02B2B
+            )
+            await ctx.send(embed=embed)
 
 
     @commands.command(name="shutdown")

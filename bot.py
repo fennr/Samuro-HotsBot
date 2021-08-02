@@ -11,6 +11,8 @@ import os
 import platform
 import random
 import sys
+import logging
+import traceback
 
 import discord
 import yaml
@@ -56,12 +58,33 @@ intents.presences = True
 intents.members = True
 """
 
+
 intents = discord.Intents.default()
 intents.members = True
 
 bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
 slash = SlashCommand(bot, sync_commands=True)
 
+logfile = config["log"]
+log = logging.getLogger("my_log")
+log.setLevel(logging.INFO)
+FH = logging.FileHandler(logfile, encoding='utf-8')
+basic_formater = logging.Formatter('%(asctime)s : [%(levelname)s] : %(message)s')
+FH.setFormatter(basic_formater)
+log.addHandler(FH)
+
+## функция для записи в лог сообщений об ошибке
+def error_log(line_no):
+    ## задаем формат ошибочных сообщений, добавляем номер строки
+    err_formater = logging.Formatter('%(asctime)s : [%(levelname)s][LINE ' + line_no + '] : %(message)s')
+    ## устанавливаем формат ошибок в логгер
+    FH.setFormatter(err_formater)
+    log.addHandler(FH)
+    ## пишем сообщение error
+    log.error(traceback.format_exc())
+    ## возвращаем базовый формат сообщений
+    FH.setFormatter(basic_formater)
+    log.addHandler(FH)
 
 # The code in this even is executed when the bot is ready
 @bot.event
@@ -123,20 +146,22 @@ async def on_command_completion(ctx):
     executedCommand = str(split[0])
     # {ctx.channel.id} {ctx.message.id}
     # {ctx.guild.name} {ctx.message.guild.id}
-    print(
-        f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) by {ctx.message.author} (ID: {ctx.message.author.id})")  # {ctx.guild.name} {ctx.message.guild.id}
+    message = f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) " \
+              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
+    print(message)  # {ctx.guild.name} {ctx.message.guild.id}
+    log.info(message)
 
 
 # The code in this event is executed every time a valid commands catches an error
 @bot.event
-async def on_command_error(context, error):
+async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         embed = discord.Embed(
             title="Error!",
             description="This command is on a %.2fs cool down" % error.retry_after,
             color=config["error"]
         )
-        await context.send(embed=embed)
+        await ctx.send(embed=embed)
     elif isinstance(error, commands.MissingPermissions):
         embed = discord.Embed(
             title="Error!",
@@ -144,14 +169,17 @@ async def on_command_error(context, error):
                 error.missing_perms) + "` to execute this command!",
             color=config["error"]
         )
-        await context.send(embed=embed)
+        await ctx.send(embed=embed)
     elif isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(
             title="Ошибка! Такой команды не существует",
             description=f"Воспользуйтесь справкой по команде {config['bot_prefix']}help",
             color=config["error"]
         )
-        await context.send(embed=embed)
+        await ctx.send(embed=embed)
+    message = f" in {ctx.guild.name} " \
+              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
+    log.error(str(error) + message)
     raise error
 
 
