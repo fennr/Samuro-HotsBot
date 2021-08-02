@@ -49,7 +49,7 @@
         "name_ru": "Андуин",
         "name_json": "anduin.json",
         "role": "Healer",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -105,7 +105,7 @@
         "name_ru": "Азмодан",
         "name_json": "azmodan.json",
         "role": "Ranged Assassin",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Азмодаун",
             "Баскетболист"
@@ -117,7 +117,7 @@
         "name_ru": "Блэйз",
         "name_json": "blaze.json",
         "role": "Tank",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Блейзер",
             "Пожарник"
@@ -300,7 +300,7 @@
         "name_ru": "Газлоу",
         "name_json": "gazlowe.json",
         "role": "Bruiser",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Газик"
         ]
@@ -388,7 +388,7 @@
         "name_ru": "Джайна",
         "name_json": "jaina.json",
         "role": "Ranged Assassin",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -399,7 +399,7 @@
         "name_ru": "Джоанна",
         "name_json": "johanna.json",
         "role": "Tank",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -582,7 +582,7 @@
         "name_ru": "Малганис",
         "name_json": "malganis.json",
         "role": "Tank",
-        "tier": "A",
+        "tier": "C",
         "nick": [
             "Дезлорд"
         ]
@@ -615,7 +615,7 @@
         "name_ru": "Мэй",
         "name_json": "mei.json",
         "role": "Tank",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -739,7 +739,7 @@
         "name_ru": "Регар",
         "name_json": "rehgar.json",
         "role": "Healer",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -908,7 +908,7 @@
         "name_ru": "Утер",
         "name_json": "uther.json",
         "role": "Healer",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -930,7 +930,7 @@
         "name_ru": "Валла",
         "name_json": "valla.json",
         "role": "Ranged Assassin",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Dh",
             "Дх",

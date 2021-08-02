@@ -12,6 +12,7 @@ import sys
 import yaml
 from discord import Embed, Member
 from discord.ext import commands
+from pprint import pprint
 
 from helpers import json_manager
 
@@ -25,6 +26,31 @@ else:
 class owner(commands.Cog, name="owner"):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(name="servers")
+    async def servers(self, context):
+        if context.message.author.id in config["owners"]:
+            pprint(self.bot.guilds)
+            embed = Embed(
+                title='Список серверов с ботом',
+                color=config["info"]
+            )
+            count = 1
+            for guild in self.bot.guilds:
+                embed.add_field(
+                    name=f"{count}. {guild.name}",
+                    value=f"Пользователей: {guild.member_count}\n",
+                    inline=False
+                )
+                count += 1
+        else:
+            embed = Embed(
+                title="Error!",
+                description="You don't have the permission to use this command.",
+                color=0xE02B2B
+            )
+        await context.author.send(embed=embed)
+
 
     @commands.command(name="shutdown")
     async def shutdown(self, context):
