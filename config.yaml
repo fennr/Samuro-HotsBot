@@ -1,15 +1,17 @@
 bot_prefix: "#"
-token: "NjY0MzY4MTg0NzkwNjE0MDE2.XhWDFg.JEcWWrxjzC1TSVCxvew_cXJY3SE" #prod
-#token: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4" # test
-application_id: "664368184790614016" #prod
-#gitapplication_id: "661443692447662102" #test
-patch: "2.54.1.85276"
+#token: "NjY0MzY4MTg0NzkwNjE0MDE2.XhWDFg.JEcWWrxjzC1TSVCxvew_cXJY3SE" #prod
+token: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4" # test
+#application_id: "664368184790614016" #prod
+application_id: "661443692447662102" #test
+patch: "2.54.2.85551"
+log: "log_base.log"
 owners:
-  - 123456789
-  - 987654321
+  - 196583204164075520
+admins:
+  - 196583204164075520 # я
+  - 261177857126957056 # мачука
 blacklist:
   - 123456789
-  - 987654321
 main_color: 0xD75BF4
 error: 0xE02B2B
 success: 0x42F56C

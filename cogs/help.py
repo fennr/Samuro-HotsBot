@@ -1,7 +1,7 @@
 import os
 import sys
 
-import discord
+from discord import Embed
 import yaml
 from discord.ext import commands
 
@@ -11,6 +11,11 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
+ignore_list = [
+    'slash',
+    'owner',
+    'news',
+]
 
 class Help(commands.Cog, name="help"):
     def __init__(self, bot):
@@ -24,9 +29,9 @@ class Help(commands.Cog, name="help"):
         prefix = config["bot_prefix"]
         if not isinstance(prefix, str):
             prefix = prefix[0]
-        embed = discord.Embed(title="Help", description="Список доступных команд:", color=config["success"])
+        embed = Embed(title="Help", description=f"{descr}", color=config["success"])
         for i in self.bot.cogs:
-            if i != 'slash':
+            if i not in ignore_list:
                 cog = self.bot.get_cog(i.lower())
                 commands = cog.get_commands()
                 command_list = [command.name for command in commands]

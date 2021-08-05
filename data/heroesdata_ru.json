@@ -183,7 +183,8 @@
         "name_ru": "ETC",
         "name_json": "etc.json",
         "nick": [
-            "Етц"
+            "Етц",
+            "Корова"
         ]
     },
     "Falstad": {
@@ -215,7 +216,7 @@
         "name_ru": "Гаррош",
         "name_json": "garrosh.json",
         "nick": [
-            ""
+            "Гарох"
         ]
     },
     "Tinker": {
