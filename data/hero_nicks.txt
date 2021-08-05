@@ -19,11 +19,11 @@ Deckard:Дед, Декард
 Dehaka:
 Diablo:
 DVa:Дива, Дивуля, Два
-L90ETC:етц
+L90ETC:етц, корова
 Falstad:Попугай
 Fenix:Паук
 Gall:
-Garrosh:
+Garrosh:гарох
 Tinker:Газик
 Genji:Генжи
 Greymane:Серый

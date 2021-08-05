@@ -6,10 +6,11 @@ application_id: "664368184790614016" #prod
 patch: "2.54.2.85551"
 log: "log_base.log"
 owners:
-  - 123456789
   - 196583204164075520
+admins:
+  - 196583204164075520 # я
+  - 261177857126957056 # мачука
 blacklist:
-  - 123456789
   - 123456789
 main_color: 0xD75BF4
 error: 0xE02B2B
