@@ -15,7 +15,7 @@ else:
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 
-def read_command_args(ctx, *args):
+def read_hero_from_message(ctx, *args, hero_args=None):
     hero = None
     if len(args) == 0:
         embed = args_not_found('hero')

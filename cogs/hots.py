@@ -5,7 +5,7 @@ import sys
 import yaml
 from discord.ext import commands
 
-from hots.function import add_thumbnail, find_heroes, hero_not_found, find_more_heroes, args_not_found
+from hots.function import add_thumbnail, find_heroes, hero_not_found, find_more_heroes, args_not_found, read_hero_from_message
 from hots.heroes import builds, heroes_description_short
 from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
@@ -41,31 +41,19 @@ class hots(commands.Cog, name="hots"):
         await context.send(embed=embed)
 
     @commands.command(name="hero")
-    async def hots_hero(self, context, *args):
+    async def hots_hero(self, ctx, *args):
         """
         :hero: - Описание героя, билды, разборы
         """
-        hero = None
-        if len(args) == 0:
-            embed = args_not_found('hero')
-        else:
-            hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
-            hero_list = find_heroes(hero_name)
-            if len(hero_list) == 1:
-                embed = None
-                hero = hero_list[0]
-            elif len(hero_list) > 1:
-                embed = find_more_heroes(hero_list, context.author)
-            else:
-                embed = hero_not_found(context.author)
-            if hero is not None:
-                embed = heroes_description_short(hero, context.author)
-                embed = builds(hero, context.author, embed)
-                embed = add_thumbnail(hero, embed)
-        await context.send(embed=embed)
+        hero, embed = read_hero_from_message(ctx, *args)
+        if hero is not None:
+            embed = heroes_description_short(hero, ctx.author)
+            embed = builds(hero, ctx.author, embed)
+            embed = add_thumbnail(hero, embed)
+        await ctx.send(embed=embed)
 
     @commands.command(name="skill")
-    async def hots_skill(self, context, *args):
+    async def hots_skill(self, ctx, *args):
         """
         :hero: :btn: - Скиллы героя на :btn: кнопках
         """
@@ -78,15 +66,15 @@ class hots(commands.Cog, name="hots"):
             if len(hero_list) == 1:
                 hero = hero_list[0]
             elif len(hero_list) > 1:
-                embed = find_more_heroes(hero_list, context.author, 'skill')
+                embed = find_more_heroes(hero_list, ctx.author, 'skill')
             else:
-                embed = hero_not_found(context.author)
+                embed = hero_not_found(ctx.author)
             if hero is not None:
-                embed = skills(hero=hero, author=context.author, types=['basic', 'heroic', 'trait'], btn_key=btn_key)
-        await context.send(embed=embed)
+                embed = skills(hero=hero, author=ctx.author, types=['basic', 'heroic', 'trait'], btn_key=btn_key)
+        await ctx.send(embed=embed)
 
     @commands.command(name="talent")
-    async def hots_talent(self, context, *args):
+    async def hots_talent(self, ctx, *args):
         """
         :hero: :lvl: - Таланты героя :lvl: уровня
         """
@@ -100,15 +88,15 @@ class hots(commands.Cog, name="hots"):
                 embed = None
                 hero = hero_list[0]
             elif len(hero_list) > 1:
-                embed = find_more_heroes(hero_list, context.author, 'talent', ':lvl:')
+                embed = find_more_heroes(hero_list, ctx.author, 'talent', ':lvl:')
             else:
-                embed = hero_not_found(context.author)
+                embed = hero_not_found(ctx.author)
             if hero is not None:
                 try:
-                    embed = talents(hero, lvl, context.author)
+                    embed = talents(hero, lvl, ctx.author)
                 except:
-                    embed = wrong_talent_lvl(context.author)
-        await context.send(embed=embed)
+                    embed = wrong_talent_lvl(ctx.author)
+        await ctx.send(embed=embed)
 
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.
