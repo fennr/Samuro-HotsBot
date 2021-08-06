@@ -170,7 +170,7 @@ class Heroes(Cog, name='heroes'):
             embed=embed
         )
 
-    @command(name='stlk_builds')
+    @command(name='stlk')
     async def stlk_builds(self, ctx, *args):
         """
         :hero: - Билды на героя от Сталка
