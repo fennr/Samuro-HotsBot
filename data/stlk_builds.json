@@ -1,0 +1,812 @@
+{
+    "Abathur": {
+        "Hero_name": "Абатур",
+        "build1": "[T1231223,Abathur]",
+        "comment1": "на 4 Атакспид плеебл",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Azmodan": {
+        "Hero_name": "Азмодан",
+        "build1": "[T1231124,Azmodan]",
+        "comment1": "Запуш с E",
+        "build2": "[T2222113,Azmodan]",
+        "comment2": "афк Q Постепенный урон",
+        "build3": "",
+        "comment3": ""
+    },
+    "Alarak": {
+        "Hero_name": "Аларак",
+        "build1": "[T2332214,Alarak]",
+        "comment1": "Агрессия ",
+        "build2": "[T1121314,Alarak]",
+        "comment2": "Соло 1в1 драка (Слабее в 5 на 5) ",
+        "build3": "[T3232324,Alarak]",
+        "comment3": "Е билд"
+    },
+    "Alexstrasza": {
+        "Hero_name": "Алекстраза",
+        "build1": "[T1311331,Alexstrasza]",
+        "comment1": "Q Билд",
+        "build2": "[T2122322,Alexstrasza]",
+        "comment2": "W билд",
+        "build3": "[T3231333,Alexstrasza]",
+        "comment3": "Е билд (профит с 20 лвла)"
+    },
+    "Ana": {
+        "Hero_name": "Ана",
+        "build1": "[T2321331,Ana]",
+        "comment1": "Е с активкой ( Можно на 4 Е) 13 другой если нету станов",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Anduin": {
+        "Hero_name": "Андуин",
+        "build1": "[T3332132,Anduin]",
+        "comment1": "Спел павер с Колодцем",
+        "build2": "[T2132122,Anduin]",
+        "comment2": "Фулл W",
+        "build3": "",
+        "comment3": ""
+    },
+    "Anubarak": {
+        "Hero_name": "АнубАрак",
+        "build1": "[T2132214,Anubarak]",
+        "comment1": "Жуко билд ( Если автоатачите можно на 16 жуков) (на 20 можно король-предатель)",
+        "build2": "[T1212114,Anubarak]",
+        "comment2": "W Билд",
+        "build3": "",
+        "comment3": ""
+    },
+    "Artanis": {
+        "Hero_name": "Артанис",
+        "build1": "[T3321431,Artanis]",
+        "comment1": "Мамкин автоатакер",
+        "build2": "[T1211124,Artanis]",
+        "comment2": "Откат Q Первый лвл ситуативно. ",
+        "build3": "",
+        "comment3": ""
+    },
+    "Arthas": {
+        "Hero_name": "Артас",
+        "build1": "[T1231124,Arthas]",
+        "comment1": "Компетитив билд (Лучший )",
+        "build2": "[T1111114,Arthas]",
+        "comment2": "Q билд",
+        "build3": "[T2321333,Arthas]",
+        "comment3": "Мамкин автоатакер"
+    },
+    "Auriel": {
+        "Hero_name": "Ауриэль",
+        "build1": "[T4332314,Auriel]",
+        "comment1": "Много урона и Хила",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Firebat": {
+        "Hero_name": "Блэйз",
+        "build1": "[T4111311,Blaze]",
+        "comment1": "Основной билд. 1 и 7лвл Ситуативен.",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Whitemane": {
+        "Hero_name": "Вайтмейн",
+        "build1": "[T1131121,Whitemane]",
+        "comment1": "Рут Вайтмейн  (ульт можно менять)",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Valeera": {
+        "Hero_name": "Валира",
+        "build1": "[T4111121,Valeera]",
+        "comment1": "Q билд",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "DemonHunter": {
+        "Hero_name": "Валла",
+        "build1": "[T2132334,Valla]",
+        "comment1": "W валла с МСом и Мантикорой",
+        "build2": "[T1222323,Valla]",
+        "comment2": " Q валла 7 лвл можно МС",
+        "build3": "",
+        "comment3": ""
+    },
+    "Varian": {
+        "Hero_name": "Вариан",
+        "build1": "[T2131234,Varian]",
+        "comment1": "Танк ( 10 можно Е (Если нет Маг урона) ) ",
+        "build2": "[T3222222,Varian]",
+        "comment2": "Врыв вариан ( Не пикать)",
+        "build3": "[T3322225,Varian]",
+        "comment3": "Твины (Не пикать)"
+    },
+    "Tinker": {
+        "Hero_name": "Газлоу",
+        "build1": "[T2111223,Gazlowe]",
+        "comment1": "10 можно Граво ",
+        "build2": "[T1222212,Gazlowe]",
+        "comment2": "Мамкин 1шот ( Не пикать)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Garrosh": {
+        "Hero_name": "Гаррош",
+        "build1": "[T2331113,Garrosh]",
+        "comment1": "Дефолт с ДМГ на 20 ",
+        "build2": "[T1331123,Garrosh]",
+        "comment2": "Дефолт компетитив",
+        "build3": "",
+        "comment3": ""
+    },
+    "Guldan": {
+        "Hero_name": "Гулдан",
+        "build1": "[T2121231,Guldan]",
+        "comment1": "W билд . Прост и эффективен",
+        "build2": "[T3331421,Guldan]",
+        "comment2": "Е- Максимальный урон",
+        "build3": "",
+        "comment3": ""
+    },
+    "Genji": {
+        "Hero_name": "Гэндзи",
+        "build1": "[T1222222,Genji]",
+        "comment1": "Е билд (Самый простой)",
+        "build2": "[T1312122,Genji]",
+        "comment2": "Самый эффектиный Через бурст",
+        "build3": "",
+        "comment3": ""
+    },
+    "Deckard": {
+        "Hero_name": "Декард Каин",
+        "build1": "[T3131311,Deckard]",
+        "comment1": "Компетитв билд ( эффективен под контроль и бурст)",
+        "build2": "[T1311311,Deckard]",
+        "comment2": "Билд под хил тиммейтов через рубин",
+        "build3": "",
+        "comment3": ""
+    },
+    "Dehaka": {
+        "Hero_name": "Дехака",
+        "build1": "[T1232233,Dehaka]",
+        "comment1": "W билд (Отктаы W) 16 ситуативен",
+        "build2": "[T3311231,Dehaka]",
+        "comment2": "Откаты Q +Спидхака 16 ситуативен",
+        "build3": "",
+        "comment3": ""
+    },
+    "Jaina": {
+        "Hero_name": "Джайна",
+        "build1": "[T2222334,Jaina]",
+        "comment1": "Джайна с элемом и рутами",
+        "build2": "[T2221233,Jaina]",
+        "comment2": "Фронтлейн Джайна с щитами и блинком",
+        "build3": "",
+        "comment3": ""
+    },
+    "Crusader": {
+        "Hero_name": "Джоанна",
+        "build1": "[T2332312,Johanna]",
+        "comment1": "Молотки и кдр ( Лучшее против АА героев) (20 лвл любой)",
+        "build2": "[T2111121,Johanna]",
+        "comment2": "Q с прыжками. Рекомендую Играть Джоайнной в лейт на 20 с апом прыжков",
+        "build3": "",
+        "comment3": ""
+    },
+    "Diablo": {
+        "Hero_name": "Диабло",
+        "build1": "[T1331314,Diablo]",
+        "comment1": "Мамкин Автоатакер( Рабочий мамкин автоатакер)",
+        "build2": "[T1212223,Diablo]",
+        "comment2": "W-билд Анти милишники",
+        "build3": "[T1121114,Diablo]",
+        "comment3": " Q Билд - 1шот"
+    },
+    "DVa": {
+        "Hero_name": "Дива",
+        "build1": "[T1122214,DVa]",
+        "comment1": "Билд для больших карт",
+        "build2": "[T2122234,DVa]",
+        "comment2": "Коротки карты",
+        "build3": "",
+        "comment3": ""
+    },
+    "Hogger": {
+        "Hero_name": "Дробитель",
+        "build1": "[T2311113,Hogger]",
+        "comment1": "Лутопульта + Соло лейн",
+        "build2": "[T3212213,Hogger]",
+        "comment2": "Соло + Стан",
+        "build3": "T1222223,Hogger]",
+        "comment3": "W Билд для 4ки"
+    },
+    "L90ETC": {
+        "Hero_name": "ETC",
+        "build1": "[T2211135,ETC]",
+        "comment1": "Компетитив билд (Лучший )",
+        "build2": "[T1321223,ETC]",
+        "comment2": "Мамкин автоатакер ЕТС ( Может работать)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Zagara": {
+        "Hero_name": "Загара",
+        "build1": "[T1111114,Zagara]",
+        "comment1": "Q Абуз билд",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Zarya": {
+        "Hero_name": "Заря",
+        "build1": "[T4312124,Zarya]",
+        "comment1": "Для мейнеров",
+        "build2": "[T3122424,Zarya]",
+        "comment2": "Мили заря",
+        "build3": "",
+        "comment3": ""
+    },
+    "Zeratul": {
+        "Hero_name": "Зератул",
+        "build1": "[T2221231,Zeratul]",
+        "comment1": "Мейн зера билд",
+        "build2": "[T2311213,Zeratul]",
+        "comment2": "Фулл аа билд",
+        "build3": "[T1121224,Zeratul]",
+        "comment3": "Q С куполом"
+    },
+    "Necromancer": {
+        "Hero_name": "Зул",
+        "build1": "[T1212333,Xul]",
+        "comment1": "Агрессия с Отхилом и -армором",
+        "build2": "[T2322113,Xul]",
+        "comment2": "Афк клир с -хилом",
+        "build3": "[T1211221,Xul]",
+        "comment3": "Фул W Против обезьян (Милишников)"
+    },
+    "Zuljin": {
+        "Hero_name": "Зулджин",
+        "build1": "[T1211311,Zuljin]",
+        "comment1": "Q Билд против армора",
+        "build2": "[T3222122,Zuljin]",
+        "comment2": "Я у мамы стакаюсь ( не пикать)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Illidan": {
+        "Hero_name": "Иллидан",
+        "build1": "[T3222333,Illidan]",
+        "comment1": "Макс Дмг с руки билд",
+        "build2": "[T1322114,Illidan]",
+        "comment2": "Билд против масс контроля",
+        "build3": "",
+        "comment3": ""
+    },
+    "Imperius": {
+        "Hero_name": "Империй",
+        "build1": "[T2132224,Imperius]",
+        "comment1": "Вейвклир + Прыжок + Клинз+ минус армор",
+        "build2": "[T2332232,Imperius]",
+        "comment2": "Соло Лейн ( типо браксиса) С блинком на 16 и откатами Ульта",
+        "build3": "",
+        "comment3": ""
+    },
+    "Yrel": {
+        "Hero_name": "Ирель",
+        "build1": "[T2331314,Yrel]",
+        "comment1": "Дефолт на мобильность",
+        "build2": "[T2221314,Yrel]",
+        "comment2": "Короткие карты и Нонстоп Е + сустейн команды",
+        "build3": "",
+        "comment3": ""
+    },
+    "Monk": {
+        "Hero_name": "Каразим",
+        "build1": "[T2212122,Kharazim]",
+        "comment1": "Дамагер на 16 без клинза (4 ситуативен)",
+        "build2": "[T2212113,Kharazim]",
+        "comment2": "Клинз + аое хил",
+        "build3": "",
+        "comment3": ""
+    },
+    "Amazon": {
+        "Hero_name": "Кассия",
+        "build1": "[T1331221,Cassia]",
+        "comment1": "Шарики + Q",
+        "build2": "[T3132234,Cassia]",
+        "comment2": "АА + Валькирия",
+        "build3": "",
+        "comment3": ""
+    },
+    "NexusHunter": {
+        "Hero_name": "Кахира",
+        "build1": "[T2321211,Qhira]",
+        "comment1": "Агрессия с крутилкой",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "KelThuzad": {
+        "Hero_name": "КелТузад",
+        "build1": "[T3322334,KelThuzad]",
+        "comment1": "Цепь билд",
+        "build2": "[T1311214,KelThuzad]",
+        "comment2": "Q билд",
+        "build3": "",
+        "comment3": ""
+    },
+    "Kaelthas": {
+        "Hero_name": "КельТас",
+        "build1": "[T3111124,Kaelthas]",
+        "comment1": "Бомба кд Q Билд",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Kerrigan": {
+        "Hero_name": "Керриган",
+        "build1": "[T3122324,Kerrigan]",
+        "comment1": "Стаки Q + размотка в 1 таргет",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Junkrat": {
+        "Hero_name": "Крысавчик",
+        "build1": "[T2332323,Junkrat]",
+        "comment1": "New Lvl Трап билд ",
+        "build2": "[T2142123,Junkrat]",
+        "comment2": "Фулл АА билд",
+        "build3": "",
+        "comment3": ""
+    },
+    "Medic": {
+        "Hero_name": "лейтенант Моралес",
+        "build1": "[T1122333,LtMorales]",
+        "comment1": "2 Имуна",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Leoric": {
+        "Hero_name": "Леорик",
+        "build1": "[T1331221,Leoric]",
+        "comment1": "Е билд (Скоращение урона противников) Когда у вас много урона",
+        "build2": "[T3331113,Leoric]",
+        "comment2": "W билд (Выбивать соло линию)",
+        "build3": "[T3331331,Leoric]",
+        "comment3": "АА на фаст клир + отхил (против дв или кучи танков"
+    },
+    "LiLi": {
+        "Hero_name": "Лили",
+        "build1": "[T1231321,LiLi]",
+        "comment1": "Мейн сап",
+        "build2": "[T2132132,LiLi]",
+        "comment2": "Соло лейн-Дамагер Или 4ка вместо Рендж Дамагера",
+        "build3": "",
+        "comment3": ""
+    },
+    "Wizard": {
+        "Hero_name": "Ли-Минг",
+        "build1": "[T1232122,LiMing]",
+        "comment1": "Дефолт (много урона)",
+        "build2": "[T3221333,LiMing]",
+        "comment2": "Мамкин W билд Минг ( Ниже платины) (Не играть все равно)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Dryad": {
+        "Hero_name": "Лунара",
+        "build1": "[T1312143,Lunara]",
+        "comment1": "Мейн лунара",
+        "build2": "[T1122213,Lunara]",
+        "comment2": "ДМГ в 1 таргет",
+        "build3": "",
+        "comment3": ""
+    },
+    "Lucio": {
+        "Hero_name": "Лусио",
+        "build1": "[T2322322,Lucio]",
+        "comment1": "Основной билд 13 Доп МС тоже хорош",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Maiev": {
+        "Hero_name": "Майев",
+        "build1": "[T2212113,Maiev]",
+        "comment1": "Основной ( 1 и 4 по ситуации)",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "MalGanis": {
+        "Hero_name": "Малганис",
+        "build1": "[T1211211,MalGanis]",
+        "comment1": "Врыв из куста через Е (13 талант) ",
+        "build2": "[T1131311,MalGanis]",
+        "comment2": "Постоянный мув спид",
+        "build3": "",
+        "comment3": ""
+    },
+    "Malthael": {
+        "Hero_name": "Малтаэль",
+        "build1": "[T3120324,Malthael]",
+        "comment1": "Основной билд",
+        "build2": "[T1321124,Malthael]",
+        "comment2": "Билд под нано буст Аны",
+        "build3": "[T3112324,Malthael]",
+        "comment3": "Самый простой через замедление"
+    },
+    "Malfurion": {
+        "Hero_name": "Малфурион",
+        "build1": "[T3331121,Malfurion]",
+        "comment1": "Ульт по ситуации",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Medivh": {
+        "Hero_name": "Медив",
+        "build1": "[T3222222,Medivh]",
+        "comment1": "Лучший (компетитив с откатом Магических уз)",
+        "build2": "[T3211311,Medivh]",
+        "comment2": "Мамкин дамагер ( Не брать) ",
+        "build3": "",
+        "comment3": ""
+    },
+    "Mephisto": {
+        "Hero_name": "Мефисто",
+        "build1": "[T2232323,Mephisto]",
+        "comment1": "Для хороших мефисто",
+        "build2": "[T2322323,Mephisto]",
+        "comment2": "Для мефисто Сталка",
+        "build3": "[T1132113,Mephisto]",
+        "comment3": "Q Мефисто"
+    },
+    "Muradin": {
+        "Hero_name": "Мурадин",
+        "build1": "[T2131114,Muradin]",
+        "comment1": "Блоки + Откаты + клир",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Murky": {
+        "Hero_name": "Мурчаль",
+        "build1": "[T3112313,Murky]",
+        "comment1": "Мамкин убийца",
+        "build2": "[T3222123,Murky]",
+        "comment2": "Сейвовый мурчаль",
+        "build3": "",
+        "comment3": ""
+    },
+    "MeiOW": {
+        "Hero_name": "Мэй",
+        "build1": "[T2222124,Mei]",
+        "comment1": "W-E Комбо, Основной билд, 16 и 20 ситуативны",
+        "build2": "[T3322234,Mei]",
+        "comment2": "  Ульта ситуативна (Рекомендую W-E Билд)",
+        "build3": "[T1121313,Mei]",
+        "comment3": "Q билд"
+    },
+    "Butcher": {
+        "Hero_name": "Мясник",
+        "build1": "[T3232222,TheButcher]",
+        "comment1": "Основной билд ( на 1 можно блоки, если ты в 4)",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "WitchDoctor": {
+        "Hero_name": "Назибо",
+        "build1": "[T3222334,Nazeebo]",
+        "comment1": "Основной билд",
+        "build2": "[T1112334,Nazeebo]",
+        "comment2": "Q билд",
+        "build3": "",
+        "comment3": ""
+    },
+    "Nova": {
+        "Hero_name": "Нова",
+        "build1": "[T3312112,Nova]",
+        "comment1": "Мой любимый билд через Q ",
+        "build2": "[T1132224,Nova]",
+        "comment2": "Через W + Бронебойный",
+        "build3": "",
+        "comment3": ""
+    },
+    "Orphea": {
+        "Hero_name": "Орфея",
+        "build1": "[T3312223,Orphea]",
+        "comment1": "Мой любимый через откат W",
+        "build2": "[T3132312,Orphea]",
+        "comment2": "Билд для соревновательный сцены ( 1шот)",
+        "build3": "",
+        "comment3": ""
+    },
+    "LostVikings": {
+        "Hero_name": "Потерявшиеся викинги",
+        "build1": "[T1222214,LostVikings]",
+        "comment1": "Для мейнеров",
+        "build2": "[T4422114,LostVikings]",
+        "comment2": "Сплит-плуш викинги",
+        "build3": "[T3112314,LostVikings]",
+        "comment3": "Для 2 лайновой карты"
+    },
+    "Probius": {
+        "Hero_name": "Пробиус",
+        "build1": "[T1211323,Probius]",
+        "comment1": "Q Билд",
+        "build2": "[T2221324,Probius]",
+        "comment2": "W билд",
+        "build3": "[T3132322,Probius]",
+        "comment3": "Е билд"
+    },
+    "Ragnaros": {
+        "Hero_name": "Рагнарос",
+        "build1": "[T3231233,Ragnaros]",
+        "comment1": "Основной Е билд",
+        "build2": "[T2122323,Ragnaros]",
+        "comment2": "W черзе метеор и поук Беклайна",
+        "build3": "",
+        "comment3": ""
+    },
+    "Rehgar": {
+        "Hero_name": "Регар",
+        "build1": "[T2331324,Rehgar]",
+        "comment1": "Максимальный сустейн билд",
+        "build2": "[T1132312,Rehgar]",
+        "comment2": "Боевой регар ( Бесконечная мана и W билд)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Raynor": {
+        "Hero_name": "Рейнор",
+        "build1": "[T1321221,Raynor]",
+        "comment1": "Вейв клир +АА",
+        "build2": "[T3312112,Raynor]",
+        "comment2": "Q билд Рейнор ",
+        "build3": "",
+        "comment3": ""
+    },
+    "Rexxar": {
+        "Hero_name": "Рексар",
+        "build1": "[T1232232,Rexxar]",
+        "comment1": "Основной на Дабл соак ",
+        "build2": "[T2132332,Rexxar]",
+        "comment2": "Соло боссы + Самостоятельный рексар",
+        "build3": "",
+        "comment3": ""
+    },
+    "Samuro": {
+        "Hero_name": "Самуро",
+        "build1": "[T2321323,Samuro]",
+        "comment1": "Бурстовый самуро с вейвклиром и дабл соаком",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "FaerieDragon": {
+        "Hero_name": "Светик",
+        "build1": "[T2221221,Brightwing]",
+        "comment1": "Основный блинк хил ( Ветра против медива)",
+        "build2": "[T2331221,Brightwing]",
+        "comment2": "На откат клинзы ( Откат D)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Greymane": {
+        "Hero_name": "Седогрив",
+        "build1": "[T3112323,Greymane]",
+        "comment1": "Основный лейтовый Через сплеш в Рендж форме",
+        "build2": "[T3131234,Greymane]",
+        "comment2": "Мамкин милишник ( АОе в мили + куча урона ) Против отсутвсия мобильности и контроля",
+        "build3": "",
+        "comment3": ""
+    },
+    "SgtHammer": {
+        "Hero_name": "сержант Кувалда",
+        "build1": "[T3221334,SgtHammer]",
+        "comment1": "Основной Через Мобильность и Откат Z ",
+        "build2": "[T3111113,SgtHammer]",
+        "comment2": "Билд через Минки ( не играть) (Заставлять дайвить в себя и убивать)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Sylvanas": {
+        "Hero_name": "Сильвана",
+        "build1": "[T1331224,Sylvanas]",
+        "comment1": "Основной ( 2 Е ) и сайленс",
+        "build2": "[T1122132,Sylvanas]",
+        "comment2": "Бурст 1 таргета и Майнд контроль",
+        "build3": "",
+        "comment3": ""
+    },
+    "Deathwing": {
+        "Hero_name": "Смертокрыл",
+        "build1": "[T2132111,Deathwing]",
+        "comment1": "Основной Q Билд 1 Лвл армор для лейтГейма",
+        "build2": "[T1232331,Deathwing]",
+        "comment2": "Мили ДВ против Кучи милишников",
+        "build3": "",
+        "comment3": ""
+    },
+    "Barbarian": {
+        "Hero_name": "Соня",
+        "build1": "[T1111314,Sonya]",
+        "comment1": "W Билд + Прыжок",
+        "build2": "[T3312323,Sonya]",
+        "comment2": "АА Билд + Откат Копья",
+        "build3": "[T3222334,Sonya]",
+        "comment3": "Мамкин Крутильщик ( Против 0 контроля или лоу ранга"
+    },
+    "Stitches": {
+        "Hero_name": "Стежок",
+        "build1": "[T3231114,Stitches]",
+        "comment1": "Основной билд ( через глобы и Гнилая Желчь)",
+        "build2": "[T1332123,Stitches]",
+        "comment2": "Стаки Е + Атак спид + Горж (Мамкин победитель) (Не пикать)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Stukov": {
+        "Hero_name": "Стуков",
+        "build1": "[T2331131,Stukov]",
+        "comment1": "D билд с Рутами (Бурст хил и балистаспоры",
+        "build2": "[T3221131,Stukov]",
+        "comment2": "Е Широкие Сайленс",
+        "build3": "",
+        "comment3": ""
+    },
+    "Tychus": {
+        "Hero_name": "Тайкус",
+        "build1": "[T1211111,Tychus]",
+        "comment1": "Основной билд (Через Гранату + Q)",
+        "build2": "[T1131111,Tychus]",
+        "comment2": "Билд против контроля ",
+        "build3": "[T3132134,Tychus]",
+        "comment3": "Билд через Рейндж АА"
+    },
+    "Tassadar": {
+        "Hero_name": "Тассадар",
+        "build1": "[T1331231,Tassadar]",
+        "comment1": "Q + АА + АРхонт билд (Основной)",
+        "build2": "[T3332132,Tassadar]",
+        "comment2": "АА с блекхолом ( очень рисково) ( Не рекомендую)",
+        "build3": "[T2222223,Tassadar]",
+        "comment3": "W + Блекхолл"
+    },
+    "Tyrande": {
+        "Hero_name": "Тиранда",
+        "build1": "[T1321223,Tyrande]",
+        "comment1": "Билд в Сову",
+        "build2": "[T3222312,Tyrande]",
+        "comment2": "Метка + АА билд с клинзой",
+        "build3": "",
+        "comment3": ""
+    },
+    "Tyrael": {
+        "Hero_name": "Тираэль",
+        "build1": "[T2132222,Tyrael]",
+        "comment1": "Основной с + МС и Санктой",
+        "build2": "[T3321333,Tyrael]",
+        "comment2": "Мамкин соло лейнер - МЕМ билд",
+        "build3": "",
+        "comment3": ""
+    },
+    "Thrall": {
+        "Hero_name": "Тралл",
+        "build1": "[T1321224,Thrall]",
+        "comment1": "Тралл для начала Врыва с Расколом  + макс сустейн",
+        "build2": "[T3222232,Thrall]",
+        "comment2": "Землятряс + Q урон по танкам",
+        "build3": "",
+        "comment3": ""
+    },
+    "Tracer": {
+        "Hero_name": "Трейсер",
+        "build1": "[T1212212,Tracer]",
+        "comment1": "Для новичков на трейсер",
+        "build2": "[T1231222,Tracer]",
+        "comment2": "Для Потянков на трейсер ( -армор и активная D)",
+        "build3": "",
+        "comment3": ""
+    },
+    "Uther": {
+        "Hero_name": "Утер",
+        "build1": "[T3112233,Uther]",
+        "comment1": "Утер танк",
+        "build2": "[T2331133,Uther]",
+        "comment2": "Основной Сапорт",
+        "build3": "",
+        "comment3": ""
+    },
+    "Falstad": {
+        "Hero_name": "Фалстад",
+        "build1": "[T1122222,Falstad]",
+        "comment1": "Q Билд New Meta А+ Тир герой",
+        "build2": "[T3322322,Falstad]",
+        "comment2": "Сплит пуш + АА Фальстад",
+        "build3": "",
+        "comment3": ""
+    },
+    "Fenix": {
+        "Hero_name": "Феникс",
+        "build1": "[T3121112,Fenix]",
+        "comment1": "Е Агресивный феникс",
+        "build2": "[T3131223,Fenix]",
+        "comment2": "Более Сейфовый Феникс",
+        "build3": "",
+        "comment3": ""
+    },
+    "Hanzo": {
+        "Hero_name": "Хандзо",
+        "build1": "[T1122123,Hanzo]",
+        "comment1": "Q Билд  для поука",
+        "build2": "[T2222123,Hanzo]",
+        "comment2": "W билд Под карты",
+        "build3": "[T3132113,Hanzo]",
+        "comment3": "АА билд для новичков"
+    },
+    "Chromie": {
+        "Hero_name": "Хроми",
+        "build1": "[T3231333,Chromie]",
+        "comment1": "Вижн с Песком",
+        "build2": "[T2122332,Chromie]",
+        "comment2": "W С петлей",
+        "build3": "",
+        "comment3": ""
+    },
+    "Chen": {
+        "Hero_name": "Чень",
+        "build1": "[T2232433,Chen]",
+        "comment1": "Основной Билд (4 Ситуативно ) + Бочка по желанию",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Cho": {
+        "Hero_name": "ЧоГалл",
+        "build1": "[T2332312,Chogall]",
+        "comment1": "Основной ЧО",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    },
+    "Gall": {
+        "Hero_name": "Галл",
+        "build1": "[T2112314,Gall]",
+        "comment1": "Основной ГАЛЛ",
+        "build2": "",
+        "comment2": "",
+        "build3": "",
+        "comment3": ""
+    }
+}

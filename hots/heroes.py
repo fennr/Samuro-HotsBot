@@ -18,11 +18,14 @@ short_patch = config["patch"][-5:]
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
 heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
+stlk_json_file = 'data/stlk_builds.json'
 
 with open(heroes_json_file) as heroes_json:
     heroes_data = json.load(heroes_json)
 with open(gamestrings_json_file, encoding='utf-8') as ru_json:
     ru_data = json.load(ru_json)
+with open(stlk_json_file, encoding='utf-8') as ru_json:
+    stlk_data = json.load(ru_json)
 
 
 def args_not_found(command, lvl=''):
@@ -229,6 +232,18 @@ def builds(hero, author, embed=None):
             heroesprofile_url + hero['name_en'].replace(' ', '+') + '&league_tier=master,diamond',
             hotslogs_url + hero['name_en'].replace(' ', '%20')
         ),
+        inline=False
+    )
+    stlk_builds = stlk_data[hero['name_id']]
+    description = '**для вставки в чат игры**\n'
+    description += '💬 ' + stlk_builds['comment1'] + '\n```' + stlk_builds['build1'] + '```'
+    if len(stlk_builds['build2']) > 0:
+        description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build2'] + '```'
+    if len(stlk_builds['build3']) > 0:
+        description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build3'] + '```'
+    embed.add_field(
+        name="Билды от Сталка с его комментариями",
+        value=description,
         inline=False
     )
     embed.set_footer(
