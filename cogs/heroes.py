@@ -7,7 +7,7 @@ from discord import Embed
 from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
-from hots.function import open_hero, find_heroes, read_command_args, hero_not_found, find_more_heroes, args_not_found
+from hots.function import open_hero, find_heroes, read_hero_from_message, hero_not_found, find_more_heroes, args_not_found
 from hots.heroes import heroes_description, builds, embed_stlk_builds
 from hots.nexuscompendium import weekly_rotation, sales, ranked
 from hots.patchnotes import last_pn
@@ -175,7 +175,7 @@ class Heroes(Cog, name='heroes'):
         """
         :hero: - Билды на героя от Сталка
         """
-        hero, embed = read_command_args(ctx, *args)
+        hero, embed = read_hero_from_message(ctx, *args, command='stlk')
         if hero is not None:
             embed = embed_stlk_builds(hero, ctx.author, ad=True)
         await ctx.send(embed=embed)

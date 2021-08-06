@@ -45,7 +45,7 @@ class hots(commands.Cog, name="hots"):
         """
         :hero: - Описание героя, билды, разборы
         """
-        hero, embed = read_hero_from_message(ctx, *args)
+        hero, embed = read_hero_from_message(ctx, *args, command='hero')
         if hero is not None:
             embed = heroes_description_short(hero, ctx.author)
             embed = builds(hero, ctx.author, embed)
