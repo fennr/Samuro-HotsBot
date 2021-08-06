@@ -5,8 +5,8 @@ import sys
 import yaml
 from discord.ext import commands
 
-from hots.function import add_thumbnail, find_heroes
-from hots.heroes import builds, hero_not_found, find_more_heroes, heroes_description_short, args_not_found
+from hots.function import add_thumbnail, find_heroes, hero_not_found, find_more_heroes, args_not_found
+from hots.heroes import builds, heroes_description_short
 from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
 from hots.talents import talents, wrong_talent_lvl, read_talent_lvl

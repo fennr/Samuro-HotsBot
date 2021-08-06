@@ -7,8 +7,8 @@ from discord import Embed
 from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
-from hots.function import open_hero, find_heroes
-from hots.heroes import heroes_description, builds, hero_not_found, find_more_heroes
+from hots.function import open_hero, find_heroes, read_command_args, hero_not_found, find_more_heroes, args_not_found
+from hots.heroes import heroes_description, builds, embed_stlk_builds
 from hots.nexuscompendium import weekly_rotation, sales, ranked
 from hots.patchnotes import last_pn
 from hots.skills import skill
@@ -109,6 +109,7 @@ class Heroes(Cog, name='heroes'):
         :hero: - Полное описания героя
         """
         hero = None
+        embed = None
         if len(args) == 0:
             embed = Embed(
                 title="После команды введите имя героя на русском или английском",
@@ -169,6 +170,16 @@ class Heroes(Cog, name='heroes'):
             embed=embed
         )
 
+    @command(name='stlk_builds')
+    async def stlk_builds(self, ctx, *args):
+        """
+        :hero: - Билды на героя от Сталка
+        """
+        hero, embed = read_command_args(ctx, *args)
+        if hero is not None:
+            embed = embed_stlk_builds(hero, ctx.author, ad=True)
+        await ctx.send(embed=embed)
+
     @Cog.listener()
     async def on_button_click(self, res):
         """
@@ -179,6 +190,8 @@ class Heroes(Cog, name='heroes'):
         - DeferredUpdateMessage
         - UpdateMessage
         """
+        embed = None
+        components = None
         hero_name, tail = res.raw_data['d']['message']['embeds'][0]['title'].split(' / ', maxsplit=1)
         text, author = res.raw_data['d']['message']['embeds'][-1]['footer']['text'].split(': ', maxsplit=1)
         hero = open_hero(hero_name)

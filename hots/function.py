@@ -1,9 +1,79 @@
 import json
 import re
+import os, sys, yaml
+from discord import Embed
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
 
+
+if not os.path.isfile("config.yaml"):
+    sys.exit("'config.yaml' not found! Please add it and try again.")
+else:
+    with open("config.yaml") as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+
 heroes_ru_json_file = 'data/heroesdata_ru.json'
+
+
+def read_command_args(ctx, *args):
+    hero = None
+    if len(args) == 0:
+        embed = args_not_found('hero')
+    else:
+        hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
+        hero_list = find_heroes(hero_name)
+        if len(hero_list) == 1:
+            embed = None
+            hero = hero_list[0]
+        elif len(hero_list) > 1:
+            embed = find_more_heroes(hero_list, ctx.author)
+        else:
+            embed = hero_not_found(ctx.author)
+    return hero, embed
+
+
+def args_not_found(command, lvl=''):
+    embed = Embed(
+        title="Ошибка! Введите все аргументы",
+        color=config["error"]
+    )
+    embed.add_field(
+        name="Пример:",
+        value=f"_{config['bot_prefix']}{command} Самуро {lvl}_",
+        inline=False
+    )
+    embed.set_footer(
+        text=f"#help для просмотра справки по командам"  # context.message.author если использовать без slash
+    )
+    return embed
+
+
+def hero_not_found(author):
+    embed = Embed(
+        title="Ошибка! Герой не найден",
+        color=config["error"]
+    )
+    embed.set_footer(
+        text=f"Информация для: {author}"
+    )
+    return embed
+
+
+def find_more_heroes(hero_list, author, command='hero', lvl=''):
+    embed = Embed(
+        title="Возможно вы имели в виду:",
+        color=config["warning"]
+    )
+    for wrong_hero in hero_list:
+        embed.add_field(
+            name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
+            value=f"Введи: {config['bot_prefix']}{command} {wrong_hero['name_ru']} {lvl}",
+            inline=False
+        )
+    embed.set_footer(
+        text=f"Информация для: {author}"
+    )
+    return embed
 
 
 def open_hero(hero_name):

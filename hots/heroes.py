@@ -28,50 +28,6 @@ with open(stlk_json_file, encoding='utf-8') as ru_json:
     stlk_data = json.load(ru_json)
 
 
-def args_not_found(command, lvl=''):
-    embed = Embed(
-        title="Ошибка! Введите все аргументы",
-        color=config["error"]
-    )
-    embed.add_field(
-        name="Пример:",
-        value=f"_{config['bot_prefix']}{command} Самуро {lvl}_",
-        inline=False
-    )
-    embed.set_footer(
-        text=f"#help для просмотра справки по командам"  # context.message.author если использовать без slash
-    )
-    return embed
-
-
-def hero_not_found(author):
-    embed = Embed(
-        title="Ошибка! Герой не найден",
-        color=config["error"]
-    )
-    embed.set_footer(
-        text=f"Информация для: {author}"
-    )
-    return embed
-
-
-def find_more_heroes(hero_list, author, command='hero', lvl=''):
-    embed = Embed(
-        title="Возможно вы имели в виду:",
-        color=config["warning"]
-    )
-    for wrong_hero in hero_list:
-        embed.add_field(
-            name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-            value=f"Введи: {config['bot_prefix']}{command} {wrong_hero['name_ru']} {lvl}",
-            inline=False
-        )
-    embed.set_footer(
-        text=f"Информация для: {author}"
-    )
-    return embed
-
-
 def heroes_description_short(hero, author):
     hero_json_file = 'hero/' + hero['name_json']
     with open(hero_json_file) as hero_json:
@@ -194,6 +150,36 @@ def heroes_description(hero, author):
     return embed
 
 
+def embed_stlk_builds(hero, author, embed=None, ad=False):
+    name = 'Билды от Сталка'
+    description = '**для вставки в чат игры**\n'
+    if embed is None:
+        name = 'для вставки в чат игры'
+        description = ''
+        embed = Embed(
+            title=f"Билды от грандмастера STLK на героя {hero['name_ru']}",  # title="Описание героя:",
+            color=config["success"]
+        )
+    stlk_builds = stlk_data[hero['name_id']]
+    description += '💬 ' + stlk_builds['comment1'] + '\n```' + stlk_builds['build1'] + '```'
+    if len(stlk_builds['build2']) > 0:
+        description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build2'] + '```'
+    if len(stlk_builds['build3']) > 0:
+        description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build3'] + '```'
+    embed.add_field(
+        name=name,
+        value=description,
+        inline=False
+    )
+    if ad:
+        embed.add_field(
+            name="Задать вопросы по билдам можно на его стримах",
+            value=f"[Перейти на твич @stlk](https://www.twitch.tv/stlk)",
+            inline=False
+        )
+    return embed
+
+
 def builds(hero, author, embed=None):
     heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
     heroeshearth_top_url = 'https://heroeshearth.com/hero/'
@@ -234,18 +220,7 @@ def builds(hero, author, embed=None):
         ),
         inline=False
     )
-    stlk_builds = stlk_data[hero['name_id']]
-    description = '**для вставки в чат игры**\n'
-    description += '💬 ' + stlk_builds['comment1'] + '\n```' + stlk_builds['build1'] + '```'
-    if len(stlk_builds['build2']) > 0:
-        description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build2'] + '```'
-    if len(stlk_builds['build3']) > 0:
-        description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build3'] + '```'
-    embed.add_field(
-        name="Билды от Сталка с его комментариями",
-        value=description,
-        inline=False
-    )
+    embed = embed_stlk_builds(hero, author, embed)
     embed.set_footer(
         text=f"Информация для: {author}"  # context.message.author если использовать без slash
         # text=f"Текущий патч: {config['patch']}"

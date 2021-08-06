@@ -54,6 +54,10 @@ class Slash(commands.Cog, name="slash"):
     async def slash_pn(self, ctx: SlashContext):
         await hots.hots.hots_notes(self, ctx)
 
+    @cog_ext.cog_slash(name="stlk_builds", description="Билды от Сталка")
+    async def slash_stlk_builds(self, ctx: SlashContext, hero):
+        await heroes.Heroes.stlk_builds(self, ctx, hero)
+
 
 def setup(bot):
     bot.add_cog(Slash(bot))
