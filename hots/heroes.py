@@ -6,6 +6,7 @@ import yaml
 from discord import Embed
 
 from hots.function import add_thumbnail, cleanhtml
+from hots.patchnotes import get_last_update
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -201,6 +202,8 @@ def builds(hero, author, embed=None):
                                                                                            '-').replace("'",
                                                                                                         "") + '-build-guide'
     icy_veins_url_full = icy_veins_url_full.replace('--', '-')
+
+    embed = get_last_update(heroespn_url_full, embed)
     embed.add_field(
         name="Ссылки",
         value="[Патчноуты героя]({})\n" \

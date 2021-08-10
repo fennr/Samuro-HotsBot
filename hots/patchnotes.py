@@ -22,6 +22,31 @@ heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 
+def get_last_update(url, embed=None):
+    try:
+        if embed is None:
+            embed = Embed(
+                title="Последние изменения героя",
+                color=config["info"]
+            )
+        user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
+        response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
+        soup = BeautifulSoup(response.text, 'html.parser')
+        patch = soup.findAll("div", {"class": "panel panel-primary"})
+        name: str = "Последнее изменение героя"
+        value = patch[0].h3  # берем только первый патч
+        value_links = value.findAll('a', class_='pull-right')
+        value_link = value_links[0].get('href')
+        embed.add_field(
+            name=name,
+            value=f"[{value.text}]({value_link})",
+            inline=False
+        )
+    except:
+        pass
+    return embed
+
+
 def last_pn(hero=None, author=''):
     patch_summary = 'https://heroespatchnotes.com/feed/patch-summary.xml'
 
