@@ -26,7 +26,7 @@ def read_hero_from_message(ctx, *args, command='hero', hero_args=None):
             embed = None
             hero = hero_list[0]
         elif len(hero_list) > 1:
-            embed = find_more_heroes(hero_list, ctx.author)
+            embed = find_more_heroes(hero_list, ctx.author, command=command)
         else:
             embed = hero_not_found(ctx.author)
     return hero, embed
