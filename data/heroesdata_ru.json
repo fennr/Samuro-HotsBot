@@ -534,11 +534,11 @@
     },
     "Lucio": {
         "name_id": "Lucio",
-        "name_en": "LГєcio",
+        "name_en": "Lucio",
         "name_ru": "Лусио",
         "name_json": "lucio.json",
         "role": "Healer",
-        "tier": null,
+        "tier": "A",
         "nick": [
             "Лусек"
         ]

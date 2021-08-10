@@ -54,7 +54,8 @@ def create_tier_dict():
     }
     # Герои, записанные иначе
     bug_names = {
-        'Deckard Cain': 'Deckard'
+        'Deckard Cain': 'Deckard',
+        'Lúcio': 'Lucio'
     }
 
     response = requests.get('https://www.icy-veins.com/heroes/heroes-of-the-storm-general-tier-list')
