@@ -944,7 +944,7 @@
         "name_ru": "Вариан",
         "name_json": "varian.json",
         "role": "Bruiser",
-        "tier": null,
+        "tier": "C",
         "nick": [
             ""
         ]

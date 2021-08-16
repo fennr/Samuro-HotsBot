@@ -4,6 +4,8 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
+from pprint import pprint
+
 
 def create_ru_list_heroes(filename):
     """
@@ -69,6 +71,9 @@ def create_tier_dict():
         for heroes in hero_list:
             next_element = heroes.find_next_sibling("span")
             name = bug_names.setdefault(next_element.text, next_element.text)
+            if name == '': #Доп элемент для вариана из-за span с иконкой роли
+                next_element = next_element.find_next_sibling("span")
+                name = bug_names.setdefault(next_element.text, next_element.text)
             tier_hero_list.append([name, tier_dict[count]])
         count += 1
     tier_hero_dict = dict(tier_hero_list)

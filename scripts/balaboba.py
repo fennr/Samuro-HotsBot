@@ -1,6 +1,14 @@
-import requests
+# -*- coding: utf-8 -*-
+from requests import post
 
-url = 'https://yandex.ru/lab/yalm?style=0'
+def balaboba(str):
+    url = 'https://yandex.ru/lab/api/yalm/text3'
+    data = {"query": text, "intro": 0, "filter": 1}
+    resp = post(url, json=data).json()
+    print(resp)
+    return(resp['query'] + resp['text'])
 
-response = requests.get(url)
-print(response.text)
+text = 'Кому на руси жить хорошо'
+generate = balaboba(text)
+
+print(generate)
