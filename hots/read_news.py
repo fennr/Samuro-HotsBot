@@ -71,9 +71,9 @@ def read_news(file_path='data/news.md') -> List:
                 elif line[0:2] == '__':
                     date = line[2:-2]
                 elif line[0:10] == '[Источник]':
-                    link = line
+                    link = line + '\n'
                 else:
-                    desc += line + '\n\n'
+                    desc += '\n' + line + '\n'
         news_list.append(dict(header=head, description=desc, date=date, url=link))
     pprint(news_list)
     return news_list
@@ -87,7 +87,7 @@ def embed_news(author, embed=None) -> Embed:
         )
     news_list = read_news()
     for news in news_list:
-        name = news["header"]
+        name = ':pushpin: ' + news["header"]
         value = ''
         if news["date"] != '':
             name += ' (' + news["date"] + ')'
