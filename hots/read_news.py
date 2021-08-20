@@ -51,11 +51,12 @@ def print_repo(repo):
 def read_news(file_path='data/news.md') -> List:
     token = str(config["github_token"])
     g = Github(token)
-
-    repo = g.get_repo("fennr/discord-bot")
+    repo_name = 'fennr/discord-bot'
+    repo = g.get_repo(repo_name)
     file = repo.get_contents(file_path, ref="master")
     data = file.decoded_content.decode("utf-8")
-
+    if len(data) == 0:
+        return []
     news_raw_list = data.split('---')
     news_list = []
     for news in news_raw_list:
@@ -80,25 +81,32 @@ def read_news(file_path='data/news.md') -> List:
 
 
 def embed_news(author, embed=None) -> Embed:
-    if embed is None:
+    news_path = 'data/news.md'
+    news_list = read_news(file_path=news_path)
+    if not news_list:
         embed = Embed(
-            title='Последние новости',
+            title='Сейчас нет новых новостей',
             color=config["info"]
         )
-    news_list = read_news()
-    for news in news_list:
-        name = ':pushpin: ' + news["header"]
-        value = ''
-        if news["date"] != '':
-            name += ' (' + news["date"] + ')'
-        value += news["description"] + news["url"]
-        embed.add_field(
-            name=name,
-            value=value,
-            inline=False
+    else:
+        if embed is None:
+            embed = Embed(
+                title='Последние новости',
+                color=config["info"]
+            )
+        for news in news_list:
+            name = ':pushpin: ' + news["header"]
+            value = ''
+            if news["date"] != '':
+                name += ' (' + news["date"] + ')'
+            value += news["description"] + news["url"]
+            embed.add_field(
+                name=name,
+                value=value,
+                inline=False
+            )
+        embed.set_footer(
+            text=f"Информация для: {author}"  # context.message.author если использовать без slash
+            # text=f"Текущий патч: {config['patch']}"
         )
-    embed.set_footer(
-        text=f"Информация для: {author}"  # context.message.author если использовать без slash
-        # text=f"Текущий патч: {config['patch']}"
-    )
     return embed
