@@ -7,3 +7,9 @@
 
 
 [Источник](https://www.reddit.com/r/heroesofthestorm/comments/p7sy3z/temporarily_disabling_zagara/)
+---
+## В ожидании пачта
+
+Вероятнее всего ближайший патч выйдет одновременно с обновлениями в других играх близзард.
+
+Самое вероятное: 13 сентября с релизом D2:ressurected
