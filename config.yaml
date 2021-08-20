@@ -1,8 +1,8 @@
 bot_prefix: "#"
-token: "NjY0MzY4MTg0NzkwNjE0MDE2.XhWDFg.JEcWWrxjzC1TSVCxvew_cXJY3SE" #prod
-#token: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4" # test
-application_id: "664368184790614016" #prod
-#application_id: "661443692447662102" #test
+#token: "NjY0MzY4MTg0NzkwNjE0MDE2.XhWDFg.JEcWWrxjzC1TSVCxvew_cXJY3SE" #prod
+token: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4" # test
+#application_id: "664368184790614016" #prod
+application_id: "661443692447662102" #test
 patch: "2.54.2.85551"
 log: "log_base.log"
 github_token: "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"
