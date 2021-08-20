@@ -67,13 +67,13 @@ def read_news(file_path='data/news.md') -> List:
         for line in lines:
             if line != '':
                 if line[0:2] == '##':
-                    head = line[3:]
+                    head = line[2:]
                 elif line[0:2] == '__':
-                    date = line[3:-2]
+                    date = line[2:-2]
                 elif line[0:10] == '[Источник]':
                     link = line
                 else:
-                    desc += line + '\n'
+                    desc += line + '\n\n'
         news_list.append(dict(header=head, description=desc, date=date, url=link))
     pprint(news_list)
     return news_list
@@ -93,7 +93,7 @@ def embed_news(author, embed=None) -> Embed:
             name += ' (' + news["date"] + ')'
         value += news["description"] + news["url"]
         embed.add_field(
-            name=news["header"],
+            name=name,
             value=value,
             inline=False
         )
