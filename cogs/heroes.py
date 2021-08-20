@@ -15,6 +15,7 @@ from hots.skills import skill
 from hots.talents import talents
 from hots.tierlist import ban_heroes
 from hots.twitch import get_streams
+from hots.read_news import embed_news
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -178,6 +179,11 @@ class Heroes(Cog, name='heroes'):
         hero, embed = read_hero_from_message(ctx, *args, command='stlk')
         if hero is not None:
             embed = embed_stlk_builds(hero, ctx.author, ad=True)
+        await ctx.send(embed=embed)
+
+    @command(name='news')
+    async def hots_news(self, ctx, *args):
+        embed = embed_news(ctx.author)
         await ctx.send(embed=embed)
 
     @Cog.listener()
