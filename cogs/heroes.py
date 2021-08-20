@@ -183,6 +183,9 @@ class Heroes(Cog, name='heroes'):
 
     @command(name='news')
     async def hots_news(self, ctx, *args):
+        '''
+        Последние новости хотса
+        '''
         embed = embed_news(ctx.author)
         await ctx.send(embed=embed)
 
