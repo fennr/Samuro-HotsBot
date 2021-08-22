@@ -18,8 +18,8 @@ else:
 
 category_name = 'Новости'
 schedule_name = '📅︱расписание'
-events_name = '📣︱события'
-news_name = '📄︱новости'
+events_name = '📰︱события'
+news_name = '📰︱новости'
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 data_type_day = '%d %B'
 data_type_time = '%H:%M'
