@@ -210,7 +210,7 @@
         "name_ru": "Дехака",
         "name_json": "dehaka.json",
         "role": "Bruiser",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -411,7 +411,7 @@
         "name_ru": "Крысавчик",
         "name_json": "junkrat.json",
         "role": "Ranged Assassin",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             "Крыса"
         ]
@@ -660,7 +660,7 @@
         "name_ru": "Назибо",
         "name_json": "nazeebo.json",
         "role": "Ranged Assassin",
-        "tier": "C",
+        "tier": "S",
         "nick": [
             "Nazibo"
         ]
@@ -931,7 +931,7 @@
         "name_ru": "Валла",
         "name_json": "valla.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "S",
         "nick": [
             "Dh",
             "Дх",
@@ -988,7 +988,7 @@
         "name_ru": "Загара",
         "name_json": "zagara.json",
         "role": "Ranged Assassin",
-        "tier": "S",
+        "tier": "B",
         "nick": [
             ""
         ]
