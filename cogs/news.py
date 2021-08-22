@@ -71,10 +71,7 @@ class News(commands.Cog, name="news"):
             new_day = str(news_time.strftime(data_type_day))
             new_time = str(news_time.strftime(data_type_time))
             new_day, new_month = new_day.split(' ', maxsplit=1)
-            try:
-                new_month = month_dict[new_month]
-            except:
-                pass
+            #new_month = month_dict[new_month]
             news_short = news_data.pop(0)
             news_full = news_data.pop(0)
             description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по Мск\n' + \
@@ -128,10 +125,7 @@ class News(commands.Cog, name="news"):
                 key_list = list(month_dict.keys())
                 val_list = list(month_dict.values())
                 print(mon)
-                try:
-                    mon = key_list[val_list.index(mon)]
-                except:
-                    pass
+                #mon = key_list[val_list.index(mon)]
                 print(mon)
                 tail, time, tail2 = time.split(' ', maxsplit=2)
                 print(f"{date} {mon}{time}")
