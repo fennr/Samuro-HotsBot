@@ -76,6 +76,12 @@ class News(commands.Cog, name="news"):
             )
             await ctx.send(embed=embed)
 
+    @commands.command(name="am")
+    async def add_message(self, ctx):
+        if ctx.message.author.id in config["admins"]:
+            command, text = ctx.message.content.split('\n', maxsplit=1)
+            await ctx.message.delete()
+            await ctx.send(text)
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
