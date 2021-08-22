@@ -177,6 +177,7 @@ class News(commands.Cog, name="news"):
                 title='Ближайшие события',
                 color=config["info"]
             )
+            events = []
             for message in reversed(messages):
                 description = ''
                 for emb in message.embeds:
@@ -188,11 +189,12 @@ class News(commands.Cog, name="news"):
                     weekday = time.strftime('%A')
                     description += '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
                                    + str(channel.id) + '/' + str(message.id) + ')'
-                    embed.add_field(
+                    events.append(dict(time=time, description=description))
+                    '''embed.add_field(
                         name=f"\u200b",
                         value=f":pushpin: {description} — {date} {mon} ({weekday})",
                         inline=False
-                    )
+                    )'''
             embed.set_image(url=imageURL)
         except:
             embed = Embed(
@@ -206,6 +208,35 @@ class News(commands.Cog, name="news"):
         else:
             await ctx.send(embed=embed)
 
+    @commands.command(name="test1")
+    async def test1(self, ctx, add_event=False):
+        imageURL = 'https://cdn.discordapp.com/attachments/810929046329491456/862404560777904198/987d1c7da78b74d9.png'
+        channel = utils.get(ctx.guild.text_channels, name=events_name)
+        messages = await channel.history(limit=200).flatten()
+        embed = Embed(
+            title='Ближайшие события',
+            color=config["info"]
+        )
+        events = []
+        for message in reversed(messages):
+            description = ''
+            for emb in message.embeds:
+                date, time, short, full = emb.description.split('\n', maxsplit=3)
+                tail, date = date.split(' ', maxsplit=1)
+                date, mon = date.split(' ', maxsplit=1)
+                tail, time, tail2 = time.split(' ', maxsplit=2)
+                time = datetime.datetime.strptime(date + ' ' + mon + time, data_type).replace(
+                    year=datetime.datetime.now().year)
+                weekday = time.strftime('%A')
+                description += '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
+                               + str(channel.id) + '/' + str(message.id) + ')'
+                events.append(dict(time=time, description=description))
+                '''embed.add_field(
+                    name=f"\u200b",
+                    value=f":pushpin: {description} — {date} {mon} ({weekday})",
+                    inline=False
+                )'''
+        print(events)
 
 
 
