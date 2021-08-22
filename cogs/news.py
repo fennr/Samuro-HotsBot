@@ -24,6 +24,7 @@ locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 data_type_day = '%d %B'
 data_type_time = '%H:%M'
 data_type = data_type_day + data_type_time
+year = 2021
 month_dict = {
     'Январь': 'января',
     'Февраль': 'февраля',
@@ -141,7 +142,7 @@ class News(commands.Cog, name="news"):
                 val_list = list(month_dict.values())
                 #mon = key_list[val_list.index(mon)]
                 tail, time, tail2 = time.split(' ', maxsplit=2)
-                time = datetime.datetime.strptime(date + ' ' + mon + time, data_type)
+                time = datetime.datetime.strptime(date + ' ' + mon + time, data_type).replace(year=datetime.datetime.now().year)
                 print(time)
                 if now > time:
                     await message.delete()
@@ -183,7 +184,7 @@ class News(commands.Cog, name="news"):
                     tail, date = date.split(' ', maxsplit=1)
                     date, mon = date.split(' ', maxsplit=1)
                     tail, time, tail2 = time.split(' ', maxsplit=2)
-                    time = datetime.datetime.strptime(date + ' ' + mon + time, data_type)
+                    time = datetime.datetime.strptime(date + ' ' + mon + time, data_type).replace(year=datetime.datetime.now().year)
                     weekday = time.strftime('%A')
                     description += '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
                                    + str(channel.id) + '/' + str(message.id) + ')'

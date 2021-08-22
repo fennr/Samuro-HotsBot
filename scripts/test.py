@@ -1,9 +1,8 @@
-import locale
-import datetime
+from functools import reduce
+def f(s): return len(reduce(lambda acc, x: acc[:-1] if acc and acc[-1]+x in ('{}', '[]', '()') else acc+x, s))
 
-locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+test_bad  = '{[(]}'
+test_good = '{[()]}'
 
-myDate = datetime.date.today()
-myMonth = myDate.strftime('%B')
-
-print(myMonth)
+print(f(test_bad))
+print(f(test_good))
