@@ -5,6 +5,8 @@ import yaml
 import datetime
 import locale
 
+import operator
+
 from discord import Embed, utils
 from discord.ext import commands
 
@@ -39,6 +41,19 @@ month_dict = {
     'Ноябрь': 'ноября',
     'Декабрь': 'декабря',
 }
+
+
+def event_parse(ctx, emb, channel, message):
+    date, time, short, full = emb.description.split('\n', maxsplit=3)
+    tail, date = date.split(' ', maxsplit=1)
+    date, mon = date.split(' ', maxsplit=1)
+    tail, time, tail2 = time.split(' ', maxsplit=2)
+    time = datetime.datetime.strptime(date + ' ' + mon + time, data_type).replace(
+        year=datetime.datetime.now().year)
+    weekday = time.strftime('%A')
+    description = '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
+                   + str(channel.id) + '/' + str(message.id) + ')'
+    return time, description
 
 class News(commands.Cog, name="news"):
     def __init__(self, bot):
@@ -135,14 +150,7 @@ class News(commands.Cog, name="news"):
         now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type)
         for message in messages:
             for emb in message.embeds:
-                date, time, full = emb.description.split('\n', maxsplit=2)
-                tail, date = date.split(' ', maxsplit=1)
-                date, mon = date.split(' ', maxsplit=1)
-                key_list = list(month_dict.keys())
-                val_list = list(month_dict.values())
-                #mon = key_list[val_list.index(mon)]
-                tail, time, tail2 = time.split(' ', maxsplit=2)
-                time = datetime.datetime.strptime(date + ' ' + mon + time, data_type).replace(year=datetime.datetime.now().year)
+                time, description = event_parse(ctx, emb, channel, message)
                 print(time)
                 if now > time:
                     await message.delete()
@@ -181,20 +189,18 @@ class News(commands.Cog, name="news"):
             for message in reversed(messages):
                 description = ''
                 for emb in message.embeds:
-                    date, time, short, full = emb.description.split('\n', maxsplit=3)
-                    tail, date = date.split(' ', maxsplit=1)
-                    date, mon = date.split(' ', maxsplit=1)
-                    tail, time, tail2 = time.split(' ', maxsplit=2)
-                    time = datetime.datetime.strptime(date + ' ' + mon + time, data_type).replace(year=datetime.datetime.now().year)
-                    weekday = time.strftime('%A')
-                    description += '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
-                                   + str(channel.id) + '/' + str(message.id) + ')'
+                    time, description = event_parse(ctx, emb, channel, message)
                     events.append(dict(time=time, description=description))
-                    '''embed.add_field(
-                        name=f"\u200b",
-                        value=f":pushpin: {description} — {date} {mon} ({weekday})",
-                        inline=False
-                    )'''
+            events.sort(key=operator.itemgetter('time'))
+            for event in events:
+                date = event['time'].strftime('%d')
+                mon = event['time'].strftime('%B')
+                weekday = event['time'].strftime('%A')
+                embed.add_field(
+                    name=f"\u200b",
+                    value=f":pushpin: {event['description']} — {date} {mon} ({weekday})",
+                    inline=False
+                )
             embed.set_image(url=imageURL)
         except:
             embed = Embed(
@@ -221,22 +227,11 @@ class News(commands.Cog, name="news"):
         for message in reversed(messages):
             description = ''
             for emb in message.embeds:
-                date, time, short, full = emb.description.split('\n', maxsplit=3)
-                tail, date = date.split(' ', maxsplit=1)
-                date, mon = date.split(' ', maxsplit=1)
-                tail, time, tail2 = time.split(' ', maxsplit=2)
-                time = datetime.datetime.strptime(date + ' ' + mon + time, data_type).replace(
-                    year=datetime.datetime.now().year)
-                weekday = time.strftime('%A')
-                description += '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
-                               + str(channel.id) + '/' + str(message.id) + ')'
+                time, description = event_parse(ctx, emb, channel, message)
                 events.append(dict(time=time, description=description))
-                '''embed.add_field(
-                    name=f"\u200b",
-                    value=f":pushpin: {description} — {date} {mon} ({weekday})",
-                    inline=False
-                )'''
         print(events)
+        events.sort(key=operator.itemgetter('time'))
+        pprint(events)
 
 
 
