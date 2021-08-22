@@ -45,7 +45,7 @@ month_dict = {
 
 
 def event_parse(ctx, emb, channel, message):
-    date, time, short, full = emb.description.split('\n', maxsplit=3)
+    date, time, color, full = emb.description.split('\n', maxsplit=3)
     tail, date = date.split(' ', maxsplit=1)
     date, mon = date.split(' ', maxsplit=1)
     tail, time, tail2 = time.split(' ', maxsplit=2)
@@ -79,11 +79,12 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
-        command, header, description = ctx.message.content.split('\n', maxsplit=2)
+        command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
+        color = int(color, 16)
         embed = Embed(
             title=header,
             description=description,
-            color=config["info"]
+            color=color
         )
         await ctx.message.delete()
         channel = utils.get(ctx.guild.text_channels, name=news_name)
@@ -92,35 +93,35 @@ class News(commands.Cog, name="news"):
     @commands.command(name="add_event")
     async def add_event(self, ctx):
         if ctx.message.author.id in config["admins"]:
-            #try:
-            news_data = ctx.message.content.split('\n', maxsplit=4)
-            news_data = news_data[1:]
-            description = ''
-            news_header = news_data.pop(0)
-            news_time = datetime.datetime.strptime(news_data.pop(0), '%m/%d %H:%M')
-            new_day = str(news_time.strftime(data_type_day))
-            new_time = str(news_time.strftime(data_type_time))
-            new_day, new_month = new_day.split(' ', maxsplit=1)
-            #new_month = month_dict[new_month]
-            news_short = news_data.pop(0)
-            news_full = news_data.pop(0)
-            description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по МСК\n' + \
-                           '\n' + news_full
-            color = int(news_short, 16)
-            embed = Embed(
-                title=news_header,
-                description=description,
-                color=color
-            )
-            if len(ctx.message.attachments) > 0:
-                embed.set_image(url=ctx.message.attachments[0])
-            await ctx.message.delete()
-            await News.clear_events(self, ctx)
-            channel = utils.get(ctx.guild.text_channels, name=events_name)
-            await channel.send(embed=embed)
-            await News.clear_schedule(self, ctx, clear_message=False)
-            await News.update_schedule(self, ctx, add_event=True)
-            '''except:
+            try:
+                news_data = ctx.message.content.split('\n', maxsplit=4)
+                news_data = news_data[1:]
+                description = ''
+                news_header = news_data.pop(0)
+                news_time = datetime.datetime.strptime(news_data.pop(0), '%m/%d %H:%M')
+                new_day = str(news_time.strftime(data_type_day))
+                new_time = str(news_time.strftime(data_type_time))
+                new_day, new_month = new_day.split(' ', maxsplit=1)
+                #new_month = month_dict[new_month]
+                color = news_data.pop(0)
+                news_full = news_data.pop(0)
+                description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по МСК\n' + \
+                               '\n' + news_full
+                color = int(color, 16)
+                embed = Embed(
+                    title=news_header,
+                    description=description,
+                    color=color
+                )
+                if len(ctx.message.attachments) > 0:
+                    embed.set_image(url=ctx.message.attachments[0])
+                await ctx.message.delete()
+                await News.clear_events(self, ctx)
+                channel = utils.get(ctx.guild.text_channels, name=events_name)
+                await channel.send(embed=embed)
+                await News.clear_schedule(self, ctx, clear_message=False)
+                await News.update_schedule(self, ctx, add_event=True)
+            except:
                 description = 'Введите описание ивента в следующем формате: \n' \
                               '#add_event\n ' \
                               'Заголовок\n ' \
@@ -133,7 +134,7 @@ class News(commands.Cog, name="news"):
                     description=description,
                     color=config["error"]
                 )
-                await ctx.send(embed=embed)'''
+                await ctx.send(embed=embed)
         else:
             embed = Embed(
                 title="Error!",
@@ -179,11 +180,12 @@ class News(commands.Cog, name="news"):
                 await message.delete()
             if not add_event:
                 await News.clear_events(self, ctx)
-            imageURL = 'https://cdn.discordapp.com/attachments/810929046329491456/862404560777904198/987d1c7da78b74d9.png'
+            imageURL = 'https://cdn.discordapp.com/attachments/810929046329491456/862404560777904198/987d1c7da78b74d9' \
+                       '.png '
             channel = utils.get(ctx.guild.text_channels, name=events_name)
             messages = await channel.history(limit=200).flatten()
             embed = Embed(
-                title='Ближайшие события',
+                title='Ближайшие события:',
                 color=config["info"]
             )
             events = []
@@ -233,7 +235,6 @@ class News(commands.Cog, name="news"):
         print(events)
         events.sort(key=operator.itemgetter('time'))
         pprint(events)
-
 
 
 def setup(bot):
