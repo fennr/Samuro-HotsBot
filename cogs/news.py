@@ -71,7 +71,10 @@ class News(commands.Cog, name="news"):
             new_day = str(news_time.strftime(data_type_day))
             new_time = str(news_time.strftime(data_type_time))
             new_day, new_month = new_day.split(' ', maxsplit=1)
-            new_month = month_dict[new_month]
+            try:
+                new_month = month_dict[new_month]
+            except:
+                pass
             news_short = news_data.pop(0)
             news_full = news_data.pop(0)
             description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по Мск\n' + \
