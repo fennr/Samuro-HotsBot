@@ -88,11 +88,12 @@ class News(commands.Cog, name="news"):
             news_short = news_data.pop(0)
             news_full = news_data.pop(0)
             description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по МСК\n' + \
-                           news_short + '\n' + news_full
+                           '\n' + news_full
+            color = int(news_short, 16)
             embed = Embed(
                 title=news_header,
                 description=description,
-                color=config["info"]
+                color=color
             )
             if len(ctx.message.attachments) > 0:
                 embed.set_image(url=ctx.message.attachments[0])
@@ -107,7 +108,7 @@ class News(commands.Cog, name="news"):
                               '#add_event\n ' \
                               'Заголовок\n ' \
                               'Время в формате %m/%d %H:%M \n' \
-                              'Краткое описание в 1 строку \n' \
+                              'Шестнадцаритичный код цвета для сообщения \n' \
                               'Полное описание ивента любой длины\n------\n ' \
                               'После корректной генерации ивента некорректные сообещния будут зачищены'
                 embed = Embed(
@@ -133,7 +134,7 @@ class News(commands.Cog, name="news"):
         now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type)
         for message in messages:
             for emb in message.embeds:
-                date, time, short, full = emb.description.split('\n', maxsplit=3)
+                date, time, full = emb.description.split('\n', maxsplit=2)
                 tail, date = date.split(' ', maxsplit=1)
                 date, mon = date.split(' ', maxsplit=1)
                 key_list = list(month_dict.keys())
@@ -179,11 +180,16 @@ class News(commands.Cog, name="news"):
                 description = ''
                 for emb in message.embeds:
                     date, time, short, full = emb.description.split('\n', maxsplit=3)
+                    tail, date = date.split(' ', maxsplit=1)
+                    date, mon = date.split(' ', maxsplit=1)
+                    tail, time, tail2 = time.split(' ', maxsplit=2)
+                    time = datetime.datetime.strptime(date + ' ' + mon + time, data_type)
+                    weekday = time.strftime('%A')
                     description += '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
                                    + str(channel.id) + '/' + str(message.id) + ')'
                     embed.add_field(
                         name=f"\u200b",
-                        value=f":pushpin: {description} - {short}",
+                        value=f":pushpin: {description} — {date} {mon} ({weekday})",
                         inline=False
                     )
             embed.set_image(url=imageURL)
