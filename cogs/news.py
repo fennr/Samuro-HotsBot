@@ -22,7 +22,8 @@ category_name = 'Новости'
 schedule_name = '📅︱расписание'
 events_name = '📰︱события'
 news_name = '📰︱новости'
-event_icon = ':small_blue_diamond:'
+event_icon = ':pushpin:'
+clear = '\u200b'
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 data_type_day = '%d %B'
 data_type_time = '%H:%M'
@@ -77,11 +78,12 @@ class News(commands.Cog, name="news"):
             await ctx.send(embed=embed)
 
     @commands.command(name="am")
-    async def add_message(self, ctx):
+    async def am(self, ctx):
         if ctx.message.author.id in config["admins"]:
-            command, text = ctx.message.content.split('\n', maxsplit=1)
+            command, text = ctx.message.content.split(' ', maxsplit=1)
             await ctx.message.delete()
             await ctx.send(text)
+
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
