@@ -22,6 +22,7 @@ category_name = 'Новости'
 schedule_name = '📅︱расписание'
 events_name = '📰︱события'
 news_name = '📰︱новости'
+event_icon = ':small_blue_diamond:'
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 data_type_day = '%d %B'
 data_type_time = '%H:%M'
@@ -198,7 +199,7 @@ class News(commands.Cog, name="news"):
                 weekday = event['time'].strftime('%A')
                 embed.add_field(
                     name=f"\u200b",
-                    value=f":pushpin: {event['description']} — {date} {mon} ({weekday})",
+                    value=f"{event_icon} {event['description']} — {date} {mon} ({weekday})",
                     inline=False
                 )
             embed.set_image(url=imageURL)
