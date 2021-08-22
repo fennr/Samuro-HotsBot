@@ -87,7 +87,7 @@ class News(commands.Cog, name="news"):
             #new_month = month_dict[new_month]
             news_short = news_data.pop(0)
             news_full = news_data.pop(0)
-            description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по Мск\n' + \
+            description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по МСК\n' + \
                            news_short + '\n' + news_full
             embed = Embed(
                 title=news_header,
