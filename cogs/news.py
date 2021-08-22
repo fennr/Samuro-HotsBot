@@ -127,12 +127,16 @@ class News(commands.Cog, name="news"):
                 date, mon = date.split(' ', maxsplit=1)
                 key_list = list(month_dict.keys())
                 val_list = list(month_dict.values())
+                print(mon)
                 try:
                     mon = key_list[val_list.index(mon)]
                 except:
                     pass
+                print(mon)
                 tail, time, tail2 = time.split(' ', maxsplit=2)
+                print(f"{date} {mon}{time}")
                 time = datetime.datetime.strptime(date + ' ' + mon + time, data_type)
+                print(time)
                 if now > time:
                     await message.delete()
 
