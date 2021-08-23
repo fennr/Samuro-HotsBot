@@ -120,7 +120,12 @@ class News(commands.Cog, name="news"):
                     color=color
                 )
                 if len(ctx.message.attachments) > 0:
-                    embed.set_image(url=ctx.message.attachments[0])
+                    attachment = message.attachments[0]
+                    if attachment.filename.endswith(".jpg") or attachment.filename.endswith(".jpeg") or attachment.filename.endswith(".png") or attachment.filename.endswith(".webp") or attachment.filename.endswith(".gif"):
+                        image = attachment.url
+                    elif "https://images-ext-1.discordapp.net" in message.content or "https://tenor.com/view/" in message.content:
+                        image = message.content
+                    embed.set_image(url=image)
                 await ctx.message.delete()
                 await News.clear_events(self, ctx)
                 channel = utils.get(ctx.guild.text_channels, name=events_name)
