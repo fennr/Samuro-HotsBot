@@ -140,7 +140,7 @@ class News(commands.Cog, name="news"):
                         if resp.status != 200:
                             return await channel.send('Could not download file...')
                         #data = io.BytesIO(await resp.read())
-            await ctx.message.delete()
+            #await ctx.message.delete()
             await News.clear_events(self, ctx)
             if data is not None:
                 await channel.send(embed=embed, file=File(data, attachment.filename))
