@@ -101,6 +101,15 @@ class News(commands.Cog, name="news"):
                 color=color
             )
             channel = utils.get(ctx.guild.text_channels, name=news_name)
+            if len(ctx.message.attachments) > 0:
+                attachment = ctx.message.attachments[0]
+                if attachment.filename.endswith(".jpg") or attachment.filename.endswith(
+                        ".jpeg") or attachment.filename.endswith(".png") or attachment.filename.endswith(
+                        ".webp") or attachment.filename.endswith(".gif"):
+                    image = attachment.url
+                elif "https://images-ext-1.discordapp.net" in ctx.message.content or "https://tenor.com/view/" in ctx.message.content:
+                    image = ctx.message.content
+                embed.set_image(url=image)
             await channel.send(embed=embed)
 
     @commands.command(name="add_event")
