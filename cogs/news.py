@@ -7,7 +7,7 @@ import locale
 
 import operator
 
-from discord import Embed, utils
+from discord import Embed, utils, File
 from discord.ext import commands
 
 from pprint import pprint
@@ -130,6 +130,9 @@ class News(commands.Cog, name="news"):
                     elif "https://images-ext-1.discordapp.net" in ctx.message.content or "https://tenor.com/view/" in ctx.message.content:
                         image = ctx.message.content
                     embed.set_image(url=image)
+                    '''file1 = await ctx.message.attachments[0].to_file()
+                    file1.filename = 'image.png'
+                    embed.set_image(url='attachment://image.png')'''
                 await ctx.message.delete()
                 await News.clear_events(self, ctx)
                 channel = utils.get(ctx.guild.text_channels, name=events_name)
@@ -195,8 +198,9 @@ class News(commands.Cog, name="news"):
                 await message.delete()
             if not add_event:
                 await News.clear_events(self, ctx)
-            imageURL = 'https://cdn.discordapp.com/attachments/810929046329491456/862404560777904198/987d1c7da78b74d9' \
-                       '.png '
+            image_name = 'img/schedule.png'
+            file = File(image_name)
+            file.filename = 'schedule.png'
             channel = utils.get(ctx.guild.text_channels, name=events_name)
             messages = await channel.history(limit=200).flatten()
             embed = Embed(
@@ -219,7 +223,7 @@ class News(commands.Cog, name="news"):
                     value=f"{event_icon} {event['description']} — {date} {mon} ({weekday})",
                     inline=False
                 )
-            embed.set_image(url=imageURL)
+            embed.set_image(url=f'attachment://{file.filename}')
         except:
             embed = Embed(
                 title='Ошибка чтения новостей',
@@ -228,9 +232,9 @@ class News(commands.Cog, name="news"):
             )
         if add_event:
             channel = utils.get(ctx.guild.text_channels, name=schedule_name)
-            await channel.send(embed=embed)
+            await channel.send(embed=embed, file=file)
         else:
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, file=file)
 
     @commands.command(name="test1")
     async def test1(self, ctx, add_event=False):
