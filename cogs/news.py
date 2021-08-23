@@ -92,16 +92,16 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
-        command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
-        color = int(color, 16)
-        embed = Embed(
-            title=header,
-            description=description,
-            color=color
-        )
-        await ctx.message.delete()
-        channel = utils.get(ctx.guild.text_channels, name=news_name)
-        await channel.send(embed=embed)
+        if ctx.message.author.id in config["admins"]:
+            command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
+            color = int(color, 16)
+            embed = Embed(
+                title=header,
+                description=description,
+                color=color
+            )
+            channel = utils.get(ctx.guild.text_channels, name=news_name)
+            await channel.send(embed=embed)
 
     @commands.command(name="add_event")
     async def add_event(self, ctx):
@@ -204,7 +204,7 @@ class News(commands.Cog, name="news"):
                 await message.delete()
             if not add_event:
                 await News.clear_events(self, ctx)
-                await News.update_events(self, ctx)
+                await News.update_events(self, ctx, clear_message=False)
             image_name = 'img/schedule.png'
             img = File(image_name)
             img.filename = 'schedule.png'
