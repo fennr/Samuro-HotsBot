@@ -206,8 +206,8 @@ class News(commands.Cog, name="news"):
                 await News.clear_events(self, ctx)
                 await News.update_events(self, ctx)
             image_name = 'img/schedule.png'
-            file = File(image_name)
-            file.filename = 'schedule.png'
+            img = File(image_name)
+            img.filename = 'schedule.png'
             channel = utils.get(ctx.guild.text_channels, name=events_name)
             messages = await channel.history(limit=200).flatten()
             embed = Embed(
@@ -230,7 +230,7 @@ class News(commands.Cog, name="news"):
                     value=f"{event_icon} {event['description']} — {date} {mon} ({weekday})",
                     inline=False
                 )
-            embed.set_image(url=f'attachment://{file.filename}')
+            embed.set_image(url=f'attachment://{img.filename}')
         except:
             embed = Embed(
                 title='Ошибка чтения новостей',
@@ -239,9 +239,9 @@ class News(commands.Cog, name="news"):
             )
         if add_event:
             channel = utils.get(ctx.guild.text_channels, name=schedule_name)
-            await channel.send(embed=embed, file=file)
+            await channel.send(embed=embed, file=img)
         else:
-            await ctx.send(embed=embed, file=file)
+            await ctx.send(embed=embed, file=img)
 
     @commands.command(name="test1")
     async def test1(self, ctx, add_event=False):
