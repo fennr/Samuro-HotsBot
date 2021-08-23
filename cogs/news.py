@@ -143,7 +143,7 @@ class News(commands.Cog, name="news"):
                 #await ctx.message.delete()
                 await News.clear_events(self, ctx)
                 await channel.send(embed=embed)
-                await News.clear_schedule(self, ctx, clear_message=False)
+                await News.update_events(self, ctx, clear_message=False)
                 await News.update_schedule(self, ctx, add_event=True)
             except:
                 description = 'Введите описание ивента в следующем формате: \n' \
@@ -167,8 +167,8 @@ class News(commands.Cog, name="news"):
             )
             await ctx.send(embed=embed)
 
-    @commands.command(name="clear_schedule")
-    async def clear_schedule(self, ctx, clear_message=True):
+    @commands.command(name="update_events")
+    async def update_events(self, ctx, clear_message=True):
         if clear_message:
             await ctx.message.delete()
         channel = utils.get(ctx.guild.text_channels, name=events_name)
@@ -204,6 +204,7 @@ class News(commands.Cog, name="news"):
                 await message.delete()
             if not add_event:
                 await News.clear_events(self, ctx)
+                await News.update_events(self, ctx)
             image_name = 'img/schedule.png'
             file = File(image_name)
             file.filename = 'schedule.png'
