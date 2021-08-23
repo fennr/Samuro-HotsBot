@@ -69,7 +69,9 @@ logfile = config["log"]
 log = logging.getLogger("my_log")
 log.setLevel(logging.INFO)
 FH = logging.FileHandler(logfile, encoding='utf-8')
-basic_formater = logging.Formatter('%(asctime)s : [%(levelname)s] : %(message)s')
+str_logging_format = "%(asctime)s-%(levelname)s-%(message)s"
+log_format = '%(asctime)s : [%(levelname)s] : %(message)s'
+basic_formater = logging.Formatter(log_format)
 FH.setFormatter(basic_formater)
 log.addHandler(FH)
 
