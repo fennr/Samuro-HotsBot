@@ -106,49 +106,46 @@ class News(commands.Cog, name="news"):
     @commands.command(name="add_event")
     async def add_event(self, ctx):
         if ctx.message.author.id in config["admins"]:
-            #try:
-            news_data = ctx.message.content.split('\n', maxsplit=4)
-            news_data = news_data[1:]
-            description = ''
-            news_header = news_data.pop(0)
-            news_time = datetime.datetime.strptime(news_data.pop(0), '%m/%d %H:%M')
-            new_day = str(news_time.strftime(data_type_day))
-            new_time = str(news_time.strftime(data_type_time))
-            new_day, new_month = new_day.split(' ', maxsplit=1)
-            #new_month = month_dict[new_month]
-            color = news_data.pop(0)
-            news_full = news_data.pop(0)
-            description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по МСК\n' + \
-                           '\n' + news_full
-            color = int(color, 16)
-            embed = Embed(
-                title=news_header,
-                description=description,
-                color=color
-            )
-            data = None
-            channel = utils.get(ctx.guild.text_channels, name=events_name)
-            if len(ctx.message.attachments) > 0:
-                attachment = ctx.message.attachments[0]
-                if attachment.filename.endswith(".jpg") or attachment.filename.endswith(".jpeg") or attachment.filename.endswith(".png") or attachment.filename.endswith(".webp") or attachment.filename.endswith(".gif"):
-                    image = attachment.url
-                elif "https://images-ext-1.discordapp.net" in ctx.message.content or "https://tenor.com/view/" in ctx.message.content:
-                    image = ctx.message.content
-                embed.set_image(url=image)
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(attachment.url) as resp:
-                        if resp.status != 200:
-                            return await channel.send('Could not download file...')
-                        #data = io.BytesIO(await resp.read())
-            #await ctx.message.delete()
-            await News.clear_events(self, ctx)
-            if data is not None:
-                await channel.send(embed=embed, file=File(data, attachment.filename))
-            else:
+            try:
+                news_data = ctx.message.content.split('\n', maxsplit=4)
+                news_data = news_data[1:]
+                description = ''
+                news_header = news_data.pop(0)
+                news_time = datetime.datetime.strptime(news_data.pop(0), '%m/%d %H:%M')
+                new_day = str(news_time.strftime(data_type_day))
+                new_time = str(news_time.strftime(data_type_time))
+                new_day, new_month = new_day.split(' ', maxsplit=1)
+                #new_month = month_dict[new_month]
+                color = news_data.pop(0)
+                news_full = news_data.pop(0)
+                description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по МСК\n' + \
+                               '\n' + news_full
+                color = int(color, 16)
+                embed = Embed(
+                    title=news_header,
+                    description=description,
+                    color=color
+                )
+                data = None
+                channel = utils.get(ctx.guild.text_channels, name=events_name)
+                if len(ctx.message.attachments) > 0:
+                    attachment = ctx.message.attachments[0]
+                    if attachment.filename.endswith(".jpg") or attachment.filename.endswith(".jpeg") or attachment.filename.endswith(".png") or attachment.filename.endswith(".webp") or attachment.filename.endswith(".gif"):
+                        image = attachment.url
+                    elif "https://images-ext-1.discordapp.net" in ctx.message.content or "https://tenor.com/view/" in ctx.message.content:
+                        image = ctx.message.content
+                    embed.set_image(url=image)
+                    '''async with aiohttp.ClientSession() as session:
+                        async with session.get(attachment.url) as resp:
+                            if resp.status != 200:
+                                return await channel.send('Could not download file...')
+                            data = io.BytesIO(await resp.read())'''
+                #await ctx.message.delete()
+                await News.clear_events(self, ctx)
                 await channel.send(embed=embed)
-            await News.clear_schedule(self, ctx, clear_message=False)
-            await News.update_schedule(self, ctx, add_event=True)
-            '''except:
+                await News.clear_schedule(self, ctx, clear_message=False)
+                await News.update_schedule(self, ctx, add_event=True)
+            except:
                 description = 'Введите описание ивента в следующем формате: \n' \
                               '#add_event\n ' \
                               'Заголовок\n ' \
@@ -161,7 +158,7 @@ class News(commands.Cog, name="news"):
                     description=description,
                     color=config["error"]
                 )
-                await ctx.send(embed=embed)'''
+                await ctx.send(embed=embed)
         else:
             embed = Embed(
                 title="Error!",
