@@ -78,7 +78,8 @@ class News(commands.Cog, name="news"):
                 title = emb.title
                 embed = Embed(
                     title="Привет, друг",
-                    description=f'Скоро начнется мероприятие [{title}]({url}) на сервере **{ctx.guild.name}**',
+                    description=f'Скоро начнется мероприятие [{title}]({url})\n'
+                                f'Сервер: **{ctx.guild.name}**',
                     color=config['info']
                 )
             reactions: list = message.reactions
@@ -212,7 +213,7 @@ class News(commands.Cog, name="news"):
         for message in messages:
             for emb in message.embeds:
                 time, description = event_parse(ctx, emb, channel, message)
-                print(time)
+                #print(time)
                 if now > time:
                     await message.delete()
 
@@ -221,7 +222,7 @@ class News(commands.Cog, name="news"):
         error_color = '#e02b2b'
         channel = utils.get(ctx.guild.text_channels, name=events_name)
         messages = await channel.history(limit=200).flatten()
-        pprint(messages)
+        #pprint(messages)
         for message in reversed(messages):
             if not message.author.bot:
                 await message.delete()
@@ -232,6 +233,10 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="update_schedule")
     async def update_schedule(self, ctx, add_event=False):
+        img = None
+        img_path = 'img/'
+        img_name = 'schedule.png'
+        await ctx.message.delete()
         try:
             channel = utils.get(ctx.guild.text_channels, name=schedule_name)
             messages = await channel.history(limit=200).flatten()
@@ -240,9 +245,8 @@ class News(commands.Cog, name="news"):
             if not add_event:
                 await News.clear_events(self, ctx)
                 await News.update_events(self, ctx, clear_message=False)
-            image_name = 'img/schedule.png'
-            img = File(image_name)
-            img.filename = 'schedule.png'
+            img = File(img_path+img_name)
+            img.filename = img_name
             channel = utils.get(ctx.guild.text_channels, name=events_name)
             messages = await channel.history(limit=200).flatten()
             embed = Embed(
@@ -265,18 +269,18 @@ class News(commands.Cog, name="news"):
                     value=f"{event_icon} {event['description']} — {date} {mon} ({weekday})",
                     inline=False
                 )
-            embed.set_image(url=f'attachment://{img.filename}')
+            embed.set_image(url=f'attachment://{img_name}')
         except:
             embed = Embed(
                 title='Ошибка чтения новостей',
                 description='Удалите сообщения в событиях созданные вручную и добавьте ивенты через #add_event',
                 color=config["error"]
             )
-        if add_event:
-            channel = utils.get(ctx.guild.text_channels, name=schedule_name)
+        channel = utils.get(ctx.guild.text_channels, name=schedule_name)
+        if img is not None:
             await channel.send(embed=embed, file=img)
         else:
-            await ctx.send(embed=embed, file=img)
+            await channel.send(embed=embed)
 
     @commands.command(name="test1")
     async def test1(self, ctx, add_event=False):
