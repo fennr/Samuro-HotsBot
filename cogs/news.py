@@ -213,7 +213,7 @@ class News(commands.Cog, name="news"):
         for message in messages:
             for emb in message.embeds:
                 time, description = event_parse(ctx, emb, channel, message)
-                #print(time)
+                print(f"now: {now}\ntime: {time}")
                 if now > time:
                     await message.delete()
 
