@@ -7,13 +7,15 @@ import locale
 
 import operator
 
-from discord import Embed, utils, File
+from discord import Embed, utils, File, Reaction
 from discord.ext import commands
 
 import io
 import aiohttp
 
 from pprint import pprint
+
+from discord_components import ComponentMessage
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -63,6 +65,30 @@ def event_parse(ctx, emb, channel, message):
 class News(commands.Cog, name="news"):
     def __init__(self, bot):
         self.bot = bot
+
+
+    @commands.command(name="notify")
+    async def notify(self, ctx):
+        if ctx.message.author.id in config["admins"]:
+            like = 'like'
+            command, url = ctx.message.content.split(' ', maxsplit=1)
+            link = url.split('/')
+            message: ComponentMessage = await self.bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
+            for emb in message.embeds:
+                title = emb.title
+                embed = Embed(
+                    title="Привет, друг",
+                    description=f'Скоро начнется мероприятие [{title}]({url}) на сервере **{ctx.guild.name}**',
+                    color=config['info']
+                )
+            reactions: list = message.reactions
+            for reaction in reactions:
+                print(reaction)
+                print(type(reaction))
+                if reaction.emoji.name == like:
+                    async for user in reaction.users():
+                        await user.send(embed=embed)
+                        #print('{0} has reacted with {1.emoji}!'.format(user, reaction))
 
 
 
