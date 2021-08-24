@@ -209,7 +209,8 @@ class News(commands.Cog, name="news"):
             await ctx.message.delete()
         channel = utils.get(ctx.guild.text_channels, name=events_name)
         messages = await channel.history(limit=200).flatten()
-        now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type)
+        now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type)\
+            .replace(year=datetime.datetime.now().year)
         for message in messages:
             for emb in message.embeds:
                 time, description = event_parse(ctx, emb, channel, message)
