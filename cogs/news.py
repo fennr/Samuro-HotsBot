@@ -269,6 +269,12 @@ class News(commands.Cog, name="news"):
                     value=f"{event_icon} {event['description']} — {date} {mon} ({weekday})",
                     inline=False
                 )
+            if len(events) == 0:
+                embed.add_field(
+                    name=f"\u200b",
+                    value=f"В текущий момент нет запланированных событий на сервере",
+                    inline=False
+                )
             embed.set_image(url=f'attachment://{img_name}')
         except:
             embed = Embed(
