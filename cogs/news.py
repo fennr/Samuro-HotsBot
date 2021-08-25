@@ -71,6 +71,7 @@ class News(commands.Cog, name="news"):
     async def notify(self, ctx):
         if ctx.message.author.id in config["admins"]:
             like = 'like'
+            dislike = 'dislike'
             command, url = ctx.message.content.split(' ', maxsplit=1)
             link = url.split('/')
             message: ComponentMessage = await self.bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
@@ -86,9 +87,12 @@ class News(commands.Cog, name="news"):
             for reaction in reactions:
                 print(reaction)
                 print(type(reaction))
-                if reaction.emoji.name == like:
+                if reaction.emoji.name != dislike:
                     async for user in reaction.users():
-                        await user.send(embed=embed)
+                        try:
+                            await user.send(embed=embed)
+                        except:
+                            print(f"Личка пользователя {user} недоступна")
                         #print('{0} has reacted with {1.emoji}!'.format(user, reaction))
 
 
@@ -214,7 +218,7 @@ class News(commands.Cog, name="news"):
         for message in messages:
             for emb in message.embeds:
                 time, description = event_parse(ctx, emb, channel, message)
-                print(f"now: {now}\ntime: {time}")
+                #print(f"now: {now}\ntime: {time}")
                 if now > time:
                     await message.delete()
 
