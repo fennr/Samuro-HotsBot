@@ -4,12 +4,14 @@ import sys
 
 import yaml
 from discord.ext import commands
+from discord import Embed
 
 from hots.function import add_thumbnail, find_heroes, hero_not_found, find_more_heroes, args_not_found, read_hero_from_message
 from hots.heroes import builds, heroes_description_short
 from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
 from hots.talents import talents, wrong_talent_lvl, read_talent_lvl
+from hots.Hero import Hero
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -64,7 +66,7 @@ class hots(commands.Cog, name="hots"):
             hero_name, btn_key = read_skill_btn(args)
             hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
-                hero = hero_list[0]
+                hero = Hero(hero_list[0]['name_id'])
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'skill')
             else:
@@ -86,7 +88,7 @@ class hots(commands.Cog, name="hots"):
             hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
                 embed = None
-                hero = hero_list[0]
+                hero = Hero(hero_list[0]['name_id'])
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'talent', ':lvl:')
             else:

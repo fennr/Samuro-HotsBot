@@ -4,9 +4,10 @@ import sys
 import requests
 import yaml
 from discord import Embed
+from hots.Hero import Hero
+from hots.Hero import Hero
 
-from hots.function import open_hero
-
+from hots.Hero import Hero
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
 else:
@@ -59,9 +60,8 @@ def sales():
     )
     count = 1
     for hero in heroes:
-        print(hero['GemPriceNormal'])
-        hero_name = open_hero(hero['Name'])
-        text += str(count) + '. ' + hero_name['name_ru'] + ' - ' + str(hero['GemPrice']) + ' gems\n'
+        hero_name = Hero(hero['Name'])
+        text += str(count) + '. ' + hero_name.ru + ' - ' + str(hero['GemPrice']) + ' gems\n'
         count += 1
     embed.add_field(
         name="Текущие скидки",
@@ -86,9 +86,9 @@ def weekly_rotation():
         color=config["info"]
     )
     hero_links = ''
-    for hero in heroes:
-        hero_name = open_hero(hero['Name'])
-        hero_links = hero_links + '[' + hero_name['name_ru'] + '](' + hero['URL'] + '), '
+    for hero_name in heroes:
+        hero = Hero(hero_name['Name'])
+        hero_links = hero_links + '[' + hero.ru + '](' + hero_name['URL'] + '), '
     hero_links = hero_links[:-2]
     embed.add_field(
         name="Герои текущей ротации",

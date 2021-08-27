@@ -4,7 +4,7 @@ import os, sys, yaml
 from discord import Embed
 
 from pyxdameraulevenshtein import damerau_levenshtein_distance
-
+from hots.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -24,7 +24,7 @@ def read_hero_from_message(ctx, *args, command='hero', hero_args=None):
         hero_list = find_heroes(hero_name)
         if len(hero_list) == 1:
             embed = None
-            hero = hero_list[0]
+            hero = Hero(hero_list[0]['name_id'])
         elif len(hero_list) > 1:
             embed = find_more_heroes(hero_list, ctx.author, command=command)
         else:
@@ -84,9 +84,9 @@ def open_hero(hero_name):
             return data
 
 
-def add_thumbnail(hero, embed):
+def add_thumbnail(hero: Hero, embed):
     thumb_url = 'https://nexuscompendium.com/images/portrait/'
-    hero_name = hero['name_en'].lower().replace('.', '').replace("'", "").replace(' ', '-')
+    hero_name = hero.en.lower().replace('.', '').replace("'", "").replace(' ', '-')
     url = thumb_url + hero_name + '.png'
     print(url)
     embed.set_thumbnail(

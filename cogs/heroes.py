@@ -8,6 +8,7 @@ from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
 from hots.function import open_hero, find_heroes, read_hero_from_message, hero_not_found, find_more_heroes, args_not_found
+from hots.Hero import Hero
 from hots.heroes import heroes_description, builds, embed_stlk_builds
 from hots.nexuscompendium import weekly_rotation, sales, ranked
 from hots.patchnotes import last_pn
@@ -125,14 +126,14 @@ class Heroes(Cog, name='heroes'):
             hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
             hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
-                hero = hero_list[0]
+                hero = Hero(hero_list[0]['name_id'])
             elif len(hero_list) == 0:
                 embed = hero_not_found(ctx.author)
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'data')
             if hero is not None:
                 embed = builds(hero, ctx.author)
-                default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
+                default_hero_name = hero.en.lower().replace('.', '').replace("'", "")
                 heroespn_url = 'https://heroespatchnotes.com/hero/'
                 heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
                 menu_buttons = [
@@ -203,7 +204,7 @@ class Heroes(Cog, name='heroes'):
         components = None
         hero_name, tail = res.raw_data['d']['message']['embeds'][0]['title'].split(' / ', maxsplit=1)
         text, author = res.raw_data['d']['message']['embeds'][-1]['footer']['text'].split(': ', maxsplit=1)
-        hero = open_hero(hero_name)
+        hero = Hero(hero_name)
 
         default_hero_name = hero_name.lower().replace('.', '').replace("'", "")
         heroespn_url = 'https://heroespatchnotes.com/hero/'

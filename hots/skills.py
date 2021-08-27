@@ -6,6 +6,7 @@ import yaml
 from discord import Embed
 
 from hots.function import cleanhtml
+from hots.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -48,7 +49,7 @@ def read_skill_btn(input):
     return hero_name, btn
 
 
-def skills(hero, author, types=None, btn_key=None):
+def skills(hero: Hero, author, types=None, btn_key=None):
     if types is None:
         types = ['basic']
     embed = Embed(
@@ -60,8 +61,8 @@ def skills(hero, author, types=None, btn_key=None):
     return embed
 
 
-def skill(hero, author=None, ability_type='basic', embed=None, key=None):
-    full_hero = heroes_data[hero['name_id']]
+def skill(hero: Hero, author=None, ability_type='basic', embed=None, key=None):
+    full_hero = heroes_data[hero.id]
     ability = full_hero['abilities'][ability_type]
     if ability_type == 'basic':
         type_text = 'Базовые'
@@ -71,7 +72,7 @@ def skill(hero, author=None, ability_type='basic', embed=None, key=None):
         type_text = 'Особые'
     if embed is None:
         embed = Embed(
-            title="{} / {} : {} cпособности".format(hero['name_en'], hero['name_ru'], type_text),
+            title="{} / {} : {} cпособности".format(hero.en, hero.ru, type_text),
             color=config["success"]
         )
     for i in range(len(ability)):  # считываем все абилки

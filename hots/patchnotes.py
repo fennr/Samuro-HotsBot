@@ -7,7 +7,7 @@ import yaml
 from bs4 import BeautifulSoup
 from discord import Embed
 
-from hots.function import open_hero
+from hots.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -82,10 +82,10 @@ def last_pn(hero=None, author=''):
             herolinks = ''
             for link in soup.findAll('a'):
                 hero_url = link.get('href')
-                hero = open_hero(link.text)
+                hero = Hero(link.text)
                 if hero is not None:
                     # herolinks = herolinks + '[' + hero['name_ru'] + '](' + hero_url + '), '
-                    herolinks += hero['name_ru'] + ', '
+                    herolinks += hero.ru + ', '
                     # print('Герой: {} \nПоследние изменения: {}'.format(hero['name_ru'], hero_url))
             herolinks = herolinks[:-2]
             embed.add_field(

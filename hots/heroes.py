@@ -7,6 +7,7 @@ from discord import Embed
 
 from hots.function import add_thumbnail, cleanhtml
 from hots.patchnotes import get_last_update
+from hots.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -29,8 +30,8 @@ with open(stlk_json_file, encoding='utf-8') as ru_json:
     stlk_data = json.load(ru_json)
 
 
-def heroes_description_short(hero, author):
-    hero_json_file = 'hero/' + hero['name_json']
+def heroes_description_short(hero: Hero, author):
+    hero_json_file = 'hero/' + hero.json
     with open(hero_json_file) as hero_json:
         hero_data = json.load(hero_json)
     hero_name = hero_data['cHeroId']
@@ -50,7 +51,7 @@ def heroes_description_short(hero, author):
     }
 
     embed = Embed(
-        title='{} / {} ({})'.format(hero['name_en'], hero['name_ru'], hero_expandedrole),
+        title='{} / {} ({})'.format(hero.en, hero.ru, hero_expandedrole),
         # title="Описание героя:",
         color=config["success"]
     )
@@ -66,14 +67,14 @@ def heroes_description_short(hero, author):
     )
     embed.add_field(
         name="Позиция в мете",
-        value="Тир {} {}".format(hero['tier'], tier_desc.setdefault(hero['tier'])),
+        value="Тир {} {}".format(hero.tier, tier_desc.setdefault(hero.tier)),
         inline=True
     )
     return embed
 
 
-def heroes_description(hero, author):
-    hero_json_file = 'hero/' + hero['name_json']
+def heroes_description(hero: Hero, author):
+    hero_json_file = 'hero/' + hero.json
     with open(hero_json_file) as hero_json:
         hero_data = json.load(hero_json)
 
@@ -84,7 +85,7 @@ def heroes_description(hero, author):
     hero_expandedrole = hero_unit['expandedrole'][hero_name]
 
     embed = Embed(
-        title='{} / {} : Характеристики'.format(hero['name_en'], hero['name_ru']),
+        title='{} / {} : Характеристики'.format(hero.en, hero.ru),
         # title="Описание героя:",
         color=config["success"]
     )
@@ -151,17 +152,17 @@ def heroes_description(hero, author):
     return embed
 
 
-def embed_stlk_builds(hero, author, embed=None, ad=False):
+def embed_stlk_builds(hero: Hero, author, embed=None, ad=False):
     name = 'Билды от Сталка'
     description = '**для вставки в чат игры**\n'
     if embed is None:
         name = 'для вставки в чат игры'
         description = ''
         embed = Embed(
-            title=f"Билды от грандмастера STLK на героя {hero['name_ru']}",  # title="Описание героя:",
+            title=f"Билды от грандмастера STLK на героя {hero.ru}",  # title="Описание героя:",
             color=config["success"]
         )
-    stlk_builds = stlk_data[hero['name_id']]
+    stlk_builds = stlk_data[hero.id]
     description += '💬 ' + stlk_builds['comment1'] + '\n```' + stlk_builds['build1'] + '```'
     if len(stlk_builds['build2']) > 0:
         description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build2'] + '```'
@@ -181,7 +182,7 @@ def embed_stlk_builds(hero, author, embed=None, ad=False):
     return embed
 
 
-def builds(hero, author, embed=None):
+def builds(hero: Hero, author, embed=None):
     heroespn_url = 'https://heroespatchnotes.com/hero/'  # + '.html'
     heroeshearth_top_url = 'https://heroeshearth.com/hero/'
     heroeshearth_all_url = 'https://heroeshearth.com/builds/hero/'
@@ -189,16 +190,16 @@ def builds(hero, author, embed=None):
     heroesfire_url = 'https://www.heroesfire.com/hots/wiki/heroes/'
     blizzhero_url = 'https://blizzardheroes.ru/guides/'
     nexuscompendium_url = 'https://nexuscompendium.com/heroes/'
-    default_hero_name = hero['name_en'].lower().replace('.', '').replace("'", "")
+    default_hero_name = hero.en.lower().replace('.', '').replace("'", "")
     heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
     heroesprofile_url = 'https://www.heroesprofile.com/Global/Talents/?hero='
     hotslogs_url = 'https://www.hotslogs.com/Sitewide/TalentDetails?Hero='
     if embed is None:
         embed = Embed(
-            title='{} / {} : Билды'.format(hero['name_en'], hero['name_ru'], ),  # title="Описание героя:",
+            title='{} / {} : Билды'.format(hero.en, hero.ru, ),  # title="Описание героя:",
             color=config["success"]
         )
-    icy_veins_url_full = icy_veins_url + hero['name_en'].lower().replace(' ', '-').replace('.',
+    icy_veins_url_full = icy_veins_url + hero.en.lower().replace(' ', '-').replace('.',
                                                                                            '-').replace("'",
                                                                                                         "") + '-build-guide'
     icy_veins_url_full = icy_veins_url_full.replace('--', '-')
@@ -218,8 +219,8 @@ def builds(hero, author, embed=None):
             icy_veins_url_full,
             nexuscompendium_url + default_hero_name.replace(' ', '-'),
             heroesfire_url + default_hero_name.replace(' ', '-'),
-            heroesprofile_url + hero['name_en'].replace(' ', '+') + '&league_tier=master,diamond',
-            hotslogs_url + hero['name_en'].replace(' ', '%20')
+            heroesprofile_url + hero.en.replace(' ', '+') + '&league_tier=master,diamond',
+            hotslogs_url + hero.en.replace(' ', '%20')
         ),
         inline=False
     )

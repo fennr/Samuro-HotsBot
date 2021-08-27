@@ -6,6 +6,7 @@ import yaml
 from discord import Embed
 
 from hots.function import cleanhtml
+from hots.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -48,13 +49,13 @@ def wrong_talent_lvl(author):
     return embed
 
 
-def talents(hero, lvl, author):
+def talents(hero: Hero, lvl, author):
     lvl = str(lvl)
-    full_hero = heroes_data[hero['name_id']]
+    full_hero = heroes_data[hero.id]
     level = 'level' + lvl
     talents_data = full_hero['talents'][level]
     embed = Embed(
-        title="{} / {} : Таланты на {} уровне".format(hero['name_en'], hero['name_ru'], lvl),
+        title="{} / {} : Таланты на {} уровне".format(hero.en, hero.ru, lvl),
         color=config["success"]
     )
     for i in range(len(talents_data)):
