@@ -1,9 +1,5 @@
 """"
-Copyright © Krypton 2021 - https://github.com/kkrypt0nn
-Description:
-This is a template to create your own discord bot in python.
-
-Version: 2.5
+Основной файл бота
 """
 
 import json
@@ -29,6 +25,16 @@ if not os.path.isfile("config.yaml"):
 else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
+
+GITHUB_TOKEN = os.environ.get('github_token')
+
+TOKEN = os.environ.get('token_prod')
+APP_ID = os.environ.get('app_id_prod')
+
+'''
+TOKEN = config['token_test']
+APP_ID = config['app_test']
+'''
 
 # read database connection url from the enivron variable we just set.
 DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -220,4 +226,4 @@ async def on_command_error(ctx, error):
 heroes_ru_names.create_heroes_ru_data()
 # Run the bot with the token
 
-bot.run(config["token"])
+bot.run(TOKEN)
