@@ -53,7 +53,7 @@ def skills(hero: Hero, author, types=None, btn_key=None):
     if types is None:
         types = ['basic']
     embed = Embed(
-        title="{} / {} : Cпособности".format(hero['name_en'], hero['name_ru']),
+        title="{} / {} : Cпособности".format(hero.en, hero.ru),
         color=config["success"]
     )
     for elem in types:
