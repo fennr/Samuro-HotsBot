@@ -87,7 +87,9 @@ def weekly_rotation():
     )
     hero_links = ''
     for hero_name in heroes:
-        hero = Hero(hero_name['Name'])
+        hero = Hero(str(hero_name['Name']))
+        print(hero_name['Name'])
+        print(hero, type(hero))
         hero_links = hero_links + '[' + hero.ru + '](' + hero_name['URL'] + '), '
     hero_links = hero_links[:-2]
     embed.add_field(

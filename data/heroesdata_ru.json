@@ -221,7 +221,7 @@
         "name_ru": "Диабло",
         "name_json": "diablo.json",
         "role": "Tank",
-        "tier": "C",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -290,7 +290,7 @@
         "name_ru": "Гаррош",
         "name_json": "garrosh.json",
         "role": "Tank",
-        "tier": "C",
+        "tier": "B",
         "nick": [
             "Гарох"
         ]
@@ -660,7 +660,7 @@
         "name_ru": "Назибо",
         "name_json": "nazeebo.json",
         "role": "Ranged Assassin",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Nazibo"
         ]

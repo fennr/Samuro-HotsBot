@@ -17,7 +17,7 @@ else:
 short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata.json'
+heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 with open(heroes_json_file) as heroes_json:
