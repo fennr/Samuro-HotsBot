@@ -59,13 +59,13 @@ def event_parse(ctx, emb, channel, message):
         year=datetime.datetime.now().year)
     weekday = time.strftime('%A')
     description = '[' + emb.title + '](https://discordapp.com/channels/' + str(ctx.guild.id) + '/' \
-                   + str(channel.id) + '/' + str(message.id) + ')'
+                  + str(channel.id) + '/' + str(message.id) + ')'
     return time, description
+
 
 class News(commands.Cog, name="news"):
     def __init__(self, bot):
         self.bot = bot
-
 
     @commands.command(name="notify")
     async def notify(self, ctx):
@@ -74,7 +74,8 @@ class News(commands.Cog, name="news"):
             dislike = 'dislike'
             command, url = ctx.message.content.split(' ', maxsplit=1)
             link = url.split('/')
-            message: ComponentMessage = await self.bot.get_guild(int(link[-3])).get_channel(int(link[-2])).fetch_message(int(link[-1]))
+            message: ComponentMessage = await self.bot.get_guild(int(link[-3])).get_channel(
+                int(link[-2])).fetch_message(int(link[-1]))
             for emb in message.embeds:
                 title = emb.title
                 embed = Embed(
@@ -93,9 +94,7 @@ class News(commands.Cog, name="news"):
                             await user.send(embed=embed)
                         except:
                             print(f"Личка пользователя {user} недоступна")
-                        #print('{0} has reacted with {1.emoji}!'.format(user, reaction))
-
-
+                        # print('{0} has reacted with {1.emoji}!'.format(user, reaction))
 
     @commands.command(name="events_init")
     async def events_init(self, ctx):
@@ -120,7 +119,6 @@ class News(commands.Cog, name="news"):
             await ctx.message.delete()
             await ctx.send(text)
 
-
     @commands.command(name="add_news")
     async def add_news(self, ctx):
         if ctx.message.author.id in config["admins"]:
@@ -136,7 +134,7 @@ class News(commands.Cog, name="news"):
                 attachment = ctx.message.attachments[0]
                 if attachment.filename.endswith(".jpg") or attachment.filename.endswith(
                         ".jpeg") or attachment.filename.endswith(".png") or attachment.filename.endswith(
-                        ".webp") or attachment.filename.endswith(".gif"):
+                    ".webp") or attachment.filename.endswith(".gif"):
                     image = attachment.url
                 elif "https://images-ext-1.discordapp.net" in ctx.message.content or "https://tenor.com/view/" in ctx.message.content:
                     image = ctx.message.content
@@ -155,7 +153,7 @@ class News(commands.Cog, name="news"):
                 new_day = str(news_time.strftime(data_type_day))
                 new_time = str(news_time.strftime(data_type_time))
                 new_day, new_month = new_day.split(' ', maxsplit=1)
-                #new_month = month_dict[new_month]
+                # new_month = month_dict[new_month]
                 color = news_data.pop(0)
                 news_full = news_data.pop(0)
                 description += '**Дата:** ' + new_day + ' ' + new_month + '\n' + '**Время:** ' + new_time + ' по МСК\n' + \
@@ -170,7 +168,9 @@ class News(commands.Cog, name="news"):
                 channel = utils.get(ctx.guild.text_channels, name=events_name)
                 if len(ctx.message.attachments) > 0:
                     attachment = ctx.message.attachments[0]
-                    if attachment.filename.endswith(".jpg") or attachment.filename.endswith(".jpeg") or attachment.filename.endswith(".png") or attachment.filename.endswith(".webp") or attachment.filename.endswith(".gif"):
+                    if attachment.filename.endswith(".jpg") or attachment.filename.endswith(
+                            ".jpeg") or attachment.filename.endswith(".png") or attachment.filename.endswith(
+                        ".webp") or attachment.filename.endswith(".gif"):
                         image = attachment.url
                     elif "https://images-ext-1.discordapp.net" in ctx.message.content or "https://tenor.com/view/" in ctx.message.content:
                         image = ctx.message.content
@@ -180,8 +180,7 @@ class News(commands.Cog, name="news"):
                             if resp.status != 200:
                                 return await channel.send('Could not download file...')
                             data = io.BytesIO(await resp.read())'''
-                #await ctx.message.delete()
-                await News.clear_events(self, ctx)
+                # await ctx.message.delete()
                 await channel.send(embed=embed)
                 await News.update_schedule(self, ctx, clear_message=False)
             except:
@@ -212,12 +211,12 @@ class News(commands.Cog, name="news"):
             await ctx.message.delete()
         channel = utils.get(ctx.guild.text_channels, name=events_name)
         messages = await channel.history(limit=200).flatten()
-        now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type)\
+        now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type) \
             .replace(year=datetime.datetime.now().year)
         for message in messages:
             for emb in message.embeds:
                 time, description = event_parse(ctx, emb, channel, message)
-                #print(f"now: {now}\ntime: {time}")
+                # print(f"now: {now}\ntime: {time}")
                 if now > time:
                     await message.delete()
 
@@ -226,14 +225,13 @@ class News(commands.Cog, name="news"):
         error_color = '#e02b2b'
         channel = utils.get(ctx.guild.text_channels, name=events_name)
         messages = await channel.history(limit=200).flatten()
-        #pprint(messages)
+        # pprint(messages)
         for message in reversed(messages):
             if not message.author.bot:
                 await message.delete()
             for emb in message.embeds:
                 if str(emb.color) == error_color:
                     await message.delete()
-
 
     @commands.command(name="update_schedule")
     async def update_schedule(self, ctx, clear_message=True):
@@ -242,50 +240,50 @@ class News(commands.Cog, name="news"):
         img_name = 'schedule.png'
         if clear_message:
             await ctx.message.delete()
-        try:
-            channel = utils.get(ctx.guild.text_channels, name=schedule_name)
-            messages = await channel.history(limit=200).flatten()
-            for message in messages:
-                await message.delete()
-            await News.clear_events(self, ctx)
-            await News.update_events(self, ctx, clear_message=False)
-            img = File(img_path+img_name)
-            img.filename = img_name
-            channel = utils.get(ctx.guild.text_channels, name=events_name)
-            messages = await channel.history(limit=200).flatten()
-            embed = Embed(
-                title='Ближайшие события:',
-                color=config["info"]
+        await News.clear_events(self, ctx)
+        await News.update_events(self, ctx, clear_message=False)
+        #try:
+        channel = utils.get(ctx.guild.text_channels, name=schedule_name)
+        messages = await channel.history(limit=200).flatten()
+        for message in messages:
+            await message.delete()
+        img = File(img_path + img_name)
+        img.filename = img_name
+        channel = utils.get(ctx.guild.text_channels, name=events_name)
+        messages = await channel.history(limit=200).flatten()
+        embed = Embed(
+            title='Ближайшие события:',
+            color=config["info"]
+        )
+        events = []
+        for message in reversed(messages):
+            description = ''
+            for emb in message.embeds:
+                time, description = event_parse(ctx, emb, channel, message)
+                events.append(dict(time=time, description=description))
+        events.sort(key=operator.itemgetter('time'))
+        for event in events:
+            date = event['time'].strftime('%d')
+            mon = event['time'].strftime('%B')
+            weekday = event['time'].strftime('%A')
+            embed.add_field(
+                name=f"\u200b",
+                value=f"{event_icon} {event['description']} — {date} {mon} ({weekday})",
+                inline=False
             )
-            events = []
-            for message in reversed(messages):
-                description = ''
-                for emb in message.embeds:
-                    time, description = event_parse(ctx, emb, channel, message)
-                    events.append(dict(time=time, description=description))
-            events.sort(key=operator.itemgetter('time'))
-            for event in events:
-                date = event['time'].strftime('%d')
-                mon = event['time'].strftime('%B')
-                weekday = event['time'].strftime('%A')
-                embed.add_field(
-                    name=f"\u200b",
-                    value=f"{event_icon} {event['description']} — {date} {mon} ({weekday})",
-                    inline=False
-                )
-            if len(events) == 0:
-                embed.add_field(
-                    name=f"\u200b",
-                    value=f"В текущий момент нет запланированных событий на сервере",
-                    inline=False
-                )
-            embed.set_image(url=f'attachment://{img_name}')
-        except:
+        if len(events) == 0:
+            embed.add_field(
+                name=f"\u200b",
+                value=f"В текущий момент нет запланированных событий на сервере",
+                inline=False
+            )
+        embed.set_image(url=f'attachment://{img_name}')
+        '''except:
             embed = Embed(
                 title='Ошибка чтения новостей',
                 description='Удалите сообщения в событиях созданные вручную и добавьте ивенты через #add_event',
                 color=config["error"]
-            )
+            )'''
         channel = utils.get(ctx.guild.text_channels, name=schedule_name)
         if img is not None:
             await channel.send(embed=embed, file=img)
