@@ -1,18 +1,19 @@
 import json
 
-bug_names = {
+
+class Hero:
+    bug_names = {
         'Deckard Cain': 'Deckard',
         'Lúcio': 'Lucio'
     }
 
-class Hero:
-    def __init__(self, hero_name: str):
+    def __init__(self, hero_name: str, bug_names=bug_names):
         heroes_ru_json_file = 'data/heroesdata_ru.json'
         with open(heroes_ru_json_file, encoding='utf-8') as heroes_ru_json:
             heroes_ru_list = json.load(heroes_ru_json)
         for hero, data in heroes_ru_list.items():
             if hero_name in bug_names:
-                hero_name = bug_names['hero_name']
+                hero_name = bug_names[hero_name]
             if hero_name == data['name_en'] or hero_name == data['name_ru'] or hero_name == hero:
                 self.id: str = data['name_id']
                 self.en: str = data['name_en']
