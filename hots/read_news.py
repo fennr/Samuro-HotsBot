@@ -66,7 +66,7 @@ def read_news(file_path='data/news.md') -> List:
     for news in news_raw_list:
         head = ''
         date = ''
-        desc = ''
+        desc = '\n'
         link = ''
         lines: List[str] = news.split('\n')
         for line in lines:
@@ -76,9 +76,11 @@ def read_news(file_path='data/news.md') -> List:
                 elif line[0:2] == '__':
                     date = line[2:-2]
                 elif line[0:10] == '[Источник]':
-                    link = line + '\n'
+                    link = '\n' + line + '\n'
                 else:
-                    desc += '\n' + line + '\n'
+                    desc += line
+            else:
+                desc += '\n'
         news_list.append(dict(header=head, description=desc, date=date, url=link))
     pprint(news_list)
     return news_list
