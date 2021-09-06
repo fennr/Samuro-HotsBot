@@ -121,7 +121,7 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
-        if ctx.message.author.id in config["admins"]:
+        if ctx.message.author.id in config["admins"] or ctx.message.author.role == '703884637755408466':
             command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
             color = int(color, 16)
             embed = Embed(
@@ -142,9 +142,8 @@ class News(commands.Cog, name="news"):
             await channel.send(embed=embed)
 
     @commands.command(name="add_event")
-    @commands.has_role('703884637755408466')
     async def add_event(self, ctx):
-        if ctx.message.author.id in config["admins"]:
+        if ctx.message.author.id in config["admins"] or ctx.message.author.role == '703884637755408466':
             try:
                 news_data = ctx.message.content.split('\n', maxsplit=4)
                 news_data = news_data[1:]
@@ -207,7 +206,6 @@ class News(commands.Cog, name="news"):
             await ctx.send(embed=embed)
 
     @commands.command(name="update_events")
-    @commands.has_role('703884637755408466')
     async def update_events(self, ctx, clear_message=True):
         if clear_message:
             await ctx.message.delete()
@@ -236,7 +234,6 @@ class News(commands.Cog, name="news"):
                     await message.delete()
 
     @commands.command(name="update_schedule")
-    @commands.has_role('703884637755408466')
     async def update_schedule(self, ctx, clear_message=True):
         img = None
         img_path = 'img/'
