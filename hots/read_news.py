@@ -76,7 +76,7 @@ def read_news(file_path='data/news.md') -> List:
                 elif line[0:2] == '__':
                     date = line[2:-2]
                 elif line[0:10] == '[Источник]':
-                    link = '\n' + line + '\n'
+                    link = line + '\n'
                 else:
                     desc += line + '\n'
             else:
