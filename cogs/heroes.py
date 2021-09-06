@@ -183,13 +183,6 @@ class Heroes(Cog, name='heroes'):
             embed = embed_stlk_builds(hero, ctx.author, ad=True)
         await ctx.send(embed=embed)
 
-    @command(name='news')
-    async def hots_news(self, ctx, *args):
-        '''
-        Последние новости хотса
-        '''
-        embed = embed_news(ctx.author)
-        await ctx.send(embed=embed)
 
     @Cog.listener()
     async def on_button_click(self, res):

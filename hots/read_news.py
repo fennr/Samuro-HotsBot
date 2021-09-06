@@ -110,7 +110,8 @@ def embed_news(author, embed=None) -> Embed:
                 inline=False
             )
         embed.set_footer(
-            text=f"Информация для: {author}"  # context.message.author если использовать без slash
+            # text=f"Информация для: {author}"  # context.message.author если использовать без slash
+            text=f"Чтобы добавить рассылку на свой сервер напиши мне fenrir#5455"
             # text=f"Текущий патч: {config['patch']}"
         )
     return embed

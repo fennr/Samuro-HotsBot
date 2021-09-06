@@ -9,13 +9,12 @@ import operator
 
 from discord import Embed, utils, File, Reaction
 from discord.ext import commands
+from discord_components import ComponentMessage
 
-import io
-import aiohttp
+from hots.read_news import embed_news
 
 from pprint import pprint
 
-from discord_components import ComponentMessage
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -48,11 +47,15 @@ month_dict = {
     'Ноябрь': 'ноября',
     'Декабрь': 'декабря',
 }
-admin_role_id = [
-            880865537058545686, #test fenrir
-            703884637755408466, #ro hots
-        ]
+admin_role_id = {
+    'test fenrir': 880865537058545686,
+    'ru hots': 703884637755408466,
+}
 
+mailing_channel_id = {
+    'test_fenrir': 845658540341592098,
+    'ru hots': 879385907923390464,
+}
 
 def event_parse(ctx, emb, channel, message):
     date, time, color, full = emb.description.split('\n', maxsplit=3)
@@ -70,6 +73,17 @@ def event_parse(ctx, emb, channel, message):
 class News(commands.Cog, name="news"):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(name='news')
+    async def hots_news(self, ctx, *args):
+        """
+        Последние новости хотса
+        """
+        for guild in self.bot.guilds:
+            channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
+            if channel is not None:
+                embed = embed_news(ctx.author)
+                await channel.send(embed=embed)
 
     @commands.command(name="notify")
     async def notify(self, ctx):
@@ -125,7 +139,7 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
-        role = utils.find(lambda r: r.id in admin_role_id, ctx.message.guild.roles)
+        role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
         if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
             command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
             color = int(color, 16)
@@ -148,7 +162,7 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_event")
     async def add_event(self, ctx):
-        role = utils.find(lambda r: r.id in admin_role_id, ctx.message.guild.roles)
+        role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
         if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
             try:
                 news_data = ctx.message.content.split('\n', maxsplit=4)
@@ -297,14 +311,14 @@ class News(commands.Cog, name="news"):
             await channel.send(embed=embed)
 
     @commands.command(name="test1")
-    async def test1(self, ctx, add_event=False):
-        ch = '845658540341592098'
+    async def test1(self, ctx):
         for guild in self.bot.guilds:
-            channel = utils.get(guild.text_channels, id=ch)
-            print(channel, type(channel))
+            channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
+            print(mailing_channel_id.keys())
+            print(channel)
             if channel is not None:
-                msg = 'test'
-                await channel.send(msg)
+                embed = embed_news(ctx.author)
+                await channel.send(embed=embed)
 
 
 def setup(bot):
