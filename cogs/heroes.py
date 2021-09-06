@@ -64,10 +64,10 @@ lvl_20_label = '20'
 
 mailing_channel_id = {
     'test_fenrir': 845658540341592098, #test
-    'ru hots': 642853714515722241, #общение
-    'Dungeon': 858455796412710922, #hots камеры
-    'Stlk': 124864790110797824, #общие
-    'Читер': 841669769115336704 #хотс
+    #'ru hots': 642853714515722241, #общение
+    #'Dungeon': 858455796412710922, #hots камеры
+    #'Stlk': 124864790110797824, #общие
+    #'Читер': 841669769115336704 #хотс
 }
 
 class Heroes(Cog, name='heroes'):
@@ -198,10 +198,14 @@ class Heroes(Cog, name='heroes'):
         """
         if ctx.message.author.id in config["owners"]:
             for guild in self.bot.guilds:
-                channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
-                if channel is not None:
-                    embed = embed_news(ctx.author)
-                    await channel.send(embed=embed)
+                try:
+                    channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
+                    if channel is not None:
+                        embed = embed_news(ctx.author)
+                        await channel.send(embed=embed)
+                except:
+                    print(f'Нет прав для канала {guild.name}')
+            await ctx.send('Рассылка выполнена')
         else:
             if len(args) == 0:
                 await ctx.send('Добавьте описание новости после команды')
