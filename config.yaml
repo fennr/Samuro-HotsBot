@@ -1,6 +1,7 @@
 bot_prefix: "#"
 token_test: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4"
 app_test: "661443692447662102"
+github_test: "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"
 patch: "2.54.3.85894"
 log: "log_base.log"
 owners:

@@ -142,6 +142,7 @@ class News(commands.Cog, name="news"):
             await channel.send(embed=embed)
 
     @commands.command(name="add_event")
+    @commands.has_role('703884637755408466')
     async def add_event(self, ctx):
         if ctx.message.author.id in config["admins"]:
             try:
@@ -206,6 +207,7 @@ class News(commands.Cog, name="news"):
             await ctx.send(embed=embed)
 
     @commands.command(name="update_events")
+    @commands.has_role('703884637755408466')
     async def update_events(self, ctx, clear_message=True):
         if clear_message:
             await ctx.message.delete()
@@ -234,6 +236,7 @@ class News(commands.Cog, name="news"):
                     await message.delete()
 
     @commands.command(name="update_schedule")
+    @commands.has_role('703884637755408466')
     async def update_schedule(self, ctx, clear_message=True):
         img = None
         img_path = 'img/'
@@ -292,22 +295,13 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="test1")
     async def test1(self, ctx, add_event=False):
-        imageURL = 'https://cdn.discordapp.com/attachments/810929046329491456/862404560777904198/987d1c7da78b74d9.png'
-        channel = utils.get(ctx.guild.text_channels, name=events_name)
-        messages = await channel.history(limit=200).flatten()
-        embed = Embed(
-            title='Ближайшие события',
-            color=config["info"]
-        )
-        events = []
-        for message in reversed(messages):
-            description = ''
-            for emb in message.embeds:
-                time, description = event_parse(ctx, emb, channel, message)
-                events.append(dict(time=time, description=description))
-        print(events)
-        events.sort(key=operator.itemgetter('time'))
-        pprint(events)
+        ch = '845658540341592098'
+        for guild in self.bot.guilds:
+            channel = utils.get(guild.text_channels, id=ch)
+            print(channel, type(channel))
+            if channel is not None:
+                msg = 'test'
+                await channel.send(msg)
 
 
 def setup(bot):

@@ -56,7 +56,7 @@ def last_pn(hero=None, author=''):
     tree = ET.fromstring(response.text)
     if hero is not None:
         embed = Embed(
-            title="{} / {} : Последний патч".format(hero['name_en'], hero['name_ru']),
+            title="{} / {} : Последний патч".format(hero.en, hero.ru),
             color=config["info"]
         )
     else:

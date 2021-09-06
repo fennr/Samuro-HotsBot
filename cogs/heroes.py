@@ -3,11 +3,12 @@ import os
 import sys
 
 import yaml
-from discord import Embed
+from discord import Embed, Object
 from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
-from hots.function import open_hero, find_heroes, read_hero_from_message, hero_not_found, find_more_heroes, args_not_found
+from hots.function import open_hero, find_heroes, read_hero_from_message, hero_not_found, find_more_heroes, \
+    args_not_found
 from hots.Hero import Hero
 from hots.heroes import heroes_description, builds, embed_stlk_builds
 from hots.nexuscompendium import weekly_rotation, sales, ranked

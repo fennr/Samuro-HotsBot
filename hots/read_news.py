@@ -49,7 +49,11 @@ def print_repo(repo):
 
 
 def read_news(file_path='data/news.md') -> List:
-    token = str(config["github_token"])
+    if 'github_token' in os.environ:
+        token = os.environ.get('github_token')
+    else:
+        print('Тестовый ключ Github')
+        token = str(config["github_test"])
     g = Github(token)
     repo_name = 'fennr/discord-bot'
     repo = g.get_repo(repo_name)
