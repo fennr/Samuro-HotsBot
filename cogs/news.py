@@ -297,27 +297,28 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="test1")
     async def test1(self, ctx, *args):
-        if len(args) == 0:
-            await ctx.send('Добавьте описание новости после команды')
-        else:
-            description = ' '.join(args)
-            embed = Embed(
-                title='Новая новость',
-                description=description,
-                color=config["info"]
-            )
-            embed.set_footer(
-                text=f"От пользователя {ctx.author}"
-            )
-            owner = self.bot.get_user(int(config["owner"]))
-            # check if dm exists, if not create it
-            if owner.dm_channel is None:
-                await owner.create_dm()
-            # if creation of dm successful
-            if owner.dm_channel is not None:
-                await owner.dm_channel.send(embed=embed)
-                message = 'Спасибо. Сообщение было отправлено'
-                await ctx.send(message)
+        if ctx.message.author.id in config["owners"]:
+            if len(args) == 0:
+                await ctx.send('Добавьте описание новости после команды')
+            else:
+                description = ' '.join(args)
+                embed = Embed(
+                    title='Новая новость',
+                    description=description,
+                    color=config["info"]
+                )
+                embed.set_footer(
+                    text=f"От пользователя {ctx.author}"
+                )
+                owner = self.bot.get_user(int(config["owner"]))
+                # check if dm exists, if not create it
+                if owner.dm_channel is None:
+                    await owner.create_dm()
+                # if creation of dm successful
+                if owner.dm_channel is not None:
+                    await owner.dm_channel.send(embed=embed)
+                    message = 'Спасибо. Сообщение было отправлено'
+                    await ctx.send(message)
 
 
 def setup(bot):

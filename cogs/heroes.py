@@ -212,16 +212,15 @@ class Heroes(Cog, name='heroes'):
                 embed.set_footer(
                     text=f"От пользователя {ctx.author}"
                 )
-                for guild in self.bot.guilds:
-                    owner = self.bot.owner
-                    # check if dm exists, if not create it
-                    if owner.dm_channel is None:
-                        await owner.create_dm()
-                    # if creation of dm successful
-                    if owner.dm_channel is not None:
-                        await owner.dm_channel.send(embed=embed)
-                        message = 'Спасибо. Сообщение было отправлено'
-                        await ctx.send(message)
+                owner = self.bot.get_user(int(config["owner"]))
+                # check if dm exists, if not create it
+                if owner.dm_channel is None:
+                    await owner.create_dm()
+                # if creation of dm successful
+                if owner.dm_channel is not None:
+                    await owner.dm_channel.send(embed=embed)
+                    message = 'Спасибо. Сообщение было отправлено'
+                    await ctx.send(message)
 
     @Cog.listener()
     async def on_button_click(self, res):
