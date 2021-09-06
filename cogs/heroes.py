@@ -202,9 +202,10 @@ class Heroes(Cog, name='heroes'):
                     channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
                     if channel is not None:
                         embed = embed_news(ctx.author)
-                        await channel.send(embed=embed)
+                        #await channel.send(embed=embed)
+                        print(f'{guild.name} : сообщение отправлено')
                 except:
-                    print(f'Нет прав для канала {guild.name}')
+                    print(f'{guild.name} : недостаточно прав')
             await ctx.send('Рассылка выполнена')
         else:
             if len(args) == 0:

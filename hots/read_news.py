@@ -82,7 +82,7 @@ def read_news(file_path='data/news.md') -> List:
             else:
                 desc += '\n'
         news_list.append(dict(header=head, description=desc, date=date, url=link))
-    pprint(news_list)
+    #pprint(news_list)
     return news_list
 
 
