@@ -78,7 +78,7 @@ def read_news(file_path='data/news.md') -> List:
                 elif line[0:10] == '[Источник]':
                     link = '\n' + line + '\n'
                 else:
-                    desc += line
+                    desc += line + '\n'
             else:
                 desc += '\n'
         news_list.append(dict(header=head, description=desc, date=date, url=link))
