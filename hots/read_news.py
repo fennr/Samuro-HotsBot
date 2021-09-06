@@ -95,7 +95,7 @@ def embed_news(author, embed=None) -> Embed:
     else:
         if embed is None:
             embed = Embed(
-                title='Последние новости',
+                title='Новости',
                 color=config["info"]
             )
         for news in news_list:
@@ -111,7 +111,8 @@ def embed_news(author, embed=None) -> Embed:
             )
         embed.set_footer(
             # text=f"Информация для: {author}"  # context.message.author если использовать без slash
-            text=f"Чтобы добавить рассылку на свой сервер напиши мне fenrir#5455"
+            text=f"Предложить новость можно командой _#news :текст:_\n "
+                 f"Чтобы добавить рассылку на сервер написать мне: fenrir#5455"
             # text=f"Текущий патч: {config['patch']}"
         )
     return embed

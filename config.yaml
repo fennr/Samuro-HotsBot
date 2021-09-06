@@ -4,6 +4,7 @@ app_test: "661443692447662102"
 github_test: "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"
 patch: "2.54.3.85894"
 log: "log_base.log"
+owner: 196583204164075520
 owners:
   - 196583204164075520
 admins:

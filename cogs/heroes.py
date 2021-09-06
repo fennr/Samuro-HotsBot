@@ -3,7 +3,7 @@ import os
 import sys
 
 import yaml
-from discord import Embed, Object
+from discord import Embed, Object, utils
 from discord.ext.commands import command, Cog
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
@@ -61,6 +61,11 @@ lvl_13_label = '13'
 lvl_16_label = '16'
 lvl_20_label = '20'
 
+
+mailing_channel_id = {
+    'test_fenrir': 845658540341592098,
+    'ru hots': 879385907923390464,
+}
 
 class Heroes(Cog, name='heroes'):
     def __init__(self, bot):
@@ -183,6 +188,40 @@ class Heroes(Cog, name='heroes'):
             embed = embed_stlk_builds(hero, ctx.author, ad=True)
         await ctx.send(embed=embed)
 
+    @command(name='news')
+    async def hots_news(self, ctx, *args):
+        """
+        Предложить новость для публикации
+        """
+        if ctx.message.author.id in config["owners"]:
+            for guild in self.bot.guilds:
+                channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
+                if channel is not None:
+                    embed = embed_news(ctx.author)
+                    await channel.send(embed=embed)
+        else:
+            if len(args) == 0:
+                await ctx.send('Добавьте описание новости после команды')
+            else:
+                description = ' '.join(args)
+                embed = Embed(
+                    title='Новая новость',
+                    description=description,
+                    color=config["info"]
+                )
+                embed.set_footer(
+                    text=f"От пользователя {ctx.author}"
+                )
+                for guild in self.bot.guilds:
+                    owner = self.bot.owner
+                    # check if dm exists, if not create it
+                    if owner.dm_channel is None:
+                        await owner.create_dm()
+                    # if creation of dm successful
+                    if owner.dm_channel is not None:
+                        await owner.dm_channel.send(embed=embed)
+                        message = 'Спасибо. Сообщение было отправлено'
+                        await ctx.send(message)
 
     @Cog.listener()
     async def on_button_click(self, res):

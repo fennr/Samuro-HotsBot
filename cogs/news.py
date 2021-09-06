@@ -52,11 +52,6 @@ admin_role_id = {
     'ru hots': 703884637755408466,
 }
 
-mailing_channel_id = {
-    'test_fenrir': 845658540341592098,
-    'ru hots': 879385907923390464,
-}
-
 def event_parse(ctx, emb, channel, message):
     date, time, color, full = emb.description.split('\n', maxsplit=3)
     tail, date = date.split(' ', maxsplit=1)
@@ -74,16 +69,6 @@ class News(commands.Cog, name="news"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='news')
-    async def hots_news(self, ctx, *args):
-        """
-        Последние новости хотса
-        """
-        for guild in self.bot.guilds:
-            channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
-            if channel is not None:
-                embed = embed_news(ctx.author)
-                await channel.send(embed=embed)
 
     @commands.command(name="notify")
     async def notify(self, ctx):
@@ -311,14 +296,28 @@ class News(commands.Cog, name="news"):
             await channel.send(embed=embed)
 
     @commands.command(name="test1")
-    async def test1(self, ctx):
-        for guild in self.bot.guilds:
-            channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
-            print(mailing_channel_id.keys())
-            print(channel)
-            if channel is not None:
-                embed = embed_news(ctx.author)
-                await channel.send(embed=embed)
+    async def test1(self, ctx, *args):
+        if len(args) == 0:
+            await ctx.send('Добавьте описание новости после команды')
+        else:
+            description = ' '.join(args)
+            embed = Embed(
+                title='Новая новость',
+                description=description,
+                color=config["info"]
+            )
+            embed.set_footer(
+                text=f"От пользователя {ctx.author}"
+            )
+            owner = self.bot.get_user(int(config["owner"]))
+            # check if dm exists, if not create it
+            if owner.dm_channel is None:
+                await owner.create_dm()
+            # if creation of dm successful
+            if owner.dm_channel is not None:
+                await owner.dm_channel.send(embed=embed)
+                message = 'Спасибо. Сообщение было отправлено'
+                await ctx.send(message)
 
 
 def setup(bot):
