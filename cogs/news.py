@@ -48,6 +48,10 @@ month_dict = {
     'Ноябрь': 'ноября',
     'Декабрь': 'декабря',
 }
+admin_role_id = [
+            880865537058545686, #test fenrir
+            703884637755408466, #ro hots
+        ]
 
 
 def event_parse(ctx, emb, channel, message):
@@ -121,7 +125,8 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
-        if ctx.message.author.id in config["admins"] or ctx.message.author.role == '703884637755408466':
+        role = utils.find(lambda r: r.id in admin_role_id, ctx.message.guild.roles)
+        if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
             command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
             color = int(color, 16)
             embed = Embed(
@@ -143,7 +148,8 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_event")
     async def add_event(self, ctx):
-        if ctx.message.author.id in config["admins"] or ctx.message.author.role == '703884637755408466':
+        role = utils.find(lambda r: r.id in admin_role_id, ctx.message.guild.roles)
+        if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
             try:
                 news_data = ctx.message.content.split('\n', maxsplit=4)
                 news_data = news_data[1:]
