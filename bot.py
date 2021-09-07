@@ -9,6 +9,7 @@ import random
 import sys
 import logging
 import traceback
+import datetime
 
 import psycopg2
 
@@ -31,11 +32,6 @@ GITHUB_TOKEN = os.environ.get('github_token')
 TOKEN = os.environ.get('token_prod')
 APP_ID = os.environ.get('app_id_prod')
 
-'''
-TOKEN = config['token_test']
-APP_ID = config['app_test']
-'''
-
 # read database connection url from the enivron variable we just set.
 DATABASE_URL = os.environ.get('DATABASE_URL')
 con = None
@@ -54,6 +50,14 @@ try:
     db_version = cur.fetchone()
     print(db_version)
 
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS logs(
+          time CHAR(30) PRIMARY KEY,
+          lvl  CHAR(10),
+          message CHAR(150)
+        );
+    """)
+
     # close the communication with the HerokuPostgres
     cur.close()
 except Exception as error:
@@ -64,6 +68,34 @@ finally:
     if con is not None:
         con.close()
         print('Database connection closed.')
+'''
+TOKEN = config['token_test']
+APP_ID = config['app_test']
+con = None
+try:
+    con = psycopg2.connect(dbname='discord', user='fenrir',
+                        password='1121', host='localhost')
+    cursor = con.cursor()
+    cursor.execute('SELECT * FROM public.products '
+                   'ORDER BY id ASC')
+    records = cursor.fetchall()
+    print(records)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS logs(
+          time CHAR(30) PRIMARY KEY,
+          lvl  CHAR(10),
+          message CHAR(150)
+        );
+    """)
+
+except Exception as error:
+    print('Cause: {}'.format(error))
+finally:
+    # close the communication with the database server by calling the close()
+    if con is not None:
+        con.close()
+        print('Database connection closed.')
+'''
 
 """	
 Setup bot intents (events restrictions)
@@ -189,6 +221,16 @@ async def on_command_completion(ctx):
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
+    now = str(datetime.datetime.now())
+    con = psycopg2.connect(dbname='discord', user='fenrir',
+                           password='1121', host='localhost')
+    cur = con.cursor()
+    data = {'time': now, 'lvl': 'INFO', 'message': message}
+    cur.execute(
+        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
+    )
+    con.commit()
+    con.close()
 
 
 # The code in this event is executed every time a valid commands catches an error
@@ -220,7 +262,6 @@ async def on_command_error(ctx, error):
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     log.error(str(error) + message)
     raise error
-
 
 # Генерируем файл с именами героев
 heroes_ru_names.create_heroes_ru_data()
