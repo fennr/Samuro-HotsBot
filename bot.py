@@ -222,8 +222,9 @@ async def on_command_completion(ctx):
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
     now = str(datetime.datetime.now())
-    con = psycopg2.connect(dbname='discord', user='fenrir',
-                           password='1121', host='localhost')
+    #con = psycopg2.connect(dbname='discord', user='fenrir',
+    #                       password='1121', host='localhost')
+    con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
     data = {'time': now, 'lvl': 'INFO', 'message': message}
     cur.execute(
