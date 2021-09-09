@@ -8,10 +8,13 @@ Version: 2.7
 import json
 import os
 import sys
-
 import yaml
+
+from helpers import sql
+
 from discord import Embed, Member, File
 from discord.ext import commands
+
 from pprint import pprint
 
 from helpers import json_manager
@@ -55,7 +58,23 @@ class owner(commands.Cog, name="owner"):
     @commands.command(name="getlog")
     async def getlog(self, ctx):
         if ctx.message.author.id in config["owners"]:
-            await ctx.author.send(file=File(config['log']))
+            #await ctx.author.send(file=File(config['log']))
+            con = sql.get_connect()
+            cur = con.cursor()
+            cur.execute(
+                '''SELECT * FROM logs
+                    ORDER BY time DESC
+                    LIMIT 10
+                '''
+            )
+            rec = cur.fetchall()
+            log = ''
+            for line in rec:
+                log += ' '.join(line) + '\n'
+            log_name = 'main_log.log'
+            with open(file=log_name, mode='w', encoding='utf-8') as log_file:
+                log_file.write(log)
+            await ctx.author.send(file=File(log_name))
         else:
             embed = Embed(
                 title="Error!",

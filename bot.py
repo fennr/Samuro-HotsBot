@@ -20,6 +20,7 @@ from discord.ext.commands import Bot
 from discord_slash import SlashCommand  # Importing the newly installed library.
 
 from scripts import heroes_ru_names
+from helpers import sql, log
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -31,72 +32,10 @@ GITHUB_TOKEN = os.environ.get('github_token')
 
 TOKEN = os.environ.get('token_prod')
 APP_ID = os.environ.get('app_id_prod')
-
-# read database connection url from the enivron variable we just set.
-DATABASE_URL = os.environ.get('DATABASE_URL')
-con = None
-try:
-    # create a new database connection by calling the connect() function
-    con = psycopg2.connect(DATABASE_URL)
-
-    #  create a new cursor
-    cur = con.cursor()
-
-    # execute an SQL statement to get the HerokuPostgres database version
-    print('PostgreSQL database version:')
-    cur.execute('SELECT version()')
-
-    # display the PostgreSQL database server version
-    db_version = cur.fetchone()
-    print(db_version)
-
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS logs(
-          time CHAR(30) PRIMARY KEY,
-          lvl  CHAR(10),
-          message CHAR(150)
-        );
-    """)
-
-    # close the communication with the HerokuPostgres
-    cur.close()
-except Exception as error:
-    print('Cause: {}'.format(error))
-
-finally:
-    # close the communication with the database server by calling the close()
-    if con is not None:
-        con.close()
-        print('Database connection closed.')
 '''
 TOKEN = config['token_test']
 APP_ID = config['app_test']
-con = None
-try:
-    con = psycopg2.connect(dbname='discord', user='fenrir',
-                        password='1121', host='localhost')
-    cursor = con.cursor()
-    cursor.execute('SELECT * FROM public.products '
-                   'ORDER BY id ASC')
-    records = cursor.fetchall()
-    print(records)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS logs(
-          time CHAR(30) PRIMARY KEY,
-          lvl  CHAR(10),
-          message CHAR(150)
-        );
-    """)
-
-except Exception as error:
-    print('Cause: {}'.format(error))
-finally:
-    # close the communication with the database server by calling the close()
-    if con is not None:
-        con.close()
-        print('Database connection closed.')
 '''
-
 """	
 Setup bot intents (events restrictions)
 For more information about intents, please go to the following websites:
@@ -134,28 +73,9 @@ intents.members = True
 bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
 slash = SlashCommand(bot, sync_commands=True)
 
-logfile = config["log"]
-log = logging.getLogger("my_log")
-log.setLevel(logging.INFO)
-FH = logging.FileHandler(logfile, encoding='utf-8')
-str_logging_format = "%(asctime)s-%(levelname)s-%(message)s"
-log_format = '%(asctime)s : [%(levelname)s] : %(message)s'
-basic_formater = logging.Formatter(log_format)
-FH.setFormatter(basic_formater)
-log.addHandler(FH)
+sql.sql_init()
 
-## функция для записи в лог сообщений об ошибке
-def error_log(line_no):
-    ## задаем формат ошибочных сообщений, добавляем номер строки
-    err_formater = logging.Formatter('%(asctime)s : [%(levelname)s][LINE ' + line_no + '] : %(message)s')
-    ## устанавливаем формат ошибок в логгер
-    FH.setFormatter(err_formater)
-    log.addHandler(FH)
-    ## пишем сообщение error
-    log.error(traceback.format_exc())
-    ## возвращаем базовый формат сообщений
-    FH.setFormatter(basic_formater)
-    log.addHandler(FH)
+log = log.log_init()
 
 # The code in this even is executed when the bot is ready
 @bot.event
@@ -224,7 +144,7 @@ async def on_command_completion(ctx):
     now = str(datetime.datetime.now())
     #con = psycopg2.connect(dbname='discord', user='fenrir',
     #                       password='1121', host='localhost')
-    con = psycopg2.connect(DATABASE_URL)
+    con = sql.get_connect()
     cur = con.cursor()
     data = {'time': now, 'lvl': 'INFO', 'message': message}
     cur.execute(
@@ -262,7 +182,26 @@ async def on_command_error(ctx, error):
     message = f" in {ctx.guild.name} " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     log.error(str(error) + message)
+    now = str(datetime.datetime.now())
+    con = sql.get_connect()
+    cur = con.cursor()
+    data = {'time': now, 'lvl': 'ERROR', 'message': str(error) + message}
+    cur.execute(
+        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
+    )
+    con.commit()
+    con.close()
     raise error
+
+# Запрет писать боту в личку
+@bot.check
+async def global_guild_only(ctx):
+    if ctx.message.author.id not in config["owners"]:
+        if not ctx.guild:
+            await ctx.send('Личка бота закрыта, пожалуйста используйте бота на сервере\n'
+                           'Если по каким-то причинам неудобно использовать на публичном сервере всегда можно пригласить в свой по команде #invite')
+            raise commands.NoPrivateMessage  # replicating guild_only check: https://github.com/Rapptz/discord.py/blob/42a538edda79f92a26afe0ac902b45c1ea20154d/discord/ext/commands/core.py#L1832-L1846
+    return True
 
 # Генерируем файл с именами героев
 heroes_ru_names.create_heroes_ru_data()
