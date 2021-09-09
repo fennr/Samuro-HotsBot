@@ -47,7 +47,7 @@ class hots(commands.Cog, name="hots"):
         """
         :hero: - Описание героя, билды, разборы
         """
-        hero, embed = read_hero_from_message(ctx, *args, command='hero')
+        hero, embed = read_hero_from_message(*args, author=ctx.author, command='hero')
         if hero is not None:
             embed = heroes_description_short(hero, ctx.author)
             embed = builds(hero, ctx.author, embed)
@@ -66,7 +66,7 @@ class hots(commands.Cog, name="hots"):
             hero_name, btn_key = read_skill_btn(args)
             hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
-                hero = Hero(hero_list[0]['name_id'])
+                hero = hero_list[0]
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'skill')
             else:
@@ -88,7 +88,7 @@ class hots(commands.Cog, name="hots"):
             hero_list = find_heroes(hero_name)
             if len(hero_list) == 1:
                 embed = None
-                hero = Hero(hero_list[0]['name_id'])
+                hero = hero_list[0]
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'talent', ':lvl:')
             else:

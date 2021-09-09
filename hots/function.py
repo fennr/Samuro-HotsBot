@@ -1,9 +1,7 @@
 import json
 import re
 import os, sys, yaml
-from discord import Embed
-
-from pyxdameraulevenshtein import damerau_levenshtein_distance
+from discord import Embed, File
 from hots.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
@@ -15,7 +13,32 @@ else:
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 
 
-def read_hero_from_message(ctx, *args, command='hero', hero_args=None):
+def damerau_levenshtein_distance(s1: str, s2: str) -> int:
+    d = {}
+    lenstr1 = len(s1)
+    lenstr2 = len(s2)
+    for i in range(-1, lenstr1 + 1):
+        d[(i, -1)] = i + 1
+    for j in range(-1, lenstr2 + 1):
+        d[(-1, j)] = j + 1
+
+    for i in range(lenstr1):
+        for j in range(lenstr2):
+            if s1[i] == s2[j]:
+                cost = 0
+            else:
+                cost = 1
+            d[(i, j)] = min(
+                d[(i - 1, j)] + 1,  # deletion
+                d[(i, j - 1)] + 1,  # insertion
+                d[(i - 1, j - 1)] + cost,  # substitution
+            )
+            if i and j and s1[i] == s2[j - 1] and s1[i - 1] == s2[j]:
+                d[(i, j)] = min(d[(i, j)], d[i - 2, j - 2] + 1)  # transposition
+
+    return int(d[lenstr1 - 1, lenstr2 - 1])
+
+def read_hero_from_message(*args, author, command='hero', hero_args=None):
     hero = None
     if len(args) == 0:
         embed = args_not_found(command)
@@ -24,11 +47,11 @@ def read_hero_from_message(ctx, *args, command='hero', hero_args=None):
         hero_list = find_heroes(hero_name)
         if len(hero_list) == 1:
             embed = None
-            hero = Hero(hero_list[0]['name_id'])
+            hero = hero_list[0]
         elif len(hero_list) > 1:
-            embed = find_more_heroes(hero_list, ctx.author, command=command)
+            embed = find_more_heroes(hero_list, author, command=command)
         else:
-            embed = hero_not_found(ctx.author)
+            embed = hero_not_found(author)
     return hero, embed
 
 
@@ -82,13 +105,22 @@ def open_hero(hero_name):
     for hero, data in heroes_ru_list.items():
         if hero_name == data['name_en'] or hero_name == data['name_ru'] or hero_name == hero:
             return data
+    return None
 
 
 def add_thumbnail(hero: Hero, embed):
+    ext = '.png'
     thumb_url = 'https://nexuscompendium.com/images/portrait/'
     hero_name = hero.en.lower().replace('.', '').replace("'", "").replace(' ', '-')
-    url = thumb_url + hero_name + '.png'
-    print(url)
+    url = thumb_url + hero_name + ext
+    '''
+    folder = 'img/portrait/'
+    path = folder + hero_name + ext
+    filename = hero_name + ext
+    file = File(path, filename=filename)
+    #url = 'attachment://' + filename
+    #print(url)
+    '''
     embed.set_thumbnail(
         url=url
     )
@@ -105,20 +137,21 @@ def find_heroes(hero_name, allowed_error=5):
         if (len(hero_name) < 3) and i > 1:  # исключить поиск коротких слов
             break
         if len(hero_list) == 0:
-            for hero, data in heroes_ru_list.items():
-                if (damerau_levenshtein_distance(hero_name, data['name_en'].capitalize()) < i) or \
-                        (damerau_levenshtein_distance(hero_name, data['name_ru'].capitalize()) < i) or \
-                        (damerau_levenshtein_distance(hero_name, hero.capitalize()) < i):
-                    print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i - 1))
+            for data in heroes_ru_list.values():
+                hero = Hero(data)
+                if (damerau_levenshtein_distance(hero_name, hero.en.capitalize()) < i) or \
+                        (damerau_levenshtein_distance(hero_name, hero.ru.capitalize()) < i) or \
+                        (damerau_levenshtein_distance(hero_name, hero.id.capitalize()) < i):
+                    #print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i - 1))
                     if data not in hero_list:
-                        hero_list.append(data)
+                        hero_list.append(hero)
                 if (allowed_error - i) > 1:  # чтобы по прозвищам поиск был более строгий
                     for nick in data['nick']:
                         if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i and data not in hero_list:
                             print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'],
                                                                                   i - 1))
                             if data not in hero_list:
-                                hero_list.append(data)
+                                hero_list.append(hero)
                                 break
     return hero_list
 
