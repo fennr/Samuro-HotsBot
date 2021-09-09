@@ -17,7 +17,7 @@ import discord
 import yaml
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
-from discord_slash import SlashCommand  # Importing the newly installed library.
+from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
 from scripts import heroes_ru_names
 from helpers import sql, log
@@ -144,6 +144,23 @@ async def on_command_completion(ctx):
     now = str(datetime.datetime.now())
     #con = psycopg2.connect(dbname='discord', user='fenrir',
     #                       password='1121', host='localhost')
+    con = sql.get_connect()
+    cur = con.cursor()
+    data = {'time': now, 'lvl': 'INFO', 'message': message}
+    cur.execute(
+        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
+    )
+    con.commit()
+    con.close()
+
+@bot.event
+async def on_slash_command(ctx: SlashContext):
+    executedCommand = ctx.name
+    message = f"Executed {executedCommand} command in guild ID: {ctx.guild_id} " \
+             f"by {ctx.author} (ID: {ctx.author_id})"
+    print(message)
+    log.info(message)
+    now = str(datetime.datetime.now())
     con = sql.get_connect()
     cur = con.cursor()
     data = {'time': now, 'lvl': 'INFO', 'message': message}

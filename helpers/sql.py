@@ -26,7 +26,7 @@ def sql_init():
         # close the communication with the database server by calling the close()
         if con is not None:
             con.close()
-            print('Database connection closed.')
+            #print('Database connection closed.')
 
 
 def get_connect():
