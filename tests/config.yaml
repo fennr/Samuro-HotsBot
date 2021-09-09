@@ -1,0 +1,19 @@
+bot_prefix: "#"
+token_test: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4"
+app_test: "661443692447662102"
+github_test: "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"
+patch: "2.54.3.85894"
+log: "log_base.log"
+owner: 196583204164075520
+owners:
+  - 196583204164075520
+admins:
+  - 196583204164075520 # я
+  - 261177857126957056 # мачука
+blacklist:
+  - 123456789
+main_color: 0xD75BF4
+error: 0xE02B2B
+success: 0x42F56C
+warning: 0xF59E42
+info: 0x4299F5
