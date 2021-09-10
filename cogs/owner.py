@@ -62,7 +62,7 @@ class owner(commands.Cog, name="owner"):
             con = sql.get_connect()
             cur = con.cursor()
             cur.execute(
-                '''SELECT * FROM logs
+                '''SELECT * FROM log
                     ORDER BY time DESC
                     LIMIT 50
                 '''
