@@ -70,7 +70,8 @@ class owner(commands.Cog, name="owner"):
             rec = cur.fetchall()
             log = ''
             for line in rec:
-                log += ' '.join(line) + '\n'
+                text = line[0][:16] + ' ' + line[1] + ' '+ line[2][:16] + line[3][:16] + line[5][:16] + line[7]  # без ID
+                log += text + '\n'
             log_name = 'main_log.log'
             with open(file=log_name, mode='w', encoding='utf-8') as log_file:
                 log_file.write(log)

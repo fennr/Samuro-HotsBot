@@ -133,7 +133,13 @@ async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
     split = fullCommandName.split(" ")
     executedCommand = str(split[0])
-    message = f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) " \
+    if ctx.guild is None:
+        guild_name = ''
+        guild_id = ''
+    else:
+        guild_name = ctx.guild.name
+        guild_id = ctx.message.guild.id
+    message = f"Executed {executedCommand} command in {guild_name} (ID: {guild_id}) " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
@@ -184,7 +190,13 @@ async def on_command_error(ctx, error):
             text=f"Информация для: {ctx.author}"
         )
         await ctx.send(embed=embed)
-    message = f" in {ctx.guild.name} " \
+    if ctx.guild is None:
+        guild_name = ''
+        guild_id = ''
+    else:
+        guild_name = ctx.guild.name
+        guild_id = ctx.message.guild.id
+    message = f" in {guild_name} " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     log.error(str(error) + message)
     sql.error_log(ctx=ctx, error=error)

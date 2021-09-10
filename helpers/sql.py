@@ -35,26 +35,21 @@ def info_log(ctx, executedCommand):
     now = str(datetime.now(pytz.timezone('Europe/Moscow')))
     con = get_connect()
     cur = con.cursor()
-    try:
-        data = {'time': now[:25],
-                'lvl': 'INFO',
-                'command': executedCommand,
-                'guild': str(ctx.guild.name)[:29],
-                'guild_id': ctx.message.guild.id,
-                'author': str(ctx.message.author)[:29],
-                'author_id': ctx.message.author.id,
-                'message': 'Executed'
-                }
-    except:
-        data = {'time': now[:25],
-                'lvl': 'INFO',
-                'command': executedCommand,
-                'guild': str(ctx.guild)[:29],
-                'guild_id': ctx.guild_id,
-                'author': str(ctx.author)[:29],
-                'author_id': ctx.author_id,
-                'message': 'Executed Slash Command'
-                }
+    if ctx.guild_id is None:  # для сообщений в ЛС
+        guild = ''
+        guild_id = ''
+    else:
+        guild = ctx.guild
+        guild_id = ctx.guild_id
+    data = {'time': now[:25],
+            'lvl': 'INFO',
+            'command': executedCommand,
+            'guild': str(guild)[:29],
+            'guild_id': guild_id,
+            'author': str(ctx.message.author)[:29],
+            'author_id': ctx.message.author.id,
+            'message': 'Executed'
+            }
     cur.execute(
         '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
         VALUES (%(time)s, %(lvl)s, %(command)s, %(guild)s, %(guild_id)s, %(author)s, %(author_id)s, %(message)s)''',
@@ -69,11 +64,17 @@ def error_log(ctx, error):
     con = get_connect()
     cur = con.cursor()
     command = ' '.join(ctx.args[2:])  # первые два это системыне объекты hots object и Context object
+    if ctx.guild is None:  # для сообщений в ЛС
+        guild = ''
+        guild_id = ''
+    else:
+        guild = ctx.guild.name
+        guild_id = ctx.guild.id
     data = {'time': now[:25],
             'lvl': 'ERROR',
             'command': command[:19],
-            'guild': str(ctx.guild.name)[:29],
-            'guild_id': str(ctx.message.guild.id),
+            'guild': str(guild)[:29],
+            'guild_id': str(guild_id),
             'author': str(ctx.message.author)[:29],
             'author_id': str(ctx.message.author.id),
             'message': str(error)[:149]
