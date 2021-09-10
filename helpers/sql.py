@@ -1,6 +1,7 @@
 import psycopg2
 import os
-import datetime
+from datetime import datetime
+import pytz
 
 
 def sql_init():
@@ -30,12 +31,45 @@ def sql_init():
             # print('Database connection closed.')
 
 
+def info_log(ctx, executedCommand):
+    now = str(datetime.now(pytz.timezone('Europe/Moscow')))
+    con = get_connect()
+    cur = con.cursor()
+    try:
+        data = {'time': now[:25],
+                'lvl': 'INFO',
+                'command': executedCommand,
+                'guild': str(ctx.guild.name)[:29],
+                'guild_id': ctx.message.guild.id,
+                'author': str(ctx.message.author)[:29],
+                'author_id': ctx.message.author.id,
+                'message': 'Executed'
+                }
+    except:
+        data = {'time': now[:25],
+                'lvl': 'INFO',
+                'command': executedCommand,
+                'guild': str(ctx.guild)[:29],
+                'guild_id': ctx.guild_id,
+                'author': str(ctx.author)[:29],
+                'author_id': ctx.author_id,
+                'message': 'Executed Slash Command'
+                }
+    cur.execute(
+        '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
+        VALUES (%(time)s, %(lvl)s, %(command)s, %(guild)s, %(guild_id)s, %(author)s, %(author_id)s, %(message)s)''',
+        data
+    )
+    con.commit()
+    con.close()
+
+
 def error_log(ctx, error):
-    now = str(datetime.datetime.now())
+    now = str(datetime.now(pytz.timezone('Europe/Moscow')))
     con = get_connect()
     cur = con.cursor()
     command = ' '.join(ctx.args[2:])  # первые два это системыне объекты hots object и Context object
-    data = {'time': now,
+    data = {'time': now[:25],
             'lvl': 'ERROR',
             'command': command[:19],
             'guild': str(ctx.guild.name)[:29],

@@ -2,20 +2,19 @@
 Основной файл бота
 """
 
-import datetime
 import json
 import os
 import platform
 import random
 import sys
-import yaml
 
 import discord
+import yaml
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
-from helpers import sql, log, Error
+from helpers import sql, log
 from scripts import heroes_ru_names
 
 if not os.path.isfile("config.yaml"):
@@ -26,12 +25,14 @@ else:
 
 GITHUB_TOKEN = os.environ.get('github_token')
 
+
 if config['state'] == 'prod':
     TOKEN = os.environ.get('token_prod')
     APP_ID = os.environ.get('app_id_prod')
 else:
     TOKEN = config['token_test']
     APP_ID = config['app_test']
+    os.environ['TZ'] = 'Europe/Moscow'
 
 """	
 Setup bot intents (events restrictions)
@@ -136,24 +137,7 @@ async def on_command_completion(ctx):
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
-    now = str(datetime.datetime.now())
-    con = sql.get_connect()
-    cur = con.cursor()
-    data = {'time': now,
-            'lvl': 'INFO',
-            'command': executedCommand,
-            'guild': str(ctx.guild.name),
-            'guild_id': ctx.message.guild.id,
-            'author': str(ctx.message.author),
-            'author_id': ctx.message.author.id,
-            'message': 'Executed'
-            }
-    cur.execute(
-        '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
-        VALUES (%(time)s, %(lvl)s, %(command)s, %(guild)s, %(guild_id)s, %(author)s, %(author_id)s, %(message)s)''', data
-    )
-    con.commit()
-    con.close()
+    sql.info_log(ctx, executedCommand)
 
 @bot.event
 async def on_slash_command(ctx: SlashContext):
@@ -162,25 +146,7 @@ async def on_slash_command(ctx: SlashContext):
              f"by {ctx.author} (ID: {ctx.author_id})"
     print(message)
     log.info(message)
-    now = str(datetime.datetime.now())
-    con = sql.get_connect()
-    cur = con.cursor()
-    data = {'time': now,
-            'lvl': 'INFO',
-            'command': executedCommand,
-            'guild': str(ctx.guild),
-            'guild_id': ctx.guild_id,
-            'author': str(ctx.author),
-            'author_id': ctx.author_id,
-            'message': 'Executed Slash Command'
-            }
-    cur.execute(
-        '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
-        VALUES (%(time)s, %(lvl)s, %(command)s, %(guild)s, %(guild_id)s, %(author)s, %(author_id)s, %(message)s)''',
-        data
-    )
-    con.commit()
-    con.close()
+    sql.info_log(ctx, executedCommand)
 
 
 # The code in this event is executed every time a valid commands catches an error
