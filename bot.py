@@ -2,25 +2,21 @@
 Основной файл бота
 """
 
+import datetime
 import json
 import os
 import platform
 import random
 import sys
-import logging
-import traceback
-import datetime
-
-import psycopg2
+import yaml
 
 import discord
-import yaml
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
+from helpers import sql, log, Error
 from scripts import heroes_ru_names
-from helpers import sql, log
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -30,12 +26,13 @@ else:
 
 GITHUB_TOKEN = os.environ.get('github_token')
 
-TOKEN = os.environ.get('token_prod')
-APP_ID = os.environ.get('app_id_prod')
-'''
-TOKEN = config['token_test']
-APP_ID = config['app_test']
-'''
+if config['state'] == 'prod':
+    TOKEN = os.environ.get('token_prod')
+    APP_ID = os.environ.get('app_id_prod')
+else:
+    TOKEN = config['token_test']
+    APP_ID = config['app_test']
+
 """	
 Setup bot intents (events restrictions)
 For more information about intents, please go to the following websites:
@@ -135,20 +132,25 @@ async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
     split = fullCommandName.split(" ")
     executedCommand = str(split[0])
-    # {ctx.channel.id} {ctx.message.id}
-    # {ctx.guild.name} {ctx.message.guild.id}
     message = f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
     now = str(datetime.datetime.now())
-    #con = psycopg2.connect(dbname='discord', user='fenrir',
-    #                       password='1121', host='localhost')
     con = sql.get_connect()
     cur = con.cursor()
-    data = {'time': now, 'lvl': 'INFO', 'message': message}
+    data = {'time': now,
+            'lvl': 'INFO',
+            'command': executedCommand,
+            'guild': str(ctx.guild.name),
+            'guild_id': ctx.message.guild.id,
+            'author': str(ctx.message.author),
+            'author_id': ctx.message.author.id,
+            'message': 'Executed'
+            }
     cur.execute(
-        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
+        '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
+        VALUES (%(time)s, %(lvl)s, %(command)s, %(guild)s, %(guild_id)s, %(author)s, %(author_id)s, %(message)s)''', data
     )
     con.commit()
     con.close()
@@ -156,16 +158,26 @@ async def on_command_completion(ctx):
 @bot.event
 async def on_slash_command(ctx: SlashContext):
     executedCommand = ctx.name
-    message = f"Executed {executedCommand} command in guild ID: {ctx.guild_id} " \
+    message = f"Executed {executedCommand} command in {ctx.guild} (ID: {ctx.guild_id}) " \
              f"by {ctx.author} (ID: {ctx.author_id})"
     print(message)
     log.info(message)
     now = str(datetime.datetime.now())
     con = sql.get_connect()
     cur = con.cursor()
-    data = {'time': now, 'lvl': 'INFO', 'message': message}
+    data = {'time': now,
+            'lvl': 'INFO',
+            'command': executedCommand,
+            'guild': str(ctx.guild),
+            'guild_id': ctx.guild_id,
+            'author': str(ctx.author),
+            'author_id': ctx.author_id,
+            'message': 'Executed Slash Command'
+            }
     cur.execute(
-        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
+        '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
+        VALUES (%(time)s, %(lvl)s, %(command)s, %(guild)s, %(guild_id)s, %(author)s, %(author_id)s, %(message)s)''',
+        data
     )
     con.commit()
     con.close()
@@ -196,18 +208,20 @@ async def on_command_error(ctx, error):
             color=config["error"]
         )
         await ctx.send(embed=embed)
+    elif isinstance(error, commands.CommandInvokeError):
+        text = "Ошибка! Герой не найден"
+        embed = discord.Embed(
+            title=text,
+            color=config["error"]
+        )
+        embed.set_footer(
+            text=f"Информация для: {ctx.author}"
+        )
+        await ctx.send(embed=embed)
     message = f" in {ctx.guild.name} " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     log.error(str(error) + message)
-    now = str(datetime.datetime.now())
-    con = sql.get_connect()
-    cur = con.cursor()
-    data = {'time': now, 'lvl': 'ERROR', 'message': str(error) + message}
-    cur.execute(
-        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
-    )
-    con.commit()
-    con.close()
+    sql.error_log(ctx=ctx, error=error)
     raise error
 
 # Запрет писать боту в личку

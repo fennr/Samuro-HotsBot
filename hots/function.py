@@ -3,6 +3,8 @@ import re
 import os, sys, yaml
 from discord import Embed, File
 from hots.Hero import Hero
+from helpers import sql, Error
+from discord.ext import commands
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -38,7 +40,7 @@ def damerau_levenshtein_distance(s1: str, s2: str) -> int:
 
     return int(d[lenstr1 - 1, lenstr2 - 1])
 
-def read_hero_from_message(*args, author, command='hero', hero_args=None):
+def read_hero_from_message(args, author=None, command='hero'):
     hero = None
     if len(args) == 0:
         embed = args_not_found(command)
@@ -51,7 +53,7 @@ def read_hero_from_message(*args, author, command='hero', hero_args=None):
         elif len(hero_list) > 1:
             embed = find_more_heroes(hero_list, author, command=command)
         else:
-            embed = hero_not_found(author)
+            embed = hero_not_found()
     return hero, embed
 
 
@@ -71,15 +73,9 @@ def args_not_found(command, lvl=''):
     return embed
 
 
-def hero_not_found(author):
-    embed = Embed(
-        title="Ошибка! Герой не найден",
-        color=config["error"]
-    )
-    embed.set_footer(
-        text=f"Информация для: {author}"
-    )
-    return embed
+def hero_not_found():
+    error = "Ошибка! Герой не найден"
+    raise commands.CommandInvokeError(error)
 
 
 def find_more_heroes(hero_list, author, command='hero', lvl=''):

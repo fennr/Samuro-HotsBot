@@ -47,7 +47,7 @@ class hots(commands.Cog, name="hots"):
         """
         :hero: - Описание героя, билды, разборы
         """
-        hero, embed = read_hero_from_message(*args, author=ctx.author, command='hero')
+        hero, embed = read_hero_from_message(args, author=ctx.author, command='hero')
         if hero is not None:
             embed = heroes_description_short(hero, ctx.author)
             embed = builds(hero, ctx.author, embed)
@@ -70,7 +70,7 @@ class hots(commands.Cog, name="hots"):
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'skill')
             else:
-                embed = hero_not_found(ctx.author)
+                embed = hero_not_found()
             if hero is not None:
                 embed = skills(hero=hero, author=ctx.author, types=['basic', 'heroic', 'trait'], btn_key=btn_key)
         await ctx.send(embed=embed)
@@ -92,7 +92,7 @@ class hots(commands.Cog, name="hots"):
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'talent', ':lvl:')
             else:
-                embed = hero_not_found(ctx.author)
+                embed = hero_not_found()
             if hero is not None:
                 try:
                     embed = talents(hero, lvl, ctx.author)

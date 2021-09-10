@@ -137,7 +137,7 @@ class Heroes(Cog, name='heroes'):
             if len(hero_list) == 1:
                 hero = hero_list[0]
             elif len(hero_list) == 0:
-                embed = hero_not_found(ctx.author)
+                embed = hero_not_found()
             elif len(hero_list) > 1:
                 embed = find_more_heroes(hero_list, ctx.author, 'data')
             if hero is not None:
@@ -186,7 +186,7 @@ class Heroes(Cog, name='heroes'):
         """
         :hero: - Билды на героя от Сталка
         """
-        hero, embed = read_hero_from_message(*args, author=ctx.author, command='stlk')
+        hero, embed = read_hero_from_message(args, author=ctx.author, command='stlk')
         if hero is not None:
             embed = embed_stlk_builds(hero, ctx.author, ad=True)
         await ctx.send(embed=embed)

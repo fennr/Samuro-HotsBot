@@ -64,7 +64,7 @@ class owner(commands.Cog, name="owner"):
             cur.execute(
                 '''SELECT * FROM logs
                     ORDER BY time DESC
-                    LIMIT 10
+                    LIMIT 50
                 '''
             )
             rec = cur.fetchall()

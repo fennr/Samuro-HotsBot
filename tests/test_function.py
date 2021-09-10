@@ -9,7 +9,7 @@ class Test:
 
     def test_read_hero_from_message(self):
         try:
-            hero, embed = function.read_hero_from_message(self.bad_name, author='fenrir#5455', command='hero')
+            hero, embed = function.read_hero_from_message(((self.bad_name),), author='fenrir#5455', command='hero')
         except:
             pytest.fail('Считывание героя ушло в дамп')
         assert type(hero) is Hero
