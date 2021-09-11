@@ -2,6 +2,7 @@ import psycopg2
 import os
 from datetime import datetime
 import pytz
+from helpers import log
 
 
 def sql_init():
@@ -31,24 +32,21 @@ def sql_init():
             # print('Database connection closed.')
 
 
-def info_log(ctx, executedCommand):
+def info_log(ctx, executedCommand, slash=False):
     now = str(datetime.now(pytz.timezone('Europe/Moscow')))
     con = get_connect()
     cur = con.cursor()
-    if ctx.guild_id is None:  # для сообщений в ЛС
-        guild = ''
-        guild_id = ''
-    else:
-        guild = ctx.guild
-        guild_id = ctx.guild_id
+    guild, guild_id = log.get_guild(ctx)
+    author, author_id = log.get_author(ctx, slash)
+    message = log.get_message(slash)
     data = {'time': now[:25],
             'lvl': 'INFO',
             'command': executedCommand,
             'guild': str(guild)[:29],
             'guild_id': guild_id,
-            'author': str(ctx.message.author)[:29],
-            'author_id': ctx.message.author.id,
-            'message': 'Executed'
+            'author': str(author)[:29],
+            'author_id': author_id,
+            'message': message
             }
     cur.execute(
         '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
@@ -59,24 +57,23 @@ def info_log(ctx, executedCommand):
     con.close()
 
 
-def error_log(ctx, error):
+def error_log(ctx, error, slash=False):
     now = str(datetime.now(pytz.timezone('Europe/Moscow')))
     con = get_connect()
     cur = con.cursor()
-    command = ' '.join(ctx.args[2:])  # первые два это системыне объекты hots object и Context object
-    if ctx.guild is None:  # для сообщений в ЛС
-        guild = ''
-        guild_id = ''
-    else:
-        guild = ctx.guild.name
-        guild_id = ctx.guild.id
+    command = str(ctx.command)
+    for item in ctx.args:
+        if isinstance(item, str):
+            command += ' ' + item
+    guild, guild_id = log.get_guild(ctx)
+    author, author_id = log.get_author(ctx, slash)
     data = {'time': now[:25],
             'lvl': 'ERROR',
             'command': command[:19],
             'guild': str(guild)[:29],
             'guild_id': str(guild_id),
-            'author': str(ctx.message.author)[:29],
-            'author_id': str(ctx.message.author.id),
+            'author': str(author)[:29],
+            'author_id': str(author_id),
             'message': str(error)[:149]
             }
     cur.execute(

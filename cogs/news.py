@@ -3,6 +3,7 @@ import sys
 import yaml
 
 import datetime
+import pytz
 import locale
 
 import operator
@@ -32,6 +33,7 @@ locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 data_type_day = '%d %B'
 data_type_time = '%H:%M'
 data_type = data_type_day + data_type_time
+timezone = 'Europe/Moscow'
 year = 2021
 month_dict = {
     'Январь': 'января',
@@ -217,7 +219,7 @@ class News(commands.Cog, name="news"):
         channel = utils.get(ctx.guild.text_channels, name=events_name)
         messages = await channel.history(limit=200).flatten()
         now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type) \
-            .replace(year=datetime.datetime.now().year)
+            .replace(year=datetime.datetime.now().year) + datetime.timedelta(hours=3)
         for message in messages:
             for emb in message.embeds:
                 time, description = event_parse(ctx, emb, channel, message)

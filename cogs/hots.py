@@ -54,6 +54,7 @@ class hots(commands.Cog, name="hots"):
             embed = add_thumbnail(hero, embed)
         await ctx.send(embed=embed)
 
+
     @commands.command(name="skill")
     async def hots_skill(self, ctx, *args):
         """
@@ -74,6 +75,7 @@ class hots(commands.Cog, name="hots"):
             if hero is not None:
                 embed = skills(hero=hero, author=ctx.author, types=['basic', 'heroic', 'trait'], btn_key=btn_key)
         await ctx.send(embed=embed)
+
 
     @commands.command(name="talent")
     async def hots_talent(self, ctx, *args):

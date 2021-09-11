@@ -14,7 +14,8 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
-from helpers import sql, log
+from helpers import sql
+from helpers.log import get_guild, log_init, error_log
 from scripts import heroes_ru_names
 
 if not os.path.isfile("config.yaml"):
@@ -73,7 +74,7 @@ slash = SlashCommand(bot, sync_commands=True)
 
 sql.sql_init()
 
-log = log.log_init()
+log = log_init()
 
 # The code in this even is executed when the bot is ready
 @bot.event
@@ -133,13 +134,8 @@ async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
     split = fullCommandName.split(" ")
     executedCommand = str(split[0])
-    if ctx.guild is None:
-        guild_name = ''
-        guild_id = ''
-    else:
-        guild_name = ctx.guild.name
-        guild_id = ctx.message.guild.id
-    message = f"Executed {executedCommand} command in {guild_name} (ID: {guild_id}) " \
+    guild, guild_id = get_guild(ctx)
+    message = f"Executed {executedCommand} command in {guild} (ID: {guild_id}) " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
@@ -148,11 +144,12 @@ async def on_command_completion(ctx):
 @bot.event
 async def on_slash_command(ctx: SlashContext):
     executedCommand = ctx.name
-    message = f"Executed {executedCommand} command in {ctx.guild} (ID: {ctx.guild_id}) " \
+    guild, guild_id = get_guild(ctx)
+    message = f"Executed {executedCommand} command in {guild} (ID: {guild_id}) " \
              f"by {ctx.author} (ID: {ctx.author_id})"
     print(message)
     log.info(message)
-    sql.info_log(ctx, executedCommand)
+    sql.info_log(ctx, executedCommand, slash=True)
 
 
 # The code in this event is executed every time a valid commands catches an error
@@ -190,13 +187,8 @@ async def on_command_error(ctx, error):
             text=f"Информация для: {ctx.author}"
         )
         await ctx.send(embed=embed)
-    if ctx.guild is None:
-        guild_name = ''
-        guild_id = ''
-    else:
-        guild_name = ctx.guild.name
-        guild_id = ctx.message.guild.id
-    message = f" in {guild_name} " \
+    guild, guild_id = get_guild(ctx)
+    message = f" in {guild} " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     log.error(str(error) + message)
     sql.error_log(ctx=ctx, error=error)

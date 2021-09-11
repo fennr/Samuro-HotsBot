@@ -38,3 +38,34 @@ def error_log(line_no):
     ## возвращаем базовый формат сообщений
     FH.setFormatter(basic_formater)
     log.addHandler(FH)
+
+
+def get_guild(ctx):
+    if ctx.guild is None:
+        guild = ''
+        guild_id = ''
+    else:
+        try:
+            guild = ctx.guild.name
+            guild_id = ctx.message.guild.id
+        except:
+            guild = ctx.guild
+            guild_id = ctx.guild_id
+    return guild, guild_id
+
+
+def get_author(ctx, slash=False):
+    if slash:
+        author = ctx.author
+        author_id = ctx.author_id
+    else:
+        author = ctx.message.author
+        author_id = ctx.author.id
+    return author, author_id
+
+
+def get_message(slash=False):
+    if slash:
+        return "Executed Slash Command"
+    else:
+        return "Executed"
