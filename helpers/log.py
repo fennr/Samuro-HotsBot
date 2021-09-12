@@ -5,6 +5,8 @@ import yaml
 import logging
 import traceback
 
+from helpers import sql
+
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
 else:
@@ -24,6 +26,15 @@ log.addHandler(FH)
 
 def log_init():
     return log
+
+
+def error(ctx, error_message: str):
+    guild, guild_id = get_guild(ctx)
+    message = f"Error {ctx.command} in {guild} " \
+              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
+    print(message)
+    log.error(str(error_message) + message)
+    sql.error_log(ctx=ctx, error=error_message)
 
 
 ## функция для записи в лог сообщений об ошибке

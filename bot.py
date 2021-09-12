@@ -155,6 +155,15 @@ async def on_slash_command(ctx: SlashContext):
 # The code in this event is executed every time a valid commands catches an error
 @bot.event
 async def on_command_error(ctx, error):
+    # This prevents any commands with local handlers being handled here in on_command_error.
+    if hasattr(ctx.command, 'on_error'):
+        return
+
+    # This prevents any cogs with an overwritten cog_command_error being handled here.
+    cog = ctx.cog
+    if cog:
+        if cog._get_overridden_method(cog.cog_command_error) is not None:
+            return
     if isinstance(error, commands.CommandOnCooldown):
         embed = discord.Embed(
             title="Error!",
@@ -187,11 +196,7 @@ async def on_command_error(ctx, error):
             text=f"Информация для: {ctx.author}"
         )
         await ctx.send(embed=embed)
-    guild, guild_id = get_guild(ctx)
-    message = f" in {guild} " \
-              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
-    log.error(str(error) + message)
-    sql.error_log(ctx=ctx, error=error)
+    log.error(ctx, error)
     raise error
 
 # Запрет писать боту в личку

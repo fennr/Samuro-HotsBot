@@ -12,6 +12,7 @@ from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
 from hots.talents import talents, wrong_talent_lvl, read_talent_lvl
 from hots.Hero import Hero
+from helpers import sql, log
 
 # Only if you want to use variables that are in the config.yaml file.
 if not os.path.isfile("config.yaml"):
@@ -61,7 +62,7 @@ class hots(commands.Cog, name="hots"):
         :hero: :btn: - Скиллы героя на :btn: кнопках
         """
         if len(args) == 0:
-            embed = args_not_found('skill')
+            raise commands.BadArgument('Не введен герой')
         else:
             hero = None
             hero_name, btn_key = read_skill_btn(args)
@@ -83,7 +84,7 @@ class hots(commands.Cog, name="hots"):
         :hero: :lvl: - Таланты героя :lvl: уровня
         """
         if len(args) < 2:
-            embed = args_not_found('talent', ':lvl:')
+            raise commands.BadArgument('Не введен герой')
         else:
             hero = None
             hero_name, lvl = read_talent_lvl(args)
@@ -101,6 +102,27 @@ class hots(commands.Cog, name="hots"):
                 except:
                     embed = wrong_talent_lvl(ctx.author)
         await ctx.send(embed=embed)
+
+    @hots_hero.error
+    @hots_skill.error
+    @hots_talent.error
+    async def hots_hero_handler(self, ctx, error):
+        if isinstance(error, commands.BadArgument):
+            lvl = ':lvl:' if str(ctx.command) == 'talent' else ''
+            embed = Embed(
+                title="Ошибка! Введите все аргументы",
+                color=config["error"]
+            )
+            embed.add_field(
+                name="Пример:",
+                value=f"_{config['bot_prefix']}{ctx.command} Самуро {lvl}_",
+                inline=False
+            )
+            embed.set_footer(
+                text=f"#help для просмотра справки по командам"  # context.message.author если использовать без slash
+            )
+            log.error(ctx, "Неверно введены аргументы команды")
+            await ctx.send(embed=embed)
 
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.

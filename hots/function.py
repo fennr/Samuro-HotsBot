@@ -43,7 +43,7 @@ def damerau_levenshtein_distance(s1: str, s2: str) -> int:
 def read_hero_from_message(args, author=None, command='hero'):
     hero = None
     if len(args) == 0:
-        embed = args_not_found(command)
+        raise commands.BadArgument('Не введен героя')
     else:
         hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
         hero_list = find_heroes(hero_name)
