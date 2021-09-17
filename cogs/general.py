@@ -55,13 +55,18 @@ class general(commands.Cog, name="general"):
         """
         - Получить ссылку для приглашения бота на свой канал
         """
+        if config['state'] == 'prod':
+            APP_ID = os.environ.get('app_id_prod')
+        else:
+            APP_ID = config['app_test']
         embed = discord.Embed(
-            title="Приглашение",
-            description=f"Добавить Самуро: [Ссылка приглашение](https://discordapp.com/oauth2/authorize?&client_id={config['app_test']}&permissions=270416&scope=bot)\n"
-                        f"По багам/вопросам писать: fenrir#5455",
+            title="Приглашение на сервер",
+            description=f"Для подключения Самуро перейдите по [ссылке](https://discordapp.com/oauth2/authorize?&client_id={APP_ID}&permissions=270416&scope=bot)\n"
+                        f"По багам/вопросам писать: __fenrir#5455__",
             color=config["info"]
         )
         await context.send(embed=embed)
+        await context.author.send(embed=embed)
         #await context.send("Я отправил ссылку в личку")
         #await context.author.send(
         #    f"Добавить Самуро на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['app_test']}&permissions=270416&scope=bot")
