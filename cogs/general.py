@@ -55,9 +55,16 @@ class general(commands.Cog, name="general"):
         """
         - Получить ссылку для приглашения бота на свой канал
         """
-        await context.send("Я отправил ссылку в личку")
-        await context.author.send(
-            f"Добавить Самуро на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['application_id']}&permissions=270416&scope=bot")
+        embed = discord.Embed(
+            title="Приглашение",
+            description=f"Добавить Самуро: [Ссылка приглашение](https://discordapp.com/oauth2/authorize?&client_id={config['app_test']}&permissions=270416&scope=bot)\n"
+                        f"По багам/вопросам писать: fenrir#5455",
+            color=config["info"]
+        )
+        await context.send(embed=embed)
+        #await context.send("Я отправил ссылку в личку")
+        #await context.author.send(
+        #    f"Добавить Самуро на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['app_test']}&permissions=270416&scope=bot")
 
     @commands.command(name="ping")
     async def ping(self, context):
