@@ -186,6 +186,12 @@ async def on_command_error(ctx, error):
             color=config["error"]
         )
         await ctx.send(embed=embed)
+    elif isinstance(error, commands.CommandInvokeError):
+        text = "Ошибка! Герой не найден"
+        embed = discord.Embed(
+            title=text,
+            color=config["error"]
+        )
         embed.set_footer(
             text=f"Информация для: {ctx.author}"
         )
