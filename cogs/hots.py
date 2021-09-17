@@ -123,6 +123,13 @@ class hots(commands.Cog, name="hots"):
             )
             log.error(ctx, "Неверно введены аргументы команды")
             await ctx.send(embed=embed)
+        elif isinstance(error, commands.CommandInvokeError):
+            text = "Ошибка! Герой не найден"
+            embed = Embed(
+                title=text,
+                color=config["error"]
+            )
+            await ctx.send(embed=embed)
 
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.
