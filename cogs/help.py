@@ -37,12 +37,15 @@ class Help(commands.Cog, name="help"):
         embed = Embed(title="Help", description=f"{descr}", color=config["success"])
         for i in self.bot.cogs:
             if i not in ignore_list:
-                cog = self.bot.get_cog(i.lower())
-                commands = cog.get_commands()
-                command_list = [command.name for command in commands]
-                command_description = [command.help for command in commands]
-                help_text = '\n'.join(f'{prefix}{n} {h}' for n, h in zip(command_list, command_description))
-                embed.add_field(name=i.capitalize(), value=f'```{help_text}```', inline=False)
+                try:
+                    cog = self.bot.get_cog(i.lower())
+                    commands = cog.get_commands()
+                    command_list = [command.name for command in commands]
+                    command_description = [command.help for command in commands]
+                    help_text = '\n'.join(f'{prefix}{n} {h}' for n, h in zip(command_list, command_description))
+                    embed.add_field(name=i.capitalize(), value=f'```{help_text}```', inline=False)
+                except:
+                    pass
         await context.send(embed=embed)
 
 

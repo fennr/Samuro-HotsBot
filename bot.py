@@ -179,13 +179,13 @@ async def on_command_error(ctx, error):
             color=config["error"]
         )
         await ctx.send(embed=embed)
-    elif isinstance(error, commands.CommandInvokeError):
+        '''elif isinstance(error, commands.CommandInvokeError):
         text = "Ошибка! Герой не найден"
         embed = discord.Embed(
             title=text,
             color=config["error"]
         )
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed)'''
     elif isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(
             title="Ошибка! Такой команды не существует",
