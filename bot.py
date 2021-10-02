@@ -197,6 +197,7 @@ async def on_command_error(ctx, error):
             text=f"Информация для: {ctx.author}"
         )
     log.error(ctx, error)
+    sql.error_log(ctx, error)
     raise error
 
 # Запрет писать боту в личку
