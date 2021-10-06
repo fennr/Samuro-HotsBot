@@ -27,6 +27,7 @@ category_name = 'Новости'
 schedule_name = '📅︱расписание'
 events_name = '📰︱события'
 news_name = '📰︱новости'
+communication_name = '💬︱общение'
 event_icon = ':pushpin:'
 clear = '\u200b'
 locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
@@ -100,6 +101,20 @@ class News(commands.Cog, name="news"):
                         except:
                             print(f"Личка пользователя {user} недоступна")
                         # print('{0} has reacted with {1.emoji}!'.format(user, reaction))
+            try:
+                channel = utils.get(ctx.guild.text_channels, name=communication_name)
+                description = f"Скоро начнется мероприятие [{title}]({url})"
+                embed = Embed(
+                    title="Напоминание",
+                    description=description,
+                    color=config['info']
+                )
+                await channel.send(embed=embed)
+            except:
+                print('error')
+
+
+
 
     @commands.command(name="events_init")
     async def events_init(self, ctx):
