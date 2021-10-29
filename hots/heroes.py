@@ -167,7 +167,7 @@ def embed_stlk_builds(hero: Hero, author, embed=None, ad=False):
     if len(stlk_builds['build2']) > 0:
         description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build2'] + '```'
     if len(stlk_builds['build3']) > 0:
-        description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build3'] + '```'
+        description += '\n💬 ' + stlk_builds['comment3'].capitalize() + '\n```' + stlk_builds['build3'] + '```'
     embed.add_field(
         name=name,
         value=description,

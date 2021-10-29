@@ -19,7 +19,7 @@ heroes_dict = {}
 head = list_of_heroes[0]
 for hero_raw in list_of_heroes[1:]:
     hero_dict = dict(Hero_name=hero_raw[0], build1=hero_raw[1], comment1=hero_raw[2],
-                     build2=hero_raw[3], comment2=hero_raw[4], build3=hero_raw[5], comment3=hero_raw[6] )
+                     build2=hero_raw[3], comment2=hero_raw[4], build3=hero_raw[5], comment3=hero_raw[6])
     hero = Hero(hero_dict['Hero_name'])
     heroes_dict[hero.id] = hero_dict
 with open(json_data, 'w', encoding='utf-8') as write_file:
