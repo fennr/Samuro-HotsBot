@@ -8,13 +8,9 @@ import locale
 
 import operator
 
-from discord import Embed, utils, File, Reaction
+from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
-
-from hots.read_news import embed_news
-
-from pprint import pprint
 
 
 if not os.path.isfile("config.yaml"):
@@ -259,7 +255,12 @@ class News(commands.Cog, name="news"):
     async def update_schedule(self, ctx, clear_message=True):
         img = None
         img_path = 'img/'
-        img_name = 'schedule.png'
+        if ctx.guild.name == 'RU︱Heroes of the Storm':
+            img_name = 'scheduleHots.png'
+        elif ctx.guild.name == 'RU︱Hearthstone':
+            img_name = 'scheduleHS.png'
+        else:
+            img_name = 'scheduleHots.png'
         if clear_message:
             await ctx.message.delete()
         await News.clear_events(self, ctx)
