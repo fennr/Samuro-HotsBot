@@ -258,10 +258,13 @@ class News(commands.Cog, name="news"):
         print(ctx.guild.name)
         if ctx.guild.name == 'RU︱Heroes of the Storm':
             img_name = 'scheduleHots.png'
+            color = config["info"]
         elif ctx.guild.name == 'RU︱Hearthstone':
             img_name = 'scheduleHS.png'
+            color = int('DBC31E', 16)
         else:
             img_name = 'scheduleHS.png'
+            color = config["info"]
         if clear_message:
             pass
             #await ctx.message.delete()
@@ -278,7 +281,7 @@ class News(commands.Cog, name="news"):
         messages = await channel.history(limit=200).flatten()
         embed = Embed(
             title='Ближайшие события:',
-            color=config["info"]
+            color=color
         )
         events = []
         for message in reversed(messages):
