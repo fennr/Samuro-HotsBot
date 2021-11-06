@@ -255,14 +255,16 @@ class News(commands.Cog, name="news"):
     async def update_schedule(self, ctx, clear_message=True):
         img = None
         img_path = 'img/'
+        print(ctx.guild.name)
         if ctx.guild.name == 'RU︱Heroes of the Storm':
             img_name = 'scheduleHots.png'
         elif ctx.guild.name == 'RU︱Hearthstone':
             img_name = 'scheduleHS.png'
         else:
-            img_name = 'scheduleHots.png'
+            img_name = 'scheduleHS.png'
         if clear_message:
-            await ctx.message.delete()
+            pass
+            #await ctx.message.delete()
         await News.clear_events(self, ctx)
         await News.update_events(self, ctx, clear_message=False)
         #try:
