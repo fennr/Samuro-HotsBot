@@ -26,7 +26,6 @@ else:
 
 GITHUB_TOKEN = os.environ.get('github_token')
 
-
 if config['state'] == 'prod':
     TOKEN = os.environ.get('token_prod')
     APP_ID = os.environ.get('app_id_prod')
@@ -65,7 +64,6 @@ intents.presences = True
 intents.members = True
 """
 
-
 intents = discord.Intents.default()
 intents.members = True
 
@@ -75,6 +73,7 @@ slash = SlashCommand(bot, sync_commands=True)
 sql.sql_init()
 
 log = log_init()
+
 
 # The code in this even is executed when the bot is ready
 @bot.event
@@ -141,12 +140,13 @@ async def on_command_completion(ctx):
     log.info(message)
     sql.info_log(ctx, executedCommand)
 
+
 @bot.event
 async def on_slash_command(ctx: SlashContext):
     executedCommand = ctx.name
     guild, guild_id = get_guild(ctx)
     message = f"Executed {executedCommand} command in {guild} (ID: {guild_id}) " \
-             f"by {ctx.author} (ID: {ctx.author_id})"
+              f"by {ctx.author} (ID: {ctx.author_id})"
     print(message)
     log.info(message)
     sql.info_log(ctx, executedCommand, slash=True)
@@ -200,6 +200,7 @@ async def on_command_error(ctx, error):
     sql.error_log(ctx, error)
     raise error
 
+
 # Запрет писать боту в личку
 @bot.check
 async def global_guild_only(ctx):
@@ -209,6 +210,27 @@ async def global_guild_only(ctx):
                            'Если по каким-то причинам неудобно использовать на публичном сервере всегда можно пригласить в свой по команде #invite')
             raise commands.NoPrivateMessage  # replicating guild_only check: https://github.com/Rapptz/discord.py/blob/42a538edda79f92a26afe0ac902b45c1ea20154d/discord/ext/commands/core.py#L1832-L1846
     return True
+
+
+# Приветствие при входе на сервер
+@bot.event
+async def on_member_join(member):
+    server = member.guild
+    title = "Привет друг!"
+    message = f"Добро пожаловать на сервер **{member.guild.name}**.\n" \
+              f"Располагайся по удобнее, не стесняйся использовать чат.\n" \
+              f"Если захочется заходи в голосовые комнаты, все свои.\n\n" \
+              f"Я один из ботов на сервере, отвечаю за ивенты, " \
+              f"а так же могу предоставить много информации о талантах и билдах по **Heroes of the Storm**\n" \
+              f"Чтобы посмотреть все мои доступные команды набери **#help**\n" \
+              f"(желательно на отдельном канале для ботов)"
+    embed = discord.Embed(
+        title=title,
+        description=message,
+        color=config["success"]
+    )
+    await member.send(embed=embed)
+
 
 # Генерируем файл с именами героев
 heroes_ru_names.create_heroes_ru_data()
