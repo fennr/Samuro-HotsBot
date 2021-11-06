@@ -229,6 +229,11 @@ async def on_member_join(member):
         description=message,
         color=config["success"]
     )
+    message = f"На сервер '{member.guild.name}' " \
+              f"пришел пользователь '{member.name}'"
+    print(message)
+    log.info(message)
+    sql.new_user_log(member, message)
     await member.send(embed=embed)
 
 

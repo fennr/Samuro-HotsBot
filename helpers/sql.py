@@ -32,6 +32,28 @@ def sql_init():
             # print('Database connection closed.')
 
 
+def new_user_log(member, message):
+    now = str(datetime.now(pytz.timezone('Europe/Moscow')))
+    con = get_connect()
+    cur = con.cursor()
+    data = {'time': now[:25],
+            'lvl': 'INFO',
+            'command': "new_user",
+            'guild': member.guild.name,
+            'guild_id': member.guild.id,
+            'author': member.name,
+            'author_id': member.id,
+            'message': message
+            }
+    cur.execute(
+        '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 
+        VALUES (%(time)s, %(lvl)s, %(command)s, %(guild)s, %(guild_id)s, %(author)s, %(author_id)s, %(message)s)''',
+        data
+    )
+    con.commit()
+    con.close()
+
+
 def info_log(ctx, executedCommand, slash=False):
     now = str(datetime.now(pytz.timezone('Europe/Moscow')))
     con = get_connect()
@@ -40,7 +62,7 @@ def info_log(ctx, executedCommand, slash=False):
     author, author_id = log.get_author(ctx, slash)
     message = log.get_message(slash)
     data = {'time': now[:25],
-            'lvl': 'INFO',
+            'lvl': 'DONE',
             'command': executedCommand,
             'guild': str(guild)[:29],
             'guild_id': guild_id,
