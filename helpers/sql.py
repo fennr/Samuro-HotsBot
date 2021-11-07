@@ -39,9 +39,9 @@ def new_user_log(member, message):
     data = {'time': now[:25],
             'lvl': 'INFO',
             'command': "new_user",
-            'guild': member.guild.name,
+            'guild': str(member.guild.name)[:29],
             'guild_id': member.guild.id,
-            'author': member.name,
+            'author': str(member.name)[:29],
             'author_id': member.id,
             'message': message
             }
