@@ -131,10 +131,11 @@ async def on_message(message):
 @bot.event
 async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
+    fullCommandArgs = ' '.join(ctx.args[2:])
     split = fullCommandName.split(" ")
     executedCommand = str(split[0])
     guild, guild_id = get_guild(ctx)
-    message = f"Executed {executedCommand} command in {guild} (ID: {guild_id}) " \
+    message = f"Executed {executedCommand} {fullCommandArgs} command in {guild} (ID: {guild_id}) " \
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)

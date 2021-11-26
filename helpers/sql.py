@@ -60,7 +60,8 @@ def info_log(ctx, executedCommand, slash=False):
     cur = con.cursor()
     guild, guild_id = log.get_guild(ctx)
     author, author_id = log.get_author(ctx, slash)
-    message = log.get_message(slash)
+    fullCommandArgs = ' '.join(ctx.args[2:])
+    message = f"{log.get_message(slash)} : {executedCommand} {fullCommandArgs}"
     data = {'time': now[:25],
             'lvl': 'DONE',
             'command': executedCommand,
