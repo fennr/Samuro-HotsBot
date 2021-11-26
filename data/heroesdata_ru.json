@@ -221,7 +221,7 @@
         "name_ru": "Диабло",
         "name_json": "diablo.json",
         "role": "Tank",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -232,7 +232,7 @@
         "name_ru": "Дива",
         "name_json": "dva.json",
         "role": "Bruiser",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Дива",
             "Дивуля",
@@ -301,7 +301,7 @@
         "name_ru": "Газлоу",
         "name_json": "gazlowe.json",
         "role": "Bruiser",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Газик"
         ]
@@ -717,7 +717,7 @@
         "name_ru": "Рагнарос",
         "name_json": "ragnaros.json",
         "role": "Bruiser",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             "Рагна",
             "Ragna"
@@ -811,7 +811,7 @@
         "name_ru": "Стуков",
         "name_json": "stukov.json",
         "role": "Healer",
-        "tier": "A",
+        "tier": "S",
         "nick": [
             ""
         ]
@@ -899,7 +899,7 @@
         "name_ru": "Тиранда",
         "name_json": "tyrande.json",
         "role": "Healer",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
