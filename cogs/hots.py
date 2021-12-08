@@ -103,7 +103,7 @@ class hots(commands.Cog, name="hots"):
                     embed = wrong_talent_lvl(ctx.author)
         await ctx.send(embed=embed)
 
-    @hots_hero.error
+    '''@hots_hero.error
     @hots_skill.error
     @hots_talent.error
     async def hots_hero_handler(self, ctx, error):
@@ -129,7 +129,7 @@ class hots(commands.Cog, name="hots"):
                 title=text,
                 color=config["error"]
             )
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed)'''
 
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.
