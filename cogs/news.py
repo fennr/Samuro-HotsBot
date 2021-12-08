@@ -140,7 +140,8 @@ class News(commands.Cog, name="news"):
             'ruhots': 'RU︱Heroes of the Storm',
             'lounge': 'RU︱Heroes of the Storm',
             'kato': 'Awokato game',
-            'dung': 'Dungeon Шмэтокрыла'
+            'dung': 'Dungeon Шмэтокрыла',
+            'stlk': 'STLK',
         }
         server_rooms = {
             'test': 845658540341592099,
@@ -148,6 +149,7 @@ class News(commands.Cog, name="news"):
             'lounge': 886270709393928242,
             'kato': 835521779521814538,
             'dung': 858455796412710922,
+            'stlk': 124864790110797824,
         }
         if ctx.message.author.id in config["admins"]:
             command, short_server_name, message = ctx.message.content.split(' ', maxsplit=2)
