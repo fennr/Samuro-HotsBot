@@ -411,7 +411,7 @@
         "name_ru": "Крысавчик",
         "name_json": "junkrat.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Крыса"
         ]
@@ -741,7 +741,7 @@
         "name_ru": "Регар",
         "name_json": "rehgar.json",
         "role": "Healer",
-        "tier": "A",
+        "tier": "S",
         "nick": [
             ""
         ]
