@@ -12,6 +12,7 @@ from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
 
+from pprint import pprint
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -51,6 +52,7 @@ admin_role_id = {
     'ru hots': 703884637755408466,
 }
 
+
 def event_parse(ctx, emb, channel, message):
     date, time, color, full = emb.description.split('\n', maxsplit=3)
     tail, date = date.split(' ', maxsplit=1)
@@ -67,7 +69,6 @@ def event_parse(ctx, emb, channel, message):
 class News(commands.Cog, name="news"):
     def __init__(self, bot):
         self.bot = bot
-
 
     @commands.command(name="notify")
     async def notify(self, ctx):
@@ -109,9 +110,6 @@ class News(commands.Cog, name="news"):
             except:
                 print('error')
 
-
-
-
     @commands.command(name="events_init")
     async def events_init(self, ctx):
         if ctx.message.author.id in config["admins"]:
@@ -134,6 +132,40 @@ class News(commands.Cog, name="news"):
             command, text = ctx.message.content.split(' ', maxsplit=1)
             await ctx.message.delete()
             await ctx.send(text)
+
+    @commands.command(name="pm")
+    async def pm(self, ctx):
+        server_name = {
+            'test': 'Fenrir︱Test',
+            'ruhots': 'RU︱Heroes of the Storm',
+            'lounge': 'RU︱Heroes of the Storm',
+            'kato': 'Awokato game',
+            'dung': 'Dungeon Шмэтокрыла'
+        }
+        server_rooms = {
+            'test': 845658540341592099,
+            'ruhots': 642853714515722241,
+            'lounge': 886270709393928242,
+            'kato': 835521779521814538,
+            'dung': 858455796412710922,
+        }
+        if ctx.message.author.id in config["admins"]:
+            command, short_server_name, message = ctx.message.content.split(' ', maxsplit=2)
+            for guild in self.bot.guilds:
+                if short_server_name == 'all' and ctx.guild.name in server_name.values():
+                    for room in server_rooms.values():
+                        try:
+                            channel = guild.get_channel(room)
+                            await channel.send(message)
+                        except:
+                            pass
+                else:
+                    if ctx.guild.name in server_name.values():
+                        room = server_rooms.setdefault(short_server_name)
+                        if room is not None:
+                            channel = guild.get_channel(room)
+                            await channel.send(message)
+                            break
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
@@ -230,7 +262,7 @@ class News(commands.Cog, name="news"):
         channel = utils.get(ctx.guild.text_channels, name=events_name)
         messages = await channel.history(limit=200).flatten()
         now = datetime.datetime.strptime(datetime.datetime.today().strftime(data_type), data_type) \
-            .replace(year=datetime.datetime.now().year) + datetime.timedelta(hours=3)
+                  .replace(year=datetime.datetime.now().year) + datetime.timedelta(hours=3)
         for message in messages:
             for emb in message.embeds:
                 time, description = event_parse(ctx, emb, channel, message)
@@ -267,10 +299,10 @@ class News(commands.Cog, name="news"):
             color = config["info"]
         if clear_message:
             pass
-            #await ctx.message.delete()
+            # await ctx.message.delete()
         await News.clear_events(self, ctx)
         await News.update_events(self, ctx, clear_message=False)
-        #try:
+        # try:
         channel = utils.get(ctx.guild.text_channels, name=schedule_name)
         messages = await channel.history(limit=200).flatten()
         for message in messages:
