@@ -166,8 +166,10 @@ class News(commands.Cog, name="news"):
                         if room is not None:
                             channel = guild.get_channel(room)
                             print(channel)
-                            await channel.send(message)
-                            break
+                            print(type(channel))
+                            if channel is not None:
+                                await channel.send(message)
+                                break
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
