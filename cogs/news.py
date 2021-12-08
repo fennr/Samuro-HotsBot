@@ -162,8 +162,10 @@ class News(commands.Cog, name="news"):
                 else:
                     if ctx.guild.name in server_name.values():
                         room = server_rooms.setdefault(short_server_name)
+                        print(room)
                         if room is not None:
                             channel = guild.get_channel(room)
+                            print(channel)
                             await channel.send(message)
                             break
 
