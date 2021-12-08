@@ -1,9 +1,9 @@
 bot_prefix: "#"
 state: "prod"
-token_test: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4"
+token_test: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1Frm46RfJEsaKPC2XT0ZjMrW8KU"
 app_test: "661443692447662102"
 github_test: "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"
-patch: "2.54.3.85894"
+patch: "2.55.0.86938"
 log: "log_base.log"
 owner: 196583204164075520
 owners:
