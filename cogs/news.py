@@ -140,7 +140,8 @@ class News(commands.Cog, name="news"):
             'ruhots': 'RU︱Heroes of the Storm',
             'lounge': 'RU︱Heroes of the Storm',
             'kato': 'Awokato game',
-            'dung': 'Dungeon Шмэтокрыла',
+            'dung_h': 'Dungeon Шмэтокрыла',
+            'dung_m': 'Dungeon Шмэтокрыла',
             'stlk': 'STLK',
         }
         server_rooms = {
@@ -148,7 +149,8 @@ class News(commands.Cog, name="news"):
             'ruhots': 642853714515722241,
             'lounge': 886270709393928242,
             'kato': 835521779521814538,
-            'dung': 858455796412710922,
+            'dung_h': 858455796412710922,
+            'dung_m': 472534563479093269,
             'stlk': 124864790110797824,
         }
         if ctx.message.author.id in config["admins"]:
