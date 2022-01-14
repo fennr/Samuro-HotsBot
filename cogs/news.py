@@ -5,6 +5,7 @@ import yaml
 import datetime
 import pytz
 import locale
+import re
 
 import operator
 
@@ -170,10 +171,11 @@ class News(commands.Cog, name="news"):
                         print(room)
                         if room is not None:
                             channel = guild.get_channel(room)
-                            print(channel)
-                            print(type(channel))
                             if channel is not None:
+                                #new_message = re.sub(r':\w+:', str())
                                 emoji = utils.get(guild.emojis, name="yrel")
+                                print(emoji)
+                                print(str(emoji))
                                 await channel.send(str(emoji))
                                 #await channel.send(message)
                                 break
