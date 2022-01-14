@@ -173,7 +173,9 @@ class News(commands.Cog, name="news"):
                             print(channel)
                             print(type(channel))
                             if channel is not None:
-                                await channel.send(message)
+                                emoji = utils.get(guild.emojis, name="yrel")
+                                await channel.send(str(emoji))
+                                #await channel.send(message)
                                 break
 
     @commands.command(name="add_news")
