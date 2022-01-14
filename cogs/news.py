@@ -156,6 +156,12 @@ class News(commands.Cog, name="news"):
         }
         if ctx.message.author.id in config["admins"]:
             command, short_server_name, message = ctx.message.content.split(' ', maxsplit=2)
+            if message[0] == ":" and message[-1:] == ":":
+                for guild in self.bot.guilds:
+                    emoji = utils.get(guild.emojis, name=message[1:-1])
+                    if emoji is not None:
+                        message = str(emoji)
+                        break
             for guild in self.bot.guilds:
                 if short_server_name == 'all' and ctx.guild.name in server_name.values():
                     for room in server_rooms.values():
@@ -172,12 +178,7 @@ class News(commands.Cog, name="news"):
                         if room is not None:
                             channel = guild.get_channel(room)
                             if channel is not None:
-                                #new_message = re.sub(r':\w+:', str())
-                                emoji = utils.get(guild.emojis, name="yrel")
-                                print(emoji)
-                                print(str(emoji))
-                                await channel.send(str(emoji))
-                                #await channel.send(message)
+                                await channel.send(message)
                                 break
 
     @commands.command(name="add_news")
