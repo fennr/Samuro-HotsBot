@@ -105,7 +105,7 @@
         "name_ru": "Азмодан",
         "name_json": "azmodan.json",
         "role": "Ranged Assassin",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Азмодаун",
             "Баскетболист"
@@ -400,7 +400,7 @@
         "name_ru": "Джоанна",
         "name_json": "johanna.json",
         "role": "Tank",
-        "tier": "A",
+        "tier": "S",
         "nick": [
             ""
         ]
@@ -411,7 +411,7 @@
         "name_ru": "Крысавчик",
         "name_json": "junkrat.json",
         "role": "Ranged Assassin",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             "Крыса"
         ]
@@ -639,7 +639,7 @@
         "name_ru": "Мурадин",
         "name_json": "muradin.json",
         "role": "Tank",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -695,7 +695,7 @@
         "name_ru": "Пробиус",
         "name_json": "probius.json",
         "role": "Ranged Assassin",
-        "tier": "C",
+        "tier": "B",
         "nick": [
             "Пробка"
         ]
