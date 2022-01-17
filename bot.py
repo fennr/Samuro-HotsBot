@@ -234,7 +234,7 @@ async def on_member_join(member):
               f"пришел пользователь '{member.name}'"
     print(message)
     log.info(message)
-    sql.new_user_log(member, message)
+    #sql.new_user_log(member, message)
     await member.send(embed=embed)
 
 
