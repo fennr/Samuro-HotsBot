@@ -16,7 +16,7 @@ from discord_slash import SlashCommand, SlashContext  # Importing the newly inst
 
 from helpers import sql
 from helpers.log import get_guild, log_init, error_log
-from scripts import heroes_ru_names
+from scripts import heroes_ru_names, google_table
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -240,6 +240,8 @@ async def on_member_join(member):
 
 # Генерируем файл с именами героев
 heroes_ru_names.create_heroes_ru_data()
+# Генерируем данные из таблицы Сталка
+google_table.create_stlk_json()
 # Run the bot with the token
 
 bot.run(TOKEN)
