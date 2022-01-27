@@ -24,7 +24,7 @@ class Fun(commands.Cog, name="fun"):
         self.bot = bot
 
     @commands.command(name="модерынелюди")
-    async def moders(self, context):
+    async def antimoders(self, context):
         """
         - БУНД
         """
@@ -35,7 +35,7 @@ class Fun(commands.Cog, name="fun"):
                     'Well Yes, But Actually No',
                     ':ban:',
                     ':monknofun:',
-                    ':00:',
+                    ':PepeSliceU:',
                     'Поддерживаю! Жги модеров :fire:',
 
                     )
@@ -47,6 +47,27 @@ class Fun(commands.Cog, name="fun"):
                     message = str(emoji)
                     break
         await context.send(message)
+
+    @commands.command(name="модерылюди")
+    async def antimoders(self, context):
+        """
+        - Анти БУНД
+        """
+        messages = (':shinelave:',
+                    ':hotshug:',
+                    ':pat_the_lord:',
+                    ':Uccutecatblush:',
+
+                    )
+        message = random.choice(messages)
+        if message[0] == ":" and message[-1:] == ":":
+            for guild in self.bot.guilds:
+                emoji = utils.get(guild.emojis, name=message[1:-1])
+                if emoji is not None:
+                    message = str(emoji)
+                    break
+        await context.send(message)
+
 
 
 def setup(bot):
