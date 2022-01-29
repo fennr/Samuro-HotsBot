@@ -51,3 +51,7 @@ for raw_hero in list_of_heroes[row:]:
     worksheet.update_cell(row, column, hero['name_ru'])
     row += 1
     time.sleep(1)'''
+
+
+if __name__ == '__main__':
+    create_stlk_json()

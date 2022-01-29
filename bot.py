@@ -241,7 +241,7 @@ async def on_member_join(member):
 # Генерируем файл с именами героев
 heroes_ru_names.create_heroes_ru_data()
 # Генерируем данные из таблицы Сталка
-google_table.create_stlk_json()
+# google_table.create_stlk_json()
 # Run the bot with the token
 
 bot.run(TOKEN)
