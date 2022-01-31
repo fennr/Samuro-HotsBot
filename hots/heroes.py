@@ -159,7 +159,7 @@ def embed_stlk_builds(hero: Hero, author, embed=None, ad=False):
         name = 'для вставки в чат игры'
         description = ''
         embed = Embed(
-            title=f"Билды от грандмастера STLK на героя {hero.ru}",  # title="Описание героя:",
+            title=f"Билды на героя {hero.ru}",  # title="Описание героя:",
             color=config["success"]
         )
     stlk_builds = stlk_data[hero.id]
@@ -175,8 +175,8 @@ def embed_stlk_builds(hero: Hero, author, embed=None, ad=False):
     )
     if ad:
         embed.add_field(
-            name="Задать вопросы по билдам можно на его стримах",
-            value=f"[Перейти на твич @stlk](https://www.twitch.tv/stlk)",
+            name="Перейти на твич",
+            value=f"[@stlk](https://www.twitch.tv/stlk)",
             inline=False
         )
     return embed
@@ -200,8 +200,8 @@ def builds(hero: Hero, author, embed=None):
             color=config["success"]
         )
     icy_veins_url_full = icy_veins_url + hero.en.lower().replace(' ', '-').replace('.',
-                                                                                           '-').replace("'",
-                                                                                                        "") + '-build-guide'
+                                                                                   '-').replace("'",
+                                                                                                "") + '-build-guide'
     icy_veins_url_full = icy_veins_url_full.replace('--', '-')
 
     embed = get_last_update(heroespn_url_full, embed)
@@ -231,5 +231,3 @@ def builds(hero: Hero, author, embed=None):
     )
 
     return embed
-
-
