@@ -129,7 +129,7 @@
         "name_ru": "Светик",
         "name_json": "brightwing.json",
         "role": "Healer",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Светка",
             "Света",
@@ -142,7 +142,7 @@
         "name_ru": "Кассия",
         "name_json": "cassia.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Амазонка"
         ]
@@ -176,7 +176,7 @@
         "name_ru": "Хроми",
         "name_json": "chromie.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Хромая"
         ]
@@ -210,7 +210,7 @@
         "name_ru": "Дехака",
         "name_json": "dehaka.json",
         "role": "Bruiser",
-        "tier": "A",
+        "tier": "S",
         "nick": [
             ""
         ]
@@ -221,7 +221,7 @@
         "name_ru": "Диабло",
         "name_json": "diablo.json",
         "role": "Tank",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -573,7 +573,7 @@
         "name_ru": "Малфурион",
         "name_json": "malfurion.json",
         "role": "Healer",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -661,7 +661,7 @@
         "name_ru": "Назибо",
         "name_json": "nazeebo.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Nazibo"
         ]
@@ -695,7 +695,7 @@
         "name_ru": "Пробиус",
         "name_json": "probius.json",
         "role": "Ranged Assassin",
-        "tier": "B",
+        "tier": "C",
         "nick": [
             "Пробка"
         ]
@@ -811,7 +811,7 @@
         "name_ru": "Стуков",
         "name_json": "stukov.json",
         "role": "Healer",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -822,7 +822,7 @@
         "name_ru": "Сильвана",
         "name_json": "sylvanas.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -877,7 +877,7 @@
         "name_ru": "Тайкус",
         "name_json": "tychus.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Такос"
         ]
@@ -899,7 +899,7 @@
         "name_ru": "Тиранда",
         "name_json": "tyrande.json",
         "role": "Healer",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
