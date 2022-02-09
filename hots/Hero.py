@@ -35,9 +35,9 @@ class Hero:
         return self.id
 
     def __eq__(self, hero2):
-        if self.id == hero2['name_id'] or \
-                self.en == hero2['name_en'] or \
-                self.ru == hero2['name_ru']:
+        if self.id == hero2.id or \
+                self.en == hero2.en or \
+                self.ru == hero2.ru:
             return True
         else:
             return False

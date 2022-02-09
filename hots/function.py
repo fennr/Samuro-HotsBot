@@ -142,11 +142,11 @@ def find_heroes(hero_name, allowed_error=5):
                     if data not in hero_list:
                         hero_list.append(hero)
                 if (allowed_error - i) > 1:  # чтобы по прозвищам поиск был более строгий
-                    for nick in data['nick']:
-                        if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i and data not in hero_list:
-                            print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, data['name_ru'],
+                    for nick in hero.nick:
+                        if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i and hero not in hero_list:
+                            print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, hero.ru,
                                                                                   i - 1))
-                            if data not in hero_list:
+                            if hero not in hero_list:
                                 hero_list.append(hero)
                                 break
     return hero_list
