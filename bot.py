@@ -208,7 +208,7 @@ async def global_guild_only(ctx):
     if ctx.message.author.id not in config["owners"]:
         if not ctx.guild:
             await ctx.send('Личка бота закрыта, пожалуйста используйте бота на сервере\n'
-                           'Если по каким-то причинам неудобно использовать на публичном сервере всегда можно пригласить в свой по команде #invite')
+                           'Если по каким-то причинам неудобно использовать на публичном сервере нажмите на аватар и кликните по кнопке "Добавить на сервер"')
             raise commands.NoPrivateMessage  # replicating guild_only check: https://github.com/Rapptz/discord.py/blob/42a538edda79f92a26afe0ac902b45c1ea20154d/discord/ext/commands/core.py#L1832-L1846
     return True
 
