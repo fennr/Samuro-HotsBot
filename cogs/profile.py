@@ -85,14 +85,54 @@ def get_profile_embed(player: Player):
     return embed
 
 
+def sort_by_mmr(player):
+    return player.mmr
+
+
 class Profile(commands.Cog, name="profile"):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.group(name="event")
+    async def event(self, ctx):
+        """
+        - Команды на основе базы профилей
+        """
+        if ctx.invoked_subcommand is None:
+            await ctx.send('Для подбора команд используйте команду #event 5x5')
+
+    @event.command(name="5x5")
+    async def event_5x5(self, ctx, *args):
+        if len(args) % 2:
+            await ctx.send("Введите четное участников турнира")
+        else:
+            sql.sql_init()
+            con = sql.get_connect()
+            cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+            players = []
+            bad_flag = False
+            for name in args:
+                select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
+                cur.execute(select, (name, name,))
+                record = cur.fetchone()
+                if record is not None:
+                    player = get_player(record)
+                    players.append(player)
+                else:
+                    bad_flag = True
+                    await ctx.send(f"Участника {name} нет в базе")
+            if not bad_flag:
+                players.sort(key=sort_by_mmr, reverse=True)
+                team_one = ' '.join([player.discord for index, player in enumerate(players) if index % 2])
+                team_two = ' '.join([player.discord for index, player in enumerate(players) if not index % 2])
+                await ctx.send(f"Синяя команда: {team_one}")
+                await ctx.send(f"Красная команда: {team_two}")
+
+
     @commands.group(name="profile")
     async def profile(self, ctx):
         """
-        - Информация по Батлтегу
+        - Связь батлтега и дискорд профиля
         """
         if ctx.invoked_subcommand is None:
             await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
@@ -101,7 +141,6 @@ class Profile(commands.Cog, name="profile"):
     @profile.command(name="test")
     async def profile_test(self, ctx, *args):
         pass
-
 
     @profile.command(name="divisions")
     async def profile_divisions(self, ctx):
@@ -113,7 +152,8 @@ class Profile(commands.Cog, name="profile"):
             cur.execute(select)
             rec = cur.fetchall()
             for player_list in rec:
-                player = Player(btag=player_list['btag'], league=player_list['rank'], division='', discord=player_list['discord'],
+                player = Player(btag=player_list['btag'], league=player_list['rank'], division='',
+                                discord=player_list['discord'],
                                 mmr=player_list['mmr'], winrate=player_list['winrate'])
                 if player.league[-1].isdigit():
                     if player.league == 'Master':
@@ -157,7 +197,6 @@ class Profile(commands.Cog, name="profile"):
                 await ctx.send(f"Профиль игрока {btag} добавлен в базу")
             except:
                 await ctx.send(f'Профиль игрока {btag} не найден')
-
 
     @profile.command(name="remove")
     async def profile_remove(self, ctx, user_or_btag):
