@@ -3,7 +3,7 @@ import sys
 
 from discord import Embed, utils
 import yaml
-import random
+import psycopg2.extras
 from discord.ext import commands
 from helpers import sql
 import requests
@@ -47,17 +47,21 @@ def get_heroesprofile_data(btag, discord_name):
                 profile_wr = profile_data[2]
                 if profile_data[3] == 'Master':
                     profile_league = profile_data[3]
+                    profile_division = '0'
                     profile_mmr = profile_data[5]
                 else:
-                    profile_league = profile_data[3] + profile_data[4]
+                    profile_league = profile_data[3]
+                    profile_division = profile_data[4]
                     profile_mmr = profile_data[6]
-                return Player(btag, discord_name, profile_mmr, profile_league, profile_wr)
+                return Player(btag=btag, discord=discord_name, mmr=profile_mmr, league=profile_league,
+                              division=profile_division, winrate=profile_wr)
     return None
 
 
 def get_player(record):
     if record is not None:
-        player = Player(btag=record[0], discord=record[4], mmr=record[3], league=record[1], winrate=record[2])
+        player = Player(btag=record.btag, discord=record.discord, mmr=record.mmr, league=record.rank,
+                        division=record.division, winrate=record.winrate)
         return player
     return None
 
@@ -92,14 +96,37 @@ class Profile(commands.Cog, name="profile"):
         """
         if ctx.invoked_subcommand is None:
             await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
-                           'Пример: #profile add player#1234 @player')
+                           'Пример: *#profile add player#1234 @player*')
 
     @profile.command(name="test")
     async def profile_test(self, ctx, *args):
-        if len(args) > 1:
-            btag = args[0]
-            user = args[1]
-        await ctx.send(f"Пользователь {user} добавлен")
+        pass
+
+
+    @profile.command(name="divisions")
+    async def profile_divisions(self, ctx):
+        sql.sql_init()
+        con = sql.get_connect()
+        cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        select = """SELECT * FROM heroesprofile"""
+        cur.execute(select)
+        rec = cur.fetchall()
+        for player_list in rec:
+            player = Player(btag=player_list['btag'], league=player_list['rank'], division='', discord=player_list['discord'],
+                            mmr=player_list['mmr'], winrate=player_list['winrate'])
+            if player.league[-1].isdigit():
+                if player.league == 'Master':
+                    division = 0
+                else:
+                    division = player.league[-1]
+                    player.league = player.league[:-1]
+                print(f"{player.league} {division}")
+                update = """UPDATE heroesprofile SET rank=%s, division=%s WHERE btag=%s"""
+                cur.execute(update, (player.league, division, player.btag))
+        con.commit()
+        con.close()
+        await ctx.send("Записи были разделены на дивизионы")
+
 
     @profile.command(name="add")
     async def profile_add(self, ctx, btag, discord_user):
@@ -120,9 +147,9 @@ class Profile(commands.Cog, name="profile"):
         if record is None:
             try:
                 data = get_heroesprofile_data(btag, discord_user)
-                insert = """INSERT INTO heroesprofile(BTAG, RANK, WINRATE, MMR, DISCORD) 
-                            VALUES(%s, %s, %s, %s, %s )"""
-                cur.execute(insert, (data.btag, data.league, data.winrate, data.mmr, data.discord))
+                insert = """INSERT INTO heroesprofile(BTAG, RANK, DIVISION, WINRATE, MMR, DISCORD) 
+                            VALUES(%s, %s, %s, %s, %s, %s )"""
+                cur.execute(insert, (data.btag, data.league, data.division, data.winrate, data.mmr, data.discord))
                 con.commit()
                 con.close()
                 await ctx.send(f"Профиль игрока {btag} добавлен в базу")
@@ -133,13 +160,13 @@ class Profile(commands.Cog, name="profile"):
     async def profile_update(self, ctx, user_or_btag):
         sql.sql_init()
         con = sql.get_connect()
-        cur = con.cursor()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
         cur.execute(select, (user_or_btag, user_or_btag,))
         record = cur.fetchone()
-        print(record)
-        player = get_player(record)
-        if player is not None:
+        if record is not None:
+            player = get_player(record)
+            print(player)
             try:
                 data = get_heroesprofile_data(player.btag, player.discord)
                 update = """UPDATE heroesprofile SET RANK=%s, WINRATE=%s, MMR=%s WHERE btag=%s"""
@@ -150,27 +177,32 @@ class Profile(commands.Cog, name="profile"):
             except:
                 await ctx.send(f'Профиль игрока {player.btag} не найден')
         else:
-            await ctx.send(f'Профиль игрока {user_or_btag} не найден')
+            await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
 
     @profile.command(name="info")
     async def profile_info(self, ctx, user_or_btag):
         sql.sql_init()
         con = sql.get_connect()
-        cur = con.cursor()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
         cur.execute(select, (user_or_btag, user_or_btag,))
         record = cur.fetchone()
-        print(record)
         if record is not None:
-            player = Player(btag=record[0], discord=record[4], mmr=record[3], league=record[1], winrate=record[2])
-            embed = get_profile_embed(player)
-            await ctx.send(embed=embed)
+            player = get_player(record)
+            print(player)
+            if player is not None:
+                embed = get_profile_embed(player)
+                await ctx.send(embed=embed)
+        else:
+            await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
+        con.close()
 
     @profile.error
     @profile_add.error
     async def profile_handler(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
-            await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль")
+            await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
+                           "Пример: *#profile add player#1234 @player*")
 
 
 def setup(bot):

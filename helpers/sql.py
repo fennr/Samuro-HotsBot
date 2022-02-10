@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 import os
 from datetime import datetime
 import pytz
@@ -115,3 +116,6 @@ def get_connect():
     except:
         return psycopg2.connect(dbname='discord', user='fenrir',
                                 password='1121', host='localhost')
+
+def get_cursor(con):
+    return con.cursor(cursor_factory=psycopg2.extras.DictCursor)
