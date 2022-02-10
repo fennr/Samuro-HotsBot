@@ -130,8 +130,8 @@ class Profile(commands.Cog, name="profile"):
                 team_two = ' '.join([player.discord for index, player in enumerate(players) if not index % 2])
                 team_two_avg = mean([int(player.mmr) for index, player in enumerate(players) if not index % 2])
 
-                await ctx.send(f"Синяя команда (avg mmr = {team_one_avg}): {team_one}")
-                await ctx.send(f"Красная команда (avg mmr = {team_two_avg}): {team_two}")
+                await ctx.send(f"Синяя команда (avg mmr = {team_one_avg:.2f}): {team_one}")
+                await ctx.send(f"Красная команда (avg mmr = {team_two_avg:.2f}): {team_two}")
 
 
     @commands.group(name="profile")
