@@ -9,6 +9,7 @@ from helpers import sql
 import requests
 from bs4 import BeautifulSoup
 from hots.Player import Player
+from statistics import mean
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -124,9 +125,13 @@ class Profile(commands.Cog, name="profile"):
             if not bad_flag:
                 players.sort(key=sort_by_mmr, reverse=True)
                 team_one = ' '.join([player.discord for index, player in enumerate(players) if index % 2])
+                team_one_avg = mean([int(player.mmr) for index, player in enumerate(players) if index % 2])
+
                 team_two = ' '.join([player.discord for index, player in enumerate(players) if not index % 2])
-                await ctx.send(f"Синяя команда: {team_one}")
-                await ctx.send(f"Красная команда: {team_two}")
+                team_two_avg = mean([int(player.mmr) for index, player in enumerate(players) if not index % 2])
+
+                await ctx.send(f"Синяя команда (avg mmr = {team_one_avg}): {team_one}")
+                await ctx.send(f"Красная команда (avg mmr = {team_two_avg}): {team_two}")
 
 
     @commands.group(name="profile")
