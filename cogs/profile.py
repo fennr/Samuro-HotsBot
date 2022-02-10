@@ -105,28 +105,30 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.command(name="divisions")
     async def profile_divisions(self, ctx):
-        sql.sql_init()
-        con = sql.get_connect()
-        cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        select = """SELECT * FROM heroesprofile"""
-        cur.execute(select)
-        rec = cur.fetchall()
-        for player_list in rec:
-            player = Player(btag=player_list['btag'], league=player_list['rank'], division='', discord=player_list['discord'],
-                            mmr=player_list['mmr'], winrate=player_list['winrate'])
-            if player.league[-1].isdigit():
-                if player.league == 'Master':
-                    division = 0
-                else:
-                    division = player.league[-1]
-                    player.league = player.league[:-1]
-                print(f"{player.league} {division}")
-                update = """UPDATE heroesprofile SET rank=%s, division=%s WHERE btag=%s"""
-                cur.execute(update, (player.league, division, player.btag))
-        con.commit()
-        con.close()
-        await ctx.send("Записи были разделены на дивизионы")
-
+        if ctx.message.author.id in config["owners"]:
+            sql.sql_init()
+            con = sql.get_connect()
+            cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            select = """SELECT * FROM heroesprofile"""
+            cur.execute(select)
+            rec = cur.fetchall()
+            for player_list in rec:
+                player = Player(btag=player_list['btag'], league=player_list['rank'], division='', discord=player_list['discord'],
+                                mmr=player_list['mmr'], winrate=player_list['winrate'])
+                if player.league[-1].isdigit():
+                    if player.league == 'Master':
+                        division = 0
+                    else:
+                        division = player.league[-1]
+                        player.league = player.league[:-1]
+                    print(f"{player.league} {division}")
+                    update = """UPDATE heroesprofile SET rank=%s, division=%s WHERE btag=%s"""
+                    cur.execute(update, (player.league, division, player.btag))
+            con.commit()
+            con.close()
+            await ctx.send("Записи были разделены на дивизионы")
+        else:
+            await ctx.send("Нет прав на выполнение команды")
 
     @profile.command(name="add")
     async def profile_add(self, ctx, btag, discord_user):
@@ -155,6 +157,21 @@ class Profile(commands.Cog, name="profile"):
                 await ctx.send(f"Профиль игрока {btag} добавлен в базу")
             except:
                 await ctx.send(f'Профиль игрока {btag} не найден')
+
+
+    @profile.command(name="remove")
+    async def profile_remove(self, ctx, user_or_btag):
+        if ctx.message.author.id in config["owners"]:
+            sql.sql_init()
+            con = sql.get_connect()
+            cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+            delete = """DELETE FROM heroesprofile WHERE discord = %s OR btag = %s"""
+            cur.execute(delete, (user_or_btag, user_or_btag,))
+            con.commit()
+            con.close()
+            await ctx.send(f"Профиль {user_or_btag} удален из базы")
+        else:
+            await ctx.send("Нет прав на выполнение команды")
 
     @profile.command(name="update")
     async def profile_update(self, ctx, user_or_btag):
