@@ -64,7 +64,10 @@ class Profile(commands.Cog, name="profile"):
                 if error is not None:
                     links = error.find_all('a')
                     for link in links:
-                        url_new = base_url + link['href'].replace('®', '&reg')
+                        region = 'ion=2'
+                        if region in link['href']:
+                            url_new = base_url + link['href'].replace('®', '&reg')
+                    print(url_new)
                     response = requests.get(url_new, headers={"User-Agent": f"{user_agent}"})
                     response.raise_for_status()
                     soup = BeautifulSoup(response.text, 'html.parser')
@@ -192,11 +195,6 @@ class Profile(commands.Cog, name="profile"):
             embed.add_field(
                 name="Лига",
                 value=data['rank'],
-                inline=True
-            )
-            embed.add_field(
-                name="Винрейт",
-                value=data['winrate'],
                 inline=True
             )
             embed.add_field(
