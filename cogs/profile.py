@@ -104,39 +104,9 @@ class Profile(commands.Cog, name="profile"):
                                             data)
                                 con.commit()
                                 con.close()
+                                await ctx.send(f"Профиль игрока {btag} добавлен в базу")
                 except:
                     await ctx.send(f'Профиль игрока {bname} не найден')
-
-            if data is None:
-                print(record[0])
-
-                data = {'btag': record[0],
-                        'rank': record[1],
-                        'winrate': record[2],
-                        'mmr': record[3],
-                        'discord': record[4]
-                        }
-            embed = Embed(
-                title=f"Профиль игрока {data['btag']}",
-                color=config["info"]
-
-            )
-            embed.add_field(
-                name="Лига",
-                value=data['rank'],
-                inline=True
-            )
-            embed.add_field(
-                name="Винрейт",
-                value=data['winrate'],
-                inline=True
-            )
-            embed.add_field(
-                name="ММР",
-                value=data['mmr'],
-                inline=True
-            )
-            await ctx.send(embed=embed)
 
     @profile.command(name="info")
     async def profile_info(self, ctx, user):
