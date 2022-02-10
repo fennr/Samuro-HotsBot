@@ -85,8 +85,8 @@ def find_more_heroes(hero_list, author, command='hero', lvl=''):
     )
     for wrong_hero in hero_list:
         embed.add_field(
-            name="{} / {}".format(wrong_hero['name_en'], wrong_hero['name_ru']),
-            value=f"Введи: {config['bot_prefix']}{command} {wrong_hero['name_ru']} {lvl}",
+            name="{} / {}".format(wrong_hero.en, wrong_hero.ru),
+            value=f"Введи: {config['bot_prefix']}{command} {wrong_hero.ru} {lvl}",
             inline=False
         )
     embed.set_footer(
@@ -139,7 +139,7 @@ def find_heroes(hero_name, allowed_error=5):
                         (damerau_levenshtein_distance(hero_name, hero.ru.capitalize()) < i) or \
                         (damerau_levenshtein_distance(hero_name, hero.id.capitalize()) < i):
                     #print('{} -> {}   | Погрешность: {} симв.'.format(hero_name, data['name_ru'], i - 1))
-                    if data not in hero_list:
+                    if hero not in hero_list:
                         hero_list.append(hero)
                 if (allowed_error - i) > 1:  # чтобы по прозвищам поиск был более строгий
                     for nick in hero.nick:
