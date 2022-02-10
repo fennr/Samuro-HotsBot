@@ -21,15 +21,12 @@ class Profile(commands.Cog, name="profile"):
         self.bot = bot
 
     @commands.group(name="profile")
-    async def profile(self, ctx, user=None):
+    async def profile(self, ctx):
         """
         - Информация по Батлтегу
         """
         if ctx.invoked_subcommand is None:
-            if user is not None:
-                await Profile.profile_info(self, ctx, user)
-            else:
-                await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
+            await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
                                'Пример: #profile add player#1234 @player')
 
     @profile.command(name="test")
@@ -41,6 +38,7 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.command(name="add")
     async def profile_add(self, ctx, btag, discord_user):
+        print("profile_add")
         data = None
         sql.sql_init()
         con = sql.get_connect()
@@ -48,6 +46,7 @@ class Profile(commands.Cog, name="profile"):
         select = """SELECT * FROM heroesprofile WHERE btag = %s"""
         cur.execute(select, (btag,))
         record = cur.fetchone()
+        print(record)
         if record is not None and record[4] is None:
             cur.execute("""UPDATE heroesprofile SET discord=%s WHERE btag=%s""", (discord_user, btag))
             con.commit()
@@ -80,7 +79,7 @@ class Profile(commands.Cog, name="profile"):
                         tags = elem.find_all('div')
                         for tag in tags[:1]:
                             profile_data = (" ".join(tag.text.split())).split()
-                            # print(profile_data)
+                            #print(profile_data)
                             profile_wr = profile_data[2]
                             if profile_data[3] == 'Master':
                                 profile_league = profile_data[3]
