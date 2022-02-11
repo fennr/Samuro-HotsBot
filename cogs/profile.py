@@ -6,7 +6,7 @@ import psycopg2.extras
 import itertools as it
 import pytz
 from datetime import datetime
-from discord import Embed, utils
+from discord import Embed, utils, Member
 from discord.ext import commands
 from helpers import sql
 from bs4 import BeautifulSoup
@@ -109,9 +109,13 @@ def get_heroesprofile_data(btag, discord_name):
 def get_player(record):
     if record is not None:
         player = Player(btag=record.btag, discord=record.discord, mmr=record.mmr, league=record.rank,
-                        division=record.division, winrate=record.winrate)
+                        division=record.division, win=record.win, lose=record.lose, winrate=record.winrate)
         return player
     return None
+
+
+def avatar(ctx, avamember: Member=None):
+    return avamember.avatar_url
 
 
 def get_profile_embed(player: Player):
@@ -130,6 +134,12 @@ def get_profile_embed(player: Player):
         value=player.mmr,
         inline=True
     )
+    if player.win != 0 or player.lose != 0:
+        embed.add_field(
+            name = "Участие во внутренних турнирах\n(побед/поражений)",
+            value=f"{player.win} / {player.lose}",
+            inline=False
+        )
     return embed
 
 
@@ -250,8 +260,9 @@ class Profile(commands.Cog, name="profile"):
             #               'Пример: *#profile add player#1234 @player*')
 
     @profile.command(name="test")
-    async def profile_test(self, ctx, *args):
-        pass
+    async def profile_test(self, ctx, *, avamember : Member=None):
+        userAvatarUrl = avamember.avatar_url
+        await ctx.send(userAvatarUrl)
 
     @profile.command(name="divisions")
     async def profile_divisions(self, ctx):
@@ -408,7 +419,8 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
 
     @profile.command(name="info")
-    async def profile_info(self, ctx, user_or_btag):
+    async def profile_info(self, ctx, member: Member=None):
+        user_or_btag = str(member.mention).replace('<@', '<@!')
         sql.sql_init()
         con = sql.get_connect()
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
@@ -419,7 +431,12 @@ class Profile(commands.Cog, name="profile"):
             player = get_player(record)
             print(player)
             if player is not None:
+                print(member)
+                user_avatar = avatar(ctx, member)
                 embed = get_profile_embed(player)
+                embed.set_thumbnail(
+                    url=user_avatar
+                )
                 await ctx.send(embed=embed)
         else:
             await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
