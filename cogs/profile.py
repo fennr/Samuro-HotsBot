@@ -248,6 +248,20 @@ class Profile(commands.Cog, name="profile"):
         else:
             await ctx.send(f"Укажите победителя *red* или *blue*")
 
+    @event.command(name="remove")
+    async def event_remove(self, ctx):
+        sql.sql_init()
+        con = sql.get_connect()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+        select = """SELECT * FROM events WHERE active = 'X'"""
+        cur.execute(select)
+        record = cur.fetchone()
+        if record is not None:
+            delete = """DELETE FROM events WHERE active = 'X'"""
+            cur.execute(delete)
+            con.commit()
+            con.close()
+            await ctx.send(f"Активный матч был отменен, можно пересоздать команды")
 
     @commands.group(name="profile")
     async def profile(self, ctx):
