@@ -175,10 +175,16 @@ class Profile(commands.Cog, name="profile"):
                 record = cur.fetchone()
                 if record is None:
                     players.sort(key=sort_by_mmr, reverse=True)
+                    # обработка на случай одинакового ммр
+                    unique_mmr = []
+                    for player in players:
+                        while player.mmr in unique_mmr:
+                            player.mmr = float(player.mmr) + 0.1
+                        unique_mmr.append(player.mmr)
                     team_one_mmr, team_two_mmr = min_diff_sets(
-                        [int(player.mmr) for index, player in enumerate(players)])
-                    team_one = [player for player in players if int(player.mmr) in team_one_mmr]
-                    team_two = [player for player in players if int(player.mmr) in team_two_mmr]
+                        [float(player.mmr) for index, player in enumerate(players)])
+                    team_one = [player for player in players if float(player.mmr) in team_one_mmr]
+                    team_two = [player for player in players if float(player.mmr) in team_two_mmr]
                     print(team_one)
                     now = str(datetime.now(pytz.timezone('Europe/Moscow')))[:19]
                     insert = """INSERT INTO events(TIME, ADMIN, ACTIVE, 
