@@ -165,14 +165,12 @@ class Profile(commands.Cog, name="profile"):
                     await ctx.send(f"Участника {name} нет в базе")
             if not bad_flag:
                 players.sort(key=sort_by_mmr, reverse=True)
-                team_red, team_blue = min_diff_sets([int(player.mmr) for index, player in enumerate(players)])
-                print(team_red)
-                print(team_blue)
-                team_one = ' '.join([player.discord for player in players if int(player.mmr) in team_red])
-                team_two = ' '.join([player.discord for player in players if int(player.mmr) in team_blue])
+                team_one_mmr, team_two_mmr = min_diff_sets([int(player.mmr) for index, player in enumerate(players)])
+                team_one = ' '.join([player.discord for player in players if int(player.mmr) in team_one_mmr])
+                team_two = ' '.join([player.discord for player in players if int(player.mmr) in team_two_mmr])
 
-                await ctx.send(f"Синяя команда (avg mmr = {mean(team_red):.2f}): {team_one}")
-                await ctx.send(f"Красная команда (avg mmr = {mean(team_blue):.2f}): {team_two}")
+                await ctx.send(f"Синяя команда (avg mmr = {int(mean(team_one_mmr))}): {team_one}")
+                await ctx.send(f"Красная команда (avg mmr = {int(mean(team_two_mmr))}): {team_two}") #mean(team_blue):.2f
 
     @commands.group(name="profile")
     async def profile(self, ctx):
@@ -338,6 +336,20 @@ class Profile(commands.Cog, name="profile"):
         else:
             await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
         con.close()
+
+    @profile.command(name="btag")
+    async def profile_btag(self, ctx, discord_user):
+        sql.sql_init()
+        con = sql.get_connect()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+        select = """SELECT * FROM heroesprofile WHERE discord = %s"""
+        cur.execute(select, (discord_user, ) )
+        record = cur.fetchone()
+        if record is not None:
+            player = get_player(record)
+            await ctx.send(f"Батлтег {discord_user}: *{player.btag}*")
+        else:
+            await ctx.send(f"Профиль {discord_user} не найден в базе. Добавьте его командой #profile add")
 
     @profile.error
     @profile_add.error
