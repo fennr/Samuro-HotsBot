@@ -16,6 +16,10 @@ ignore_list = [
     'owner',
     'news',
 ]
+white_list = [
+    'hots',
+    'heroes',
+]
 
 class Help(commands.Cog, name="help"):
     def __init__(self, bot):
@@ -36,7 +40,7 @@ class Help(commands.Cog, name="help"):
             prefix = prefix[0]
         embed = Embed(title="Help", description=f"{descr}", color=config["success"])
         for i in self.bot.cogs:
-            if i not in ignore_list:
+            if i in white_list:
                 try:
                     cog = self.bot.get_cog(i.lower())
                     commands = cog.get_commands()

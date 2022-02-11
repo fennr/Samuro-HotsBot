@@ -131,15 +131,16 @@ async def on_message(message):
 @bot.event
 async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
-    fullCommandArgs = ' '.join(ctx.args[2:])
-    split = fullCommandName.split(" ")
-    executedCommand = str(split[0])
-    guild, guild_id = get_guild(ctx)
-    message = f"Executed {executedCommand} {fullCommandArgs} command in {guild} (ID: {guild_id}) " \
-              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
-    print(message)  # {ctx.guild.name} {ctx.message.guild.id}
-    log.info(message)
-    sql.info_log(ctx, executedCommand)
+    if len(ctx.args) > 3:
+        fullCommandArgs = ' '.join(ctx.args[2:])
+        split = fullCommandName.split(" ")
+        executedCommand = str(split[0])
+        guild, guild_id = get_guild(ctx)
+        message = f"Executed {executedCommand} {fullCommandArgs} command in {guild} (ID: {guild_id}) " \
+                  f"by {ctx.message.author} (ID: {ctx.message.author.id})"
+        print(message)  # {ctx.guild.name} {ctx.message.guild.id}
+        log.info(message)
+        sql.info_log(ctx, executedCommand)
 
 
 @bot.event
@@ -205,11 +206,15 @@ async def on_command_error(ctx, error):
 # Запрет писать боту в личку
 @bot.check
 async def global_guild_only(ctx):
+    white_list = [
+        'help',
+    ]
     if ctx.message.author.id not in config["owners"]:
-        if not ctx.guild:
-            await ctx.send('Личка бота закрыта, пожалуйста используйте бота на сервере\n'
-                           'Если по каким-то причинам неудобно использовать на публичном сервере нажмите на аватар и кликните по кнопке "Добавить на сервер"')
-            raise commands.NoPrivateMessage  # replicating guild_only check: https://github.com/Rapptz/discord.py/blob/42a538edda79f92a26afe0ac902b45c1ea20154d/discord/ext/commands/core.py#L1832-L1846
+        if ctx.command.qualified_name not in white_list:
+            if not ctx.guild:
+                await ctx.send('Личка бота закрыта, пожалуйста используйте бота на сервере\n'
+                               'Если по каким-то причинам неудобно использовать на публичном сервере нажмите на аватар и кликните по кнопке "Добавить на сервер"')
+                raise commands.NoPrivateMessage  # replicating guild_only check: https://github.com/Rapptz/discord.py/blob/42a538edda79f92a26afe0ac902b45c1ea20154d/discord/ext/commands/core.py#L1832-L1846
     return True
 
 
