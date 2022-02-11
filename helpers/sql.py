@@ -70,7 +70,7 @@ def info_log(ctx, executedCommand, slash=False):
             'guild_id': guild_id,
             'author': str(author)[:29],
             'author_id': author_id,
-            'message': message
+            'message': message[:149]
             }
     cur.execute(
         '''INSERT INTO log(TIME, LVL, COMMAND, GUILD, GUILD_ID, AUTHOR, AUTHOR_ID, MESSAGE) 

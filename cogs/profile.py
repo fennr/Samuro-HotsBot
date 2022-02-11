@@ -10,12 +10,53 @@ import requests
 from bs4 import BeautifulSoup
 from hots.Player import Player
 from statistics import mean
+import itertools as it
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
 else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
+
+
+def min_diff_sets(data):
+    """
+        Parameters:
+        - `data`: input list.
+        Return:
+        - min diff between sum of numbers in two sets
+    """
+    print(data)
+    if len(data) == 1:
+        return data[0]
+    s = sum(data)
+    # `a` is list of all possible combinations of all possible lengths (from 1
+    # to len(data) )
+    a = []
+    for i in range(1, len(data)):
+        a.extend(list(it.combinations(data, i)))
+    # `b` is list of all possible pairs (combinations) of all elements from `a`
+    b = it.combinations(a, 2)
+    # `c` is going to be final correct list of combinations.
+    # Let apply 2 filters:
+    # 1. leave only pairs where: sum of all elements == sum(data)
+    # 2. leave only pairs where: flat list from pairs == data
+    c = filter(lambda x: sum(x[0])+sum(x[1])==s, b)
+    c = filter(lambda x: sorted([i for sub in x for i in sub])==sorted(data), c)
+    # `res` = [min_diff_between_sum_of_numbers_in_two_sets,
+    #           ((set_1), (set_2))
+    #         ]
+    print(c)
+    res = sorted([(abs(sum(i[0]) - sum(i[1])), i) for i in c],
+            key=lambda x: x[0])
+    print(res)
+    #return min([i[0] for i in res])
+    min_mmr = min([i[0] for i in res])
+    for i in res:
+        if i[0] == min_mmr:
+            red_team = i[1][0]
+            blue_team = i[1][1]
+            return red_team, blue_team
 
 
 def get_heroesprofile_data(btag, discord_name):
@@ -53,7 +94,7 @@ def get_heroesprofile_data(btag, discord_name):
                 else:
                     profile_league = profile_data[3]
                     profile_division = profile_data[4]
-                    profile_mmr = profile_data[6]
+                    profile_mmr = ''.join([i for i in profile_data[6] if i.isdigit()])
                 return Player(btag=btag, discord=discord_name, mmr=profile_mmr, league=profile_league,
                               division=profile_division, winrate=profile_wr)
     return None
@@ -124,15 +165,14 @@ class Profile(commands.Cog, name="profile"):
                     await ctx.send(f"Участника {name} нет в базе")
             if not bad_flag:
                 players.sort(key=sort_by_mmr, reverse=True)
-                team_one = ' '.join([player.discord for index, player in enumerate(players) if index % 2])
-                team_one_avg = mean([int(player.mmr) for index, player in enumerate(players) if index % 2])
+                team_red, team_blue = min_diff_sets([int(player.mmr) for index, player in enumerate(players)])
+                print(team_red)
+                print(team_blue)
+                team_one = ' '.join([player.discord for player in players if int(player.mmr) in team_red])
+                team_two = ' '.join([player.discord for player in players if int(player.mmr) in team_blue])
 
-                team_two = ' '.join([player.discord for index, player in enumerate(players) if not index % 2])
-                team_two_avg = mean([int(player.mmr) for index, player in enumerate(players) if not index % 2])
-
-                await ctx.send(f"Синяя команда (avg mmr = {team_one_avg:.2f}): {team_one}")
-                await ctx.send(f"Красная команда (avg mmr = {team_two_avg:.2f}): {team_two}")
-
+                await ctx.send(f"Синяя команда (avg mmr = {mean(team_red):.2f}): {team_one}")
+                await ctx.send(f"Красная команда (avg mmr = {mean(team_blue):.2f}): {team_two}")
 
     @commands.group(name="profile")
     async def profile(self, ctx):
@@ -172,6 +212,28 @@ class Profile(commands.Cog, name="profile"):
             con.commit()
             con.close()
             await ctx.send("Записи были разделены на дивизионы")
+        else:
+            await ctx.send("Нет прав на выполнение команды")
+
+    @profile.command(name="mmr")
+    async def profile_mmr(self, ctx):
+        if ctx.message.author.id in config["owners"]:
+            sql.sql_init()
+            con = sql.get_connect()
+            cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            select = """SELECT * FROM heroesprofile"""
+            cur.execute(select)
+            rec = cur.fetchall()
+            for player_list in rec:
+                player = Player(btag=player_list['btag'], league=player_list['rank'], division='',
+                                discord=player_list['discord'],
+                                mmr=player_list['mmr'], winrate=player_list['winrate'])
+                player.mmr = ''.join([i for i in player.mmr if i.isdigit()]).replace(' ', '')
+                update = """UPDATE heroesprofile SET mmr=%s WHERE btag=%s"""
+                cur.execute(update, (player.mmr, player.btag))
+            con.commit()
+            con.close()
+            await ctx.send("В записях был исправлен mmr")
         else:
             await ctx.send("Нет прав на выполнение команды")
 
@@ -216,6 +278,25 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(f"Профиль {user_or_btag} удален из базы")
         else:
             await ctx.send("Нет прав на выполнение команды")
+
+    @profile.command(name="fix")
+    async def profile_fix(self, ctx, user_or_btag, league, division, mmr):
+        sql.sql_init()
+        con = sql.get_connect()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+        select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
+        cur.execute(select, (user_or_btag, user_or_btag,))
+        record = cur.fetchone()
+        if record is not None:
+            player = get_player(record)
+            print(player)
+            update = """UPDATE heroesprofile SET RANK=%s, DIVISION=%s, MMR=%s WHERE btag=%s"""
+            cur.execute(update, (league, division, mmr, player.btag))
+            con.commit()
+            con.close()
+            await ctx.send(f"Профиль игрока {player.btag} обновлен")
+        else:
+            await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
 
     @profile.command(name="update")
     async def profile_update(self, ctx, user_or_btag):
