@@ -58,6 +58,8 @@ def min_diff_sets(data):
             blue_team = i[1][1]
             return red_team, blue_team
 
+def profile_not_found(user):
+    return f"Профиль {user} не найден в базе. Добавьте его командой #profile add батлтаг# @discord"
 
 def get_heroesprofile_data(btag, discord_name):
     bname = btag.replace('#', '%23')
@@ -141,7 +143,7 @@ class Profile(commands.Cog, name="profile"):
         - Команды на основе базы профилей
         """
         if ctx.invoked_subcommand is None:
-            await ctx.send('Для подбора команд используйте команду #event 5x5')
+            await ctx.send('Для подбора команд используйте команду #event 5x5 @10_профилей')
 
     @event.command(name="5x5")
     async def event_5x5(self, ctx, *args):
@@ -178,8 +180,9 @@ class Profile(commands.Cog, name="profile"):
         - Связь батлтега и дискорд профиля
         """
         if ctx.invoked_subcommand is None:
-            await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
-                           'Пример: *#profile add player#1234 @player*')
+            await self.profile_btag(ctx, ctx.subcommand_passed)
+            #await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
+            #               'Пример: *#profile add player#1234 @player*')
 
     @profile.command(name="test")
     async def profile_test(self, ctx, *args):
@@ -349,7 +352,7 @@ class Profile(commands.Cog, name="profile"):
             player = get_player(record)
             await ctx.send(f"Батлтег {discord_user}: *{player.btag}*")
         else:
-            await ctx.send(f"Профиль {discord_user} не найден в базе. Добавьте его командой #profile add")
+            await ctx.send(profile_not_found(discord_user))
 
     @profile.error
     @profile_add.error
