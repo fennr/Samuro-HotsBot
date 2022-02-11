@@ -1,16 +1,17 @@
 import os
 import sys
-
-from discord import Embed, utils
+import requests
 import yaml
 import psycopg2.extras
+import itertools as it
+import pytz
+from datetime import datetime
+from discord import Embed, utils
 from discord.ext import commands
 from helpers import sql
-import requests
 from bs4 import BeautifulSoup
 from hots.Player import Player
 from statistics import mean
-import itertools as it
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -41,16 +42,16 @@ def min_diff_sets(data):
     # Let apply 2 filters:
     # 1. leave only pairs where: sum of all elements == sum(data)
     # 2. leave only pairs where: flat list from pairs == data
-    c = filter(lambda x: sum(x[0])+sum(x[1])==s, b)
-    c = filter(lambda x: sorted([i for sub in x for i in sub])==sorted(data), c)
+    c = filter(lambda x: sum(x[0]) + sum(x[1]) == s, b)
+    c = filter(lambda x: sorted([i for sub in x for i in sub]) == sorted(data), c)
     # `res` = [min_diff_between_sum_of_numbers_in_two_sets,
     #           ((set_1), (set_2))
     #         ]
     print(c)
     res = sorted([(abs(sum(i[0]) - sum(i[1])), i) for i in c],
-            key=lambda x: x[0])
-    print(res)
-    #return min([i[0] for i in res])
+                 key=lambda x: x[0])
+    #print(res)
+    # return min([i[0] for i in res])
     min_mmr = min([i[0] for i in res])
     for i in res:
         if i[0] == min_mmr:
@@ -58,14 +59,17 @@ def min_diff_sets(data):
             blue_team = i[1][1]
             return red_team, blue_team
 
+
 def profile_not_found(user):
     return f"Профиль {user} не найден в базе. Добавьте его командой #profile add батлтаг# @discord"
+
 
 def get_heroesprofile_data(btag, discord_name):
     bname = btag.replace('#', '%23')
     base_url = 'https://www.heroesprofile.com'
     url = 'https://www.heroesprofile.com/Search/?searched_battletag=' + bname
-    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
+                 'Chrome/42.0.2311.135 Safari/537.36 Edge/12.246 '
     response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
     response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -76,10 +80,10 @@ def get_heroesprofile_data(btag, discord_name):
             region = 'ion=2'
             if region in link['href']:
                 url_new = base_url + link['href'].replace('®', '&reg')
-        print(url_new)
-        response = requests.get(url_new, headers={"User-Agent": f"{user_agent}"})
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
+                print(url_new)
+                response = requests.get(url_new, headers={"User-Agent": f"{user_agent}"})
+                response.raise_for_status()
+                soup = BeautifulSoup(response.text, 'html.parser')
 
     mmr_container = soup.find('section', attrs={'class': 'mmr-container'})
     mmr_info = mmr_container.find_all('div', attrs={'class': 'league-element'})
@@ -147,8 +151,8 @@ class Profile(commands.Cog, name="profile"):
 
     @event.command(name="5x5")
     async def event_5x5(self, ctx, *args):
-        if len(args) % 2:
-            await ctx.send("Введите четное участников турнира")
+        if len(args) != 10:
+            await ctx.send("Введите 10 участников турнира")
         else:
             sql.sql_init()
             con = sql.get_connect()
@@ -166,13 +170,68 @@ class Profile(commands.Cog, name="profile"):
                     bad_flag = True
                     await ctx.send(f"Участника {name} нет в базе")
             if not bad_flag:
-                players.sort(key=sort_by_mmr, reverse=True)
-                team_one_mmr, team_two_mmr = min_diff_sets([int(player.mmr) for index, player in enumerate(players)])
-                team_one = ' '.join([player.discord for player in players if int(player.mmr) in team_one_mmr])
-                team_two = ' '.join([player.discord for player in players if int(player.mmr) in team_two_mmr])
+                select = """SELECT time FROM events WHERE active = %s """
+                cur.execute(select, ('X', ))
+                record = cur.fetchone()
+                if record is None:
+                    players.sort(key=sort_by_mmr, reverse=True)
+                    team_one_mmr, team_two_mmr = min_diff_sets(
+                        [int(player.mmr) for index, player in enumerate(players)])
+                    team_one = [player for player in players if int(player.mmr) in team_one_mmr]
+                    team_two = [player for player in players if int(player.mmr) in team_two_mmr]
+                    print(team_one)
+                    now = str(datetime.now(pytz.timezone('Europe/Moscow')))[:19]
+                    insert = """INSERT INTO events(TIME, ADMIN, ACTIVE, 
+                    blue01, blue02, blue03, blue04, blue05, 
+                    red01, red02, red03, red04, red05)
+                    VALUES (%s, %s, %s, 
+                    %s, %s, %s, %s, %s, 
+                    %s, %s, %s, %s, %s )"""
+                    cur.execute(insert, (now, ctx.message.author.name, 'X',
+                                         team_one[0].btag, team_one[1].btag, team_one[2].btag, team_one[3].btag, team_one[4].btag,
+                                         team_two[0].btag, team_two[1].btag, team_two[2].btag, team_two[3].btag, team_two[4].btag))
+                    con.commit()
+                    con.close()
+                    team_one_discord = ' '.join([player.discord for player in team_one])
+                    team_two_discord = ' '.join([player.discord for player in team_two])
+                    await ctx.send(f"Синяя команда (avg mmr = {int(mean(team_one_mmr))}): {team_one_discord}")
+                    await ctx.send(
+                        f"Красная команда (avg mmr = {int(mean(team_two_mmr))}): {team_two_discord}")  # mean(team_blue):.2f
+                else:
+                    await ctx.send(f"Для создания нового матча завершите предыдущий")
 
-                await ctx.send(f"Синяя команда (avg mmr = {int(mean(team_one_mmr))}): {team_one}")
-                await ctx.send(f"Красная команда (avg mmr = {int(mean(team_two_mmr))}): {team_two}") #mean(team_blue):.2f
+    @event.command(name="winner")
+    async def event_winner(self, ctx, delta, winner):
+        if winner == 'blue' or winner == 'red':
+            sql.sql_init()
+            con = sql.get_connect()
+            cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+            select = """SELECT * FROM events WHERE active = 'X'"""
+            cur.execute(select)
+            record = cur.fetchone()
+            if record is not None:
+                if winner == 'blue':
+                    win_team = [record.blue01, record.blue02, record.blue03, record.blue04, record.blue05]
+                    lose_team = [record.red01, record.red02, record.red03, record.red04, record.red05]
+                elif winner == 'red':
+                    lose_team = [record.blue01, record.blue02, record.blue03, record.blue04, record.blue05]
+                    win_team = [record.red01, record.red02, record.red03, record.red04, record.red05]
+                update = """UPDATE events SET winner = %s, active = %s WHERE active = %s"""
+                cur.execute(update, (winner, ' ', 'X'))
+                await ctx.send(f"Матч успешно закрыт")
+                for player in win_team:
+                    await self.profile_delta(ctx, player.replace(' ',''), delta)
+                await ctx.send(f"Очки за победу начислены")
+                for player in lose_team:
+                    await self.profile_delta(ctx, player.replace(' ', ''), delta, '-')
+                await ctx.send(f"Очки за поражение начислены")
+            else:
+                await ctx.send(f"Открытых матчей не найдено")
+            con.commit()
+            con.close()
+        else:
+            await ctx.send(f"Укажите победителя *red* или *blue*")
+
 
     @commands.group(name="profile")
     async def profile(self, ctx):
@@ -181,7 +240,7 @@ class Profile(commands.Cog, name="profile"):
         """
         if ctx.invoked_subcommand is None:
             await self.profile_btag(ctx, ctx.subcommand_passed)
-            #await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
+            # await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
             #               'Пример: *#profile add player#1234 @player*')
 
     @profile.command(name="test")
@@ -208,7 +267,7 @@ class Profile(commands.Cog, name="profile"):
                         division = player.league[-1]
                         player.league = player.league[:-1]
                     print(f"{player.league} {division}")
-                    update = """UPDATE heroesprofile SET rank=%s, division=%s WHERE btag=%s"""
+                    update = """UPDATE heroesprofile SET rank = %s, division = %s WHERE btag=%s"""
                     cur.execute(update, (player.league, division, player.btag))
             con.commit()
             con.close()
@@ -230,7 +289,7 @@ class Profile(commands.Cog, name="profile"):
                                 discord=player_list['discord'],
                                 mmr=player_list['mmr'], winrate=player_list['winrate'])
                 player.mmr = ''.join([i for i in player.mmr if i.isdigit()]).replace(' ', '')
-                update = """UPDATE heroesprofile SET mmr=%s WHERE btag=%s"""
+                update = '''UPDATE heroesprofile SET mmr = %s WHERE btag=%s'''
                 cur.execute(update, (player.mmr, player.btag))
             con.commit()
             con.close()
@@ -241,7 +300,6 @@ class Profile(commands.Cog, name="profile"):
     @profile.command(name="add")
     async def profile_add(self, ctx, btag, discord_user):
         print("profile_add")
-        data = None
         sql.sql_init()
         con = sql.get_connect()
         cur = con.cursor()
@@ -250,7 +308,7 @@ class Profile(commands.Cog, name="profile"):
         record = cur.fetchone()
         print(record)
         if record is not None and record[4] is None:
-            cur.execute("""UPDATE heroesprofile SET discord=%s WHERE btag=%s""", (discord_user, btag))
+            cur.execute("""UPDATE heroesprofile SET discord = %s WHERE btag = %s""", (discord_user, btag))
             con.commit()
             await ctx.send(f"В запись пользователя {btag} добавлен дискорд профиль")
             con.close()
@@ -291,13 +349,34 @@ class Profile(commands.Cog, name="profile"):
         if record is not None:
             player = get_player(record)
             print(player)
-            update = """UPDATE heroesprofile SET RANK=%s, DIVISION=%s, MMR=%s WHERE btag=%s"""
+            update = """UPDATE heroesprofile SET RANK = %s, DIVISION = %s, MMR = %s WHERE btag=%s"""
             cur.execute(update, (league, division, mmr, player.btag))
             con.commit()
             con.close()
             await ctx.send(f"Профиль игрока {player.btag} обновлен")
         else:
             await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
+
+    @profile.command(name="delta")
+    async def profile_delta(self, ctx, btag, delta, plus='+'):
+        sql.sql_init()
+        con = sql.get_connect()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+        select = """SELECT * FROM heroesprofile WHERE btag = %s"""
+        cur.execute(select, (btag, ))
+        record = cur.fetchone()
+        if record is not None:
+            if plus == '+':
+                mmr_new = int(record.mmr) + int(delta)
+                winrate_new = record.win + 1
+                update = """UPDATE heroesprofile SET win = %s, mmr = %s WHERE btag = %s"""
+            else:
+                mmr_new = int(record.mmr) - int(delta)
+                winrate_new = record.lose + 1
+                update = """UPDATE heroesprofile SET lose = %s, mmr = %s WHERE btag = %s"""
+            cur.execute(update, (winrate_new, mmr_new, btag))
+            con.commit()
+            con.close()
 
     @profile.command(name="update")
     async def profile_update(self, ctx, user_or_btag):
@@ -312,7 +391,7 @@ class Profile(commands.Cog, name="profile"):
             print(player)
             try:
                 data = get_heroesprofile_data(player.btag, player.discord)
-                update = """UPDATE heroesprofile SET RANK=%s, WINRATE=%s, MMR=%s WHERE btag=%s"""
+                update = """UPDATE heroesprofile SET RANK = %s, WINRATE = %s, MMR = %s WHERE btag=%s"""
                 cur.execute(update, (data.league, data.winrate, data.mmr, data.btag))
                 con.commit()
                 con.close()
@@ -346,7 +425,7 @@ class Profile(commands.Cog, name="profile"):
         con = sql.get_connect()
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE discord = %s"""
-        cur.execute(select, (discord_user, ) )
+        cur.execute(select, (discord_user,))
         record = cur.fetchone()
         if record is not None:
             player = get_player(record)
