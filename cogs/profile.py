@@ -50,7 +50,7 @@ def min_diff_sets(data):
     print(c)
     res = sorted([(abs(sum(i[0]) - sum(i[1])), i) for i in c],
                  key=lambda x: x[0])
-    #print(res)
+    # print(res)
     # return min([i[0] for i in res])
     min_mmr = min([i[0] for i in res])
     for i in res:
@@ -65,6 +65,7 @@ def profile_not_found(user):
 
 
 def get_heroesprofile_data(btag, discord_name):
+    print("get_data")
     bname = btag.replace('#', '%23')
     base_url = 'https://www.heroesprofile.com'
     url = 'https://www.heroesprofile.com/Search/?searched_battletag=' + bname
@@ -73,6 +74,7 @@ def get_heroesprofile_data(btag, discord_name):
     response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
     response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
+    print(url)
     error = soup.find('div', attrs={'id': 'choose_battletag'})
     if error is not None:
         links = error.find_all('a')
@@ -92,6 +94,7 @@ def get_heroesprofile_data(btag, discord_name):
             tags = elem.find_all('div')
             for tag in tags[:1]:
                 profile_data = (" ".join(tag.text.split())).split()
+                print(profile_data)
                 profile_wr = profile_data[2]
                 if profile_data[3] == 'Master':
                     profile_league = profile_data[3]
@@ -102,7 +105,7 @@ def get_heroesprofile_data(btag, discord_name):
                     profile_division = profile_data[4]
                     profile_mmr = ''.join([i for i in profile_data[6] if i.isdigit()])
                 return Player(btag=btag, discord=discord_name, mmr=profile_mmr, league=profile_league,
-                              division=profile_division, winrate=profile_wr)
+                              division=profile_division, winrate=profile_wr, win=0, lose=0)
     return None
 
 
@@ -114,7 +117,7 @@ def get_player(record):
     return None
 
 
-def avatar(ctx, avamember: Member=None):
+def avatar(ctx, avamember: Member = None):
     return avamember.avatar_url
 
 
@@ -136,7 +139,7 @@ def get_profile_embed(player: Player):
     )
     if player.win != 0 or player.lose != 0:
         embed.add_field(
-            name = "Участие во внутренних турнирах\n(побед/поражений)",
+            name="Участие во внутренних турнирах\n(побед/поражений)",
             value=f"{player.win} / {player.lose}",
             inline=False
         )
@@ -158,7 +161,6 @@ class Profile(commands.Cog, name="profile"):
         """
         if ctx.invoked_subcommand is None:
             await ctx.send('Для подбора команд используйте команду #event 5x5 @10_профилей')
-
 
     @event.command(name="5x5")
     @check.is_admin()
@@ -183,7 +185,7 @@ class Profile(commands.Cog, name="profile"):
                     await ctx.send(f"Участника {name} нет в базе")
             if not bad_flag:
                 select = """SELECT time FROM events WHERE active = %s """
-                cur.execute(select, ('X', ))
+                cur.execute(select, ('X',))
                 record = cur.fetchone()
                 if record is None:
                     players.sort(key=sort_by_mmr, reverse=True)
@@ -206,8 +208,10 @@ class Profile(commands.Cog, name="profile"):
                     %s, %s, %s, %s, %s, 
                     %s, %s, %s, %s, %s )"""
                     cur.execute(insert, (now, ctx.message.author.name, 'X',
-                                         team_one[0].btag, team_one[1].btag, team_one[2].btag, team_one[3].btag, team_one[4].btag,
-                                         team_two[0].btag, team_two[1].btag, team_two[2].btag, team_two[3].btag, team_two[4].btag))
+                                         team_one[0].btag, team_one[1].btag, team_one[2].btag, team_one[3].btag,
+                                         team_one[4].btag,
+                                         team_two[0].btag, team_two[1].btag, team_two[2].btag, team_two[3].btag,
+                                         team_two[4].btag))
                     con.commit()
                     con.close()
                     team_one_discord = ' '.join([player.discord for player in team_one])
@@ -239,7 +243,7 @@ class Profile(commands.Cog, name="profile"):
                 cur.execute(update, (winner, ' ', 'X'))
                 await ctx.send(f"Матч успешно закрыт")
                 for player in win_team:
-                    await self.profile_delta(ctx, player.replace(' ',''), delta)
+                    await self.profile_delta(ctx, player.replace(' ', ''), delta)
                 await ctx.send(f"Очки за победу начислены")
                 for player in lose_team:
                     await self.profile_delta(ctx, player.replace(' ', ''), delta, '-')
@@ -279,9 +283,9 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.command(name="test")
     @check.is_admin()
-    async def profile_test(self, ctx, *, avamember : Member=None):
-        userAvatarUrl = avamember.avatar_url
-        await ctx.send(userAvatarUrl)
+    async def profile_test(self, ctx, *, avamember: Member = None):
+        # userAvatarUrl = avamember.avatar_url
+        await ctx.send('Тест прав пройден')
 
     @profile.command(name="divisions")
     @check.is_admin()
@@ -351,15 +355,16 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(f"В запись пользователя {btag} добавлен дискорд профиль")
             con.close()
         if record is None:
-            try:
-                data = get_heroesprofile_data(btag, discord_user)
+            data = get_heroesprofile_data(btag, discord_user)
+            print(data)
+            if data is not None:
                 insert = """INSERT INTO heroesprofile(BTAG, RANK, DIVISION, WINRATE, MMR, DISCORD) 
                             VALUES(%s, %s, %s, %s, %s, %s )"""
                 cur.execute(insert, (data.btag, data.league, data.division, data.winrate, data.mmr, data.discord))
                 con.commit()
                 con.close()
                 await ctx.send(f"Профиль игрока {btag} добавлен в базу")
-            except:
+            else:
                 await ctx.send(f'Профиль игрока {btag} не найден')
 
     @profile.command(name="remove")
@@ -403,7 +408,7 @@ class Profile(commands.Cog, name="profile"):
         con = sql.get_connect()
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE btag = %s"""
-        cur.execute(select, (btag, ))
+        cur.execute(select, (btag,))
         record = cur.fetchone()
         if record is not None:
             if plus == '+':
@@ -442,7 +447,7 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
 
     @profile.command(name="info")
-    async def profile_info(self, ctx, member: Member=None):
+    async def profile_info(self, ctx, member: Member = None):
         user_or_btag = str(member.mention).replace('<@', '<@!')
         sql.sql_init()
         con = sql.get_connect()
