@@ -425,6 +425,7 @@ class Profile(commands.Cog, name="profile"):
             con.close()
 
     @profile.command(name="update")
+    @check.is_admin()
     async def profile_update(self, ctx, user_or_btag):
         sql.sql_init()
         con = sql.get_connect()

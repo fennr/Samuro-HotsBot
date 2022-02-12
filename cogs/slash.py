@@ -1,7 +1,7 @@
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 
-from cogs import general, help, hots, heroes
+from cogs import general, help, hots, heroes, profile
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 
@@ -9,6 +9,14 @@ guild_ids = [845658540341592096]  # Сервер ID для тестирован�
 class Slash(commands.Cog, name="slash"):
     def __init__(self, bot):
         self.bot = bot
+
+    @cog_ext.cog_slash(name="profile", description="Батлнет профиль")
+    async def slash_profile(self, ctx: SlashContext, Member):
+        await profile.Profile.profile_info(self, ctx, Member)
+
+    @cog_ext.cog_slash(name="add", description="Добавить профиль")
+    async def slash_profile_add(self, ctx: SlashContext, BattleTag, Member):
+        await profile.Profile.profile_add(self, ctx, BattleTag, Member)
 
     @cog_ext.cog_slash(name="info", description="Описание бота")
     async def slash_info(self, ctx: SlashContext):
