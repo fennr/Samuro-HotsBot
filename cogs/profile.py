@@ -284,6 +284,7 @@ class Profile(commands.Cog, name="profile"):
         await ctx.send(userAvatarUrl)
 
     @profile.command(name="divisions")
+    @check.is_admin()
     async def profile_divisions(self, ctx):
         if ctx.message.author.id in config["owners"]:
             sql.sql_init()
@@ -312,6 +313,7 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send("Нет прав на выполнение команды")
 
     @profile.command(name="mmr")
+    @check.is_admin()
     async def profile_mmr(self, ctx):
         if ctx.message.author.id in config["owners"]:
             sql.sql_init()
