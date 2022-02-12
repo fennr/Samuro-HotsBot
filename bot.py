@@ -7,6 +7,7 @@ import os
 import platform
 import random
 import sys
+import exceptions
 
 import discord
 import yaml
@@ -157,6 +158,8 @@ async def on_slash_command(ctx: SlashContext):
 # The code in this event is executed every time a valid commands catches an error
 @bot.event
 async def on_command_error(ctx, error):
+    print("Общая обработка ошибок")
+    print(error)
     # This prevents any commands with local handlers being handled here in on_command_error.
     if hasattr(ctx.command, 'on_error'):
         return
@@ -166,6 +169,8 @@ async def on_command_error(ctx, error):
     if cog:
         if cog._get_overridden_method(cog.cog_command_error) is not None:
             return
+    if isinstance(error, exceptions.UserNotAdmin):
+        await ctx.send(exceptions.UserNotAdmin)
     if isinstance(error, commands.CommandOnCooldown):
         embed = discord.Embed(
             title="Error!",
@@ -201,7 +206,6 @@ async def on_command_error(ctx, error):
     log.error(ctx, error)
     sql.error_log(ctx, error)
     raise error
-
 
 # Запрет писать боту в личку
 @bot.check

@@ -5,6 +5,7 @@ import yaml
 import psycopg2.extras
 import itertools as it
 import pytz
+import exceptions
 from datetime import datetime
 from discord import Embed, utils, Member
 from discord.ext import commands
@@ -488,11 +489,16 @@ class Profile(commands.Cog, name="profile"):
     @profile_add.error
     @profile_test.error
     async def profile_handler(self, ctx, error):
+        print("попали в обработку ошибок")
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
                            "Пример: *#profile add player#1234 @player*")
         if isinstance(error, commands.errors.MissingPermissions):
             await ctx.send('Недостаточно прав')
+        if isinstance(error, exceptions.UserNotOwner):
+            await ctx.send(error.message)
+        if isinstance(error, exceptions.UserNotAdmin):
+            await ctx.send(exceptions.UserNotAdmin.message)
 
 
 def setup(bot):
