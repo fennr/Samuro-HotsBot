@@ -8,7 +8,7 @@ import pytz
 from datetime import datetime
 from discord import Embed, utils, Member
 from discord.ext import commands
-from helpers import sql
+from helpers import sql, check
 from bs4 import BeautifulSoup
 from hots.Player import Player
 from statistics import mean
@@ -159,7 +159,9 @@ class Profile(commands.Cog, name="profile"):
         if ctx.invoked_subcommand is None:
             await ctx.send('Для подбора команд используйте команду #event 5x5 @10_профилей')
 
+
     @event.command(name="5x5")
+    @check.is_admin()
     async def event_5x5(self, ctx, *args):
         if len(args) != 10:
             await ctx.send("Введите 10 участников турнира")
@@ -217,6 +219,7 @@ class Profile(commands.Cog, name="profile"):
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
     @event.command(name="winner")
+    @check.is_admin()
     async def event_winner(self, ctx, delta, winner):
         if winner == 'blue' or winner == 'red':
             sql.sql_init()
@@ -249,6 +252,7 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(f"Укажите победителя *red* или *blue*")
 
     @event.command(name="remove")
+    @check.is_admin()
     async def event_remove(self, ctx):
         sql.sql_init()
         con = sql.get_connect()
@@ -274,11 +278,13 @@ class Profile(commands.Cog, name="profile"):
             #               'Пример: *#profile add player#1234 @player*')
 
     @profile.command(name="test")
+    @check.is_admin()
     async def profile_test(self, ctx, *, avamember : Member=None):
         userAvatarUrl = avamember.avatar_url
         await ctx.send(userAvatarUrl)
 
     @profile.command(name="divisions")
+    @check.is_owner()
     async def profile_divisions(self, ctx):
         if ctx.message.author.id in config["owners"]:
             sql.sql_init()
@@ -307,6 +313,7 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send("Нет прав на выполнение команды")
 
     @profile.command(name="mmr")
+    @check.is_owner()
     async def profile_mmr(self, ctx):
         if ctx.message.author.id in config["owners"]:
             sql.sql_init()
@@ -356,6 +363,7 @@ class Profile(commands.Cog, name="profile"):
                 await ctx.send(f'Профиль игрока {btag} не найден')
 
     @profile.command(name="remove")
+    @check.is_admin()
     async def profile_remove(self, ctx, user_or_btag):
         if ctx.message.author.id in config["owners"]:
             sql.sql_init()
@@ -370,6 +378,7 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send("Нет прав на выполнение команды")
 
     @profile.command(name="fix")
+    @check.is_admin()
     async def profile_fix(self, ctx, user_or_btag, league, division, mmr):
         sql.sql_init()
         con = sql.get_connect()
@@ -410,6 +419,7 @@ class Profile(commands.Cog, name="profile"):
             con.close()
 
     @profile.command(name="update")
+    @check.is_admin()
     async def profile_update(self, ctx, user_or_btag):
         sql.sql_init()
         con = sql.get_connect()
@@ -472,10 +482,13 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.error
     @profile_add.error
+    @profile_test.error
     async def profile_handler(self, ctx, error):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
                            "Пример: *#profile add player#1234 @player*")
+        if isinstance(error, commands.errors.MissingPermissions):
+            await ctx.send('Недостаточно прав')
 
 
 def setup(bot):
