@@ -371,17 +371,14 @@ class Profile(commands.Cog, name="profile"):
     @profile.command(name="remove")
     @check.is_admin()
     async def profile_remove(self, ctx, user_or_btag):
-        if ctx.message.author.id in config["owners"]:
-            sql.sql_init()
-            con = sql.get_connect()
-            cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-            delete = """DELETE FROM heroesprofile WHERE discord = %s OR btag = %s"""
-            cur.execute(delete, (user_or_btag, user_or_btag,))
-            con.commit()
-            con.close()
-            await ctx.send(f"Профиль {user_or_btag} удален из базы")
-        else:
-            await ctx.send("Нет прав на выполнение команды")
+        sql.sql_init()
+        con = sql.get_connect()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+        delete = """DELETE FROM heroesprofile WHERE discord = %s OR btag = %s"""
+        cur.execute(delete, (user_or_btag, user_or_btag,))
+        con.commit()
+        con.close()
+        await ctx.send(f"Профиль {user_or_btag} удален из базы")
 
     @profile.command(name="fix")
     @check.is_admin()
