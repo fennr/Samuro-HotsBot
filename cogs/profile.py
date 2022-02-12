@@ -225,7 +225,7 @@ class Profile(commands.Cog, name="profile"):
 
     @event.command(name="winner")
     @check.is_admin()
-    async def event_winner(self, ctx, delta, winner):
+    async def event_winner(self, ctx, winner, delta):
         if winner == 'blue' or winner == 'red':
             sql.sql_init()
             con = sql.get_connect()
