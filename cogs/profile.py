@@ -446,19 +446,19 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
 
     @profile.command(name="info")
-    async def profile_info(self, ctx, member: Member = None):
-        user_or_btag = str(member.mention).replace('<@', '<@!')
+    async def profile_info(self, ctx, user_or_btag):
         sql.sql_init()
         con = sql.get_connect()
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
         cur.execute(select, (user_or_btag, user_or_btag,))
         record = cur.fetchone()
+        print(record)
         if record is not None:
             player = get_player(record)
             print(player)
             if player is not None:
-                print(member)
+                member = ctx.guild.get_member(int(player.discord[3:-1]))
                 user_avatar = avatar(ctx, member)
                 embed = get_profile_embed(player)
                 embed.set_thumbnail(

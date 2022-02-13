@@ -11,12 +11,12 @@ class Slash(commands.Cog, name="slash"):
         self.bot = bot
 
     @cog_ext.cog_slash(name="profile", description="Батлнет профиль")
-    async def slash_profile(self, ctx: SlashContext, Member):
-        await profile.Profile.profile_info(self, ctx, Member)
+    async def slash_profile(self, ctx: SlashContext, user):
+        await profile.Profile.profile_info(self, ctx, user)
 
     @cog_ext.cog_slash(name="add", description="Добавить профиль")
-    async def slash_profile_add(self, ctx: SlashContext, BattleTag, Member):
-        await profile.Profile.profile_add(self, ctx, BattleTag, Member)
+    async def slash_add(self, ctx: SlashContext, battletag, user):
+        await profile.Profile.profile_add(self, ctx, battletag, user)
 
     @cog_ext.cog_slash(name="info", description="Описание бота")
     async def slash_info(self, ctx: SlashContext):
