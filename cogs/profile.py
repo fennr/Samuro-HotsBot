@@ -298,9 +298,9 @@ class Profile(commands.Cog, name="profile"):
         await ctx.send('Тест прав пройден')
 
     @profile.command(name="add")
-    async def profile_add(self, ctx, btag, member: Member = None):
+    async def profile_add(self, ctx, btag, discord_user):
         print("profile_add")
-        print(member)
+        member = get_discord_id(discord_user)
         sql.sql_init()
         con = sql.get_connect()
         cur = con.cursor()
@@ -309,7 +309,7 @@ class Profile(commands.Cog, name="profile"):
         record = cur.fetchone()
         print(record)
         if record is None:
-            data = get_heroesprofile_data(btag, member.id)
+            data = get_heroesprofile_data(btag, member)
             print(data)
             if data is not None:
                 insert = """INSERT INTO heroesprofile(BTAG, RANK, DIVISION, WINRATE, MMR, DISCORD) 
