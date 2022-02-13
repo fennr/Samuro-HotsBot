@@ -287,7 +287,7 @@ class Profile(commands.Cog, name="profile"):
         - Связь батлтега и дискорд профиля
         """
         if ctx.invoked_subcommand is None:
-            await self.profile_btag(ctx, ctx.subcommand_passed)
+            await self.profile_info(ctx, ctx.subcommand_passed)
             # await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
             #               'Пример: *#profile add player#1234 @player*')
 
