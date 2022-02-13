@@ -428,18 +428,19 @@ class Profile(commands.Cog, name="profile"):
         con.close()
 
     @profile.command(name="btag")
-    async def profile_btag(self, ctx, member: Member = None):
+    async def profile_btag(self, ctx, member_discord):
         sql.sql_init()
         con = sql.get_connect()
+        member = get_discord_id(member_discord)
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE discord = %s"""
-        cur.execute(select, (str(member.id),))
+        cur.execute(select, (member, ))
         record = cur.fetchone()
         if record is not None:
             player = get_player(record)
-            await ctx.send(f"Батлтег {member.mention}: *{player.btag}*")
+            await ctx.send(f"Батлтег {member_discord}: *{player.btag}*")
         else:
-            await ctx.send(profile_not_found(member.mention))
+            await ctx.send(profile_not_found(member_discord))
 
     @commands.group(name="fix")
     @check.is_owner()
