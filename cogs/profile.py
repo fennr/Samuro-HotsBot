@@ -379,28 +379,29 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.command(name="update")
     @check.is_admin()
-    async def profile_update(self, ctx, user_or_btag):
-        member = get_discord_id(user_or_btag)
+    async def profile_update(self, ctx, *args):
         sql.sql_init()
         con = sql.get_connect()
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-        select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
-        cur.execute(select, (member, user_or_btag,))
-        record = cur.fetchone()
-        if record is not None:
-            player = get_player(record)
-            print(player.discord)
-            try:
-                data = get_heroesprofile_data(player.btag, player.discord)
-                update = """UPDATE heroesprofile SET RANK = %s, WINRATE = %s, MMR = %s, WIN = %s, LOSE = %s WHERE btag=%s"""
-                cur.execute(update, (data.league, data.winrate, data.mmr, player.win, player.lose, data.btag, ))
-                con.commit()
-                con.close()
-                await ctx.send(f"Профиль игрока {player.btag} обновлен")
-            except:
-                await ctx.send(f'Сайт не вернул данные, повторите запрос чуть позднее или напишите *fenrir#5455*')
-        else:
-            await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
+        for user in args:
+            member = get_discord_id(user)
+            select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
+            cur.execute(select, (member, user,))
+            record = cur.fetchone()
+            if record is not None:
+                player = get_player(record)
+                print(player.discord)
+                try:
+                    data = get_heroesprofile_data(player.btag, player.discord)
+                    update = """UPDATE heroesprofile SET RANK = %s, WINRATE = %s, MMR = %s, WIN = %s, LOSE = %s WHERE btag=%s"""
+                    cur.execute(update, (data.league, data.winrate, data.mmr, player.win, player.lose, data.btag, ))
+                    con.commit()
+                    con.close()
+                    await ctx.send(f"Профиль игрока {player.btag} обновлен")
+                except:
+                    await ctx.send(f'Сайт не вернул данные, повторите запрос чуть позднее или напишите *fenrir#5455*')
+            else:
+                await ctx.send(f"Профиль {user} не найден в базе. Добавьте его командой #profile add")
 
     @profile.command(name="info")
     async def profile_info(self, ctx, user_or_btag):
