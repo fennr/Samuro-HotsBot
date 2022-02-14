@@ -395,13 +395,13 @@ class Profile(commands.Cog, name="profile"):
                     data = get_heroesprofile_data(player.btag, player.discord)
                     update = """UPDATE heroesprofile SET RANK = %s, WINRATE = %s, MMR = %s, WIN = %s, LOSE = %s WHERE btag=%s"""
                     cur.execute(update, (data.league, data.winrate, data.mmr, player.win, player.lose, data.btag, ))
-                    con.commit()
-                    con.close()
                     await ctx.send(f"Профиль игрока {player.btag} обновлен")
                 except:
                     await ctx.send(f'Сайт не вернул данные, повторите запрос чуть позднее или напишите *fenrir#5455*')
             else:
                 await ctx.send(f"Профиль {user} не найден в базе. Добавьте его командой #profile add")
+        con.commit()
+        con.close()
 
     @profile.command(name="info")
     async def profile_info(self, ctx, user_or_btag):
@@ -442,6 +442,7 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(f"Батлтег {member_discord}: *{player.btag}*")
         else:
             await ctx.send(profile_not_found(member_discord))
+        con.close()
 
     @commands.group(name="fix")
     @check.is_owner()
@@ -477,11 +478,11 @@ class Profile(commands.Cog, name="profile"):
                     print(f"{player.league} {division}")
                     update = """UPDATE heroesprofile SET rank = %s, division = %s WHERE btag=%s"""
                     cur.execute(update, (player.league, division, player.btag))
-            con.commit()
-            con.close()
             await ctx.send("Записи были разделены на дивизионы")
         else:
             await ctx.send("Нет прав на выполнение команды")
+        con.commit()
+        con.close()
 
     @fix.command(name="mmr")
     @check.is_owner()
@@ -499,9 +500,9 @@ class Profile(commands.Cog, name="profile"):
             player.mmr = ''.join([i for i in player.mmr if i.isdigit()]).replace(' ', '')
             update = '''UPDATE heroesprofile SET mmr = %s WHERE btag=%s'''
             cur.execute(update, (player.mmr, player.btag))
+        await ctx.send("В записях был исправлен mmr")
         con.commit()
         con.close()
-        await ctx.send("В записях был исправлен mmr")
 
     @fix.command(name="discord")
     @check.is_owner()
@@ -516,9 +517,9 @@ class Profile(commands.Cog, name="profile"):
             discord = get_discord_id(player_list['discord'])
             update = '''UPDATE heroesprofile SET discord = %s WHERE btag=%s'''
             cur.execute(update, (discord, player_list['btag']))
+        await ctx.send("В записях был исправлен id")
         con.commit()
         con.close()
-        await ctx.send("В записях был исправлен id")
 
     @profile.error
     @profile_add.error
