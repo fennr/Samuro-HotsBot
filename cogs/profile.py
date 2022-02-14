@@ -249,8 +249,8 @@ class Profile(commands.Cog, name="profile"):
                 elif winner == 'red':
                     lose_team = [record.blue01, record.blue02, record.blue03, record.blue04, record.blue05]
                     win_team = [record.red01, record.red02, record.red03, record.red04, record.red05]
-                update = """UPDATE events SET winner = %s, active = %s WHERE active = %s"""
-                cur.execute(update, (winner, ' ', 'X'))
+                update = """UPDATE events SET winner = %s, delta_mmr = %s, active = %s WHERE active = %s"""
+                cur.execute(update, (winner, int(delta), ' ', 'X'))
                 await ctx.send(f"Матч успешно закрыт")
                 for player in win_team:
                     await self.profile_delta(ctx, player.replace(' ', ''), delta)
