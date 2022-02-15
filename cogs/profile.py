@@ -209,8 +209,8 @@ class Profile(commands.Cog, name="profile"):
                         unique_mmr.append(player.mmr)
                     team_one_mmr, team_two_mmr = min_diff_sets(
                         [float(player.mmr) for index, player in enumerate(players)])
-                    team_one_mmr += players[-1].mmr
-                    team_two_mmr += players[-2].mmr
+                    team_one_mmr += (players[-1].mmr, )
+                    team_two_mmr += (players[-2].mmr, )
                     team_one = [player for player in players if float(player.mmr) in team_one_mmr]
                     team_two = [player for player in players if float(player.mmr) in team_two_mmr]
                     print(team_one)
