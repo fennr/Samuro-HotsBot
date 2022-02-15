@@ -110,7 +110,7 @@ def get_heroesprofile_data(btag, discord_name):
     return None
 
 def get_player_data(player: Player):
-    return f"{get_discord_mention(player.discord)} (btag: {player.btag}, mmr: {player.mmr}\n"
+    return f"{get_discord_mention(player.discord)} (*btag:* {player.btag}, *mmr:* {player.mmr})\n"
 
 def get_discord_id(member):
     return ''.join([i for i in member if i.isdigit()])
@@ -228,9 +228,8 @@ class Profile(commands.Cog, name="profile"):
                     con.close()
                     team_one_discord = ' '.join([get_player_data(player) for player in team_one])
                     team_two_discord = ' '.join([get_player_data(player) for player in team_two])
-                    await ctx.send(f"Синяя команда (avg mmr = {int(mean(team_one_mmr))}): \n{team_one_discord}")
-                    await ctx.send(
-                        f"Красная команда (avg mmr = {int(mean(team_two_mmr))}): \n{team_two_discord}")  # mean(team_blue):.2f
+                    await ctx.send(f"**Синяя команда** (avg mmr = {int(mean(team_one_mmr))}): \n{team_one_discord}")
+                    await ctx.send(f"**Красная команда** (avg mmr = {int(mean(team_two_mmr))}): \n{team_two_discord}")  # mean(team_blue):.2f
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
