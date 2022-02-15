@@ -224,8 +224,8 @@ class Profile(commands.Cog, name="profile"):
                                          team_two[4].btag))
                     con.commit()
                     con.close()
-                    team_one_discord = ' '.join([get_discord_mention(player.discord) for player in team_one])
-                    team_two_discord = ' '.join([get_discord_mention(player.discord) for player in team_two])
+                    team_one_discord = ' '.join([get_discord_mention(player.discord)+'('+str(player.mmr)+')' for player in team_one])
+                    team_two_discord = ' '.join([get_discord_mention(player.discord)+'('+str(player.mmr)+')' for player in team_two])
                     await ctx.send(f"Синяя команда (avg mmr = {int(mean(team_one_mmr))}): {team_one_discord}")
                     await ctx.send(
                         f"Красная команда (avg mmr = {int(mean(team_two_mmr))}): {team_two_discord}")  # mean(team_blue):.2f
