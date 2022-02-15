@@ -203,12 +203,14 @@ class Profile(commands.Cog, name="profile"):
                     players.sort(key=sort_by_mmr, reverse=True)
                     # обработка на случай одинакового ммр
                     unique_mmr = []
-                    for player in players:
+                    for player in players[:-2]:
                         while player.mmr in unique_mmr:
                             player.mmr = float(player.mmr) + 0.1
                         unique_mmr.append(player.mmr)
                     team_one_mmr, team_two_mmr = min_diff_sets(
                         [float(player.mmr) for index, player in enumerate(players)])
+                    team_one_mmr += players[-1].mmr
+                    team_two_mmr += players[-2].mmr
                     team_one = [player for player in players if float(player.mmr) in team_one_mmr]
                     team_two = [player for player in players if float(player.mmr) in team_two_mmr]
                     print(team_one)
