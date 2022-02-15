@@ -226,9 +226,9 @@ class Profile(commands.Cog, name="profile"):
                     con.close()
                     team_one_discord = ' '.join([get_discord_mention(player.discord)+'('+str(player.mmr)+')' for player in team_one])
                     team_two_discord = ' '.join([get_discord_mention(player.discord)+'('+str(player.mmr)+')' for player in team_two])
-                    await ctx.send(f"Синяя команда (avg mmr = {int(mean(team_one_mmr))}): {team_one_discord}")
+                    await ctx.send(f"Синяя команда (avg mmr = {int(mean(team_one_mmr))}): \n{team_one_discord}")
                     await ctx.send(
-                        f"Красная команда (avg mmr = {int(mean(team_two_mmr))}): {team_two_discord}")  # mean(team_blue):.2f
+                        f"Красная команда (avg mmr = {int(mean(team_two_mmr))}): \n{team_two_discord}")  # mean(team_blue):.2f
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
@@ -236,6 +236,8 @@ class Profile(commands.Cog, name="profile"):
     @check.is_admin()
     async def event_winner(self, ctx, winner, delta):
         if winner == 'blue' or winner == 'red':
+            bonus = 3
+            delta = int(delta) * bonus
             sql.sql_init()
             con = sql.get_connect()
             cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
@@ -250,7 +252,7 @@ class Profile(commands.Cog, name="profile"):
                     lose_team = [record.blue01, record.blue02, record.blue03, record.blue04, record.blue05]
                     win_team = [record.red01, record.red02, record.red03, record.red04, record.red05]
                 update = """UPDATE events SET winner = %s, delta_mmr = %s, active = %s WHERE active = %s"""
-                cur.execute(update, (winner, int(delta), ' ', 'X'))
+                cur.execute(update, (winner, delta, ' ', 'X'))
                 await ctx.send(f"Матч успешно закрыт")
                 for player in win_team:
                     await self.profile_delta(ctx, player.replace(' ', ''), delta)
