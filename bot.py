@@ -127,7 +127,7 @@ async def on_message(message):
     if message.author.id in config["blacklist"]:
         print(f"banned {message.author}")
         return
-    for bad_command in command_bl:
+    for bad_command in command_bl["command"]:
         if message.content.count(bad_command) > 0:
             print(f"Команда {bad_command} в черном списке")
             return
