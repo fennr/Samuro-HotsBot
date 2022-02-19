@@ -133,6 +133,7 @@ async def on_message(message):
 async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
     print(fullCommandName)
+    print(ctx.args)
     if len(ctx.args) > 3:
         fullCommandArgs = ' '.join(ctx.args[2:])
         print(fullCommandArgs)
