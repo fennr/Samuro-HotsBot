@@ -201,7 +201,10 @@ async def on_command_error(ctx, error):
         pass
     log.error(ctx, error)
     sql.error_log(ctx, error)
-    raise error
+    if config['state'] == 'prod':
+        raise error
+    else:
+        return 0
 
 
 # Запрет писать боту в личку
