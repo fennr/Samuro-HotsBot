@@ -198,7 +198,7 @@ async def on_command_error(ctx, error):
         )
         await ctx.send(embed=embed)'''
     elif isinstance(error, commands.CommandNotFound):
-        embed = discord.Embed(
+    '''    embed = discord.Embed(
             title="Ошибка! Такой команды не существует",
             description=f"Воспользуйтесь справкой по команде {config['bot_prefix']}help",
             color=config["error"]
@@ -207,13 +207,9 @@ async def on_command_error(ctx, error):
         embed.set_footer(
             text=f"Информация для: {ctx.author}"
         )
+    '''
     log.error(ctx, error)
     sql.error_log(ctx, error)
-    try:
-        owner = ctx.get_member(int(config["owner"]))
-        await owner.send(error)
-    except:
-        pass
     raise error
 
 # Запрет писать боту в личку
