@@ -24,7 +24,7 @@ class general(commands.Cog, name="general"):
         - Получить информацию о боте
         """
         embed = discord.Embed(
-            description="Бот с информацией по героям, скиллам и талантам хотса",
+            description="Русскоязычный бот по игре Heroes of the Storm",
             color=config["success"]
         )
         embed.set_author(
@@ -38,11 +38,6 @@ class general(commands.Cog, name="general"):
         embed.add_field(
             name="Префикс:",
             value=f"{config['bot_prefix']}",
-            inline=False
-        )
-        embed.add_field(
-            name="Баги и пожелания",
-            value="Можно направлять мне в личку",
             inline=False
         )
         embed.set_footer(
