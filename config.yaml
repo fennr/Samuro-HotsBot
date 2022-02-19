@@ -1,4 +1,6 @@
-bot_prefix: "#"
+bot_prefix:
+  - '#'
+  - '!'
 state: "prod"
 token_test: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1Frm46RfJEsaKPC2XT0ZjMrW8KU"
 app_test: "661443692447662102"
