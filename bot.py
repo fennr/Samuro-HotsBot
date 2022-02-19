@@ -199,16 +199,6 @@ async def on_command_error(ctx, error):
         await ctx.send(embed=embed)'''
     elif isinstance(error, commands.CommandNotFound):
         pass
-        '''  embed = discord.Embed(
-            title="Ошибка! Такой команды не существует",
-            description=f"Воспользуйтесь справкой по команде {config['bot_prefix']}help",
-            color=config["error"]
-        )
-        await ctx.send(embed=embed)
-        embed.set_footer(
-            text=f"Информация для: {ctx.author}"
-        )
-        '''
     log.error(ctx, error)
     sql.error_log(ctx, error)
     raise error
