@@ -530,7 +530,7 @@ class Profile(commands.Cog, name="profile"):
     @profile_add.error
     @profile_test.error
     async def profile_handler(self, ctx, error):
-        print("попали в обработку ошибок")
+        print("Попали в обработку ошибок")
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
                            "Пример: *#profile add player#1234 @player*")

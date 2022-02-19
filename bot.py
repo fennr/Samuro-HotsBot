@@ -201,7 +201,7 @@ async def on_command_error(ctx, error):
         pass
     log.error(ctx, error)
     sql.error_log(ctx, error)
-    if config['state'] == 'prod':
+    if config['state'] == 'test':
         raise error
     else:
         return 0
