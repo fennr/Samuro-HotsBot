@@ -198,6 +198,7 @@ async def on_command_error(ctx, error):
         )
         await ctx.send(embed=embed)'''
     elif isinstance(error, commands.CommandNotFound):
+        pass
         '''  embed = discord.Embed(
             title="Ошибка! Такой команды не существует",
             description=f"Воспользуйтесь справкой по команде {config['bot_prefix']}help",
