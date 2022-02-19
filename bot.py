@@ -119,12 +119,18 @@ async def on_message(message):
     # Ignores if a command is being executed by a blacklisted user
     with open("blacklist.json") as file:
         blacklist = json.load(file)
+    with open("command_blacklist.json") as file:
+        command_bl = json.load(file)
     if message.author.id in blacklist["ids"]:
         print(f"banned {message.author}")
         return
     if message.author.id in config["blacklist"]:
         print(f"banned {message.author}")
         return
+    for bad_commands in command_bl:
+        if bad_commands in message.context:
+            print(f"Команда {bad_commands} в черном списке")
+            return
     await bot.process_commands(message)
 
 
