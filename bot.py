@@ -132,10 +132,13 @@ async def on_message(message):
 @bot.event
 async def on_command_completion(ctx):
     fullCommandName = ctx.command.qualified_name
+    print(fullCommandName)
     if len(ctx.args) > 3:
         fullCommandArgs = ' '.join(ctx.args[2:])
+        print(fullCommandArgs)
         split = fullCommandName.split(" ")
         executedCommand = str(split[0])
+        print(executedCommand)
         guild, guild_id = get_guild(ctx)
         message = f"Executed {executedCommand} {fullCommandArgs} command in {guild} (ID: {guild_id}) " \
                   f"by {ctx.message.author} (ID: {ctx.message.author.id})"
@@ -205,6 +208,11 @@ async def on_command_error(ctx, error):
         )
     log.error(ctx, error)
     sql.error_log(ctx, error)
+    try:
+        owner = ctx.get_member(int(config["owner"]))
+        await owner.send(error)
+    except:
+        pass
     raise error
 
 # Запрет писать боту в личку
