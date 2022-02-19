@@ -230,8 +230,8 @@ class Profile(commands.Cog, name="profile"):
                     con.close()
                     team_one_discord = ' '.join([get_player_data(player) for player in team_one])
                     team_two_discord = ' '.join([get_player_data(player) for player in team_two])
-                    await ctx.send(f"**Синяя команда** (avg mmr = {int(mean(team_one_mmr))}): \n{team_one_discord}")
-                    await ctx.send(f"**Красная команда** (avg mmr = {int(mean(team_two_mmr))}): \n{team_two_discord}")  # mean(team_blue):.2f
+                    await ctx.send(f"**Синяя команд:а** \n{team_one_discord}")
+                    await ctx.send(f"**Красная команда:** \n{team_two_discord}")  # mean(team_blue):.2f
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
