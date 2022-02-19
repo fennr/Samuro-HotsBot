@@ -131,21 +131,15 @@ async def on_message(message):
 # The code in this event is executed every time a command has been *successfully* executed
 @bot.event
 async def on_command_completion(ctx):
-    fullCommandName = ctx.command.qualified_name
-    print(fullCommandName)
-    print(ctx.args)
-    if len(ctx.args) > 3:
-        fullCommandArgs = ' '.join(ctx.args[2:])
-        print(fullCommandArgs)
-        split = fullCommandName.split(" ")
-        executedCommand = str(split[0])
-        print(executedCommand)
-        guild, guild_id = get_guild(ctx)
-        message = f"Executed {executedCommand} {fullCommandArgs} command in {guild} (ID: {guild_id}) " \
-                  f"by {ctx.message.author} (ID: {ctx.message.author.id})"
-        print(message)  # {ctx.guild.name} {ctx.message.guild.id}
-        log.info(message)
-        sql.info_log(ctx, executedCommand)
+    command_name = ctx.command.qualified_name
+    command_args = ctx.command.signature
+    command_string = f" {ctx.command.qualified_name} {ctx.command.signature}"
+    guild, guild_id = get_guild(ctx)
+    message = f"Executed {command_name} {command_args} command in {guild} (ID: {guild_id}) " \
+              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
+    print(message)  # {ctx.guild.name} {ctx.message.guild.id}
+    log.info(message)
+    sql.info_log(ctx, command_string)
 
 
 @bot.event
