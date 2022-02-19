@@ -68,7 +68,7 @@ intents.members = True
 intents = discord.Intents.default()
 intents.members = True
 
-bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
+bot = Bot(command_prefix=config["bot_prefix"], intents=intents, case_insensitive=True)
 slash = SlashCommand(bot, sync_commands=True)
 
 sql.sql_init()
