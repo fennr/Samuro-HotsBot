@@ -1,6 +1,8 @@
 {
   "command": [
     "play",
-    "stop"
+    "stop",
+    "skip",
+    "next"
   ]
 }
