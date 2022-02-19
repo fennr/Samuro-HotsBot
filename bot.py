@@ -145,7 +145,7 @@ async def on_command_completion(ctx):
               f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
-    sql.info_log(ctx, command_string)
+    sql.info_log(ctx, command_string[:20])
 
 
 @bot.event
