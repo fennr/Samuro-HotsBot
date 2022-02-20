@@ -2,7 +2,7 @@
 
 class Player:
 
-    def __init__(self, btag, discord, mmr, league, division, win, lose, winrate):
+    def __init__(self, btag, discord, mmr, league, division, winrate, win=0, lose=0, search=False):
         self.btag = btag.replace(' ', '')
         self.discord = discord
         self.mmr = ''.join([i for i in mmr if i.isdigit()]).replace(' ', '')
@@ -11,6 +11,7 @@ class Player:
         self.win = win
         self.lose = lose
         self.winrate = winrate.replace(' ', '')
+        self.search = search
 
     def __repr__(self):
         return f'Player({self.btag}, mmr: {self.mmr})'

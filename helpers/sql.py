@@ -61,8 +61,9 @@ def info_log(ctx, executedCommand, slash=False):
     cur = con.cursor()
     guild, guild_id = log.get_guild(ctx)
     author, author_id = log.get_author(ctx, slash)
-    fullCommandArgs = ' '.join(ctx.args[2:])
-    message = f"{log.get_message(slash)} : {executedCommand} {fullCommandArgs}"
+    command_name = ctx.command.qualified_name
+    command_args = ctx.command.signature
+    message = f"{log.get_message(slash)} : {executedCommand} {command_args}"
     data = {'time': now[:25],
             'lvl': 'DONE',
             'command': executedCommand,
@@ -114,7 +115,7 @@ def get_connect():
         DATABASE_URL = os.environ.get('DATABASE_URL')
         return psycopg2.connect(DATABASE_URL)
     except:
-        return psycopg2.connect(dbname='discord', user='fenrir',
+        return psycopg2.connect(dbname='postgres', user='postgres',
                                 password='1121', host='localhost')
 
 def get_cursor(con):

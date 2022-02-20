@@ -106,11 +106,13 @@ def get_heroesprofile_data(btag, discord_name):
                     profile_division = profile_data[4]
                     profile_mmr = ''.join([i for i in profile_data[6] if i.isdigit()])
                 return Player(btag=btag, discord=discord_name, mmr=profile_mmr, league=profile_league,
-                              division=profile_division, winrate=profile_wr, win=0, lose=0)
+                              division=profile_division, winrate=profile_wr, win=0, lose=0, search=False)
     return None
+
 
 def get_player_data(player: Player):
     return f"{get_discord_mention(player.discord)} (*btag:* {player.btag}, *mmr:* {player.mmr})\n"
+
 
 def get_discord_id(member):
     return ''.join([i for i in member if i.isdigit()])
@@ -123,9 +125,21 @@ def get_discord_mention(id):
 def get_player(record):
     if record is not None:
         player = Player(btag=record.btag, discord=record.discord, mmr=record.mmr, league=record.rank,
-                        division=record.division, win=record.win, lose=record.lose, winrate=record.winrate)
+                        division=record.division, win=record.win, lose=record.lose, winrate=record.winrate,
+                        search=record.search)
         return player
     return None
+
+
+def get_profile_by_discord(id):
+    sql.sql_init()
+    con = sql.get_connect()
+    cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+    select = """SELECT * FROM heroesprofile WHERE discord = %s"""
+    cur.execute(select, (id, ))
+    record = cur.fetchone()
+    player = get_player(record)
+    return player, con, cur
 
 
 def avatar(ctx, avamember: Member = None):
@@ -134,7 +148,7 @@ def avatar(ctx, avamember: Member = None):
 
 def get_profile_embed(player: Player):
     embed = Embed(
-        title=f"Профиль игрока {player.btag}",
+        title=f"{player.btag}",
         color=config["info"]
 
     )
@@ -209,8 +223,8 @@ class Profile(commands.Cog, name="profile"):
                         unique_mmr.append(player.mmr)
                     team_one_mmr, team_two_mmr = min_diff_sets(
                         [float(player.mmr) for index, player in enumerate(players[:-2])])
-                    team_one_mmr += (float(players[-1].mmr), )
-                    team_two_mmr += (float(players[-2].mmr), )
+                    team_one_mmr += (float(players[-1].mmr),)
+                    team_two_mmr += (float(players[-2].mmr),)
                     team_one = [player for player in players if float(player.mmr) in team_one_mmr]
                     team_two = [player for player in players if float(player.mmr) in team_two_mmr]
                     print(team_one)
@@ -348,7 +362,7 @@ class Profile(commands.Cog, name="profile"):
         con = sql.get_connect()
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE discord = %s OR btag = %s"""
-        cur.execute(select, (member, user_or_btag, ))
+        cur.execute(select, (member, user_or_btag,))
         record = cur.fetchone()
         if record is not None:
             player = get_player(record)
@@ -399,7 +413,7 @@ class Profile(commands.Cog, name="profile"):
                 try:
                     data = get_heroesprofile_data(player.btag, player.discord)
                     update = """UPDATE heroesprofile SET RANK = %s, WINRATE = %s, MMR = %s, WIN = %s, LOSE = %s WHERE btag=%s"""
-                    cur.execute(update, (data.league, data.winrate, data.mmr, player.win, player.lose, data.btag, ))
+                    cur.execute(update, (data.league, data.winrate, data.mmr, player.win, player.lose, data.btag,))
                     await ctx.send(f"Профиль игрока {player.btag} обновлен")
                 except:
                     await ctx.send(f'Сайт не вернул данные, повторите запрос чуть позднее или напишите *fenrir#5455*')
@@ -422,12 +436,15 @@ class Profile(commands.Cog, name="profile"):
             player = get_player(record)
             print(player)
             if player is not None:
-                member = ctx.guild.get_member(int(player.discord))
-                user_avatar = avatar(ctx, member)
                 embed = get_profile_embed(player)
-                embed.set_thumbnail(
-                    url=user_avatar
-                )
+                try:  # на случай запроса с другого сервера
+                    member = ctx.guild.get_member(int(player.discord))
+                    user_avatar = avatar(ctx, member)
+                    embed.set_thumbnail(
+                        url=user_avatar
+                    )
+                except:
+                    pass
                 await ctx.send(embed=embed)
         else:
             await ctx.send(f"Профиль {user_or_btag} не найден в базе. Добавьте его командой #profile add")
@@ -440,14 +457,56 @@ class Profile(commands.Cog, name="profile"):
         member = get_discord_id(member_discord)
         cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
         select = """SELECT * FROM heroesprofile WHERE discord = %s"""
-        cur.execute(select, (member, ))
+        cur.execute(select, (member,))
         record = cur.fetchone()
         if record is not None:
             player = get_player(record)
-            await ctx.send(f"Батлтег {member_discord}: *{player.btag}*")
+            await ctx.send(f"Батлтег {get_discord_mention(member_discord)}: *{player.btag}*")
         else:
             await ctx.send(profile_not_found(member_discord))
         con.close()
+
+    @commands.group(name="search")
+    async def search(self, ctx):
+        '''
+
+        :param ctx:
+        :return:
+        '''
+        if ctx.invoked_subcommand is None:
+            await Profile.search_team(self, ctx)
+
+    @search.group(name="team")
+    async def search_team(self, ctx, league=None):
+        profile, con, cur = get_profile_by_discord(str(ctx.message.author.id))
+        if profile is not None:
+            if not profile.search:
+                profile.search = True
+                await ctx.send("Ваш профиль добавлен в ищущих группу\n"
+                               "Для отключения наберите *!search team off*")
+                update = '''UPDATE heroesprofile SET search = %s WHERE discord = %s'''
+                cur.execute(update, (profile.search, profile.discord))
+            if league is None:
+                league = profile.league
+            select = '''SELECT * FROM heroesprofile WHERE rank = %s AND search = %s'''
+            cur.execute(select, (league, profile.search))
+            record = cur.fetchall()
+            if (len(record) == 0) or \
+                    (len(record) == 1 and record[0].discord == str(ctx.message.author.id)):
+                await ctx.send(f"В данный момент нет игроков ранга {league} ищущих группу")
+            else:
+                await ctx.send(f"Игроки уровня {league}, которых сейчас можно позвать в пати:")
+                message = ''
+                for players in record:
+                    player = get_player(players)
+                    await Profile.profile_info(self, ctx, player.discord)
+        else:
+            await ctx.send("Чтобы воспользоваться поиском ваш профиль должен быть добавлен в базу\n"
+                           "Используйте команду ```!profile add батлтаг#1234 @дискорд```")
+        con.commit()
+        con.close()
+
+
 
     @commands.group(name="fix")
     @check.is_owner()
