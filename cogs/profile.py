@@ -476,14 +476,14 @@ class Profile(commands.Cog, name="profile"):
         if ctx.invoked_subcommand is None:
             await Profile.search_team(self, ctx)
 
-    @search.group(name="team")
+    @search.command(name="team")
     async def search_team(self, ctx, league=None):
         profile, con, cur = get_profile_by_discord(str(ctx.message.author.id))
         if profile is not None:
             if not profile.search:
                 profile.search = True
                 await ctx.send("Ваш профиль добавлен в ищущих группу\n"
-                               "Для отключения наберите *!search team off*")
+                               "Для отключения наберите *!search off*")
                 update = '''UPDATE heroesprofile SET search = %s WHERE discord = %s'''
                 cur.execute(update, (profile.search, profile.discord))
             if league is None:
@@ -506,7 +506,29 @@ class Profile(commands.Cog, name="profile"):
         con.commit()
         con.close()
 
+    @search.command(name="on")
+    async def search_on(self, ctx):
+        profile, con, cur = get_profile_by_discord(str(ctx.message.author.id))
+        if profile is not None:
+            profile.search = True
+            update = '''UPDATE heroesprofile SET search = %s WHERE discord = %s'''
+            cur.execute(update, (profile.search, profile.discord))
+            await ctx.send("Вы добавлены в ищущих группу")
+        else:
+            await ctx.send("Ваш профиль не добавлен в базу\n"
+                           "Используйте команду ```!profile add батлтаг#1234 @дискорд```")
 
+    @search.command(name="off")
+    async def search_off(self, ctx):
+        profile, con, cur = get_profile_by_discord(str(ctx.message.author.id))
+        if profile is not None:
+            profile.search = False
+            update = '''UPDATE heroesprofile SET search = %s WHERE discord = %s'''
+            cur.execute(update, (profile.search, profile.discord))
+            await ctx.send("Поиск игроков отключен")
+        else:
+            await ctx.send("Ваш профиль не добавлен в базу\n"
+                           "Используйте команду ```!profile add батлтаг#1234 @дискорд```")
 
     @commands.group(name="fix")
     @check.is_owner()
