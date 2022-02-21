@@ -187,6 +187,11 @@ class Profile(commands.Cog, name="profile"):
         if ctx.invoked_subcommand is None:
             await ctx.send('Для подбора команд используйте команду #event 5x5 @10_профилей')
 
+    @event.command(name="test")
+    @check.is_admin()
+    async def profile_test(self, ctx, *, avamember: Member = None):
+        await ctx.send('Тест прав на ивенты пройден')
+
     @event.command(name="5x5")
     @check.is_admin()
     async def event_5x5(self, ctx, *args):
