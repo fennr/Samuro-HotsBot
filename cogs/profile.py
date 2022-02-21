@@ -189,7 +189,7 @@ class Profile(commands.Cog, name="profile"):
 
     @event.command(name="test")
     @check.is_admin()
-    async def profile_test(self, ctx, *, avamember: Member = None):
+    async def event_test(self, ctx, *, avamember: Member = None):
         await ctx.send('Тест прав на ивенты пройден')
 
     @event.command(name="5x5")
