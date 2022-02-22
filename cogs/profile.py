@@ -3,6 +3,7 @@ import sys
 import requests
 import yaml
 import psycopg2.extras
+from psycopg2._psycopg import IntegrityError
 import itertools as it
 import pytz
 import exceptions
@@ -12,10 +13,10 @@ from discord.ext import commands
 from helpers import sql, check
 from bs4 import BeautifulSoup
 from hots.Player import Player
-from statistics import mean
+from psycopg2 import errorcodes
 
 if not os.path.isfile("config.yaml"):
-    #sys.exit("'config.yaml' not found! Please add it and try again.")
+    # sys.exit("'config.yaml' not found! Please add it and try again.")
     with open("../config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 else:
@@ -358,7 +359,6 @@ class Profile(commands.Cog, name="profile"):
                                      data.winrate, data.mmr, data.id,
                                      ctx.guild.id))
                 con.commit()
-                con.close()
                 await ctx.send(f"Профиль игрока {btag} добавлен в базу")
             else:
                 await ctx.send(f'Профиль игрока {btag} не найден')
@@ -649,7 +649,9 @@ class Profile(commands.Cog, name="profile"):
     @profile_add.error
     @profile_test.error
     async def profile_handler(self, ctx, error):
-        print("Попали в обработку ошибок")
+        print("Попали в обработку ошибок profile")
+        print(type(error))
+        print(error.__class__.__name__)
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
                            "Пример: *#profile add player#1234 @player*")
@@ -659,6 +661,10 @@ class Profile(commands.Cog, name="profile"):
             await ctx.send(error.message)
         if isinstance(error, exceptions.UserNotAdmin):
             await ctx.send(exceptions.UserNotAdmin.message)
+        if isinstance(error, commands.errors.CommandInvokeError):
+            error = error.__cause__  # получение оригинальной ошибки
+            if error.pgcode == errorcodes.UNIQUE_VIOLATION:
+                await ctx.send("Обнаружен дубликат записи. Профили дискорда и батлтаги должны быть уникальны")
 
 
 def setup(bot):
