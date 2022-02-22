@@ -99,11 +99,11 @@ def get_heroesprofile_data(btag, discord_name, guild_id):
                 profile_wr = profile_data[2]
                 if profile_data[3] == 'Master':
                     profile_league = profile_data[3]
-                    profile_division = '0'
+                    profile_division = 0
                     profile_mmr = int(''.join([i for i in profile_data[5] if i.isdigit()]))
                 else:
                     profile_league = profile_data[3]
-                    profile_division = profile_data[4]
+                    profile_division = int(profile_data[4])
                     profile_mmr = int(''.join([i for i in profile_data[6] if i.isdigit()]))
                 return Player(btag=btag, discord=discord_name, guild_id=guild_id, mmr=profile_mmr, league=profile_league,
                               division=profile_division, winrate=profile_wr, win=0, lose=0, search=False)
