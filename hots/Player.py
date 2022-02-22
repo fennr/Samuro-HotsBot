@@ -20,8 +20,8 @@ class Player:
     def __str__(self):
         return self.btag
 
-    def __eq__(self, player2):
-        if self.btag == player2.btag:
-            return True
+    def __eq__(self, other):
+        if type(self) == type(other):
+            return (self.btag == other.btag) or (self.id == other.id)
         else:
-            return False
+            return self.mmr == other
