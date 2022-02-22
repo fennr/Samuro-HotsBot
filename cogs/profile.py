@@ -461,7 +461,8 @@ class Profile(commands.Cog, name="profile"):
             if player is not None:
                 embed = get_profile_embed(player)
                 try:  # на случай запроса с другого сервера
-                    member = ctx.guild.get_member(int(player.discord))
+                    guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id]
+                    member = guild[0].get_member(int(player.discord))
                     user_avatar = avatar(ctx, member)
                     embed.set_thumbnail(
                         url=user_avatar
