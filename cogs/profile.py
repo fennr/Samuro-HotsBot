@@ -127,7 +127,7 @@ def get_discord_mention(id):
 def get_player(record):
     if record is not None:
         player = Player(btag=record.btag, id=record.id, guild_id=record.guild_id,
-                        mmr=record.mmr, league=record.rank, division=record.division,
+                        mmr=record.mmr, league=record.league, division=record.division,
                         win=record.win, lose=record.lose, winrate=record.winrate,
                         search=record.search)
         return player
@@ -352,7 +352,7 @@ class Profile(commands.Cog, name="profile"):
             data = get_heroesprofile_data(btag, member, guild_id=ctx.guild.id)
             print(data)
             if data is not None:
-                insert = """INSERT INTO heroesprofile(BTAG, RANK, DIVISION,
+                insert = """INSERT INTO heroesprofile(BTAG, LEAGUE, DIVISION,
                     WINRATE, MMR, ID, GUILD_ID) 
                             VALUES(%s, %s, %s, %s, %s, %s, %s )"""
                 cur.execute(insert, (data.btag, data.league, data.division,
@@ -391,7 +391,7 @@ class Profile(commands.Cog, name="profile"):
         if record is not None:
             player = get_player(record)
             print(player)
-            update = """UPDATE heroesprofile SET RANK = %s, DIVISION = %s, MMR = %s WHERE btag=%s"""
+            update = """UPDATE heroesprofile SET LEAGUE = %s, DIVISION = %s, MMR = %s WHERE btag=%s"""
             cur.execute(update, (league, division, mmr, player.btag))
             con.commit()
             con.close()
@@ -436,7 +436,7 @@ class Profile(commands.Cog, name="profile"):
                 print(player.id)
                 try:
                     data = get_heroesprofile_data(player.btag, player.id, ctx.guild.id)
-                    update = """UPDATE heroesprofile SET RANK = %s, WINRATE = %s, MMR = %s, WIN = %s, LOSE = %s WHERE btag=%s"""
+                    update = """UPDATE heroesprofile SET LEAGUE = %s, WINRATE = %s, MMR = %s, WIN = %s, LOSE = %s WHERE btag=%s"""
                     cur.execute(update, (data.league, data.winrate, data.mmr, player.win, player.lose, data.btag,))
                     await ctx.send(f"Профиль игрока {player.btag} обновлен")
                 except:
@@ -514,7 +514,7 @@ class Profile(commands.Cog, name="profile"):
                 cur.execute(update, (profile.search, profile.id))
             if league is None:
                 league = profile.league
-            select = '''SELECT * FROM heroesprofile WHERE rank = %s AND search = %s'''
+            select = '''SELECT * FROM heroesprofile WHERE LEAGUE = %s AND search = %s'''
             cur.execute(select, (league, profile.search))
             record = cur.fetchall()
             if (len(record) == 0) or \
@@ -593,7 +593,7 @@ class Profile(commands.Cog, name="profile"):
         cur.execute(select)
         rec = cur.fetchall()
         for player_list in rec:
-            player = Player(btag=player_list['btag'], league=player_list['rank'], division='',
+            player = Player(btag=player_list['btag'], league=player_list['league'], division='',
                             id=player_list['id'],
                             mmr=player_list['mmr'], winrate=player_list['winrate'])
             if player.league[-1].isdigit():
@@ -603,7 +603,7 @@ class Profile(commands.Cog, name="profile"):
                     division = player.league[-1]
                     player.league = player.league[:-1]
                 print(f"{player.league} {division}")
-                update = """UPDATE heroesprofile SET rank = %s, division = %s WHERE btag=%s"""
+                update = """UPDATE heroesprofile SET league = %s, division = %s WHERE btag=%s"""
                 cur.execute(update, (player.league, division, player.btag))
         await ctx.send("Записи были разделены на дивизионы")
         con.commit()
@@ -619,7 +619,7 @@ class Profile(commands.Cog, name="profile"):
         cur.execute(select)
         rec = cur.fetchall()
         for player_list in rec:
-            player = Player(btag=player_list['btag'], league=player_list['rank'], division='',
+            player = Player(btag=player_list['btag'], league=player_list['league'], division='',
                             id=player_list['id'],
                             mmr=player_list['mmr'], winrate=player_list['winrate'])
             # player.mmr = ''.join([i for i in player.mmr if i.isdigit()]).replace(' ', '')
