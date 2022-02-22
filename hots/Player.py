@@ -3,15 +3,15 @@
 class Player:
 
     def __init__(self, btag, discord, guild_id, mmr, league, division, winrate, win=0, lose=0, search=False):
-        self.btag = btag.replace(' ', '')
+        self.btag = btag
         self.discord = discord
         self.guild_id = guild_id
         self.mmr = mmr
-        self.league = league.replace(' ', '')
+        self.league = league
         self.division = division
         self.win = win
         self.lose = lose
-        self.winrate = winrate.replace(' ', '')
+        self.winrate = winrate
         self.search = search
 
     def __repr__(self):
