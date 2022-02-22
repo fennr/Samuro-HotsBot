@@ -147,7 +147,7 @@ def avatar(ctx, avamember: Member = None):
     return avamember.avatar_url
 
 
-def get_profile_embed(player: Player):
+def get_profile_embed(ctx, player: Player):
     embed = Embed(
         title=f"{player.btag}",
         color=config["info"]
@@ -163,12 +163,14 @@ def get_profile_embed(player: Player):
         value=player.mmr,
         inline=True
     )
-    if player.win != 0 or player.lose != 0:
-        embed.add_field(
-            name="Участие во внутренних турнирах\n(побед/поражений)",
-            value=f"{player.win} / {player.lose}",
-            inline=False
-        )
+    if ctx.guild is not None:
+        if ctx.guild.id == player.guild_id:
+            if player.win != 0 or player.lose != 0:
+                embed.add_field(
+                    name="Участие в турнирах\n(побед/поражений)",
+                    value=f"{player.win} / {player.lose}",
+                    inline=False
+                )
     return embed
 
 
@@ -321,9 +323,6 @@ class Profile(commands.Cog, name="profile"):
         """
         if ctx.invoked_subcommand is None:
             try:
-                print(ctx.guild.id)
-                guild = [guild.name for guild in self.bot.guilds if guild.id == ctx.guild.id]
-                print(guild)
                 await self.profile_info(ctx, ctx.subcommand_passed)
             except:
                 await self.profile_info(ctx, str(ctx.message.author.id))
@@ -459,9 +458,10 @@ class Profile(commands.Cog, name="profile"):
             player = get_player(record)
             print(player)
             if player is not None:
-                embed = get_profile_embed(player)
+                embed = get_profile_embed(ctx, player)
                 try:  # на случай запроса с другого сервера
                     guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id]
+                    print(guild)
                     member = guild[0].get_member(int(player.discord))
                     user_avatar = avatar(ctx, member)
                     embed.set_thumbnail(

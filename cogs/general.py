@@ -84,7 +84,7 @@ class general(commands.Cog, name="general"):
         )
         await context.send(embed=embed)
 
-    '''@commands.command(name="poll")
+    @commands.command(name="poll")
     async def poll(self, context, *args):
         """
         Создать опрос
@@ -101,7 +101,7 @@ class general(commands.Cog, name="general"):
         embed_message = await context.send(embed=embed)
         await embed_message.add_reaction("👍")
         await embed_message.add_reaction("👎")
-        await embed_message.add_reaction("🤷")'''
+        await embed_message.add_reaction("🤷")
 
     '''@commands.command(name="8ball")
     async def eight_ball(self, context, *args):
