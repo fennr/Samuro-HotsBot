@@ -2,10 +2,11 @@
 
 class Player:
 
-    def __init__(self, btag, discord, mmr, league, division, winrate, win=0, lose=0, search=False):
+    def __init__(self, btag, discord, guild_id, mmr, league, division, winrate, win=0, lose=0, search=False):
         self.btag = btag.replace(' ', '')
         self.discord = discord
-        self.mmr = ''.join([i for i in mmr if i.isdigit()]).replace(' ', '')
+        self.guild_id = guild_id
+        self.mmr = mmr
         self.league = league.replace(' ', '')
         self.division = division
         self.win = win

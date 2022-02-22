@@ -65,7 +65,7 @@ def profile_not_found(user):
     return f"Профиль {user} не найден в базе. Добавьте его командой #profile add батлтаг# @discord"
 
 
-def get_heroesprofile_data(btag, discord_name):
+def get_heroesprofile_data(btag, discord_name, guild_id):
     print("get_data")
     bname = btag.replace('#', '%23')
     base_url = 'https://www.heroesprofile.com'
@@ -100,12 +100,12 @@ def get_heroesprofile_data(btag, discord_name):
                 if profile_data[3] == 'Master':
                     profile_league = profile_data[3]
                     profile_division = '0'
-                    profile_mmr = profile_data[5]
+                    profile_mmr = int(''.join([i for i in profile_data[5] if i.isdigit()]))
                 else:
                     profile_league = profile_data[3]
                     profile_division = profile_data[4]
-                    profile_mmr = ''.join([i for i in profile_data[6] if i.isdigit()])
-                return Player(btag=btag, discord=discord_name, mmr=profile_mmr, league=profile_league,
+                    profile_mmr = int(''.join([i for i in profile_data[6] if i.isdigit()]))
+                return Player(btag=btag, discord=discord_name, guild_id=guild_id, mmr=profile_mmr, league=profile_league,
                               division=profile_division, winrate=profile_wr, win=0, lose=0, search=False)
     return None
 
@@ -124,8 +124,9 @@ def get_discord_mention(id):
 
 def get_player(record):
     if record is not None:
-        player = Player(btag=record.btag, discord=record.discord, mmr=record.mmr, league=record.rank,
-                        division=record.division, win=record.win, lose=record.lose, winrate=record.winrate,
+        player = Player(btag=record.btag, discord=record.discord, guild_id=record.guild_id,
+                        mmr=record.mmr, league=record.rank, division=record.division,
+                        win=record.win, lose=record.lose, winrate=record.winrate,
                         search=record.search)
         return player
     return None
@@ -136,7 +137,7 @@ def get_profile_by_discord(id):
     con = sql.get_connect()
     cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
     select = """SELECT * FROM heroesprofile WHERE discord = %s"""
-    cur.execute(select, (id, ))
+    cur.execute(select, (id,))
     record = cur.fetchone()
     player = get_player(record)
     return player, con, cur
@@ -173,6 +174,14 @@ def get_profile_embed(player: Player):
 
 def sort_by_mmr(player):
     return player.mmr
+
+
+def change_mmr(player: Player, delta: int, plus=True):
+    if plus:
+        player.mmr += delta
+    else:
+        player.mmr -= delta
+    return player
 
 
 class Profile(commands.Cog, name="profile"):
@@ -256,7 +265,7 @@ class Profile(commands.Cog, name="profile"):
 
     @event.command(name="winner")
     @check.is_admin()
-    async def event_winner(self, ctx, winner, delta):
+    async def event_winner(self, ctx, winner=None, delta=3):
         if winner == 'blue' or winner == 'red':
             bonus = 3
             delta = int(delta) * bonus
@@ -311,8 +320,14 @@ class Profile(commands.Cog, name="profile"):
         - Связь батлтега и дискорд профиля
         """
         if ctx.invoked_subcommand is None:
-            await self.profile_info(ctx, ctx.subcommand_passed)
-            #await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
+            try:
+                print(ctx.guild.id)
+                guild = [guild.name for guild in self.bot.guilds if guild.id == ctx.guild.id]
+                print(guild)
+                await self.profile_info(ctx, ctx.subcommand_passed)
+            except:
+                await self.profile_info(ctx, str(ctx.message.author.id))
+            # await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
             #               'Пример: *#profile add player#1234 @player*')
 
     @profile.command(name="test")
@@ -333,12 +348,15 @@ class Profile(commands.Cog, name="profile"):
         record = cur.fetchone()
         print(record)
         if record is None:
-            data = get_heroesprofile_data(btag, member)
+            data = get_heroesprofile_data(btag, member, guild_id=ctx.guild.id)
             print(data)
             if data is not None:
-                insert = """INSERT INTO heroesprofile(BTAG, RANK, DIVISION, WINRATE, MMR, DISCORD) 
-                            VALUES(%s, %s, %s, %s, %s, %s )"""
-                cur.execute(insert, (data.btag, data.league, data.division, data.winrate, data.mmr, data.discord))
+                insert = """INSERT INTO heroesprofile(BTAG, RANK, DIVISION,
+                    WINRATE, MMR, DISCORD, GUILD_ID) 
+                            VALUES(%s, %s, %s, %s, %s, %s, %s )"""
+                cur.execute(insert, (data.btag, data.league, data.division,
+                                     data.winrate, data.mmr, data.discord,
+                                     ctx.guild.id))
                 con.commit()
                 con.close()
                 await ctx.send(f"Профиль игрока {btag} добавлен в базу")
@@ -390,11 +408,11 @@ class Profile(commands.Cog, name="profile"):
         record = cur.fetchone()
         if record is not None:
             if plus == '+':
-                mmr_new = int(record.mmr) + int(delta)
+                mmr_new = record.mmr + int(delta)
                 winrate_new = record.win + 1
                 update = """UPDATE heroesprofile SET win = %s, mmr = %s WHERE btag = %s"""
             else:
-                mmr_new = int(record.mmr) - int(delta)
+                mmr_new = record.mmr - int(delta)
                 winrate_new = record.lose + 1
                 update = """UPDATE heroesprofile SET lose = %s, mmr = %s WHERE btag = %s"""
             cur.execute(update, (winrate_new, mmr_new, btag))
@@ -416,7 +434,7 @@ class Profile(commands.Cog, name="profile"):
                 player = get_player(record)
                 print(player.discord)
                 try:
-                    data = get_heroesprofile_data(player.btag, player.discord)
+                    data = get_heroesprofile_data(player.btag, player.discord, ctx.guild.id)
                     update = """UPDATE heroesprofile SET RANK = %s, WINRATE = %s, MMR = %s, WIN = %s, LOSE = %s WHERE btag=%s"""
                     cur.execute(update, (data.league, data.winrate, data.mmr, player.win, player.lose, data.btag,))
                     await ctx.send(f"Профиль игрока {player.btag} обновлен")
@@ -546,6 +564,22 @@ class Profile(commands.Cog, name="profile"):
         if ctx.invoked_subcommand is None:
             await ctx.send("Выберите что исправлять")
 
+    @fix.command(name="guild_id")
+    @check.is_owner()
+    async def fix_guild_id(self, ctx):
+        sql.sql_init()
+        con = sql.get_connect()
+        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+        select = """SELECT * FROM heroesprofile"""
+        cur.execute(select)
+        rec = cur.fetchall()
+        for player_list in rec:
+            update = '''UPDATE heroesprofile SET guild_id = %s WHERE btag=%s'''
+            cur.execute(update, (ctx.guild.id, player_list.btag))
+        await ctx.send("В записях был исправлен guild_id")
+        con.commit()
+        con.close()
+
     @fix.command(name="divisions")
     @check.is_owner()
     async def fix_divisions(self, ctx):
@@ -588,7 +622,7 @@ class Profile(commands.Cog, name="profile"):
             player = Player(btag=player_list['btag'], league=player_list['rank'], division='',
                             discord=player_list['discord'],
                             mmr=player_list['mmr'], winrate=player_list['winrate'])
-            player.mmr = ''.join([i for i in player.mmr if i.isdigit()]).replace(' ', '')
+            # player.mmr = ''.join([i for i in player.mmr if i.isdigit()]).replace(' ', '')
             update = '''UPDATE heroesprofile SET mmr = %s WHERE btag=%s'''
             cur.execute(update, (player.mmr, player.btag))
         await ctx.send("В записях был исправлен mmr")
