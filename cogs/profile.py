@@ -117,7 +117,7 @@ def get_player_data(player: Player):
 
 
 def get_discord_id(member):
-    return ''.join([i for i in member if i.isdigit()])
+    return int(''.join([i for i in member if i.isdigit()]))
 
 
 def get_discord_mention(id):
@@ -182,10 +182,9 @@ def sort_by_mmr(player):
 
 def change_mmr(player: Player, delta: int, plus=True):
     if plus:
-        player.mmr += delta
+        return player.mmr + delta
     else:
-        player.mmr -= delta
-    return player
+        return player.mmr - delta
 
 
 class Profile(commands.Cog, name="profile"):
