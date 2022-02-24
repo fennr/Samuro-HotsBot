@@ -3,6 +3,7 @@ import yaml
 import psycopg2.extras
 import exceptions
 from discord.ext import commands
+from discord.utils import get
 from helpers import sql, check
 from psycopg2 import errorcodes
 from helpers import profile_lib as pl
@@ -41,6 +42,10 @@ class Team(commands.Cog, name="team"):
             cur.execute(update, (team_id, player.id))
             pl.commit(con)
             await ctx.send(f"Команда {team_name} создана")
+            await ctx.guild.create_role(name=team_name)
+            member = ctx.guild.get_member(player.id)
+            role = get(member.guild.roles, name=team_name)
+            await member.add_roles(role)
         else:
             print("Для использования команды добавьте Ваш профиль в базу")
 
@@ -63,6 +68,9 @@ class Team(commands.Cog, name="team"):
                 pl.commit(con)
                 await ctx.send(f"Игрок <@{player.id}> добавлен в команду {team.name}\n"
                                f"Всего игроков в команде - {team.members+1}")
+                member = ctx.guild.get_member(player.id)
+                role = get(member.guild.roles, name=team.name)
+                await member.add_roles(role)
             else:
                 await ctx.send("Игрок уже в команде. Возможно состоять только в одной команде")
         else:
@@ -87,6 +95,9 @@ class Team(commands.Cog, name="team"):
                 pl.commit(con)
                 await ctx.send(f"Игрок <@{player.id}> исключен из команды {team.name}\n"
                                f"Всего игроков в команде - {team.members - 1}")
+                member = ctx.guild.get_member(player.id)
+                role = get(member.guild.roles, name=team.name)
+                await member.remove_roles(role)
             else:
                 await ctx.send("Игрок не состоит в команде")
         else:
@@ -117,6 +128,7 @@ class Team(commands.Cog, name="team"):
                 cur.execute(delete, (player.id, ))
                 pl.commit(con)
                 await ctx.send(f"Команда {record.name} была распущена")
+                await ctx.guild.remove_role(name=record.name)
             else:
                 ctx.send("Вы не имеете полномочий на данную команду")
 
