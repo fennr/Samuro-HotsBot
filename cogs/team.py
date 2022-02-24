@@ -4,6 +4,7 @@ import psycopg2.extras
 import exceptions
 from discord.ext import commands
 from discord.utils import get
+from discord import Colour
 from helpers import sql, check
 from psycopg2 import errorcodes
 from helpers import profile_lib as pl
@@ -30,7 +31,7 @@ class Team(commands.Cog, name="team"):
 
     @team.command(name="create")
     @check.is_admin()
-    async def team_create(self, ctx, leader, team_name):
+    async def team_create(self, ctx, leader, team_name, color=Colour.random()):
         con, cur = pl.get_con_cur()
         print(leader)
         player = pl.get_profile_by_id_or_btag(leader)
@@ -42,7 +43,8 @@ class Team(commands.Cog, name="team"):
             cur.execute(update, (team_id, player.id))
             pl.commit(con)
             await ctx.send(f"Команда {team_name} создана")
-            await ctx.guild.create_role(name=team_name)
+            print(color)
+            await ctx.guild.create_role(name=team_name, color=color)
             member = ctx.guild.get_member(player.id)
             role = get(member.guild.roles, name=team_name)
             await member.add_roles(role)
@@ -128,7 +130,10 @@ class Team(commands.Cog, name="team"):
                 cur.execute(delete, (player.id, ))
                 pl.commit(con)
                 await ctx.send(f"Команда {record.name} была распущена")
-                await ctx.guild.remove_role(name=record.name)
+                role = get(ctx.message.guild.roles, name = record.name)
+                if role:
+                    await role.delete()
+                await ctx.guild.delete_role(ctx.guild, name=record.name)
             else:
                 ctx.send("Вы не имеете полномочий на данную команду")
 
