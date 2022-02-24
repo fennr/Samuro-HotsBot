@@ -28,6 +28,7 @@ class Team(commands.Cog, name="team"):
             pass
 
     @team.command(name="create")
+    @check.is_admin()
     async def team_create(self, ctx, leader, team_name):
         con, cur = pl.get_con_cur()
         print(leader)
