@@ -1,0 +1,378 @@
+import os
+import requests
+import yaml
+import psycopg2.extras
+import itertools as it
+from discord import Embed, utils, Member
+from helpers import sql, check
+from bs4 import BeautifulSoup
+from hots.Player import Player
+from hots.Stats import Stats
+from collections.abc import MutableMapping
+
+if not os.path.isfile("config.yaml"):
+    # sys.exit("'config.yaml' not found! Please add it and try again.")
+
+    with open("../config.yaml") as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+else:
+    with open("config.yaml") as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
+
+leagues = {
+    "Bronze": "Бронза",
+    "Silver": "Серебро",
+    "Gold": "Золото",
+    "Platinum": "Платина",
+    "Diamond": "Алмаз",
+    "Master": "Мастер"
+}
+
+mmr = {
+    "Bronze": {
+        5: 0,
+        4: 2250,
+        3: 2300,
+        2: 2350,
+        1: 2400
+    },
+    "Silver": {
+        5: 2450,
+        4: 2470,
+        3: 2490,
+        2: 2510,
+        1: 2530
+    },
+    "Gold": {
+        5: 2550,
+        4: 2575,
+        3: 2600,
+        2: 2625,
+        1: 2650
+    },
+    "Platinum": {
+        5: 2675,
+        4: 2695,
+        3: 2715,
+        2: 2735,
+        1: 2755
+    },
+    "Diamond": {
+        5: 2775,
+        4: 2800,
+        3: 2825,
+        2: 2850,
+        1: 2875
+    },
+    "Master": {
+        0: 2900
+    }
+}
+
+flatten_mmr = {
+    'Bronze.5': 0, 'Bronze.4': 2250, 'Bronze.3': 2300, 'Bronze.2': 2350, 'Bronze.1': 2400,
+    'Silver.5': 2450, 'Silver.4': 2470, 'Silver.3': 2490, 'Silver.2': 2510, 'Silver.1': 2530,
+    'Gold.5': 2550, 'Gold.4': 2575, 'Gold.3': 2600, 'Gold.2': 2625, 'Gold.1': 2650,
+    'Platinum.5': 2675, 'Platinum.4': 2695, 'Platinum.3': 2715, 'Platinum.2': 2735, 'Platinum.1': 2755,
+    'Diamond.5': 2775, 'Diamond.4': 2800, 'Diamond.3': 2825, 'Diamond.2': 2850, 'Diamond.1': 2875,
+    'Master.0': 2900,
+}
+
+selects = {
+    'PlayersIdOrBtag': 'SELECT * FROM "Players" WHERE id = %s OR btag = %s',
+    'PlayersBtag': 'SELECT * FROM "Players" WHERE btag IN (%s)',
+    'PlayersId': 'SELECT * FROM "Players" WHERE id = %s',
+    'hpAll': 'SELECT * FROM "heroesprofile"',
+    'PlayersAll': 'SELECT * FROM "Players"',
+    'ehActive': 'SELECT * FROM "EventHistory" WHERE room_id = %s AND active = %s',
+    'usIdGuild': 'SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
+}
+
+deletes = {
+    'PlayerIdOrBtag': 'DELETE FROM "Players" WHERE id = %s OR btag = %s',
+    'PlayerId': 'DELETE FROM "Players" WHERE id = %s'
+}
+
+inserts = {
+    'Player': '''INSERT INTO "Players"(btag, id, guild_id, mmr, league, division)
+                 VALUES (%s, %s, %s, %s, %s, %s)''',
+}
+
+updates = {
+    'PlayerMMR': 'UPDATE "Players" SET league = %s, division = %s, mmr = %s WHERE id=%s',
+}
+
+
+def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
+    con, cur = get_con_cur()
+    placeholder = '%s'
+    placeholders = ', '.join(placeholder for unused in team)
+    select = selects.get('PlayersBtag') % placeholders
+    cur.execute(select, team)
+    records = cur.fetchall()
+    for record in records:
+        player = get_player(record)
+        select = selects.get('usIdGuild')
+        cur.execute(select, (player.id, guild_id))
+        stats_rec = cur.fetchone()
+        if stats_rec is None:
+            player_stats = Stats(player.id, guild_id, player.btag)
+            insert = '''INSERT INTO "UserStats"(id, guild_id, win, lose, points, btag)
+                                                    VALUES (%s, %s, %s, %s, %s, %s)'''
+            cur.execute(insert, (player_stats.id, player_stats.guild_id, player_stats.win,
+                                 player_stats.lose, player_stats.points, player_stats.btag))
+        else:
+            player_stats = Stats(id=stats_rec.id, guild_id=stats_rec.guild_id,
+                                 btag=stats_rec.btag, win=stats_rec.win, lose=stats_rec.lose,
+                                 points=stats_rec.points)
+        if winner:
+            player.mmr += int(delta)
+            player_stats.points += int(points) + 1
+            player_stats.win += 1
+        else:
+            player.mmr -= int(delta)
+            player_stats.points += int(points)
+            player_stats.lose += 1
+        updateUS = '''UPDATE "UserStats" SET points = %s, win = %s, lose = %s 
+                WHERE id = %s AND guild_id = %s'''
+        updateP = '''UPDATE "Players" SET mmr = %s WHERE id = %s and guild_id = %s'''
+        cur.execute(updateUS, (player_stats.points, player_stats.win, player_stats.lose,
+                               player_stats.id, player_stats.guild_id))
+        cur.execute(updateP, (player.mmr, player.id, player.guild_id))
+    commit(con)
+
+
+
+def flatten_dict(d: MutableMapping, parent_key: str = '', sep: str ='.') -> MutableMapping:
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + str(k) if parent_key else str(k)
+        if isinstance(v, MutableMapping):
+            items.extend(flatten_dict(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
+
+
+def get_league_division_by_mmr(mmr):
+    league, division = next(
+        x[1][0].split(sep='.') for x in enumerate(reversed(flatten_mmr.items())) if x[1][1] < mmr)
+    return league, division
+
+
+def min_diff_sets(data):
+    """
+        Parameters:
+        - `data`: input list.
+        Return:
+        - min diff between sum of numbers in two sets
+    """
+    print(data)
+    if len(data) == 1:
+        return data[0]
+    s = sum(data)
+    # `a` is list of all possible combinations of all possible lengths (from 1
+    # to len(data) )
+    a = []
+    for i in range(1, len(data)):
+        a.extend(list(it.combinations(data, i)))
+    # `b` is list of all possible pairs (combinations) of all elements from `a`
+    b = it.combinations(a, 2)
+    # `c` is going to be final correct list of combinations.
+    # Let apply 2 filters:
+    # 1. leave only pairs where: sum of all elements == sum(data)
+    # 2. leave only pairs where: flat list from pairs == data
+    c = filter(lambda x: sum(x[0]) + sum(x[1]) == s, b)
+    c = filter(lambda x: sorted([i for sub in x for i in sub]) == sorted(data), c)
+    # `res` = [min_diff_between_sum_of_numbers_in_two_sets,
+    #           ((set_1), (set_2))
+    #         ]
+    print(c)
+    res = sorted([(abs(sum(i[0]) - sum(i[1])), i) for i in c],
+                 key=lambda x: x[0])
+    # print(res)
+    # return min([i[0] for i in res])
+    min_mmr = min([i[0] for i in res])
+    for i in res:
+        if i[0] == min_mmr:
+            red_team = i[1][0]
+            blue_team = i[1][1]
+            return red_team, blue_team
+
+
+def profile_not_found(user):
+    return f"Профиль {user} не найден в базе.\n" \
+           f"Добавьте его командой #profile add батлтаг# @discord"
+
+
+def get_heroesprofile_data(btag, user_id, guild_id):
+    print("get_data")
+    bname = btag.replace('#', '%23')
+    base_url = 'https://www.heroesprofile.com'
+    url = 'https://www.heroesprofile.com/Search/?searched_battletag=' + bname
+    user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
+                 'Chrome/42.0.2311.135 Safari/537.36 Edge/12.246 '
+    response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, 'html.parser')
+    # print(url)
+    error = soup.find('div', attrs={'id': 'choose_battletag'})
+    if error is not None:
+        links = error.find_all('a')
+        for link in links:
+            region = 'ion=2'
+            if region in link['href']:
+                url_new = base_url + link['href'].replace('®', '&reg')
+                # print(url_new)
+                response = requests.get(url_new, headers={"User-Agent": f"{user_agent}"})
+                response.raise_for_status()
+                soup = BeautifulSoup(response.text, 'html.parser')
+
+    mmr_container = soup.find('section', attrs={'class': 'mmr-container'})
+    mmr_info = mmr_container.find_all('div', attrs={'class': 'league-element'})
+    for elem in mmr_info:
+        if elem.h3.text == 'Storm League':
+            tags = elem.find_all('div')
+            for tag in tags[:1]:
+                profile_data = (" ".join(tag.text.split())).split()
+                # print(profile_data)
+                profile_wr = profile_data[2]
+                if profile_data[3] == 'Master':
+                    profile_league = profile_data[3]
+                    profile_division = 0
+                    profile_mmr = int(''.join([i for i in profile_data[5] if i.isdigit()]))
+                else:
+                    profile_league = profile_data[3]
+                    profile_division = int(profile_data[4])
+                    profile_mmr = int(''.join([i for i in profile_data[6] if i.isdigit()]))
+                if profile_mmr < 2200:
+                    profile_mmr = 2200
+                return Player(btag=btag, id=user_id, guild_id=guild_id, mmr=profile_mmr, league=profile_league,
+                              division=profile_division)
+    return None
+
+
+def get_player_data(player: Player):
+    return f"{get_discord_mention(player.id)} (*btag:* {player.btag}, *mmr:* {player.mmr})\n"
+
+
+def get_user_id(member):
+    return int(''.join([i for i in member if i.isdigit()]))
+
+
+def get_discord_mention(id):
+    return '<@' + str(id) + '>'
+
+
+def get_player(record):
+    if record is not None:
+        player = Player(btag=record.btag, id=record.id, guild_id=record.guild_id,
+                        mmr=record.mmr, league=record.league, division=record.division)
+        return player
+    return None
+
+
+def get_stats(record):
+    if record is not None:
+        stats = Stats(btag=record.btag, id=record.id, guild_id=record.guild_id,
+                      win=record.win, lose=record.lose, points=record.points)
+        return stats
+    return None
+
+
+
+def get_profile_by_id(id):
+    sql.sql_init()
+    con = sql.get_connect()
+    cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+    select = """SELECT * FROM heroesprofile WHERE id = %s"""
+    cur.execute(select, (id,))
+    record = cur.fetchone()
+    player = get_player(record)
+    return player, con, cur
+
+
+def avatar(ctx, avamember: Member = None):
+    return avamember.avatar_url
+
+
+def get_stats_embed(embed, stats: Stats):
+    embed.add_field(
+        name="Баллов",
+        value=stats.points,
+        inline=True,
+    )
+    embed.add_field(
+        name="Статистика внутренних турниров\n(побед/поражений)",
+        value=f"{stats.win} / {stats.lose}",
+        inline=False
+    )
+    return embed
+
+
+def get_profile_embed(ctx, player: Player):
+    embed = Embed(
+        title=f"{player.btag}",
+        color=config["info"]
+
+    )
+    if player.division:
+        embed.add_field(
+            name="Лига",
+            value=f"{leagues.get(player.league)} {player.division}",
+            inline=True
+        )
+    else:
+        embed.add_field(
+            name="Лига",
+            value=leagues.get(player.league),
+            inline=True
+        )
+    embed.add_field(
+        name="ММР",
+        value=player.mmr,
+        inline=True
+    )
+    return embed
+
+
+def sort_by_mmr(player):
+    return player.mmr
+
+
+def change_mmr(player: Player, delta: int, plus=True):
+    if plus:
+        return player.mmr + delta
+    else:
+        return player.mmr - delta
+
+
+def get_guild_id(ctx):
+    if ctx.guild is None:
+        guild_id = ''
+    else:
+        try:
+            guild_id = ctx.message.guild.id
+        except:
+            guild_id = ctx.guild_id
+    return guild_id
+
+
+def get_author(ctx):
+    try:
+        author = ctx.author.name
+    except:
+        author = ctx.message.author.name
+    return author
+
+
+def get_con_cur():
+    sql.sql_init()
+    con = sql.get_connect()
+    cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+    return con, cur
+
+
+def commit(con):
+    con.commit()
+    con.close()

@@ -1,18 +1,14 @@
 
-
 class Player:
 
-    def __init__(self, btag, id, guild_id, mmr, league, division, winrate, win=0, lose=0, search=False):
+    def __init__(self, btag, id, guild_id, mmr, league, division, team=None):
         self.btag = btag
         self.id = id
         self.guild_id = guild_id
         self.mmr = mmr
         self.league = league
         self.division = division
-        self.win = win
-        self.lose = lose
-        self.winrate = winrate
-        self.search = search
+        self.team = team
 
     def __repr__(self):
         return f'Player({self.btag}, mmr: {self.mmr})'

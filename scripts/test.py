@@ -1,35 +1,101 @@
-import os
-import sys
-import requests
-import yaml
+from collections.abc import MutableMapping
+from helpers import profile_lib as pl
+from hots.Stats import Stats
 import psycopg2.extras
-import itertools as it
-import pytz
-import exceptions
-from datetime import datetime
-from discord import Embed, utils, Member
-from discord.ext import commands
-from helpers import sql, check
-from bs4 import BeautifulSoup
-from hots.Player import Player
-from statistics import mean
+
+mmr = {
+    "Bronze": {
+        5: 0,
+        4: 2250,
+        3: 2300,
+        2: 2350,
+        1: 2400
+    },
+    "Silver": {
+        5: 2450,
+        4: 2470,
+        3: 2490,
+        2: 2510,
+        1: 2530
+    },
+    "Gold": {
+        5: 2550,
+        4: 2575,
+        3: 2600,
+        2: 2625,
+        1: 2650
+    },
+    "Platinum": {
+        5: 2675,
+        4: 2695,
+        3: 2715,
+        2: 2735,
+        1: 2755
+    },
+    "Diamond": {
+        5: 2775,
+        4: 2800,
+        3: 2825,
+        2: 2850,
+        1: 2875
+    },
+    "Master": {
+        0: 2900
+    }
+}
+
+flatten_mmr = {
+    'Bronze.5': 0, 'Bronze.4': 2250, 'Bronze.3': 2300, 'Bronze.2': 2350, 'Bronze.1': 2400,
+    'Silver.5': 2450, 'Silver.4': 2470, 'Silver.3': 2490, 'Silver.2': 2510, 'Silver.1': 2530,
+    'Gold.5': 2550, 'Gold.4': 2575, 'Gold.3': 2600, 'Gold.2': 2625, 'Gold.1': 2650,
+    'Platinum.5': 2675, 'Platinum.4': 2695, 'Platinum.3': 2715, 'Platinum.2': 2735, 'Platinum.1': 2755,
+    'Diamond.5': 2775, 'Diamond.4': 2800, 'Diamond.3': 2825, 'Diamond.2': 2850, 'Diamond.1': 2875,
+    'Master.0': 2900,
+}
+
+
+
+def flatten_dict(d: MutableMapping, parent_key: str = '', sep: str ='.') -> MutableMapping:
+    items = []
+    for k, v in d.items():
+        new_key = parent_key + sep + str(k) if parent_key else str(k)
+        if isinstance(v, MutableMapping):
+            items.extend(flatten_dict(v, new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
+
+def test(player_mmr):
+    league, division = next(x[1][0].split(sep='.') for x in enumerate(reversed(flatten_mmr.items())) if x[1][1] < player_mmr)
+    return league, division
+
+
+def test_list():
+    con, cur = pl.get_con_cur()
+    guild_id = 845658540341592096
+    user_id = ['Se7eN#22874', 'ckboroff#2186']
+    placeholder = '%s'
+    placeholders = ', '.join(placeholder for unused in user_id)
+    select = pl.selects.get('PlayersBtag') % placeholders
+    print(select)
+    cur.execute(select, user_id)
+    records = cur.fetchall()
+    for record in records:
+        select = 'SELECT * FROM "UserStats" WHERE id = %s'
+        cur.execute(select, (record.id, ))
+        stats_rec = cur.fetchone()
+        if stats_rec is None:
+            stats_rec = Stats(id=record.id, btag=record.btag, guild_id=guild_id)
+            insert = '''INSERT INTO "UserStats"(id, guild_id, win, lose, points, btag)
+                                        VALUES (%s, %s, %s, %s, %s, %s)'''
+            cur.execute(insert, (record.id, guild_id, 0, 0, 0 , record.btag))
+        print(stats_rec)
+
+def test_changemmr():
+    team = ['Se7eN#22874', 'ckboroff#2186']
+    guild_id = 845658540341592096
+    pl.team_change_stats(team, guild_id, winner=False)
+
 
 if __name__ == '__main__':
-    sql.sql_init()
-    con = sql.get_connect()
-    cur = con.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    select = """SELECT * FROM heroesprofile"""
-    cur.execute(select)
-    rec = cur.fetchall()
-    for player_list in rec:
-        player = Player(btag=player_list['btag'], league=player_list['rank'], division='',
-                        discord=player_list['discord'],
-                        mmr=player_list['mmr'], win=player_list['win'],
-                        lose=player_list['lose'], winrate=player_list['winrate'])
-        mmr_old = player.mmr
-        player.mmr = player.mmr + (int(player.win) * 20) - (int(player.lose) * 20)
-        update = '''UPDATE heroesprofile SET mmr = %s WHERE btag=%s'''
-        cur.execute(update, (player.mmr, player.btag))
-    print(f"{player.btag} {mmr_old} -> {player.mmr}")
-    con.commit()
-    con.close()
+    test_changemmr()

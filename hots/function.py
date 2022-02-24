@@ -40,6 +40,7 @@ def damerau_levenshtein_distance(s1: str, s2: str) -> int:
 
     return int(d[lenstr1 - 1, lenstr2 - 1])
 
+
 def read_hero_from_message(args, author=None, command='hero'):
     hero = None
     if len(args) == 0:

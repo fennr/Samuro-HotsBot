@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 
 from cogs import general, help, hots, heroes, profile
+from helpers import check
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 
@@ -13,6 +14,11 @@ class Slash(commands.Cog, name="slash"):
     @cog_ext.cog_slash(name="profile", description="Батлнет профиль")
     async def slash_profile(self, ctx: SlashContext, user):
         await profile.Profile.profile_info(self, ctx, user)
+
+    @cog_ext.cog_slash(name="5x5", description="Подбор команд", guild_ids=guild_ids)
+    @check.is_admin()
+    async def slash_5x5(self, ctx: SlashContext, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10):
+        await profile.Profile.event_5x5(self, ctx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
 
     @cog_ext.cog_slash(name="add", description="Добавить профиль")
     async def slash_add(self, ctx: SlashContext, battletag, user):
