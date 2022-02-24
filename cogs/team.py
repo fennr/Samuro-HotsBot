@@ -61,8 +61,10 @@ class Team(commands.Cog, name="team"):
                 updateT = pl.updates.get('TeamMembers')
                 cur.execute(updateT, (team.members+1, team.id, ))
                 pl.commit(con)
-                await ctx.send(f"Игрок <@{user_id}> добавлен в команду {team.name}.\n"
-                               f"Всего игроков в команде - {team.members}")
+                await ctx.send(f"Игрок <@{player.id}> добавлен в команду {team.name}\n"
+                               f"Всего игроков в команде - {team.members+1}")
+            else:
+                await ctx.send("Игрок уже в команде. Возможно состоять только в одной команде")
         else:
             await ctx.send("У вас нет прав на добавление участников в команду")
 
@@ -83,8 +85,10 @@ class Team(commands.Cog, name="team"):
                 updateT = pl.updates.get('TeamMembers')
                 cur.execute(updateT, (team.members - 1, team.id,))
                 pl.commit(con)
-                await ctx.send(f"Игрок <@{user_id}> исключен из команды {team.name}.\n"
-                               f"Всего игроков в команде - {team.members}")
+                await ctx.send(f"Игрок <@{player.id}> исключен из команды {team.name}\n"
+                               f"Всего игроков в команде - {team.members - 1}")
+            else:
+                await ctx.send("Игрок не состоит в команде")
         else:
             await ctx.send("У вас нет прав на удаление участника из команды")
 
