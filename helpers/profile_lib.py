@@ -8,6 +8,7 @@ from helpers import sql, check
 from bs4 import BeautifulSoup
 from hots.Player import Player
 from hots.Stats import Stats
+from hots.Team import Team
 from collections.abc import MutableMapping
 
 if not os.path.isfile("config.yaml"):
@@ -80,26 +81,37 @@ flatten_mmr = {
 
 selects = {
     'PlayersIdOrBtag': 'SELECT * FROM "Players" WHERE id = %s OR btag = %s',
-    'PlayersBtag': 'SELECT * FROM "Players" WHERE btag IN (%s)',
+    'PlayersBtag': 'SELECT * FROM "Players" WHERE btag = %s',
+    'PlayersInBtag': 'SELECT * FROM "Players" WHERE btag IN (%s)',
     'PlayersId': 'SELECT * FROM "Players" WHERE id = %s',
-    'hpAll': 'SELECT * FROM "heroesprofile"',
+    'PlayersTeam': 'SELECT * FROM "Players" WHERE team = %s',
     'PlayersAll': 'SELECT * FROM "Players"',
+    'hpAll': 'SELECT * FROM "heroesprofile"',
     'ehActive': 'SELECT * FROM "EventHistory" WHERE room_id = %s AND active = %s',
     'usIdGuild': 'SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
+    'teamName': 'SELECT * FROM "Teams" WHERE name = %s',
+    'teamId': 'SELECT * FROM "Teams" WHERE id = %s',
+    'teamLid': 'SELECT * FROM "Teams" WHERE leader = %s',
+    'teamIdName': 'SELECT * FROM "Teams" WHERE id = %s or name = %s'
 }
 
 deletes = {
     'PlayerIdOrBtag': 'DELETE FROM "Players" WHERE id = %s OR btag = %s',
-    'PlayerId': 'DELETE FROM "Players" WHERE id = %s'
+    'PlayerId': 'DELETE FROM "Players" WHERE id = %s',
+    'TeamLid': 'DELETE FROM "Teams" WHERE leader = %s',
 }
 
 inserts = {
     'Player': '''INSERT INTO "Players"(btag, id, guild_id, mmr, league, division)
                  VALUES (%s, %s, %s, %s, %s, %s)''',
+    'Team': '''INSERT INTO "Teams"(name, leader) 
+                 VALUES (%s, %s) RETURNING id''',
 }
 
 updates = {
     'PlayerMMR': 'UPDATE "Players" SET league = %s, division = %s, mmr = %s WHERE id=%s',
+    'PlayerTeam': 'UPDATE "Players" SET team = %s WHERE id = %s',
+    'TeamMembers': 'UPDATE "Teams" SET members = %s WHERE id = %s',
 }
 
 
@@ -142,8 +154,7 @@ def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
     commit(con)
 
 
-
-def flatten_dict(d: MutableMapping, parent_key: str = '', sep: str ='.') -> MutableMapping:
+def flatten_dict(d: MutableMapping, parent_key: str = '', sep: str = '.') -> MutableMapping:
     items = []
     for k, v in d.items():
         new_key = parent_key + sep + str(k) if parent_key else str(k)
@@ -267,7 +278,8 @@ def get_discord_mention(id):
 def get_player(record):
     if record is not None:
         player = Player(btag=record.btag, id=record.id, guild_id=record.guild_id,
-                        mmr=record.mmr, league=record.league, division=record.division)
+                        mmr=record.mmr, league=record.league, division=record.division,
+                        team=record.team)
         return player
     return None
 
@@ -280,20 +292,86 @@ def get_stats(record):
     return None
 
 
+def get_team(record):
+    if record is not None:
+        team = Team(id=record.id, name=record.name, leader=record.leader,
+                    members=record.members, points=record.points)
+        return team
+    return None
+
 
 def get_profile_by_id(id):
     sql.sql_init()
     con = sql.get_connect()
     cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-    select = """SELECT * FROM heroesprofile WHERE id = %s"""
+    select = selects.get('PlayersId')
     cur.execute(select, (id,))
     record = cur.fetchone()
     player = get_player(record)
     return player, con, cur
 
 
+def get_profile_by_id_or_btag(id_or_btag):
+    con, cur = get_con_cur()
+    user_id = get_user_id(id_or_btag)
+    select = selects.get('PlayersIdOrBtag')
+    cur.execute(select, (user_id, id_or_btag,))
+    player = get_player(cur.fetchone())
+    return player
+
+
 def avatar(ctx, avamember: Member = None):
     return avamember.avatar_url
+
+
+def check_user(ctx):
+    user_id = get_author_id(ctx)
+    con, cur = get_con_cur()
+    select = selects.get('PlayersId')
+    cur.execute(select, (user_id,))
+    player = get_player(cur.fetchone())
+    return player
+
+
+def get_user_team_embed(embed, team_id):
+    con, cur = get_con_cur()
+    select = selects.get('teamId')
+    cur.execute(select, (team_id,))
+    team = get_team(cur.fetchone())
+    embed.add_field(
+        name="Команда",
+        value=team.name,
+        inline=True,
+    )
+    return embed
+
+
+def get_team_embed(team: Team):
+    con, cur = get_con_cur()
+    embed = Embed(
+        title=f"Команда {team.name} (id: {team.id})",
+        color=config["info"]
+
+    )
+    embed.add_field(
+        name="Лидер",
+        value=f"<@{team.leader}>",
+        inline=True,
+    )
+    if team.members > 1:
+        select = selects.get("PlayersTeam")
+        cur.execute(select, (team.id, ))
+        records = cur.fetchall()
+        teams = ''
+        for record in records:
+            player = get_player(record)
+            teams += f'<@{player.id}> (btag: {player.btag}, mmr: {player.mmr})\n'
+        embed.add_field(
+            name="Команда",
+            value=teams,
+            inline=False
+        )
+    return embed
 
 
 def get_stats_embed(embed, stats: Stats):
@@ -364,6 +442,14 @@ def get_author(ctx):
     except:
         author = ctx.message.author.name
     return author
+
+
+def get_author_id(ctx):
+    try:
+        author_id = ctx.message.author.id
+    except:
+        author_id = ctx.author.id
+    return author_id
 
 
 def get_con_cur():

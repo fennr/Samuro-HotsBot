@@ -144,8 +144,11 @@ class Profile(commands.Cog, name="profile"):
             select = pl.selects.get('usIdGuild')
             cur.execute(select, (player.id, guild_id))
             stats = pl.get_stats(cur.fetchone())
+            #print(stats)
             if stats is not None:
                 embed = pl.get_stats_embed(embed, stats)
+            if player.team is not None:
+                embed = pl.get_user_team_embed(embed, player.team)
             guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
             member = guild.get_member(int(player.id))
             user_avatar = pl.avatar(ctx, member)

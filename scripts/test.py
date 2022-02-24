@@ -97,5 +97,16 @@ def test_changemmr():
     pl.team_change_stats(team, guild_id, winner=False)
 
 
+def test_team():
+    con, cur = pl.get_con_cur()
+    select = pl.selects.get('teamId')
+    cur.execute(select, (15, ))
+    record = cur.fetchone()
+    print(record)
+    team = pl.get_team(record)
+    print(team)
+
+
+
 if __name__ == '__main__':
-    test_changemmr()
+    test_team()

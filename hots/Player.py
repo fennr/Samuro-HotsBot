@@ -14,7 +14,8 @@ class Player:
         return f'Player({self.btag}, mmr: {self.mmr})'
 
     def __str__(self):
-        return self.btag
+        return f'Player(btag={self.btag}, id={self.id}, mmr={self.mmr}, ' \
+               f'league={self.league}, div={self.division}, team={self.team})'
 
     def __eq__(self, other):
         if type(self) == type(other):
