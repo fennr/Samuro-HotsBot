@@ -9,7 +9,6 @@ from helpers import sql, check
 from helpers import profile_lib as pl
 from discord_slash import cog_ext, SlashContext
 
-
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
     with open("../config.yaml") as file:
@@ -18,8 +17,10 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
+guild_ids = [845658540341592096]  # Сервер ID для тестирования
 
-guild_ids = [845658540341592096, 642852514865217578]  # Сервер ID для тестирования
+
+
 
 class Event(commands.Cog, name="event"):
     def __init__(self, bot):
@@ -32,6 +33,7 @@ class Event(commands.Cog, name="event"):
         """
         if ctx.invoked_subcommand is None:
             await ctx.send('Для подбора команд используйте команду #event 5x5 @10_профилей')
+
 
     @event.command(name="test")
     @check.is_admin()
@@ -89,7 +91,7 @@ class Event(commands.Cog, name="event"):
                     VALUES (%s, %s, %s, %s, %s,
                     %s, %s, %s, %s, %s, 
                     %s, %s, %s, %s, %s )'''
-                    cur.execute(insert, (now, admin, guild_id, True, room_id,#ctx.message.author.name
+                    cur.execute(insert, (now, admin, guild_id, True, room_id,  # ctx.message.author.name
                                          team_one[0].btag, team_one[1].btag, team_one[2].btag, team_one[3].btag,
                                          team_one[4].btag,
                                          team_two[0].btag, team_two[1].btag, team_two[2].btag, team_two[3].btag,
@@ -149,13 +151,13 @@ class Event(commands.Cog, name="event"):
         delete = '''DELETE FROM "EventHistory" WHERE room_id = %s AND active = %s'''
         cur.execute(delete, (room_id, True))
         pl.commit(con)
-        if cur.rowcount:  #счетчик записей, найдет 1 или 0
+        if cur.rowcount:  # счетчик записей, найдет 1 или 0
             await ctx.send(f"Активный матч был отменен, можно пересоздать команды")
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 
-    @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
-    async def event_report(self, ctx: SlashContext, text):
+
+    async def event_report(self, ctx, text):
         if ctx.guild_id == 642852514865217578:  # RU Hots
             channel_id = 879385907923390464
         else:
@@ -165,9 +167,14 @@ class Event(commands.Cog, name="event"):
         await channel.send(message)
         await ctx.send("Сообщение отправлено администрации", hidden=True)
 
-    @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5")
+
+    @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
+    async def event_report1(self, ctx: SlashContext, text):
+        await self.event_report(ctx, text)
+
+    @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5", guild_ids=guild_ids)
     async def event_report2(self, ctx: SlashContext, text):
-        await self.event_report(self, ctx, text)
+        await self.event_report(ctx, text)
 
 
 def setup(bot):
