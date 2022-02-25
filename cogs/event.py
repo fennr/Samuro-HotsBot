@@ -149,7 +149,7 @@ class Event(commands.Cog, name="event"):
         delete = '''DELETE FROM "EventHistory" WHERE room_id = %s AND active = %s'''
         cur.execute(delete, (room_id, True))
         pl.commit(con)
-        if cur.rowcount: #счетчик записей, найдет 1 или 0
+        if cur.rowcount:  #счетчик записей, найдет 1 или 0
             await ctx.send(f"Активный матч был отменен, можно пересоздать команды")
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
@@ -166,8 +166,8 @@ class Event(commands.Cog, name="event"):
         await ctx.send("Сообщение отправлено администрации", hidden=True)
 
     @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5")
-    async def event_repor2(self, ctx: SlashContext, text):
-        await self.event_remove(ctx, text)
+    async def event_report2(self, ctx: SlashContext, text):
+        await self.event_report(ctx, text)
 
 
 def setup(bot):
