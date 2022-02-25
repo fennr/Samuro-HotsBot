@@ -23,7 +23,7 @@ class Profile(commands.Cog, name="profile"):
     @commands.group(name="profile")
     async def profile(self, ctx):
         """
-        - Связь батлтега и дискорд профиля
+        @дискорд - посмотреть профиль
         """
         if ctx.invoked_subcommand is None:
             try:
@@ -47,6 +47,9 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.command(name="add")
     async def profile_add(self, ctx, btag, discord_user):
+        """
+        батлтаг#1234 @дискорд - Добавить аккаунт в базу
+        """
         player = pl.get_heroesprofile_data(btag=btag,
                                            user_id=pl.get_user_id(discord_user),
                                            guild_id=pl.get_guild_id(ctx))
@@ -74,6 +77,9 @@ class Profile(commands.Cog, name="profile"):
     @profile.command(name="fix")
     @check.is_admin()
     async def profile_fix(self, ctx, user_or_btag, mmr):
+        """
+        @дискорд new_mmr (admin) - отредактировать ммр игрока
+        """
         user_id = pl.get_user_id(user_or_btag)
         con, cur = pl.get_con_cur()
         select = pl.selects.get('PlayersIdOrBtag')
@@ -162,6 +168,9 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.command(name="btag")
     async def profile_btag(self, ctx, member_discord):
+        """
+        @дискорд - посмотреть батлтаг игрока
+        """
         con, cur = pl.get_con_cur()
         user_id = pl.get_user_id(member_discord)
         select = pl.selects.get('PlayersId')

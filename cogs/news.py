@@ -183,6 +183,9 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_news")
     async def add_news(self, ctx):
+        """
+        - Указать заголовок, цвет(FFFFFF), текст
+        """
         role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
         if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
             command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
@@ -206,6 +209,9 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="add_event")
     async def add_event(self, ctx):
+        """
+        - Указать заголовок, дату(mm/dd), время(hh:mm), цвет(FFFFFF), текст
+        """
         role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
         if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
             try:
@@ -299,6 +305,9 @@ class News(commands.Cog, name="news"):
 
     @commands.command(name="update_schedule")
     async def update_schedule(self, ctx, clear_message=True):
+        """
+        - Обновить устаревшее рассписание
+        """
         img = None
         img_path = 'img/'
         print(ctx.guild.name)

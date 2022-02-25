@@ -11,15 +11,6 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-ignore_list = [
-    'slash',
-    'owner',
-    'news',
-]
-white_list = [
-    'hots',
-    'heroes',
-]
 
 class Help(commands.Cog, name="help"):
     def __init__(self, bot):
@@ -36,6 +27,10 @@ class Help(commands.Cog, name="help"):
                 "**lvl** - уровень героя\n" \
                 "**btn** - клавиши способности (q|w|e|r|d)\n" \
                 "**cnt** - количество (необ.)"
+        white_list = [
+            'hots',
+            'heroes',
+        ]
         if not isinstance(prefix, str):
             prefix = prefix[0]
         embed = Embed(title="Help", description=f"{descr}", color=config["success"])

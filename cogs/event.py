@@ -41,6 +41,9 @@ class Event(commands.Cog, name="event"):
     @event.command(name="5x5")
     @check.is_admin()
     async def event_5x5(self, ctx, *args):
+        """
+        @ x 10 - создать 5х5 на 10 человек
+        """
         if len(args) != 10:
             await ctx.send("Введите 10 участников турнира")
         else:
@@ -102,6 +105,9 @@ class Event(commands.Cog, name="event"):
     @event.command(name="winner")
     @check.is_admin()
     async def event_winner(self, ctx, winner=None, delta=7, points=1):
+        """
+        red | blue - выбрать победителя
+        """
         if winner == 'blue' or winner == 'red':
             con, cur = pl.get_con_cur()
             room_id = ctx.channel.id
@@ -135,6 +141,9 @@ class Event(commands.Cog, name="event"):
     @event.command(name="remove")
     @check.is_admin()
     async def event_remove(self, ctx):
+        """
+        - Отменить матч
+        """
         con, cur = pl.get_con_cur()
         room_id = ctx.channel.id
         delete = '''DELETE FROM "EventHistory" WHERE room_id = %s AND active = %s'''

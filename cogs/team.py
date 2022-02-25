@@ -32,6 +32,9 @@ class Team(commands.Cog, name="team"):
     @team.command(name="create")
     @check.is_admin()
     async def team_create(self, ctx, leader, team_name, color=Colour.random()):
+        """
+        @leader Team_name - Создать команду
+        """
         con, cur = pl.get_con_cur()
         print(leader)
         player = pl.get_profile_by_id_or_btag(leader)
