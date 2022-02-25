@@ -172,7 +172,7 @@ class Event(commands.Cog, name="event"):
     async def event_report1(self, ctx: SlashContext, text):
         await self.event_report(ctx, text)
 
-    @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5", guild_ids=guild_ids)
+    @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5")
     async def event_report2(self, ctx: SlashContext, text):
         await self.event_report(ctx, text)
 
