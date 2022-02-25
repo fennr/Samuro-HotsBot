@@ -46,7 +46,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="hero")
     async def hots_hero(self, ctx, *args):
         """
-        :hero: - Описание героя, билды, разборы
+        hero - Описание героя, билды, разборы
         """
         hero, embed = read_hero_from_message(args, author=ctx.author, command='hero')
         if hero is not None:
@@ -59,7 +59,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="skill")
     async def hots_skill(self, ctx, *args):
         """
-        :hero: :btn: - Скиллы героя на :btn: кнопках
+        hero btn - Скиллы героя на :btn: кнопках
         """
         if len(args) == 0:
             raise commands.BadArgument('Не введен герой')
@@ -81,7 +81,7 @@ class hots(commands.Cog, name="hots"):
     @commands.command(name="talent")
     async def hots_talent(self, ctx, *args):
         """
-        :hero: :lvl: - Таланты героя :lvl: уровня
+        hero lvl - Таланты героя lvl уровня
         """
         if len(args) < 2:
             raise commands.BadArgument('Не введен герой')

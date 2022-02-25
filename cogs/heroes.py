@@ -184,7 +184,7 @@ class Heroes(Cog, name='heroes'):
     @command(name='stlk')
     async def stlk_builds(self, ctx, *args):
         """
-        :hero: - Билды на героя от Сталка
+        hero - Билды на героя от Сталка
         """
         hero, embed = read_hero_from_message(args, author=ctx.author, command='stlk')
         if hero is not None:
