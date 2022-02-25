@@ -145,7 +145,7 @@ class Event(commands.Cog, name="event"):
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 
-    @cog_ext.cog_slash(name="report", description="Репорт на слив игры в 5x5", guild_ids=guild_ids)
+    @cog_ext.cog_slash(name="report", description="Репорт на слив игры в 5x5")
     async def event_report(self, ctx: SlashContext, text):
         if ctx.guild_id == 642852514865217578:  # RU Hots
             channel_id = 879385907923390464
