@@ -20,6 +20,15 @@ else:
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 
 
+async def event_report(ctx, text):
+    if ctx.guild_id == 642852514865217578:  # RU Hots
+        channel_id = 879385907923390464
+    else:
+        channel_id = 946304981475151902
+    channel = utils.get(ctx.guild.channels, id=channel_id)
+    message = f"Сообщение от пользователя {ctx.author.mention}:\n{text}"
+    await channel.send(message)
+    await ctx.send("Сообщение отправлено администрации", hidden=True)
 
 
 class Event(commands.Cog, name="event"):
@@ -156,25 +165,13 @@ class Event(commands.Cog, name="event"):
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 
-
-    async def event_report(self, ctx, text):
-        if ctx.guild_id == 642852514865217578:  # RU Hots
-            channel_id = 879385907923390464
-        else:
-            channel_id = 946304981475151902
-        channel = utils.get(ctx.guild.channels, id=channel_id)
-        message = f"Сообщение от пользователя {ctx.author.mention}:\n{text}"
-        await channel.send(message)
-        await ctx.send("Сообщение отправлено администрации", hidden=True)
-
-
     @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
     async def event_report1(self, ctx: SlashContext, text):
-        await self.event_report(ctx, text)
+        await event_report(ctx, text)
 
     @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5")
     async def event_report2(self, ctx: SlashContext, text):
-        await self.event_report(ctx, text)
+        await event_report(ctx, text)
 
 
 def setup(bot):

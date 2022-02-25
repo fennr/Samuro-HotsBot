@@ -3,6 +3,7 @@
     "play",
     "stop",
     "skip",
-    "next"
+    "next",
+    "volume"
   ]
 }
