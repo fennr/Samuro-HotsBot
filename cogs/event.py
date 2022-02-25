@@ -7,6 +7,8 @@ from discord import Embed, utils, Member
 from discord.ext import commands
 from helpers import sql, check
 from helpers import profile_lib as pl
+from discord_slash import cog_ext, SlashContext
+
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -140,6 +142,18 @@ class Event(commands.Cog, name="event"):
             await ctx.send(f"Активный матч был отменен, можно пересоздать команды")
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
+
+    @cog_ext.cog_slash(name="report", description="Репорт на слив игры в 5x5")
+    async def event_report(self, ctx: SlashContext, text):
+        if ctx.guild_id == 642852514865217578: # RU Hots
+            channel_id = 879385907923390464
+        else:
+            channel_id = 946304981475151902
+        channel = utils.get(ctx.guild.channels, id=channel_id)
+        message = f"Сообщение от пользователя {ctx.author.mention}:\n{text}"
+        if ctx.message.
+        await channel.send(message)
+        await ctx.send("Сообщение отправлено администрации", hidden=True)
 
 
 def setup(bot):
