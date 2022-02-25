@@ -145,7 +145,7 @@ class Event(commands.Cog, name="event"):
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 
-    @cog_ext.cog_slash(name="report", description="Репорт на слив игры в 5x5")
+    @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
     async def event_report(self, ctx: SlashContext, text):
         if ctx.guild_id == 642852514865217578:  # RU Hots
             channel_id = 879385907923390464
@@ -155,6 +155,10 @@ class Event(commands.Cog, name="event"):
         message = f"Сообщение от пользователя {ctx.author.mention}:\n{text}"
         await channel.send(message)
         await ctx.send("Сообщение отправлено администрации", hidden=True)
+
+    @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5")
+    async def event_repor2(self, ctx: SlashContext, text):
+        await self.event_remove(ctx, text)
 
 
 def setup(bot):
