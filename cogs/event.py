@@ -167,7 +167,7 @@ class Event(commands.Cog, name="event"):
 
     @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5")
     async def event_report2(self, ctx: SlashContext, text):
-        await self.event_report(ctx, text)
+        await self.event_report(self, ctx, text)
 
 
 def setup(bot):
