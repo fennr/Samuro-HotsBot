@@ -19,6 +19,8 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
+guild_ids = [845658540341592096, 642852514865217578]  # Сервер ID для тестирования
+
 class Event(commands.Cog, name="event"):
     def __init__(self, bot):
         self.bot = bot
@@ -151,7 +153,6 @@ class Event(commands.Cog, name="event"):
             channel_id = 946304981475151902
         channel = utils.get(ctx.guild.channels, id=channel_id)
         message = f"Сообщение от пользователя {ctx.author.mention}:\n{text}"
-        if ctx.message.
         await channel.send(message)
         await ctx.send("Сообщение отправлено администрации", hidden=True)
 
