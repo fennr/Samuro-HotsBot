@@ -28,14 +28,17 @@ class Ruhots(commands.Cog):
         """
         good_roles_id = [825399436863733791, 830972263749779466]
         if (ctx.author.roles in good_roles_id) or (ctx.author.id == config["owner"]):
+            like = utils.get(ctx.guild.emojis, name="samuro")
+            dislike = utils.get(ctx.guild.emojis, name="dislike")
             if ctx.guild.id == 642852514865217578:  # RU hots
                 art_id = 708678722127134810
-                like = ":like:"
-                dislike = ":dislike:"
             elif ctx.guild.id == 754063467610374224:  # RU HS
                 art_id = 766035868321710081
             else:
                 art_id = 845658540341592099
+            if like is None:
+                like = '\N{THUMBS UP SIGN}'
+                dislike = '\N{THUMBS DOWN SIGN}'
             art_channel = utils.get(ctx.guild.channels, id=art_id)
             if message is not None:
                 description = f"**Автор:** {ctx.author.mention}\n**Комментарий:** {message}"
@@ -50,13 +53,12 @@ class Ruhots(commands.Cog):
                 url = ctx.message.attachments[0].url
                 embed.set_image(url=url)
                 msg = await art_channel.send(embed=embed)
-                emoji = '\N{THUMBS UP SIGN}'
-                await msg.add_reaction('\N{THUMBS UP SIGN}')
-                await msg.add_reaction('\N{THUMBS DOWN SIGN}')
+                await msg.add_reaction(emoji=like)
+                await msg.add_reaction(emoji=dislike)
             else:
                 await ctx.send("Вы забыли добавить изображение")
         else:
-            await ctx.send("Вам недоступна команда")
+            await ctx.send("Данная команда для вас недоступна")
 
 
 
