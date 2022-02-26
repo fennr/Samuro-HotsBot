@@ -35,6 +35,7 @@ class Help(commands.Cog, name="help"):
         admin_list = [
             'team',
             'event',
+            'news',
         ]
         if not isinstance(prefix, str):
             prefix = prefix[0]
