@@ -257,7 +257,9 @@ class News(commands.Cog, name="News"):
                                 return await channel.send('Could not download file...')
                             data = io.BytesIO(await resp.read())'''
                 # await ctx.message.delete()
-                await channel.send(embed=embed)
+                msg = await channel.send(embed=embed)
+                await msg.add_reaction('\N{THUMBS UP SIGN}')
+                await msg.add_reaction('\N{THUMBS DOWN SIGN}')
                 await News.update_schedule(self, ctx, clear_message=False)
             except:
                 description = 'Введите описание ивента в следующем формате: \n' \
@@ -375,7 +377,9 @@ class News(commands.Cog, name="News"):
             )'''
         channel = utils.get(ctx.guild.text_channels, name=schedule_name)
         if img is not None:
-            await channel.send(embed=embed, file=img)
+            msg = await channel.send(embed=embed, file=img)
+            await msg.add_reaction('\N{THUMBS UP SIGN}')
+            await msg.add_reaction('\N{THUMBS DOWN SIGN}')
         else:
             await channel.send(embed=embed)
 
