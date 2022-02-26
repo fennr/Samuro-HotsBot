@@ -78,7 +78,7 @@ class Profile(commands.Cog, name="profile"):
     @check.is_admin()
     async def profile_fix(self, ctx, user_or_btag, mmr):
         """
-        @дискорд new_mmr (admin) - отредактировать ммр игрока
+        @дискорд new_mmr (admin) - отредактировать ммр
         """
         user_id = pl.get_user_id(user_or_btag)
         con, cur = pl.get_con_cur()

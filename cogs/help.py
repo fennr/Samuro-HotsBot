@@ -30,17 +30,25 @@ class Help(commands.Cog, name="help"):
         white_list = [
             'hots',
             'heroes',
+            'profile',
+        ]
+        admin_list = [
+            'team',
+            'event',
         ]
         if not isinstance(prefix, str):
             prefix = prefix[0]
         embed = Embed(title="Help", description=f"{descr}", color=config["success"])
         for i in self.bot.cogs:
+            if context.message.author.id in config["admins"]:
+                white_list += admin_list
             if i in white_list:
                 try:
                     cog = self.bot.get_cog(i.lower())
-                    commands = cog.get_commands()
-                    command_list = [command.name for command in commands]
-                    command_description = [command.help for command in commands]
+                    #commands = cog.get_commands()
+                    #commands = cog.walk_commands()
+                    command_list = [c.qualified_name for c in cog.walk_commands() if c.help is not None]  # [command.name for command in commands]
+                    command_description = [c.help for c in cog.walk_commands() if c.help if not None]  # [command.help for command in commands]
                     help_text = '\n'.join(f'{prefix}{n} {h}' for n, h in zip(command_list, command_description))
                     embed.add_field(name=i.capitalize(), value=f'```{help_text}```', inline=False)
                 except:
