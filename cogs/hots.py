@@ -176,13 +176,16 @@ class Hots(Cog, name='Hots'):
         )
 
     @command(name='stlk')
-    async def stlk_builds(self, ctx, *args):
+    async def stlk_builds(self, ctx, hero_name):
         """
         — Авторские билды от про игрока **STLK**
         """
-        hero, embed = read_hero_from_message(args, author=ctx.author, command='stlk')
-        if hero is not None:
+        hero = get_hero(hero_name)
+        if isinstance(hero, Hero):
             embed = embed_stlk_builds(hero, ctx.author, ad=True)
+        else:
+            embed = find_more_heroes(hero, ctx.author, command="stlk")
+
         await ctx.send(embed=embed)
 
     @command(name='news')
