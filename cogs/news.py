@@ -67,12 +67,18 @@ def event_parse(ctx, emb, channel, message):
     return time, description
 
 
-class News(commands.Cog, name="news"):
+class News(commands.Cog, name="News"):
+    """
+    — Команды для вывода новостей
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command(name="notify")
     async def notify(self, ctx):
+        """
+        — Вывести в чат сообщение с напоминанием об ивенте
+        """
         if ctx.message.author.id in config["admins"]:
             like = 'like'
             dislike = 'dislike'
@@ -184,7 +190,7 @@ class News(commands.Cog, name="news"):
     @commands.command(name="add_news")
     async def add_news(self, ctx):
         """
-        - Указать заголовок, цвет(FFFFFF), текст
+        — Указать заголовок, цвет(FFFFFF), текст
         """
         role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
         if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
@@ -210,7 +216,7 @@ class News(commands.Cog, name="news"):
     @commands.command(name="add_event")
     async def add_event(self, ctx):
         """
-        - Указать заголовок, дату(mm/dd), время(hh:mm), цвет(FFFFFF), текст
+        — Указать заголовок, дату(mm/dd), время(hh:mm), цвет(FFFFFF), текст
         """
         role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
         if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
@@ -306,7 +312,7 @@ class News(commands.Cog, name="news"):
     @commands.command(name="update_schedule")
     async def update_schedule(self, ctx, clear_message=True):
         """
-        - Обновить устаревшее рассписание
+        — Обновить устаревшее рассписание
         """
         img = None
         img_path = 'img/'

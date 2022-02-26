@@ -15,8 +15,7 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
-
-class Fix(commands.Cog, name="fix"):
+class Fix(commands.Cog, name="Fix"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -66,7 +65,6 @@ class Fix(commands.Cog, name="fix"):
                                  record.btag, record.win, record.lose))
         await ctx.send("Данные о победах перенесены")
         pl.commit(con)
-
 
     @fix.command(name="guild_id")
     @check.is_owner()

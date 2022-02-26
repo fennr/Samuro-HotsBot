@@ -41,9 +41,8 @@ def damerau_levenshtein_distance(s1: str, s2: str) -> int:
     return int(d[lenstr1 - 1, lenstr2 - 1])
 
 
-def read_hero_from_message(args, author=None, command='hero'):
-    hero = None
-    if len(args) == 0:
+def read_hero_from_message(hero, author=None, command='hero'):
+    if hero is None:
         raise commands.BadArgument('Не введен героя')
     else:
         hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
@@ -80,19 +79,22 @@ def hero_not_found():
 
 
 def find_more_heroes(hero_list, author, command='hero', lvl=''):
-    embed = Embed(
-        title="Возможно вы имели в виду:",
-        color=config["warning"]
-    )
-    for wrong_hero in hero_list:
-        embed.add_field(
-            name="{} / {}".format(wrong_hero.en, wrong_hero.ru),
-            value=f"Введи: {config['bot_prefix']}{command} {wrong_hero.ru} {lvl}",
-            inline=False
+    if len(hero_list) > 0:
+        embed = Embed(
+            title="Возможно вы имели в виду:",
+            color=config["warning"]
         )
-    embed.set_footer(
-        text=f"Информация для: {author}"
-    )
+        for wrong_hero in hero_list:
+            embed.add_field(
+                name="{} / {}".format(wrong_hero.en, wrong_hero.ru),
+                value=f"Введи: {config['bot_prefix']}{command} {wrong_hero.ru} {lvl}",
+                inline=False
+            )
+        embed.set_footer(
+            text=f"Информация для: {author}"
+        )
+    else:
+        embed = hero_not_found()
     return embed
 
 
@@ -151,6 +153,14 @@ def find_heroes(hero_name, allowed_error=5):
                                 hero_list.append(hero)
                                 break
     return hero_list
+
+
+def get_hero(hero_name):
+    heroes_list = find_heroes(hero_name)
+    if len(heroes_list) == 1:
+        return heroes_list[0]
+    else:
+        return heroes_list
 
 
 def cleanhtml(raw_html):

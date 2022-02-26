@@ -31,7 +31,7 @@ async def event_report(ctx, text):
     await ctx.send("Сообщение отправлено администрации", hidden=True)
 
 
-class Event(commands.Cog, name="event"):
+class Event(commands.Cog, name="Event"):
     def __init__(self, bot):
         self.bot = bot
 

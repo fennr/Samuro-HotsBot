@@ -16,14 +16,17 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
-class Profile(commands.Cog, name="profile"):
+class Profile(commands.Cog, name="Profile"):
+    """
+    — Связь дискорд профиля с батлнет профилем
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.group(name="profile")
     async def profile(self, ctx):
         """
-        @дискорд - посмотреть профиль
+        — Посмотреть свой профиль
         """
         if ctx.invoked_subcommand is None:
             try:
@@ -48,7 +51,7 @@ class Profile(commands.Cog, name="profile"):
     @profile.command(name="add")
     async def profile_add(self, ctx, btag, discord_user):
         """
-        батлтаг#1234 @дискорд - Добавить аккаунт в базу
+        — Добавить аккаунт в базу
         """
         player = pl.get_heroesprofile_data(btag=btag,
                                            user_id=pl.get_user_id(discord_user),
@@ -78,7 +81,7 @@ class Profile(commands.Cog, name="profile"):
     @check.is_admin()
     async def profile_fix(self, ctx, user_or_btag, mmr):
         """
-        @дискорд new_mmr (admin) - отредактировать ммр
+        — Исправить ММР игрока (admin only)
         """
         user_id = pl.get_user_id(user_or_btag)
         con, cur = pl.get_con_cur()
@@ -139,6 +142,9 @@ class Profile(commands.Cog, name="profile"):
 
     @profile.command(name="info")
     async def profile_info(self, ctx, user_or_btag):
+        """
+        — Получить информацию о профиле
+        """
         con, cur = pl.get_con_cur()
         user_id = pl.get_user_id(user_or_btag)
         guild_id = pl.get_guild_id(ctx)
@@ -169,7 +175,7 @@ class Profile(commands.Cog, name="profile"):
     @profile.command(name="btag")
     async def profile_btag(self, ctx, member_discord):
         """
-        @дискорд - посмотреть батлтаг игрока
+        — Посмотреть батлтаг профиля
         """
         con, cur = pl.get_con_cur()
         user_id = pl.get_user_id(member_discord)

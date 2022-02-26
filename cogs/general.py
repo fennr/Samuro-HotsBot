@@ -14,7 +14,7 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
-class general(commands.Cog, name="general"):
+class general(commands.Cog, name="General"):
     def __init__(self, bot):
         self.bot = bot
 

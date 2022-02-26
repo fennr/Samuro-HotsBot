@@ -17,24 +17,24 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
-class Team(commands.Cog, name="team"):
+class Team(commands.Cog, name="Team"):
+    """
+    — Описание модуля Команд
+    """
     def __init__(self, bot):
         self.bot = bot
 
     @commands.group(name="team")
     async def team(self, ctx):
-        """
-        - Команды для группы
-        """
         if ctx.invoked_subcommand is None:
             pass
 
     @team.command(name="create")
     @check.is_admin()
     async def team_create(self, ctx, leader, team_name, color=Colour.random()):
-        """
-        @leader Team_name - Создать команду
-        """
+        '''
+        — Создает команду team_name
+        '''
         con, cur = pl.get_con_cur()
         print(leader)
         player = pl.get_profile_by_id_or_btag(leader)
@@ -56,6 +56,9 @@ class Team(commands.Cog, name="team"):
 
     @team.command(name="add")
     async def team_add(self, ctx, user):
+        """
+        — Добавить в команду игрока @user
+        """
         con, cur = pl.get_con_cur()
         user_id = pl.get_author_id(ctx)
         select = pl.selects.get('teamLid')
@@ -83,6 +86,9 @@ class Team(commands.Cog, name="team"):
 
     @team.command(name="remove")
     async def team_remove(self, ctx, user):
+        """
+        — Удалить из команды @user
+        """
         con, cur = pl.get_con_cur()
         user_id = pl.get_author_id(ctx)
         select = pl.selects.get('teamLid')
@@ -110,6 +116,9 @@ class Team(commands.Cog, name="team"):
 
     @team.command(name="info")
     async def team_info(self, ctx, id_or_name):
+        """
+        — Информация о команде по имени или ID
+        """
         con, cur = pl.get_con_cur()
         team_id = int(id_or_name) if id_or_name.isdigit() else None
         select = pl.selects.get('teamIdName')

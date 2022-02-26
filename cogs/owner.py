@@ -26,7 +26,7 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
-class owner(commands.Cog, name="owner"):
+class owner(commands.Cog, name="Owner"):
     def __init__(self, bot):
         self.bot = bot
 
