@@ -32,6 +32,15 @@ class Ruhots(commands.Cog):
     async def emoji(self, ctx):
         print(ctx.guild.emojis)
 
+    @commands.command(name="get_emoji")
+    @commands.is_owner()
+    async def get_emoji(self, ctx, emoji_str):
+        emoji = utils.get(ctx.guild.emojis, name=emoji_str)
+        print(emoji, type(emoji))
+        if emoji is not None:
+            await ctx.send(f"{emoji}")
+
+
     @commands.command(name="art")
     @commands.check_any(commands.has_role(825399436863733791),  # ru hots
                         commands.has_role(830972263749779466),  # ru hs
@@ -42,6 +51,7 @@ class Ruhots(commands.Cog):
         """
         like = utils.get(ctx.guild.emojis, name="like")
         dislike = utils.get(ctx.guild.emojis, name="dislike")
+        print(like, type(like))
         if like is None:
             like = '\N{THUMBS UP SIGN}'
             dislike = '\N{THUMBS DOWN SIGN}'
