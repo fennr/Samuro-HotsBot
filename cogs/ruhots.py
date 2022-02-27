@@ -27,6 +27,11 @@ class Ruhots(commands.Cog):
     async def test_art(self, ctx):
         await ctx.send("Проверка роли художник пройдена")
 
+    @commands.command(name="emoji")
+    @commands.is_owner()
+    async def emoji(self, ctx):
+        print(ctx.guild.emojis)
+
     @commands.command(name="art")
     @commands.check_any(commands.has_role(825399436863733791),  # ru hots
                         commands.has_role(830972263749779466),  # ru hs
@@ -35,17 +40,17 @@ class Ruhots(commands.Cog):
         """
         — Выложить арт в исскуство
         """
-        like = utils.get(ctx.guild.emojis, name="samuro")
+        like = utils.get(ctx.guild.emojis, name="like")
         dislike = utils.get(ctx.guild.emojis, name="dislike")
+        if like is None:
+            like = '\N{THUMBS UP SIGN}'
+            dislike = '\N{THUMBS DOWN SIGN}'
         if ctx.guild.id == 642852514865217578:  # RU hots
             art_id = 708678722127134810
         elif ctx.guild.id == 754063467610374224:  # RU HS
             art_id = 766035868321710081
         else:
             art_id = 845658540341592099
-        if like is None:
-            like = '\N{THUMBS UP SIGN}'
-            dislike = '\N{THUMBS DOWN SIGN}'
         art_channel = utils.get(ctx.guild.channels, id=art_id)
         if len(message) > 0:
             description = f"**Автор:** {ctx.author.mention}\n**Комментарий:** {' '.join(message)}"
