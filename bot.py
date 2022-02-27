@@ -198,10 +198,12 @@ async def on_command_error(ctx, error):
         )
         await ctx.send(embed=embed)'''
     elif isinstance(error, commands.CommandNotFound):
-        pass
+        print(error)
+    else:
+        print(error)
     log.error(ctx, error)
     sql.error_log(ctx, error)
-    raise error
+    # raise error
 
 
 # Запрет писать боту в личку
