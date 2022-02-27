@@ -38,10 +38,10 @@ class Ruhots(commands.Cog):
         like = utils.get(ctx.guild.emojis, name="samuro")
         dislike = utils.get(ctx.guild.emojis, name="dislike")
         if ctx.guild.id == 825399436863733791:  # RU hots
-            art_id = 708678722127134810
+            art_id = 826933577727344662
         elif ctx.guild.id == 754063467610374224:  # RU HS
-            art_id = 766035868321710081
-        else:
+            art_id = 850414174105632778
+        else: 
             art_id = 845658540341592099
         if like is None:
             like = '\N{THUMBS UP SIGN}'
