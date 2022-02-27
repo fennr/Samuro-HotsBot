@@ -21,19 +21,23 @@ class Ruhots(commands.Cog):
     """
 
     @commands.command(name="test_art")
-    @commands.has_role("🎨 Художник")
+    @commands.check_any(commands.has_role(825399436863733791),  # ru hots
+                        commands.has_role(830972263749779466)   # ru hs
+                        )
     async def test_art(self, ctx):
         await ctx.send("Проверка роли художник пройдена")
 
     @commands.command(name="art")
-    @commands.has_role("🎨 Художник")
+    @commands.check_any(commands.has_role(825399436863733791),  # ru hots
+                        commands.has_role(830972263749779466)   # ru hs
+                        )
     async def art(self, ctx, message=None):
         """
         — Выложить арт в исскуство
         """
         like = utils.get(ctx.guild.emojis, name="samuro")
         dislike = utils.get(ctx.guild.emojis, name="dislike")
-        if ctx.guild.id == 642852514865217578:  # RU hots
+        if ctx.guild.id == 825399436863733791:  # RU hots
             art_id = 708678722127134810
         elif ctx.guild.id == 754063467610374224:  # RU HS
             art_id = 766035868321710081
