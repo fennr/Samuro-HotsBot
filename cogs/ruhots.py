@@ -29,26 +29,26 @@ class Ruhots(commands.Cog):
 
     @commands.command(name="art")
     @commands.check_any(commands.has_role(825399436863733791),  # ru hots
-                        commands.has_role(830972263749779466)   # ru hs
-                        )
-    async def art(self, ctx, message=None):
+                        commands.has_role(830972263749779466),  # ru hs
+                        commands.has_role(880865537058545686))
+    async def art(self, ctx, *message):
         """
         — Выложить арт в исскуство
         """
         like = utils.get(ctx.guild.emojis, name="samuro")
         dislike = utils.get(ctx.guild.emojis, name="dislike")
         if ctx.guild.id == 642852514865217578:  # RU hots
-            art_id = 826933577727344662
+            art_id = 708678722127134810
         elif ctx.guild.id == 754063467610374224:  # RU HS
-            art_id = 850414174105632778
+            art_id = 766035868321710081
         else:
             art_id = 845658540341592099
         if like is None:
             like = '\N{THUMBS UP SIGN}'
             dislike = '\N{THUMBS DOWN SIGN}'
         art_channel = utils.get(ctx.guild.channels, id=art_id)
-        if message is not None:
-            description = f"**Автор:** {ctx.author.mention}\n**Комментарий:** {message}"
+        if len(message) > 0:
+            description = f"**Автор:** {ctx.author.mention}\n**Комментарий:** {' '.join(message)}"
         else:
             description = f"**Автор:** {ctx.author.mention}"
         if ctx.message.attachments:
