@@ -138,11 +138,11 @@ class Event(commands.Cog, name="Event"):
                             WHERE room_id = %s AND active = %s'''
                 cur.execute(update, (winner, delta, points, False,
                                      room_id, True))
-                await ctx.send(f"Матч успешно закрыт")
                 pl.team_change_stats(team=win_team, guild_id=guild_id)
                 await ctx.send(f"Очки за победу начислены")
                 pl.team_change_stats(team=lose_team, guild_id=guild_id, winner=False)
                 await ctx.send(f"Очки за поражение начислены")
+                await ctx.send(f"Матч успешно закрыт")
             else:
                 await ctx.send(f"Открытых матчей не найдено")
             pl.commit(con)
