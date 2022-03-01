@@ -89,10 +89,11 @@ selects = {
     'hpAll': 'SELECT * FROM "heroesprofile"',
     'ehActive': 'SELECT * FROM "EventHistory" WHERE room_id = %s AND active = %s',
     'usIdGuild': 'SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
+    'usPoints': 'SELECT * FROM "UserStats" WHERE points > 0 ORDER BY points DESC LIMIT %s',
     'teamName': 'SELECT * FROM "Teams" WHERE name = %s',
     'teamId': 'SELECT * FROM "Teams" WHERE id = %s',
     'teamLid': 'SELECT * FROM "Teams" WHERE leader = %s',
-    'teamIdName': 'SELECT * FROM "Teams" WHERE id = %s or name = %s'
+    'teamIdName': 'SELECT * FROM "Teams" WHERE id = %s or name = %s',
 }
 
 deletes = {
@@ -112,6 +113,7 @@ updates = {
     'PlayerMMR': 'UPDATE "Players" SET league = %s, division = %s, mmr = %s WHERE id=%s',
     'PlayerTeam': 'UPDATE "Players" SET team = %s WHERE id = %s',
     'TeamMembers': 'UPDATE "Teams" SET members = %s WHERE id = %s',
+    'StatsPoints': 'Update "UserStats" SET points = %s WHERE id = %s AND guild_id = %s'
 }
 
 

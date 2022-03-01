@@ -115,7 +115,7 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="winner")
     @check.is_admin()
-    async def event_winner(self, ctx, winner=None, delta=7, points=1):
+    async def event_winner(self, ctx, winner=None, delta=6, points=1):
         """
         red | blue - выбрать победителя
         """

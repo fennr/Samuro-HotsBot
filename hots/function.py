@@ -23,7 +23,6 @@ def damerau_levenshtein_distance(s1: str, s2: str) -> int:
         d[(i, -1)] = i + 1
     for j in range(-1, lenstr2 + 1):
         d[(-1, j)] = j + 1
-
     for i in range(lenstr1):
         for j in range(lenstr2):
             if s1[i] == s2[j]:
