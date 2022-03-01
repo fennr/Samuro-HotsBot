@@ -119,7 +119,6 @@ def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
     con, cur = get_con_cur()
     placeholder = '%s'
     placeholders = ', '.join(placeholder for unused in team)
-    print(placeholders)
     select = selects.get('PlayersInBtag') % placeholders
     cur.execute(select, team)
     records = cur.fetchall()
