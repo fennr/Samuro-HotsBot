@@ -32,8 +32,9 @@ class Points(commands.Cog, name="Points"):
     @points.command(name="top")
     async def points_top(self, ctx, count=10):
         con, cur = pl.get_con_cur()
+        guild_id = pl.get_guild_id(ctx)
         select = pl.selects.get("usPoints")
-        cur.execute(select, (count, ))
+        cur.execute(select, (guild_id, count, ))
         records = cur.fetchall()
         embed = Embed(
             title=f"Таблица лидеров",
@@ -41,31 +42,43 @@ class Points(commands.Cog, name="Points"):
         )
         value = ""
         for i, record in enumerate(records):
-            value += f"{i+1}. {pl.get_discord_mention(record.id)} - {record.points}\n"
+            value += f"{i+1}. {pl.get_discord_mention(record.id)} — {record.points}\n"
         embed.add_field(
-            name=f"Топ {count} игроков",
+            name=f"Топ {count} игроков по числу баллов",
             value=value
         )
         await ctx.send(embed=embed)
 
-    @points.command(name="pay"):
-    async def points_pay(self, ctx, user: Member, count=0):
+    @points.command(name="remove")
+    @commands.check_any(commands.has_role(703884580041785344),  # Создатель
+                        commands.has_role(703884637755408466),  # Админ
+                        commands.has_role(711230509967212564),  # Старший модер
+                        commands.has_role(711230315540250624),  # Модер
+                        commands.has_role(946480695218429952),  # Samuro_dev
+                        commands.has_role(880865537058545686),  # test
+                        )
+    async def points_remove(self, ctx, user: Member, count=0):
         con, cur = pl.get_con_cur()
-        id = pl.get_user_id(user.id)
         guild_id =pl.get_guild_id(ctx)
         select = pl.selects.get("usIdGuild")
-        cur.execute(select, (id, guild_id))
+        cur.execute(select, (user.id, guild_id))
         record = cur.fetchone()
         stats = pl.get_stats(record)
         if stats.points < count:
-            await ctx.send("Недостаточно баллов")
+            await ctx.send(f"Недостаточно баллов\n"
+                           f"Баллов у {pl.get_discord_mention(stats.id)}: {stats.points}")
         else:
             stats.points -= count
             update = pl.updates.get("StatsPoints")
             cur.execute(update, (stats.points, stats.id, stats.guild_id))
             pl.commit(con)
-            await ctx.send("Баллы успешно сняты")
+            await ctx.send(f"Баллы успешно сняты\n"
+                           f"Осталось баллов: {stats.points}")
 
+    @points_remove.error
+    async def points_handler(self, ctx, error):
+        if isinstance(error, commands.errors.MissingRole):
+            await ctx.send("Недостаточно прав для выполнения команды")
 
 
 def setup(bot):

@@ -89,7 +89,7 @@ selects = {
     'hpAll': 'SELECT * FROM "heroesprofile"',
     'ehActive': 'SELECT * FROM "EventHistory" WHERE room_id = %s AND active = %s',
     'usIdGuild': 'SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
-    'usPoints': 'SELECT * FROM "UserStats" WHERE points > 0 ORDER BY points DESC LIMIT %s',
+    'usPoints': 'SELECT * FROM "UserStats" WHERE guild_id = %s AND points > 0 ORDER BY points DESC LIMIT %s',
     'teamName': 'SELECT * FROM "Teams" WHERE name = %s',
     'teamId': 'SELECT * FROM "Teams" WHERE id = %s',
     'teamLid': 'SELECT * FROM "Teams" WHERE leader = %s',
