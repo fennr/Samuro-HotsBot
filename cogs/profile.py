@@ -161,6 +161,7 @@ class Profile(commands.Cog, name="Profile"):
                 embed = pl.get_stats_embed(embed, stats)
             if player.team is not None:
                 embed = pl.get_user_team_embed(embed, player.team)
+            embed = pl.get_achievements_embed(embed, player)
             guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
             member = guild.get_member(int(player.id))
             user_avatar = pl.avatar(ctx, member)

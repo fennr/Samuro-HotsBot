@@ -142,7 +142,7 @@ class Team(commands.Cog, name="Team"):
                 cur.execute(delete, (player.id, ))
                 pl.commit(con)
                 await ctx.send(f"Команда {record.name} была распущена")
-                role = get(ctx.message.guild.roles, name = record.name)
+                role = get(ctx.message.guild.roles, name=record.name)
                 if role:
                     await role.delete()
                 await ctx.guild.delete_role(ctx.guild, name=record.name)

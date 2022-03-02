@@ -10,6 +10,7 @@ from hots.Player import Player
 from hots.Stats import Stats
 from hots.Team import Team
 from collections.abc import MutableMapping
+import ast
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -94,19 +95,31 @@ selects = {
     'teamId': 'SELECT * FROM "Teams" WHERE id = %s',
     'teamLid': 'SELECT * FROM "Teams" WHERE leader = %s',
     'teamIdName': 'SELECT * FROM "Teams" WHERE id = %s or name = %s',
+    'achievId': 'SELECT * FROM "Achievements" WHERE id = %s',
+    'achievAll': 'SELECT * FROM "Achievements" WHERE guild_id = %s',
+    'userAchiev': '''SELECT (ua.id, a.name, ua.date) FROM "UserAchievements" as ua
+                    INNER JOIN "Achievements" as a
+                    ON ua.achievement = a.id
+                    WHERE ua.id = %s'''
 }
 
 deletes = {
     'PlayerIdOrBtag': 'DELETE FROM "Players" WHERE id = %s OR btag = %s',
     'PlayerId': 'DELETE FROM "Players" WHERE id = %s',
     'TeamLid': 'DELETE FROM "Teams" WHERE leader = %s',
+    'UserAchiev': '''DELETE FROM "UserAchievements" 
+                WHERE id = %s AND guild_id = %s AND achievement = %s'''
 }
 
 inserts = {
     'Player': '''INSERT INTO "Players"(btag, id, guild_id, mmr, league, division)
-                 VALUES (%s, %s, %s, %s, %s, %s)''',
+                VALUES (%s, %s, %s, %s, %s, %s)''',
     'Team': '''INSERT INTO "Teams"(name, leader) 
-                 VALUES (%s, %s) RETURNING id''',
+                VALUES (%s, %s) RETURNING id''',
+    'Achievement': '''INSERT INTO "Achievements"(guild_id, name) 
+                VALUES (%s, %s) RETURNING id''',
+    'UserAchiev': '''INSERT INTO "UserAchievements"(id, guild_id, achievement, date) 
+                VALUES(%s, %s, %s, %s) '''
 }
 
 updates = {
@@ -413,6 +426,25 @@ def get_profile_embed(ctx, player: Player):
         value=player.mmr,
         inline=True
     )
+    return embed
+
+
+def get_achievements_embed(embed: Embed, player: Player):
+    con, cur = get_con_cur()
+    select = selects.get("userAchiev")
+    cur.execute(select, (player.id, ))
+    records = cur.fetchall()
+    if cur.rowcount:
+        achievements = ''
+        for record in records:
+            print(record.row)
+            user_id, achiev_name, achiev_date = record.row[1:-1].split(",")
+            achievements += f"**{achiev_name}** - получено {achiev_date}\n"
+        embed.add_field(
+            name="Достижения",
+            value=achievements,
+            inline=False
+        )
     return embed
 
 
