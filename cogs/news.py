@@ -12,6 +12,7 @@ import operator
 from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
+from helpers import profile_lib as pl
 
 from pprint import pprint
 
@@ -258,8 +259,9 @@ class News(commands.Cog, name="News"):
                             data = io.BytesIO(await resp.read())'''
                 # await ctx.message.delete()
                 msg = await channel.send(embed=embed)
-                await msg.add_reaction('\N{THUMBS UP SIGN}')
-                await msg.add_reaction('\N{THUMBS DOWN SIGN}')
+                like, dislike = pl.get_likes(ctx)
+                await msg.add_reaction(like)
+                await msg.add_reaction(dislike)
                 await News.update_schedule(self, ctx, clear_message=False)
             except:
                 description = 'Введите описание ивента в следующем формате: \n' \
@@ -378,8 +380,9 @@ class News(commands.Cog, name="News"):
         channel = utils.get(ctx.guild.text_channels, name=schedule_name)
         if img is not None:
             msg = await channel.send(embed=embed, file=img)
-            await msg.add_reaction('\N{THUMBS UP SIGN}')
-            await msg.add_reaction('\N{THUMBS DOWN SIGN}')
+            like, dislike = pl.get_likes(ctx)
+            await msg.add_reaction(like)
+            await msg.add_reaction(dislike)
         else:
             await channel.send(embed=embed)
 

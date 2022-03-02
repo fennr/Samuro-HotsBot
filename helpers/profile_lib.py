@@ -186,6 +186,15 @@ def get_league_division_by_mmr(mmr):
     return league, division
 
 
+def get_likes(ctx):
+    like = utils.get(ctx.guild.emojis, name="like")
+    dislike = utils.get(ctx.guild.emojis, name="dislike")
+    if like is None:
+        like = '\N{THUMBS UP SIGN}'
+        dislike = '\N{THUMBS DOWN SIGN}'
+    return like, dislike
+
+
 def min_diff_sets(data):
     """
         Parameters:
