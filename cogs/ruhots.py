@@ -3,6 +3,7 @@ import yaml
 from discord import Embed, utils
 from discord.ext import commands
 from discord.errors import Forbidden
+from helpers import profile_lib as pl
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -49,12 +50,7 @@ class Ruhots(commands.Cog):
         """
         — Выложить арт в исскуство
         """
-        like = utils.get(ctx.guild.emojis, name="like")
-        dislike = utils.get(ctx.guild.emojis, name="dislike")
-        print(like, type(like))
-        if like is None:
-            like = '\N{THUMBS UP SIGN}'
-            dislike = '\N{THUMBS DOWN SIGN}'
+        like, dislike = pl.get_likes(ctx)
         if ctx.guild.id == 642852514865217578:  # RU hots
             art_id = 708678722127134810
         elif ctx.guild.id == 754063467610374224:  # RU HS
