@@ -52,7 +52,8 @@ def white_list(ctx) -> list:
             'Help',
             'Hots',
             'Heroes',
-            'Profile'
+            'Profile',
+            'Stats',
         ]
         if ctx.message.author.id in config["owners"]:
             return white_list + admin_list

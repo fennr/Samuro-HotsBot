@@ -14,6 +14,7 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
+
 class Team(commands.Cog, name="Team"):
     """
     — Описание модуля Достижений

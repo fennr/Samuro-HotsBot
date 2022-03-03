@@ -28,7 +28,7 @@ class League(Enum):
 
 class Stats(commands.Cog, name="Stats"):
     """
-    — Использование баллов
+    — Просмотр таблиц лидеров
     """
     def __init__(self, bot):
         self.bot = bot
@@ -40,6 +40,9 @@ class Stats(commands.Cog, name="Stats"):
 
     @top.command(name="mmr")
     async def top_mmr(self, ctx, league_type="Мастер", count=10):
+        """
+        - Лидеры по ммр
+        """
         try:
             league = League(league_type)
         except:
@@ -64,6 +67,9 @@ class Stats(commands.Cog, name="Stats"):
 
     @top.command(name="wins")
     async def top_wins(self, ctx, count=10):
+        """
+        - Лидеры по числу побед
+        """
         con, cur = pl.get_con_cur()
         guild_id = pl.get_guild_id(ctx)
         select = pl.selects.get("usWins")
@@ -84,6 +90,9 @@ class Stats(commands.Cog, name="Stats"):
 
     @top.command(name="points")
     async def top_points(self, ctx, count=10):
+        """
+        - Лидеры по заработанным очкам
+        """
         con, cur = pl.get_con_cur()
         guild_id = pl.get_guild_id(ctx)
         select = pl.selects.get("usPoints")
