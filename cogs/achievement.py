@@ -79,6 +79,18 @@ class Team(commands.Cog, name="Team"):
         else:
             await ctx.send(f"У игрока {member.mention} нет достижения **{achiev_name}**")
 
+    @achievement.command(name="delete")
+    @check.is_admin()
+    async def achievement_delete(self, ctx, id: int):
+        con, cur = pl.get_con_cur()
+        guild_id = pl.get_guild_id(ctx)
+        delete = pl.deletes.get("AchievId")
+        cur.execute(delete, (id, guild_id))
+        if cur.rowcount:
+            pl.commit(con)
+            await ctx.send(f"Достижение удалено")
+        else:
+            await ctx.send(f"Нет достижения с **id={id}**")
 
 
 def setup(bot):

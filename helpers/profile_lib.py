@@ -108,7 +108,8 @@ deletes = {
     'PlayerId': 'DELETE FROM "Players" WHERE id = %s',
     'TeamLid': 'DELETE FROM "Teams" WHERE leader = %s',
     'UserAchiev': '''DELETE FROM "UserAchievements" 
-                WHERE id = %s AND guild_id = %s AND achievement = %s'''
+                WHERE id = %s AND guild_id = %s AND achievement = %s''',
+    'AchievId': 'DELETE FROM "Achievements" WHERE id = %s AND guild_id = %s',
 }
 
 inserts = {
