@@ -17,20 +17,40 @@ else:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
 
-class Points(commands.Cog, name="Points"):
+class Stats(commands.Cog, name="Stats"):
     """
     — Использование баллов
     """
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(name="points")
-    async def points(self, ctx):
+    @commands.group(name="top")
+    async def top(self, ctx):
         if ctx.invoked_subcommand is None:
             await self.profile_info(ctx, ctx.subcommand_passed)
 
-    @points.command(name="top")
-    async def points_top(self, ctx, count=10):
+    @top.command(name="wins")
+    async def top_wins(self, ctx, count=10):
+        con, cur = pl.get_con_cur()
+        guild_id = pl.get_guild_id(ctx)
+        select = pl.selects.get("usWins")
+        cur.execute(select, (guild_id, count))
+        records = cur.fetchall()
+        embed = Embed(
+            title=f"Таблица лидеров",
+            color=config["info"]
+        )
+        value = ""
+        for i, record in enumerate(records):
+            value += f"{i + 1}. {pl.get_discord_mention(record.id)} — {record.win}\n"
+        embed.add_field(
+            name=f"Топ {count} игроков по числу побед",
+            value=value
+        )
+        await ctx.send(embed=embed)
+
+    @top.command(name="points")
+    async def top_points(self, ctx, count=10):
         con, cur = pl.get_con_cur()
         guild_id = pl.get_guild_id(ctx)
         select = pl.selects.get("usPoints")
@@ -50,7 +70,7 @@ class Points(commands.Cog, name="Points"):
         )
         await ctx.send(embed=embed)
 
-    @points.command(name="remove")
+    @top.command(name="remove")
     @commands.check_any(commands.has_role(703884580041785344),  # Создатель
                         commands.has_role(703884637755408466),  # Админ
                         commands.has_role(711230509967212564),  # Старший модер
@@ -83,4 +103,4 @@ class Points(commands.Cog, name="Points"):
 
 
 def setup(bot):
-    bot.add_cog(Points(bot))
+    bot.add_cog(Stats(bot))

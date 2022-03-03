@@ -86,9 +86,10 @@ class Team(commands.Cog, name="Team"):
         guild_id = pl.get_guild_id(ctx)
         delete = pl.deletes.get("AchievId")
         cur.execute(delete, (id, guild_id))
+        achiev_name = cur.fetchone()[0]
         if cur.rowcount:
             pl.commit(con)
-            await ctx.send(f"Достижение удалено")
+            await ctx.send(f"Достижение **{achiev_name}** удалено")
         else:
             await ctx.send(f"Нет достижения с **id={id}**")
 

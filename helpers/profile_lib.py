@@ -91,6 +91,7 @@ selects = {
     'ehActive': 'SELECT * FROM "EventHistory" WHERE room_id = %s AND active = %s',
     'usIdGuild': 'SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
     'usPoints': 'SELECT * FROM "UserStats" WHERE guild_id = %s AND points > 0 ORDER BY points DESC LIMIT %s',
+    'usWins': 'SELECT * FROM "UserStats" WHERE guild_id = %s AND win > 0 ORDER BY win DESC LIMIT %s',
     'teamName': 'SELECT * FROM "Teams" WHERE name = %s',
     'teamId': 'SELECT * FROM "Teams" WHERE id = %s',
     'teamLid': 'SELECT * FROM "Teams" WHERE leader = %s',
@@ -109,7 +110,7 @@ deletes = {
     'TeamLid': 'DELETE FROM "Teams" WHERE leader = %s',
     'UserAchiev': '''DELETE FROM "UserAchievements" 
                 WHERE id = %s AND guild_id = %s AND achievement = %s''',
-    'AchievId': 'DELETE FROM "Achievements" WHERE id = %s AND guild_id = %s',
+    'AchievId': 'DELETE FROM "Achievements" WHERE id = %s AND guild_id = %s RETURNING name',
 }
 
 inserts = {
