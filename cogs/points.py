@@ -7,6 +7,7 @@ from helpers import sql, check
 from psycopg2 import errorcodes
 from discord import Embed, utils, Member
 from helpers import profile_lib as pl
+from enum import Enum, unique
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -16,6 +17,14 @@ else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 
+
+class League(Enum):
+    Bronze = "Бронза"
+    Silver = "Серебро"
+    Gold = "Золото"
+    Platinum = "Платина"
+    Diamond = "Алмаз"
+    Master = "Мастер"
 
 class Stats(commands.Cog, name="Stats"):
     """
@@ -27,7 +36,31 @@ class Stats(commands.Cog, name="Stats"):
     @commands.group(name="top")
     async def top(self, ctx):
         if ctx.invoked_subcommand is None:
-            await self.profile_info(ctx, ctx.subcommand_passed)
+            pass
+
+    @top.command(name="mmr")
+    async def top_mmr(self, ctx, league_type="Мастер", count=10):
+        try:
+            league = League(league_type)
+        except:
+            await ctx.send("Выберите корректную лигу")
+        con, cur = pl.get_con_cur()
+        guild_id = pl.get_guild_id(ctx)
+        select = pl.selects.get("PlayersLeague")
+        cur.execute(select, (league.name, count))
+        records = cur.fetchall()
+        embed = Embed(
+            title=f"Таблица лиги {league.value}",
+            color=config["info"]
+        )
+        value = ""
+        for i, record in enumerate(records):
+            value += f"{i + 1}. {pl.get_discord_mention(record.id)} (mmr: {record.mmr})\n"
+        embed.add_field(
+            name=f"Топ {count} игроков",
+            value=value
+        )
+        await ctx.send(embed=embed)
 
     @top.command(name="wins")
     async def top_wins(self, ctx, count=10):

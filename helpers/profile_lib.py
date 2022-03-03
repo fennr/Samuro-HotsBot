@@ -101,7 +101,8 @@ selects = {
     'userAchiev': '''SELECT (ua.id, a.name, ua.date) FROM "UserAchievements" as ua
                     INNER JOIN "Achievements" as a
                     ON ua.achievement = a.id
-                    WHERE ua.id = %s'''
+                    WHERE ua.id = %s''',
+    'PlayersLeague': 'SELECT * FROM "Players" WHERE league = %s ORDER BY mmr DESC LIMIT %s',
 }
 
 deletes = {
