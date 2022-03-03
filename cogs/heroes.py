@@ -39,12 +39,14 @@ class Heroes(commands.Cog, name="Heroes"):
     guild_ids = [845658540341592096]  # Put your server ID in this array.
 
     @commands.command(name="hero")
-    async def hots_hero(self, ctx, hero_name):
+    async def hots_hero(self, ctx, *hero_name):
         """
         — Описание героя
         """
-        if hero_name is not None:
-            hero = get_hero(hero_name)
+        name = ' '.join(hero_name)
+        print(name)
+        if name is not None:
+            hero = get_hero(name)
             if isinstance(hero, Hero):
                 embed = heroes_description_short(hero, ctx.author)
                 embed = builds(hero, ctx.author, embed)
@@ -61,7 +63,8 @@ class Heroes(commands.Cog, name="Heroes"):
         """
         — Прочитать скиллы героя
         """
-        if hero_name is not None:
+        name = ' '.join(hero_name)
+        if name is not None:
             hero = get_hero(hero_name)
             if isinstance(hero, Hero):
                 embed = skills(hero=hero, author=ctx.author, types=['basic', 'heroic', 'trait'], btn_key=btns)
