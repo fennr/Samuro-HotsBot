@@ -176,11 +176,12 @@ class Hots(Cog, name='Hots'):
         )
 
     @command(name='stlk')
-    async def stlk_builds(self, ctx, hero_name):
+    async def stlk_builds(self, ctx, *hero_name):
         """
         — Авторские билды от про игрока **STLK**
         """
-        hero = get_hero(hero_name)
+        name = ' '.join(hero_name)
+        hero = get_hero(name)
         if isinstance(hero, Hero):
             embed = embed_stlk_builds(hero, ctx.author, ad=True)
         else:
