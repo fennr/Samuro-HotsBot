@@ -306,12 +306,12 @@ class owner(commands.Cog, name="Owner"):
             await context.send(embed=embed)
 
 
-@commands.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send('Введены не все аргументы :rolling_eyes:.')
-    if isinstance(error, commands.MissingPermissions):
-        await ctx.send("Не хватает прав :angry:")
+    @ban.error
+    async def on_command_error(ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send('Введены не все аргументы :rolling_eyes:.')
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("Не хватает прав :angry:")
 
 def setup(bot):
     bot.add_cog(owner(bot))
