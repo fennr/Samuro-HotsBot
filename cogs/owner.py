@@ -1,9 +1,6 @@
-""""
-Copyright © Krypton 2021 - https://github.com/kkrypt0nn
-Description:
-This is a template to create your own discord bot in python.
-Version: 2.7
-"""
+import discord
+from discord.ext import commands
+from helpers import check
 
 import json
 import os
@@ -29,6 +26,28 @@ else:
 class owner(commands.Cog, name="Owner"):
     def __init__(self, bot):
         self.bot = bot
+
+    # The below code bans player.
+    @commands.command()
+    @check.is_owner()
+    async def ban(ctx, member: discord.Member, *, reason=None):
+        await member.ban(reason=reason)
+
+    # The below code unbans player.
+    @commands.command()
+    @check.is_owner()
+    #@commands.has_permissions(administrator=True)
+    async def unban(ctx, *, member):
+        banned_users = await ctx.guild.bans()
+        member_name, member_discriminator = member.split("#")
+
+        for ban_entry in banned_users:
+            user = ban_entry.user
+
+            if (user.name, user.discriminator) == (member_name, member_discriminator):
+                await ctx.guild.unban(user)
+                await ctx.send(f'Unbanned {user.mention}')
+                return
 
     @commands.command(name="servers")
     async def servers(self, context):
@@ -286,6 +305,13 @@ class owner(commands.Cog, name="Owner"):
             )
             await context.send(embed=embed)
 
+
+@commands.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Введены не все аргументы :rolling_eyes:.')
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send("Не хватает прав :angry:")
 
 def setup(bot):
     bot.add_cog(owner(bot))
