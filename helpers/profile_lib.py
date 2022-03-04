@@ -158,7 +158,7 @@ def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
                                  points=stats_rec.points)
         if winner:
             player.mmr += int(delta)
-            player_stats.points += int(points) + 1
+            player_stats.points += int(points) + 2
             player_stats.win += 1
         else:
             player.mmr -= int(delta)

@@ -40,7 +40,7 @@ class Fix(commands.Cog, name="Fix"):
         rec = cur.fetchall()
         for record in rec:
             stats = pl.get_stats(record)
-            stats.points = stats.win * 2 + stats.lose * 1
+            stats.points = stats.win * 3 + stats.lose * 1
             update = pl.updates.get("StatsPoints")
             cur.execute(update, (stats.points, stats.id, stats.guild_id))
         pl.commit(con)
