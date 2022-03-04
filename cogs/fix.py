@@ -30,6 +30,22 @@ class Fix(commands.Cog, name="Fix"):
         if ctx.invoked_subcommand is None:
             await ctx.send("Выберите что исправлять")
 
+    @fix.command(name="points")
+    @check.is_owner()
+    async def fex_points(self, ctx):
+        con, cur = pl.get_con_cur()
+        guild_id = pl.get_guild_id(ctx)
+        select = pl.selects.get("usAll")
+        cur.execute(select)
+        rec = cur.fetchall()
+        for record in rec:
+            stats = pl.get_stats(record)
+            stats.points = stats.win * 2 + stats.lose * 1
+            update = pl.updates.get("StatsPoints")
+            cur.execute(update, (stats.points, stats.id, stats.guild_id))
+        pl.commit(con)
+        await ctx.send("Очки за все игры были пересчитаны")
+
     @fix.command(name="new_table")
     @check.is_owner()
     async def fix_new_table(self, ctx):
