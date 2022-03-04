@@ -28,13 +28,13 @@ class owner(commands.Cog, name="Owner"):
         self.bot = bot
 
     # The below code bans player.
-    @commands.command()
+    @commands.command(name="user_ban")
     @check.is_owner()
     async def ban(ctx, member: discord.Member, *, reason=None):
-        await member.ban(reason=reason)
+        await member.kick(reason=reason)
 
     # The below code unbans player.
-    @commands.command()
+    @commands.command(name="unban")
     @check.is_owner()
     #@commands.has_permissions(administrator=True)
     async def unban(ctx, *, member):
