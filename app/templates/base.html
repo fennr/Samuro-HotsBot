@@ -6,12 +6,15 @@
     <title>BC Soft quest</title>
     {% endif %}
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="https://mousey.app/browser.1bfd497b.css">
+
 </head>
 <body>
-    <img src="{{url_for('static', filename='logo.svg')}}">
     <center>
         {% block content %}{% endblock %}
     </center>
+    <script src="https://mousey.app/browser.75532ac0.js" type="1aba5b7571fec349a773f7a9-text/javascript"></script>
+    <script src="https://mousey.app/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="1aba5b7571fec349a773f7a9-|49" defer=""></script>
 </body>
 </html>
 {% if comment %}
