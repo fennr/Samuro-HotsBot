@@ -14,7 +14,6 @@ click==8.0.4
 colorama==0.4.4
 Deprecated==1.2.12
 discord-components==1.0.0
-discord-ext-menus==1.0.0a31+gfbb8803
 discord-pretty-help==1.3.3
 discord-py-slash-command==1.2.2
 discord.py==1.7.2
