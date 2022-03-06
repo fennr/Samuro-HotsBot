@@ -1,0 +1,22 @@
+<html>
+<head>
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>BC Soft quest</title>
+    {% endif %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+    <img src="{{url_for('static', filename='logo.svg')}}">
+    <center>
+        {% block content %}{% endblock %}
+    </center>
+</body>
+</html>
+{% if comment %}
+
+{{ comment|safe }}
+
+{% endif %}
+    
