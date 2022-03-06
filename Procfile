@@ -1,2 +1,2 @@
 worker: python bot.py
-web: gunicorn wsgi: app
+web: gunicorn wsgi: flask_site
