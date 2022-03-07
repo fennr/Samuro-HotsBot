@@ -111,14 +111,6 @@ def add_thumbnail(hero: Hero, embed):
     thumb_url = 'https://nexuscompendium.com/images/portraits/'
     hero_name = hero.en.lower().replace('.', '').replace("'", "").replace(' ', '-')
     url = thumb_url + hero_name + ext
-    '''
-    folder = 'img/portrait/'
-    path = folder + hero_name + ext
-    filename = hero_name + ext
-    file = File(path, filename=filename)
-    #url = 'attachment://' + filename
-    #print(url)
-    '''
     embed.set_thumbnail(
         url=url
     )

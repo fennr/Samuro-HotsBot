@@ -67,7 +67,7 @@ def heroes_description_short(hero: Hero, author):
     )
     embed.add_field(
         name="Позиция в мете",
-        value="Тир {} {}".format(hero.tier, tier_desc.setdefault(hero.tier)),
+        value=f"Тир {hero.tier}",  # tier_desc.setdefault(hero.tier)
         inline=True
     )
     return embed
@@ -208,17 +208,17 @@ def builds(hero: Hero, author, embed=None):
     embed.add_field(
         name="Ссылки",
         value="[Патчноуты героя]({})\n" \
-              "[Подборка билдов от HeroesHearth]({})\n" \
+              #"[Подборка билдов от HeroesHearth]({})\n" \
               "[Разбор героя от IcyVeins]({})\n" \
-              "[Описание героя Nexuscompendium]({})\n" \
-              "[Пользовательские билды HeroesFire]({})\n" \
+              #"[Описание героя Nexuscompendium]({})\n" \
+              #"[Пользовательские билды HeroesFire]({})\n" \
               "[Винрейт по талантам HeroesProfile]({})\n" \
               "[Винрейт по талантам HotsLogs]({})".format(
             heroespn_url_full,
-            heroeshearth_top_url + default_hero_name.replace(' ', '-'),
+            #heroeshearth_top_url + default_hero_name.replace(' ', '-'),
             icy_veins_url_full,
-            nexuscompendium_url + default_hero_name.replace(' ', '-'),
-            heroesfire_url + default_hero_name.replace(' ', '-'),
+            #nexuscompendium_url + default_hero_name.replace(' ', '-'),
+            #heroesfire_url + default_hero_name.replace(' ', '-'),
             heroesprofile_url + hero.en.replace(' ', '+') + '&league_tier=master,diamond',
             hotslogs_url + hero.en.replace(' ', '%20')
         ),
