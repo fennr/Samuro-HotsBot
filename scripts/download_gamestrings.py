@@ -1,18 +1,10 @@
 import json
-import os
-import sys
-
 import requests
-import yaml
+from helpers import functions
 
-# Only if you want to use variables that are in the config.yaml file.
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
-file_path = 'data/'
+file_path = '../data/'
 patch = config["patch"]
 
 

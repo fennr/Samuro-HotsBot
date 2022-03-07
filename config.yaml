@@ -2,7 +2,7 @@ bot_initial_prefix:
   - '#'
   - '!'
 bot_prefix: "!"
-patch: "2.55.0.86938"
+patch: "2.55.1.87306"
 log: "log_base.log"
 version: "0.4.010"
 owner: 196583204164075520
