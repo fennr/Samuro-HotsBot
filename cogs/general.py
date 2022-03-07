@@ -1,18 +1,11 @@
 import os
-import sys
-
 import discord
-import yaml
 from discord.ext import commands
+from helpers import functions
 
 guild_ids = [845658540341592096]  # Put your server ID in this array.
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
+config = functions.get_config()
 
 class general(commands.Cog, name="General"):
     def __init__(self, bot):

@@ -4,21 +4,16 @@ from discord import Member
 from discord.ext import commands
 from datetime import date
 from helpers import profile_lib as pl
-from helpers import sql, check
+from helpers import sql, check, functions
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 
 class Team(commands.Cog, name="Team"):
     """
     — Описание модуля Достижений
     """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -28,13 +23,12 @@ class Team(commands.Cog, name="Team"):
             con, cur = pl.get_con_cur()
             guild_id = pl.get_guild_id(ctx)
             select = pl.selects.get("achievAll")
-            cur.execute(select, (guild_id, ))
+            cur.execute(select, (guild_id,))
             records = cur.fetchall()
             achievements = ''
             for record in records:
                 achievements += f'{record.name}, id = **{record.id}**\n'
             await ctx.send(achievements)
-
 
     @achievement.command(name="create")
     @check.is_admin()
@@ -54,7 +48,7 @@ class Team(commands.Cog, name="Team"):
         con, cur = pl.get_con_cur()
         guild_id = pl.get_guild_id(ctx)
         select = pl.selects.get("achievId")
-        cur.execute(select, (id, ))
+        cur.execute(select, (id,))
         record = cur.fetchone()
         print(record)
         today = date.today()

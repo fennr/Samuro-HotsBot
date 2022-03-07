@@ -1,8 +1,7 @@
-import os
-import yaml
 import discord
 from discord.ext import commands
 from discord.errors import Forbidden
+from helpers import functions
 
 """This custom help command is a perfect replacement for the default one on any Discord Bot written in Discord.py!
 However, you must put "bot.remove_command('help')" in your bot, and the command must be in a cog for it to work.
@@ -14,14 +13,7 @@ You need to set three variables to make that cog run.
 Have a look at line 51 to 57
 """
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
+config = functions.get_config()
 
 async def send_embed(ctx, embed):
     """

@@ -5,12 +5,9 @@ from discord import Embed, utils
 import yaml
 import random
 from discord.ext import commands
+from helpers import functions
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 ignore_list = [
     'slash',

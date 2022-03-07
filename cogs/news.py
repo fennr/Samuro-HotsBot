@@ -1,11 +1,5 @@
-import os
-import sys
-import yaml
-
 import datetime
-import pytz
 import locale
-import re
 
 import operator
 
@@ -13,14 +7,12 @@ from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
 from helpers import profile_lib as pl
+from helpers import functions
 
 from pprint import pprint
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
+
 
 category_name = 'Новости'
 schedule_name = '📅︱расписание'

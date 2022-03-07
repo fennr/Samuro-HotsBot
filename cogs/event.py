@@ -5,17 +5,11 @@ import pytz
 from datetime import datetime
 from discord import Embed, utils, Member
 from discord.ext import commands
-from helpers import sql, check
+from helpers import sql, check, functions
 from helpers import profile_lib as pl
 from discord_slash import cog_ext, SlashContext
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 

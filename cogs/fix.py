@@ -1,19 +1,10 @@
-import os
-import yaml
 import psycopg2.extras
 from discord.ext import commands
-from helpers import sql, check
+from helpers import sql, check, functions
 from hots.Player import Player
 from helpers import profile_lib as pl
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
+config = functions.get_config()
 
 class Fix(commands.Cog, name="Fix"):
     def __init__(self, bot):

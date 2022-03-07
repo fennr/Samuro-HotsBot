@@ -1,26 +1,14 @@
 import discord
-from discord.ext import commands
 from helpers import check
-
 import json
-import os
-import sys
-import yaml
-
 from helpers import sql
 
 from discord import Embed, Member, File
 from discord.ext import commands
-
 from pprint import pprint
+from helpers import json_manager, functions
 
-from helpers import json_manager
-
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 
 class owner(commands.Cog, name="Owner"):

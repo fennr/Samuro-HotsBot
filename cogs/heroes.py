@@ -13,14 +13,9 @@ from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
 from hots.talents import talents, wrong_talent_lvl, read_talent_lvl
 from hots.Hero import Hero
-from helpers import sql, log
+from helpers import sql, log, functions
 
-# Only if you want to use variables that are in the config.yaml file.
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 short_patch = config["patch"][-5:]
 

@@ -1,8 +1,4 @@
 import json
-import os
-import sys
-
-import yaml
 from discord import Embed, Object, utils
 from discord.ext.commands import command, Cog, errors
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
@@ -18,13 +14,10 @@ from hots.talents import talents
 from hots.tierlist import ban_heroes
 from hots.twitch import get_streams
 from hots.read_news import embed_news
+from helpers import functions
 
 # Only if you want to use variables that are in the config.yaml file.
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 short_patch = config["patch"][-5:]
 

@@ -1,21 +1,10 @@
-import os
-import yaml
-import psycopg2.extras
-import exceptions
 from discord.ext import commands
-from helpers import sql, check
-from psycopg2 import errorcodes
+from helpers import functions
 from discord import Embed, utils, Member
 from helpers import profile_lib as pl
 from enum import Enum, unique
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 
 class League(Enum):

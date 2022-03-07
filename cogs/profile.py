@@ -32,7 +32,7 @@ class Profile(commands.Cog, name="Profile"):
             try:
                 await self.profile_info(ctx, ctx.subcommand_passed)
             except:
-                await self.profile_info(ctx, str(ctx.message.author.id))
+                await self.profile_info(ctx, str(ctx.message.author.mention))
             # await ctx.send('Для добавления игрока используйте команду #profile add батлтег дискорд\n '
             #               'Пример: *#profile add player#1234 @player*')
 

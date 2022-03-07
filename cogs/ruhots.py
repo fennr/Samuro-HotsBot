@@ -1,18 +1,10 @@
-import os
-import yaml
 from discord import Embed, utils
 from discord.ext import commands
 from discord.errors import Forbidden
 from helpers import profile_lib as pl
+from helpers import functions
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
+config = functions.get_config()
 
 clear = '\u200b'
 

@@ -1,21 +1,12 @@
-import os
-import yaml
-import psycopg2.extras
-import exceptions
 from discord.ext import commands
 from discord.utils import get
 from discord import Colour
-from helpers import sql, check
+from helpers import sql, check, functions
 from psycopg2 import errorcodes
 from helpers import profile_lib as pl
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
+
 
 class Team(commands.Cog, name="Team"):
     """

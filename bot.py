@@ -6,34 +6,26 @@ import json
 import os
 import platform
 import random
-import sys
 import exceptions
 
 import discord
-import yaml
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
-from helpers import sql
+from helpers import sql, functions
 from helpers.log import get_guild, log_init, error_log
 from scripts import heroes_ru_names, google_table
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
+config = functions.get_config()
+
+if os.environ.get('TESTING'):
+    TOKEN = os.environ.get('TOKEN')
+    APP_ID = os.environ.get('APP_ID')
+    os.environ['TZ'] = 'Europe/Moscow'
 else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-GITHUB_TOKEN = os.environ.get('github_token')
-
-if config['state'] == 'prod':
     TOKEN = os.environ.get('token_prod')
     APP_ID = os.environ.get('app_id_prod')
-else:
-    TOKEN = config['token_test']
-    APP_ID = config['app_test']
-    os.environ['TZ'] = 'Europe/Moscow'
 
 """	
 Setup bot intents (events restrictions)
@@ -226,13 +218,7 @@ async def global_guild_only(ctx):
 async def on_member_join(member):
     server = member.guild
     title = "Привет друг!"
-    message = f"Добро пожаловать на сервер **{member.guild.name}**.\n" \
-              f"Располагайся по удобнее, не стесняйся использовать чат.\n" \
-              f"Если захочется заходи в голосовые комнаты, все свои.\n\n" \
-              f"Я один из ботов на сервере, отвечаю за ивенты, " \
-              f"а так же могу предоставить много информации о талантах и билдах по **Heroes of the Storm**\n" \
-              f"Чтобы посмотреть все мои доступные команды набери **#help**\n" \
-              f"(желательно на отдельном канале для ботов)"
+    message = f"Добро пожаловать на сервер **{member.guild.name}**.\n"
     embed = discord.Embed(
         title=title,
         description=message,
