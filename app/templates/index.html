@@ -2,14 +2,14 @@
 
 {% block content %}
     <div class="app">
-        <img src="https://mousey.app/mousey.33d1ed5f.svg" alt="Mousey" height="128" width="128">
+        <img src="{{ url_for('static', filename='samuro.png') }}" alt="Samuro" height="128" width="128">
         <div class="links">
-            <a href="https://discord.com/oauth2/authorize?client_id=288369203046645761&amp;permissions=961932534&amp;scope=applications.commands+bot" title="Add Mousey">
-                <img src="https://mousey.app/user-plus.c814ad77.svg" alt=""></a>
+            <a href="https://canary.discord.com/api/oauth2/authorize?client_id=664368184790614016&permissions=52289&scope=bot%20applications.commands" title="Добавить Самуро">
+                <img src="{{ url_for('static', filename='user-plus.svg') }}" alt=""></a>
             <a href="https://github.com/LostLuma/Mousey" title="GitHub">
-                <img src="https://mousey.app/github.c320cbfd.svg" alt=""></a>
-            <a href="https://lostluma.dev" title="LostLuma">
-                <img src="https://mousey.app/star.22030f99.svg" alt=""></a>
+                <img src="{{ url_for('static', filename='github.svg') }}" alt=""></a>
+            <a href="https://fennr.github.io/" title="Fenrir">
+                <img src="{{ url_for('static', filename='star.svg') }}" alt=""></a>
         </div>
     </div>
 {% endblock %}
