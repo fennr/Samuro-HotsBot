@@ -161,10 +161,12 @@ def get_hero(hero_name):
 def get_master_opinion(hero_name, embed=None):
     url = 'https://www.youtube.com/watch?v='
     hero = get_hero(hero_name)
+    print(hero)
     if isinstance(hero, Hero):
         videos = pancho_data.get(hero.id)
+        print(videos)
         if videos is not None:
-            if len(videos) > 1:
+            if len(videos) > 0:
                 video = videos[0]
                 if embed is not None:
                     text = ''

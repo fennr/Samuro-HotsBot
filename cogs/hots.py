@@ -88,10 +88,8 @@ class Hots(Cog, name='Hots'):
         """
         — Мнение Мастера
         """
-        print(ctx.invoked_subcommand)
-        if ctx.invoked_subcommand is None:
-            pancho = get_master_opinion(hero_name)
-            await ctx.send(pancho)
+        pancho = get_master_opinion(hero_name)
+        await ctx.send(pancho)
 
     @command(name="pancho_add")
     @check.is_owner()
