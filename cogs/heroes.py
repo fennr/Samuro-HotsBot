@@ -39,12 +39,11 @@ class Heroes(commands.Cog, name="Heroes"):
         — Описание героя
         """
         name = ' '.join(hero_name)
-        print(name)
         if name is not None:
             hero = get_hero(name)
             if isinstance(hero, Hero):
                 embed = heroes_description_short(hero, ctx.author)
-                embed = get_master_opinion(hero.id, embed)
+                embed = get_master_opinion(ctx, hero.id, embed)
                 embed = builds(hero, ctx.author, embed)
                 embed = add_thumbnail(hero, embed)
             else:
