@@ -88,8 +88,11 @@ class Hots(Cog, name='Hots'):
         """
         — Мнение Мастера
         """
-        pancho = get_master_opinion(hero_name)
-        await ctx.send(pancho)
+        pancho = get_master_opinion(ctx, hero_name)
+        if isinstance(pancho, Embed):
+            await ctx.send(embed=pancho)
+        else:
+            await ctx.send(pancho)
 
     @command(name="pancho_add")
     @check.is_owner()

@@ -158,13 +158,14 @@ def get_hero(hero_name):
         return heroes_list
 
 
-def get_master_opinion(hero_name, embed=None):
+def get_master_opinion(ctx, hero_name, embed=None):
     url = 'https://www.youtube.com/watch?v='
     hero = get_hero(hero_name)
-    print(hero)
+    if isinstance(hero, list):
+        embed = find_more_heroes(hero, ctx.message.author, command='pancho')
+        return embed
     if isinstance(hero, Hero):
         videos = pancho_data.get(hero.id)
-        print(videos)
         if videos is not None:
             if len(videos) > 0:
                 video = videos[0]
