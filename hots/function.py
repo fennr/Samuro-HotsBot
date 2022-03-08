@@ -5,14 +5,18 @@ from discord import Embed, File
 from hots.Hero import Hero
 from helpers import sql, Error
 from discord.ext import commands
+from helpers import functions
+from scripts import ytparser
+from pprint import pprint
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
-heroes_ru_json_file = 'data/heroesdata_ru.json'
+heroes_ru_json_file = functions.get_heroesdata_ru()
+
+pancho_json_file = functions.get_pancho()
+
+with open(pancho_json_file, encoding='utf-8') as pancho_json:
+    pancho_data = json.load(pancho_json)
 
 
 def damerau_levenshtein_distance(s1: str, s2: str) -> int:
@@ -152,6 +156,57 @@ def get_hero(hero_name):
         return heroes_list[0]
     else:
         return heroes_list
+
+
+def get_master_opinion(hero_name, embed=None):
+    url = 'https://www.youtube.com/watch?v='
+    hero = get_hero(hero_name)
+    if isinstance(hero, Hero):
+        videos = pancho_data.get(hero.id)
+        if videos is not None:
+            if len(videos) > 1:
+                video = videos[0]
+                if embed is not None:
+                    text = ''
+                    for video in videos:
+                        text += f"[{video['date'][:10]}]({url}{video['url']})\n"
+                    embed.add_field(
+                        name="Мнение мастера",
+                        value=text
+                    )
+                    return embed
+                else:
+                    return f"{url}{video['url']}"
+        else:
+            if embed is not None:
+                return embed
+            else:
+                return "Для данного героя еще не было мнений мастера"
+
+
+def add_master_opinion(hero_name, url):
+    channel_name="PanchoProduction"
+    videos = ytparser.get_last_videos(config['yt_api'], channel_name)
+    yt, id = url.split('?v=', maxsplit=2)
+    video = videos.get(id)
+    if video is not None:
+        hero = get_hero(hero_name)
+        master_opinion_json = 'data/pancho.json'
+        with open(master_opinion_json, encoding='utf-8') as File:
+            master_json = json.load(File)
+        item = master_json.get(hero.id)
+        vid = dict(date=video['date'], url=video['url'])
+        if item is None:
+            first_element = []
+            first_element.append(video)
+            master_json[hero.id] = first_element
+        else:
+            master_json[hero.id].append(video)
+        with open(master_opinion_json, 'w', encoding='utf-8') as result_file:
+            json.dump(master_json, result_file, ensure_ascii=False, indent=4)
+        return 0
+    else:
+        return 1
 
 
 def cleanhtml(raw_html):

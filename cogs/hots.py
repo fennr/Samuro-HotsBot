@@ -1,10 +1,11 @@
 import json
 from discord import Embed, Object, utils
 from discord.ext.commands import command, Cog, errors
+from discord.ext import commands
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
 from hots.function import open_hero, find_heroes, read_hero_from_message, hero_not_found, find_more_heroes, \
-    args_not_found, get_hero
+    args_not_found, get_hero, get_master_opinion, add_master_opinion
 from hots.Hero import Hero
 from hots.heroes import heroes_description, builds, embed_stlk_builds
 from hots.nexuscompendium import weekly_rotation, sales, ranked
@@ -14,7 +15,7 @@ from hots.talents import talents
 from hots.tierlist import ban_heroes
 from hots.twitch import get_streams
 from hots.read_news import embed_news
-from helpers import functions
+from helpers import functions, check
 
 # Only if you want to use variables that are in the config.yaml file.
 config = functions.get_config()
@@ -23,6 +24,8 @@ short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
 heroes_json_file = 'data/heroesdata' + short_patch + '.json'
+
+pancho_json_file = functions.get_pancho()
 
 with open(heroes_json_file) as heroes_json:
     heroes_data = json.load(heroes_json)
@@ -79,6 +82,26 @@ class Hots(Cog, name='Hots'):
         await ctx.send(
             embed=embed
         )
+
+    @command(name="pancho")
+    async def pancho(self, ctx, hero_name):
+        """
+        — Мнение Мастера
+        """
+        print(ctx.invoked_subcommand)
+        if ctx.invoked_subcommand is None:
+            pancho = get_master_opinion(hero_name)
+            await ctx.send(pancho)
+
+    @command(name="pancho_add")
+    @check.is_owner()
+    async def pancho_add(self, ctx, hero_name, url):
+        error = add_master_opinion(hero_name, url)
+        if not error:
+            await ctx.send("Запись была добавлена")
+        else:
+            await ctx.send("Ошибка при записи")
+
 
     @command(name="patchnotes")
     async def hots_notes(self, context):

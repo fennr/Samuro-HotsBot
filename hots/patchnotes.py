@@ -40,7 +40,7 @@ def get_last_update(url, embed=None):
         embed.add_field(
             name=name,
             value=f"[{value.text}]({value_link})",
-            inline=False
+            inline=True
         )
     except:
         pass

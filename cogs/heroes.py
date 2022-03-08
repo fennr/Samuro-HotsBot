@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord import Embed
 
 from hots.function import add_thumbnail, find_heroes, hero_not_found, find_more_heroes, \
-    args_not_found, read_hero_from_message, get_hero
+    args_not_found, read_hero_from_message, get_hero, get_master_opinion
 from hots.heroes import builds, heroes_description_short
 from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
@@ -44,6 +44,7 @@ class Heroes(commands.Cog, name="Heroes"):
             hero = get_hero(name)
             if isinstance(hero, Hero):
                 embed = heroes_description_short(hero, ctx.author)
+                embed = get_master_opinion(hero.id, embed)
                 embed = builds(hero, ctx.author, embed)
                 embed = add_thumbnail(hero, embed)
             else:

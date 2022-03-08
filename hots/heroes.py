@@ -197,7 +197,7 @@ def builds(hero: Hero, author, embed=None):
     if embed is None:
         embed = Embed(
             title='{} / {} : Билды'.format(hero.en, hero.ru, ),  # title="Описание героя:",
-            color=config["success"]
+            color=config["success"],
         )
     icy_veins_url_full = icy_veins_url + hero.en.lower().replace(' ', '-').replace('.',
                                                                                    '-').replace("'",
@@ -212,17 +212,17 @@ def builds(hero: Hero, author, embed=None):
               "[Разбор героя от IcyVeins]({})\n" \
               #"[Описание героя Nexuscompendium]({})\n" \
               #"[Пользовательские билды HeroesFire]({})\n" \
-              "[Винрейт по талантам HeroesProfile]({})\n" \
-              "[Винрейт по талантам HotsLogs]({})".format(
+              #"[Винрейт по талантам HeroesProfile]({})\n" \
+              "[Винрейт по талантам]({})".format(
             heroespn_url_full,
             #heroeshearth_top_url + default_hero_name.replace(' ', '-'),
             icy_veins_url_full,
             #nexuscompendium_url + default_hero_name.replace(' ', '-'),
             #heroesfire_url + default_hero_name.replace(' ', '-'),
-            heroesprofile_url + hero.en.replace(' ', '+') + '&league_tier=master,diamond',
+            #heroesprofile_url + hero.en.replace(' ', '+') + '&league_tier=master,diamond',
             hotslogs_url + hero.en.replace(' ', '%20')
         ),
-        inline=False
+        inline=True
     )
     embed = embed_stlk_builds(hero, author, embed)
     embed.set_footer(

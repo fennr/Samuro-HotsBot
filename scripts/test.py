@@ -2,6 +2,9 @@ from collections.abc import MutableMapping
 from helpers import profile_lib as pl
 from hots.Stats import Stats
 import psycopg2.extras
+from scripts.ytparser import *
+from pprint import pprint
+import os
 
 mmr = {
     "Bronze": {
@@ -106,7 +109,15 @@ def test_team():
     team = pl.get_team(record)
     print(team)
 
+def test_ytparser():
+    yt_data("AIzaSyAo-D35Tct18rJPqtiYv17QGS-bHhQBBo4", "PanchoProduction")
+    return "Запись данных завершена"
 
+def get_video():
+    data = get_last_videos(os.environ.get('YT_API'), "PanchoProduction")
+    return data
 
 if __name__ == '__main__':
-    test_team()
+    a = get_video()
+    pprint(a)
+

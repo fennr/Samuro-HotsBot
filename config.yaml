@@ -4,7 +4,8 @@ bot_initial_prefix:
 bot_prefix: "!"
 patch: "2.55.1.87306"
 log: "log_base.log"
-version: "0.4.010"
+version: "0.4.100"
+yt_api: "AIzaSyAo-D35Tct18rJPqtiYv17QGS-bHhQBBo4"
 owner: 196583204164075520
 owners:
   - 196583204164075520
