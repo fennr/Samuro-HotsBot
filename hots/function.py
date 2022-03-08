@@ -188,7 +188,7 @@ def get_master_opinion(ctx, hero_name, embed=None):
 
 
 def add_master_opinion(hero_name, url):
-    channel_name="PanchoProduction"
+    channel_name = "PanchoProduction"
     videos = ytparser.get_last_videos(config['yt_api'], channel_name)
     yt, id = url.split('?v=', maxsplit=2)
     video = videos.get(id)
