@@ -67,7 +67,7 @@ class Profile(commands.Cog, name="Profile"):
             await ctx.send(pl.profile_not_found(btag))
 
     @profile.command(name="remove")
-    @check.is_admin()
+    @check.is_owner()
     async def profile_remove(self, ctx, user_or_btag):
         user_id = pl.get_user_id(user_or_btag)
         con, cur = pl.get_con_cur()

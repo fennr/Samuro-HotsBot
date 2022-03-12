@@ -39,12 +39,12 @@ class Event(commands.Cog, name="Event"):
 
 
     @event.command(name="test")
-    @check.is_admin()
+    @check.is_lead()
     async def event_test(self, ctx, *, avamember: Member = None):
         await ctx.send('Тест прав на ивенты пройден')
 
     @event.command(name="5x5")
-    @check.is_admin()
+    @check.is_lead()
     async def event_5x5(self, ctx, *args):
         """
         @ x 10 - создать 5х5 на 10 человек
@@ -108,7 +108,7 @@ class Event(commands.Cog, name="Event"):
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
     @event.command(name="winner")
-    @check.is_admin()
+    @check.is_lead()
     async def event_winner(self, ctx, winner=None, delta=6, points=1):
         """
         red | blue - выбрать победителя
@@ -144,7 +144,7 @@ class Event(commands.Cog, name="Event"):
             await ctx.send(f"Укажите победителя *red* или *blue*")
 
     @event.command(name="remove")
-    @check.is_admin()
+    @check.is_lead()
     async def event_remove(self, ctx):
         """
         - Отменить матч

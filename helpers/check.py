@@ -5,6 +5,7 @@ import sys
 from typing import TypeVar, Callable
 
 from disnake.ext import commands
+from discord.ext import commands
 
 from exceptions import *
 
@@ -49,6 +50,27 @@ def is_admin() -> Callable[[T], T]:
                 raise UserNotAdmin
             return True
 
+    return commands.check(predicate)
+
+
+def is_lead() -> Callable[[T], T]:
+    """
+    This is a custom check to see if the user executing the command is an owner of the bot.
+    """
+    async def predicate(context: commands.Context) -> bool:
+        good_roles = [
+             703884580041785344,  # Создатель
+             703884637755408466,  # Админ
+             946480695218429952,  # Samuro_dev
+             789084039180451840,  # Ведущий
+             880865537058545686  # test
+        ]
+        for role in context.author.roles:
+            if role.id in good_roles:
+                return True
+        await context.send('Данная команда доступна только администратору')
+        return False
+        #raise UserNotAdmin
     return commands.check(predicate)
 
 
