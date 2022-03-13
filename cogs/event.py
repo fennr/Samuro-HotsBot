@@ -28,11 +28,14 @@ async def event_report(ctx, text):
 
 
 class Event(commands.Cog, name="Event"):
+
+    #votes_blue = set()
+    #votes_red = set()
+
     def __init__(self, bot):
         self.bot = bot
-
-    votes_blue = set()
-    votes_red = set()
+        self.votes_blue = set()
+        self.votes_red = set()
 
     @commands.group(name="event")
     async def event(self, ctx):
@@ -49,7 +52,7 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=4.0):
+    async def event_poll(self, ctx, *, delay=300.0):
         blue = '🟦'
         red = '🟥'
         poll_title = "Кто победит?"
@@ -68,32 +71,40 @@ class Event(commands.Cog, name="Event"):
         await embed_message.remove_reaction(blue, member=embed_message.author)
         await embed_message.remove_reaction(red, member=embed_message.author)
         message = await ctx.channel.fetch_message(embed_message.id)
-        print(message.reactions)
+        #print(message.reactions)
+        blue_bet = []
+        red_bet = []
         for reaction in message.reactions:
-            print(reaction)
-            print(type(reaction))
+            #print(reaction)
+            #print(type(reaction))
             if reaction.emoji == blue:
-                blue_bet = []
                 async for user in reaction.users():
                     blue_bet.append(user.mention)
             if reaction.emoji == red:
-                red_bet = []
                 async for user in reaction.users():
                     red_bet.append(user.mention)
-        global votes_blue, votes_red
-        votes_blue = set(blue_bet)  # - set(red_bet)
-        votes_red = set(red_bet)  # - set(blue_bet)
+        self.votes_blue = set(blue_bet) - set(red_bet)
+        self.votes_red = set(red_bet) - set(blue_bet)
         await embed_message.delete()
         await ctx.send(f"Голосование завершено")
-        await self.event_poll_end(ctx, blue, blue=votes_blue, red=votes_red)
 
     @event.command(name="poll_end")
-    async def event_poll_end(self, ctx, winner, *, blue=votes_blue, red=votes_red):
+    async def event_poll_end(self, ctx, winner):
 
-        text_blue = ', '.join(votes_blue)
-        text_red = ', '.join(votes_red)
-        await ctx.send(f"За победу синих проголосовали: {text_blue}")
-        await ctx.send(f"За победу красных проголосовали: {text_red}")
+        text_blue = ', '.join(self.votes_blue)
+        text_red = ', '.join(self.votes_red)
+        if winner == 'blue':
+            await ctx.send(f"Победила команда **синих**")
+            if len(text_blue) > 0:
+                await ctx.send(f"За победу **синих** проголосовали: {text_blue}")
+            if len(text_red) > 0:
+                await ctx.send(f"За победу красных проголосовали: {text_red}")
+        if winner == 'red':
+            await ctx.send(f"Победила команда **красных**")
+            if len(text_red) > 0:
+                await ctx.send(f"За победу **красных** проголосовали: {text_red}")
+            if len(text_blue) > 0:
+                await ctx.send(f"За победу синих проголосовали: {text_blue}")
 
     @event.command(name="5x5")
     @check.is_lead()
@@ -210,9 +221,8 @@ class Event(commands.Cog, name="Event"):
         pl.commit(con)
         if cur.rowcount:  # счетчик записей, найдет 1 или 0
             await ctx.send(f"Активный матч был отменен, можно пересоздать команды")
-            global votes_blue, votes_red
-            votes_blue = set()
-            votes_red = set()
+            self.votes_blue = set()
+            self.votes_red = set()
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 
