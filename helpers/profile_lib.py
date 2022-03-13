@@ -10,6 +10,8 @@ from hots.Player import Player
 from hots.Stats import Stats
 from hots.Team import Team
 from collections.abc import MutableMapping
+import time
+from datetime import datetime
 import ast
 
 if not os.path.isfile("config.yaml"):
@@ -103,7 +105,10 @@ selects = {
                     INNER JOIN "Achievements" as a
                     ON ua.achievement = a.id
                     WHERE ua.id = %s''',
-    'PlayersLeague': 'SELECT * FROM "Players" WHERE league = %s ORDER BY mmr DESC LIMIT %s',
+    'PlayersLeague': '''SELECT p.* FROM "Players" as p
+                        INNER JOIN "UserStats" as us
+                        ON p.id = us.id AND p.guild_id = us.guild_id
+                        WHERE league = %s ORDER BY mmr DESC LIMIT %s''',
 }
 
 deletes = {
@@ -452,7 +457,9 @@ def get_achievements_embed(embed: Embed, player: Player):
         for record in records:
             print(record.row)
             user_id, achiev_name, achiev_date = record.row[1:-1].split(",")
-            achievements += f"**{achiev_name}** - получено {achiev_date}\n"
+            date_obj = datetime.strptime(achiev_date, '%Y-%m-%d').date()
+            date = date_obj.strftime('%d %B %Y')
+            achievements += f"**{achiev_name}** - получено {date}\n"
         embed.add_field(
             name="Достижения",
             value=achievements,

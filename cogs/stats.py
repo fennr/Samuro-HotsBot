@@ -92,7 +92,7 @@ class Stats(commands.Cog, name="Stats"):
             color=config["info"]
         )
         value = ""
-        max_indent = len(max([self.bot.get_user(x.id).name for x in records])) + 1  # получать макс длину имени
+        # max_indent = len(max([self.bot.get_user(x.id).name for x in records])) + 1  # получать макс длину имени
         for i, record in enumerate(records):
             value += f"{i+1}. {pl.get_discord_mention(record.id)} — {record.points}\n"
         embed.add_field(
