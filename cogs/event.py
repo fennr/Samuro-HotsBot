@@ -105,6 +105,8 @@ class Event(commands.Cog, name="Event"):
                 await ctx.send(f"За победу **красных** проголосовали: {text_red}")
             if len(text_blue) > 0:
                 await ctx.send(f"За победу синих проголосовали: {text_blue}")
+        self.votes_blue = set()
+        self.votes_red = set()
 
     @event.command(name="5x5")
     @check.is_lead()
@@ -167,7 +169,6 @@ class Event(commands.Cog, name="Event"):
                     team_two_discord = ' '.join([pl.get_player_data(player) for player in team_two])
                     await ctx.send(f"**Синяя команда:** \n{team_one_discord}")
                     await ctx.send(f"**Красная команда:** \n{team_two_discord}")  # mean(team_blue):.2f
-                    await self.event_poll(ctx, delay=5.0)
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
