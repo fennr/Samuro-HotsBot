@@ -52,7 +52,10 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=300.0):
+    async def event_poll(self, ctx, *, delay=240.0):
+        """
+        — Создание голосования на победу
+        """
         blue = '🟦'
         red = '🟥'
         poll_title = "Кто победит?"
@@ -62,7 +65,7 @@ class Event(commands.Cog, name="Event"):
             color=config["success"]
         )
         embed.set_footer(
-            text=f"5 минут на голосование"
+            text=f"4 минуты на голосование"
         )
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(blue)
