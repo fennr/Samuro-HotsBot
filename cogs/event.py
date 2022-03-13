@@ -8,6 +8,7 @@ from discord.ext import commands
 from helpers import sql, check, functions
 from helpers import profile_lib as pl
 from discord_slash import cog_ext, SlashContext
+import time
 
 config = functions.get_config()
 
@@ -25,9 +26,13 @@ async def event_report(ctx, text):
     await ctx.send("Сообщение отправлено администрации", hidden=True)
 
 
+
 class Event(commands.Cog, name="Event"):
     def __init__(self, bot):
         self.bot = bot
+
+    votes_blue = set()
+    votes_red = set()
 
     @commands.group(name="event")
     async def event(self, ctx):
@@ -37,11 +42,58 @@ class Event(commands.Cog, name="Event"):
         if ctx.invoked_subcommand is None:
             await ctx.send('Для подбора команд используйте команду #event 5x5 @10_профилей')
 
-
     @event.command(name="test")
     @check.is_lead()
     async def event_test(self, ctx, *, avamember: Member = None):
         await ctx.send('Тест прав на ивенты пройден')
+
+    @event.command(name="poll")
+    @check.is_lead()
+    async def event_poll(self, ctx, *, delay=4.0):
+        blue = '🟦'
+        red = '🟥'
+        poll_title = "Кто победит?"
+        embed = Embed(
+            title=f"{poll_title}",
+            # description=f"{poll_title}",
+            color=config["success"]
+        )
+        embed.set_footer(
+            text=f"5 минут на голосование"
+        )
+        embed_message = await ctx.send(embed=embed)
+        await embed_message.add_reaction(blue)
+        await embed_message.add_reaction(red)
+        time.sleep(delay)
+        await embed_message.remove_reaction(blue, member=embed_message.author)
+        await embed_message.remove_reaction(red, member=embed_message.author)
+        message = await ctx.channel.fetch_message(embed_message.id)
+        print(message.reactions)
+        for reaction in message.reactions:
+            print(reaction)
+            print(type(reaction))
+            if reaction.emoji == blue:
+                blue_bet = []
+                async for user in reaction.users():
+                    blue_bet.append(user.mention)
+            if reaction.emoji == red:
+                red_bet = []
+                async for user in reaction.users():
+                    red_bet.append(user.mention)
+        global votes_blue, votes_red
+        votes_blue = set(blue_bet)  # - set(red_bet)
+        votes_red = set(red_bet)  # - set(blue_bet)
+        await embed_message.delete()
+        await ctx.send(f"Голосование завершено")
+        await self.event_poll_end(ctx, blue, blue=votes_blue, red=votes_red)
+
+    @event.command(name="poll_end")
+    async def event_poll_end(self, ctx, winner, *, blue=votes_blue, red=votes_red):
+
+        text_blue = ', '.join(votes_blue)
+        text_red = ', '.join(votes_red)
+        await ctx.send(f"За победу синих проголосовали: {text_blue}")
+        await ctx.send(f"За победу красных проголосовали: {text_red}")
 
     @event.command(name="5x5")
     @check.is_lead()
@@ -104,6 +156,7 @@ class Event(commands.Cog, name="Event"):
                     team_two_discord = ' '.join([pl.get_player_data(player) for player in team_two])
                     await ctx.send(f"**Синяя команда:** \n{team_one_discord}")
                     await ctx.send(f"**Красная команда:** \n{team_two_discord}")  # mean(team_blue):.2f
+                    await self.event_poll(ctx, delay=5.0)
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
@@ -137,6 +190,7 @@ class Event(commands.Cog, name="Event"):
                 pl.team_change_stats(team=lose_team, guild_id=guild_id, winner=False)
                 await ctx.send(f"Очки за поражение начислены")
                 await ctx.send(f"Матч успешно закрыт")
+                await self.event_poll_end(ctx, winner)
             else:
                 await ctx.send(f"Открытых матчей не найдено")
             pl.commit(con)
@@ -156,6 +210,9 @@ class Event(commands.Cog, name="Event"):
         pl.commit(con)
         if cur.rowcount:  # счетчик записей, найдет 1 или 0
             await ctx.send(f"Активный матч был отменен, можно пересоздать команды")
+            global votes_blue, votes_red
+            votes_blue = set()
+            votes_red = set()
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 
