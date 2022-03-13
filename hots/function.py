@@ -198,13 +198,13 @@ def add_master_opinion(hero_name, url):
         with open(master_opinion_json, encoding='utf-8') as File:
             master_json = json.load(File)
         item = master_json.get(hero.id)
-        vid = dict(date=video['date'], url=video['url'])
+        vid = dict(date=video['date'], title=video['title'], url=video['url'])
         if item is None:
             first_element = []
-            first_element.append(video)
+            first_element.append(vid)
             master_json[hero.id] = first_element
         else:
-            master_json[hero.id].append(video)
+            master_json[hero.id].insert(0, vid)
         with open(master_opinion_json, 'w', encoding='utf-8') as result_file:
             json.dump(master_json, result_file, ensure_ascii=False, indent=4)
         return 0
