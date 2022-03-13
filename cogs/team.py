@@ -10,7 +10,7 @@ config = functions.get_config()
 
 class Team(commands.Cog, name="Team"):
     """
-    — Описание модуля Команд
+    — Модуль работы с Командами/Кланами
     """
     def __init__(self, bot):
         self.bot = bot

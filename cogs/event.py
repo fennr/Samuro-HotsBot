@@ -28,6 +28,9 @@ async def event_report(ctx, text):
 
 
 class Event(commands.Cog, name="Event"):
+    """
+    — Модуль работы с ивентами
+    """
 
     #votes_blue = set()
     #votes_red = set()

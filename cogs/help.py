@@ -115,7 +115,7 @@ class Help(commands.Cog):
 
             # setting information about author
             emb.add_field(name="About",
-                          value=f"Самуро разработан __{owner}__\n"
+                          value=f"Самуро разработан __<@{owner}>__\n"
                                 f"Добавить к себе на сервер можно кликнув по аватарке и нажав 'Добавить на сервер'")
             emb.set_footer(text=f"Текущая версия: {version}")
 
