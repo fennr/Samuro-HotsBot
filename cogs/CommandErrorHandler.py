@@ -43,6 +43,7 @@ class CommandErrorHandler(commands.Cog):
         cog = ctx.cog
         if cog:
             if cog._get_overridden_method(cog.cog_command_error) is not None:
+                print('Обработка ошибки выполнена внутри cog')
                 return
 
         ignored = (commands.CommandNotFound, )
@@ -71,8 +72,11 @@ class CommandErrorHandler(commands.Cog):
 
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.
-            print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
-            traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+            print('Ignoring exception in command {} '.format(ctx.command), file=sys.stderr)
+            try:
+                traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
+            except:
+                print(error)
 
     """Below is an example of a Local Error Handler for our command do_repeat"""
 

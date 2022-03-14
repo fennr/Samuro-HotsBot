@@ -398,7 +398,7 @@ class Hots(Cog, name='Hots'):
 
     @data.error
     @stlk_builds.error
-    async def hots_handler(self, ctx, error):
+    async def cog_command_error(self, ctx, error):
         print("Обработка ошибок hots")
         if isinstance(error, errors.MissingRequiredArgument):
             embed = Embed(
@@ -424,6 +424,7 @@ class Hots(Cog, name='Hots'):
                 text=f"{config['bot_prefix']}help для просмотра справки по командам"
                 # context.message.author если использовать без slash
             )
+            print(text)
             await ctx.send(embed=embed)
 
 def setup(bot):
