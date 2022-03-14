@@ -5,6 +5,8 @@ import psycopg2.extras
 from scripts.ytparser import *
 from pprint import pprint
 import os
+import stackprinter
+stackprinter.set_excepthook(style='darkbg2')
 
 mmr = {
     "Bronze": {
@@ -117,7 +119,9 @@ def get_video():
     data = get_last_videos(os.environ.get('YT_API'), "PanchoProduction")
     return data
 
+def do_stuff():
+    raise ValueError('Error message')
+
 if __name__ == '__main__':
-    a = get_video()
-    pprint(a)
+    do_stuff()  # Вызывает ValueError
 

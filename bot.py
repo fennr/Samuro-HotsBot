@@ -155,7 +155,7 @@ async def on_slash_command(ctx: SlashContext):
 @bot.event
 async def on_command_error(ctx, error):
     print("Общая обработка ошибок")
-    print(error)
+    #print(error)
     # This prevents any commands with local handlers being handled here in on_command_error.
     if hasattr(ctx.command, 'on_error'):
         return
@@ -190,12 +190,12 @@ async def on_command_error(ctx, error):
         )
         await ctx.send(embed=embed)'''
     elif isinstance(error, commands.CommandNotFound):
-        print(error)
+        pass  # print(error)
     else:
-        print(error)
-    log.error(ctx, error)
+        pass  # print(error)
+    #log.error(ctx, error)
     sql.error_log(ctx, error)
-    # raise error
+    raise error
 
 
 # Запрет писать боту в личку
