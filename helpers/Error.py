@@ -8,7 +8,6 @@ class MyException(Exception):
             self.message = None
 
     def __str__(self):
-        print('calling str')
         if self.message:
             return f'Custom Error, {self.message}'
         else:
@@ -20,4 +19,8 @@ class CommandError(MyException):
 
 
 class HeroNotFoundError(CommandError):
-    pass
+    def __str__(self):
+        if self.message:
+            return f'Не найден герой:, {self.message}'
+        else:
+            return 'Не найден герой'

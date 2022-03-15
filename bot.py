@@ -119,10 +119,6 @@ async def on_message(message):
     if message.author.id in config["blacklist"]:
         print(f"banned {message.author}")
         return
-    for bad_command in command_bl["command"]:
-        if message.content.count(bad_command) > 0:
-            print(f"Команда {bad_command} в черном списке")
-            return
     await bot.process_commands(message)
 
 
@@ -186,9 +182,7 @@ async def on_member_join(member):
 
 
 # Генерируем файл с именами героев
-heroes_ru_names.create_heroes_ru_data()
-# Генерируем данные из таблицы Сталка
-# google_table.create_stlk_json()
-# Run the bot with the token
+#heroes_ru_names.create_heroes_ru_data()
 
+# Run the bot with the token
 bot.run(TOKEN)

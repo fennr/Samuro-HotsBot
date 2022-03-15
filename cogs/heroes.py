@@ -13,7 +13,7 @@ from hots.patchnotes import last_pn
 from hots.skills import skills, read_skill_btn
 from hots.talents import talents, wrong_talent_lvl, read_talent_lvl
 from hots.Hero import Hero
-from helpers import sql, log, functions
+from helpers import sql, log, functions, Error
 
 config = functions.get_config()
 
@@ -28,6 +28,7 @@ class Heroes(commands.Cog, name="Heroes"):
     """
     — Информация о героях, их способностях и талантах
     """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -38,8 +39,10 @@ class Heroes(commands.Cog, name="Heroes"):
         """
         — Описание героя
         """
-        name = ' '.join(hero_name)
-        if name is not None:
+        try:
+            if len(hero_name) == 0:
+                raise Error.HeroNotFoundError
+            name = ' '.join(hero_name)
             hero = get_hero(name)
             if isinstance(hero, Hero):
                 embed = heroes_description_short(hero, ctx.author)
@@ -48,26 +51,26 @@ class Heroes(commands.Cog, name="Heroes"):
                 embed = add_thumbnail(hero, embed)
             else:
                 embed = find_more_heroes(hero, ctx.message.author)
-        else:
-            embed = hero_not_found()
-        await ctx.send(embed=embed)
-
+            await ctx.send(embed=embed)
+        except Error.HeroNotFoundError:
+            raise Error.HeroNotFoundError
 
     @commands.command(name="skill")
     async def hots_skill(self, ctx, hero_name, btns='QWE'):
         """
         — Прочитать скиллы героя
         """
-        name = ' '.join(hero_name)
-        if name is not None:
+        try:
+            if len(hero_name) == 0:
+                raise Error.HeroNotFoundError
             hero = get_hero(hero_name)
             if isinstance(hero, Hero):
                 embed = skills(hero=hero, author=ctx.author, types=['basic', 'heroic', 'trait'], btn_key=btns)
             else:
                 embed = find_more_heroes(hero, ctx.author, 'skill')
-        else:
-            embed = hero_not_found()
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
+        except Error.HeroNotFoundError:
+            raise Error.HeroNotFoundError
 
 
     @commands.command(name="talent")
@@ -88,12 +91,13 @@ class Heroes(commands.Cog, name="Heroes"):
             embed = hero_not_found()
         await ctx.send(embed=embed)
 
-
     @hots_hero.error
     @hots_skill.error
     @hots_talent.error
     async def heroes_hero_handler(self, ctx, error):
         print("Обработка ошибок heroes")
+        print(error.__cause__)
+        print(type(error.__cause__))
         if isinstance(error, commands.MissingRequiredArgument):
             lvl = ':lvl:' if str(ctx.command) == 'talent' else ''
             embed = Embed(
@@ -112,16 +116,17 @@ class Heroes(commands.Cog, name="Heroes"):
             log.error(ctx, "Неверно введены аргументы команды")
             await ctx.send(embed=embed)
         elif isinstance(error, commands.CommandInvokeError):
-            text = "Ошибка! Герой не найден"
-            embed = Embed(
-                title=text,
-                color=config["error"]
-            )
-            embed.set_footer(
-                text=f"{config['bot_prefix']}help для просмотра справки по командам"
-                # context.message.author если использовать без slash
-            )
-            await ctx.send(embed=embed)
+            if isinstance(error.__cause__, Error.HeroNotFoundError):
+                text = "Ошибка! Герой не найден"
+                embed = Embed(
+                    title=text,
+                    color=config["error"]
+                )
+                embed.set_footer(
+                    text=f"{config['bot_prefix']}help для просмотра справки по командам"
+                    # context.message.author если использовать без slash
+                )
+                await ctx.send(embed=embed)
 
 
 # And then we finally add the cog to the bot so that it can load, unload, reload and use it's content.

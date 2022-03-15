@@ -5,7 +5,7 @@ from discord import Embed, File
 from hots.Hero import Hero
 from helpers import sql, Error
 from discord.ext import commands
-from helpers import functions
+from helpers import functions, Error
 from scripts import ytparser
 from pprint import pprint
 
@@ -78,7 +78,7 @@ def args_not_found(command, lvl=''):
 
 def hero_not_found():
     error = "Ошибка! Герой не найден"
-    raise commands.CommandInvokeError(error)
+    raise Error.HeroNotFoundError
 
 
 def find_more_heroes(hero_list, author, command='hero', lvl=''):
