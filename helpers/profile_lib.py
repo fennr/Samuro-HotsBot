@@ -169,12 +169,16 @@ def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
             player.mmr -= int(delta)
             player_stats.points += int(points)
             player_stats.lose += 1
+        player.league, player.division = get_league_division_by_mmr(player.mmr)
         updateUS = '''UPDATE "UserStats" SET points = %s, win = %s, lose = %s 
                 WHERE id = %s AND guild_id = %s'''
-        updateP = '''UPDATE "Players" SET mmr = %s WHERE id = %s and guild_id = %s'''
+        updateP = '''UPDATE "Players" SET mmr = %s, league = %s, division = %s 
+                WHERE id = %s and guild_id = %s'''
         cur.execute(updateUS, (player_stats.points, player_stats.win, player_stats.lose,
                                player_stats.id, player_stats.guild_id))
-        cur.execute(updateP, (player.mmr, player.id, player.guild_id))
+        cur.execute(updateP, (player.mmr, player.league, player.division,
+                              player.id, player.guild_id))
+        print(f"{player.btag} -> {player.mmr} mmr ({player.league})")
     commit(con)
 
 
