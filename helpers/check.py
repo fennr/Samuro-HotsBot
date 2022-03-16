@@ -53,6 +53,19 @@ def is_admin() -> Callable[[T], T]:
     return commands.check(predicate)
 
 
+def is_samuro_dev() -> Callable[[T], T]:
+    async def predicate(context: commands.Context) -> bool:
+        good_roles = [
+             946480695218429952,  # Samuro_dev
+             880865537058545686  # test
+        ]
+        for role in context.author.roles:
+            if role.id in good_roles:
+                return True
+        await context.send('Данная команда доступна только администратору')
+        return False
+    return commands.check(predicate)
+
 def is_lead() -> Callable[[T], T]:
     """
     This is a custom check to see if the user executing the command is an owner of the bot.

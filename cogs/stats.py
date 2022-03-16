@@ -1,8 +1,14 @@
+import os
 from discord.ext import commands
 from helpers import functions
-from discord import Embed, utils, Member
+from discord import Embed, utils, Member, File
 from helpers import profile_lib as pl
+from helpers import check
 from enum import Enum, unique
+import openpyxl
+from openpyxl.styles import Font
+from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
+from openpyxl.utils import get_column_letter
 
 config = functions.get_config()
 
@@ -27,6 +33,46 @@ class Stats(commands.Cog, name="Stats"):
     async def top(self, ctx):
         if ctx.invoked_subcommand is None:
             pass
+
+    @top.command(name="excel")
+    @check.is_samuro_dev()
+    async def top_excel(self, ctx):
+        headings = ['id', 'guild_id', 'Побед', 'Поражений', 'Очков', 'Батлтег']
+        filepath = 'UserStats.xlsx'
+        con, cur = pl.get_con_cur()
+        guild_id = pl.get_guild_id(ctx)
+        select = pl.selects.get('usGuild')
+        cur.execute(select, (guild_id, ))
+        data = cur.fetchall()
+        cur.close()
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.row_dimensions[1].font = Font(bold=True)
+
+        # Spreadsheet row and column indexes start at 1
+        # so we use "start = 1" in enumerate so
+        # we don't need to add 1 to the indexes.
+        for colno, heading in enumerate(headings, start=1):
+            c = ws.cell(row=1, column=colno)
+            c.font = Font(bold=True)
+            c.value = heading
+
+        column_widths = []
+        # This time we use "start = 2" to skip the heading row.
+        for rowno, row in enumerate(data, start=2):
+            for colno, cell_value in enumerate(row, start=1):
+                ws.cell(row=rowno, column=colno).value = cell_value
+        # Выравнивание длины колонок
+        dim_holder = DimensionHolder(worksheet=ws)
+        for col in range(ws.min_column, ws.max_column + 1):
+            dim_holder[get_column_letter(col)] = ColumnDimension(ws, min=col, max=col, width=20)
+        ws.column_dimensions = dim_holder
+        # сохранение, вывод, удаление файла
+        wb.save(filepath)
+        await ctx.author.send(file=File(filepath))
+        os.remove(filepath)
+        await ctx.send("Файл отправлен личным сообщением")
 
     @top.command(name="mmr")
     async def top_mmr(self, ctx, league_type="Мастер", count=10):
