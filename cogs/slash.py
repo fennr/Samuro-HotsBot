@@ -30,11 +30,11 @@ class Slash(commands.Cog, name="Slash"):
 
     @cog_ext.cog_slash(name="weekly", description="Список героев еженедельной ротации")
     async def slash_rotate(self, ctx: SlashContext):
-        await hots.Heroes.rotation(self, ctx)
+        await hots.Hots.rotation(self, ctx)
 
     @cog_ext.cog_slash(name="ban", description="Список рекомендуемых к бану героев")
     async def slash_ban(self, ctx: SlashContext):
-        await hots.Heroes.ban_list(self, ctx)
+        await hots.Hots.ban_list(self, ctx)
 
     '''@cog_ext.cog_slash(name="data", description="Полные данные по герою")
     async def slash_data(self, ctx: SlashContext, hero):

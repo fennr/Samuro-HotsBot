@@ -21,12 +21,12 @@ def sql_init():
         cur = con.cursor()
 
         # execute an SQL statement to get the HerokuPostgres database version
-        print('PostgreSQL database version:')
+        #print('PostgreSQL database version:')
         cur.execute('SELECT version()')
 
         # display the PostgreSQL database server version
         db_version = cur.fetchone()
-        print(db_version)
+        #print(db_version)
         # close the communication with the database server by calling the close()
         if con is not None:
             con.close()

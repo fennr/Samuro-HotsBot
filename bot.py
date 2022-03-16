@@ -144,7 +144,7 @@ async def on_slash_command(ctx: SlashContext):
               f"by {ctx.author} (ID: {ctx.author_id})"
     print(message)
     log.info(message)
-    sql.info_log(ctx, executedCommand, slash=True)
+    #sql.info_log(ctx, executedCommand, slash=True)
 
 
 # Запрет писать боту в личку
