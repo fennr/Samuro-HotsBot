@@ -177,7 +177,10 @@ async def on_member_join(member):
     print(message)
     log.info(message)
     # sql.new_user_log(member, message)
-    await member.send(embed=embed)
+    try:
+        await member.send(embed=embed)
+    except:
+        print(f"Невозможно отправить сообщение пользователю {member.name}")
 
 
 # Генерируем файл с именами героев
