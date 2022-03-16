@@ -14,6 +14,7 @@ class League(Enum):
     Platinum = "Платина"
     Diamond = "Алмаз"
     Master = "Мастер"
+    Grandmaster = "Грандмастер"
 
 class Stats(commands.Cog, name="Stats"):
     """

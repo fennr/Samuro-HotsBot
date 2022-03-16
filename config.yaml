@@ -1,12 +1,12 @@
-bot_initial_prefix:
+bot_initial_prefix:   # доступные префиксы
   - '#'
   - '!'
-bot_prefix: "!"
-patch: "2.55.1.87306"
-log: "log_base.log"
-version: "0.4.359"
+bot_prefix: "!"       # отдельно один для хелпа
+patch: "2.55.1.87306" # актуальный патч хотса
+log: "log_base.log"   # файл для логов
+version: "0.4.371"    # версия бота
 yt_api: "AIzaSyAo-D35Tct18rJPqtiYv17QGS-bHhQBBo4"
-owner: 196583204164075520
+owner: 196583204164075520 # id создателя с полными правами
 owners:
   - 196583204164075520
 admins:
