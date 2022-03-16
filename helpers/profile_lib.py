@@ -39,7 +39,7 @@ flatten_mmr = {
     'Gold.5': 2550, 'Gold.4': 2575, 'Gold.3': 2600, 'Gold.2': 2625, 'Gold.1': 2650,
     'Platinum.5': 2675, 'Platinum.4': 2695, 'Platinum.3': 2715, 'Platinum.2': 2735, 'Platinum.1': 2755,
     'Diamond.5': 2775, 'Diamond.4': 2800, 'Diamond.3': 2825, 'Diamond.2': 2850, 'Diamond.1': 2875,
-    'Master.0': 2900, 'Grandmaster.0': 3150,
+    'Master.0': 2900, 'Grandmaster.0': 3100,
 }
 
 selects = {
