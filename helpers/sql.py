@@ -55,7 +55,7 @@ def new_user_log(member, message):
     con.close()
 
 
-def info_log(ctx, executedCommand, slash=False):
+def info_log(ctx, command_name, executedCommand, slash=False):
     now = str(datetime.now(pytz.timezone('Europe/Moscow')))
     con = get_connect()
     cur = con.cursor()
@@ -64,7 +64,7 @@ def info_log(ctx, executedCommand, slash=False):
     message = f"{log.get_message(slash)} : {executedCommand}"
     data = {'time': now[:25],
             'lvl': 'DONE',
-            'command': executedCommand,
+            'command': command_name,
             'guild': str(guild)[:29],
             'guild_id': guild_id,
             'author': str(author)[:29],
