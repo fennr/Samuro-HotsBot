@@ -103,7 +103,7 @@ class Fix(commands.Cog, name="Fix"):
                             id=player_list['id'],
                             mmr=player_list['mmr'], winrate=player_list['winrate'])
             if player.league[-1].isdigit():
-                if player.league == 'Master':
+                if player.league == 'Master' or player.league == 'Grandmaster':
                     division = 0
                 else:
                     division = player.league[-1]
@@ -114,6 +114,26 @@ class Fix(commands.Cog, name="Fix"):
         await ctx.send("Записи были разделены на дивизионы")
         con.commit()
         con.close()
+
+    @fix.command(name="league")
+    @check.is_owner()
+    async def fix_league(self, ctx):
+        sql.sql_init()
+        con, cur = pl.get_con_cur()
+        select = pl.selects.get('PlayersAll')
+        cur.execute(select)
+        rec = cur.fetchall()
+        for record in rec:
+            player = pl.get_player(record)
+            player.league, player.division = pl.get_league_division_by_mmr(player.mmr)
+            update = pl.updates.get('PlayerMMR')
+            cur.execute(update, (player.league, player.division, player.mmr,
+                                 player.id))
+            if (str(record.league) != str(player.league)) or (str(record.division) != str(player.division)):
+                print(f"Лига игрока {player.btag} исправлена: "
+                      f"{record.league} {record.division} -> {player.league} {player.division}")
+        pl.commit(con)
+        await ctx.send("Лиги игроков были исправлены")
 
     @fix.command(name="mmr")
     @check.is_owner()
@@ -127,7 +147,7 @@ class Fix(commands.Cog, name="Fix"):
         for player_list in rec:
             player = Player(btag=player_list['btag'], league=player_list['league'], division='',
                             id=player_list['id'],
-                            mmr=player_list['mmr'], winrate=player_list['winrate'])
+                            mmr=player_list['mmr'])
             # player.mmr = ''.join([i for i in player.mmr if i.isdigit()]).replace(' ', '')
             update = '''UPDATE heroesprofile SET mmr = %s WHERE btag=%s'''
             cur.execute(update, (player.mmr, player.btag))
