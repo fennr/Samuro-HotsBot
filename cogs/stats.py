@@ -37,7 +37,7 @@ class Stats(commands.Cog, name="Stats"):
     @top.command(name="excel")
     @check.is_samuro_dev()
     async def top_excel(self, ctx):
-        headings = ['id', 'guild_id', 'Побед', 'Поражений', 'Очков', 'Батлтег']
+        headings = ['id', 'guild_id', 'Победы', 'Поражения', 'Очки', 'Батлтег']
         filepath = 'UserStats.xlsx'
         con, cur = pl.get_con_cur()
         guild_id = pl.get_guild_id(ctx)
@@ -45,11 +45,9 @@ class Stats(commands.Cog, name="Stats"):
         cur.execute(select, (guild_id, ))
         data = cur.fetchall()
         cur.close()
-
+        # Создание документа, страницы
         wb = openpyxl.Workbook()
         ws = wb.active
-        ws.row_dimensions[1].font = Font(bold=True)
-
         # Spreadsheet row and column indexes start at 1
         # so we use "start = 1" in enumerate so
         # we don't need to add 1 to the indexes.
@@ -57,8 +55,6 @@ class Stats(commands.Cog, name="Stats"):
             c = ws.cell(row=1, column=colno)
             c.font = Font(bold=True)
             c.value = heading
-
-        column_widths = []
         # This time we use "start = 2" to skip the heading row.
         for rowno, row in enumerate(data, start=2):
             for colno, cell_value in enumerate(row, start=1):
