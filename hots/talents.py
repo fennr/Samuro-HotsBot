@@ -1,18 +1,14 @@
 import json
 import os
 import sys
-
 import yaml
 from discord import Embed
-
 from hots.function import cleanhtml
 from hots.Hero import Hero
+from helpers import functions
+import exceptions
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = functions.get_config()
 
 short_patch = config["patch"][-5:]
 
@@ -53,7 +49,10 @@ def talents(hero: Hero, lvl, author):
     lvl = str(lvl)
     full_hero = heroes_data[hero.id]
     level = 'level' + lvl
-    talents_data = full_hero['talents'][level]
+    try:
+        talents_data = full_hero['talents'][level]
+    except KeyError:
+        raise exceptions.WrongTalentLvl
     embed = Embed(
         title="{} / {} : Таланты на {} уровне".format(hero.en, hero.ru, lvl),
         color=config["success"]

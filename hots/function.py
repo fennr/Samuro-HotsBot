@@ -3,11 +3,12 @@ import re
 import os, sys, yaml
 from discord import Embed, File
 from hots.Hero import Hero
-from helpers import sql, Error
+from helpers import sql
 from discord.ext import commands
-from helpers import functions, Error
+from helpers import functions
 from scripts import ytparser
 from pprint import pprint
+import exceptions
 
 config = functions.get_config()
 
@@ -44,22 +45,6 @@ def damerau_levenshtein_distance(s1: str, s2: str) -> int:
     return int(d[lenstr1 - 1, lenstr2 - 1])
 
 
-def read_hero_from_message(hero, author=None, command='hero'):
-    if hero is None:
-        raise commands.BadArgument('Не введен героя')
-    else:
-        hero_name = ' '.join(map(str, args))  # для имен из нескольких слов
-        hero_list = find_heroes(hero_name)
-        if len(hero_list) == 1:
-            embed = None
-            hero = hero_list[0]
-        elif len(hero_list) > 1:
-            embed = find_more_heroes(hero_list, author, command=command)
-        else:
-            embed = hero_not_found()
-    return hero, embed
-
-
 def args_not_found(command, lvl=''):
     embed = Embed(
         title="Ошибка! Введите все аргументы",
@@ -78,7 +63,7 @@ def args_not_found(command, lvl=''):
 
 def hero_not_found():
     error = "Ошибка! Герой не найден"
-    raise Error.HeroNotFoundError
+    raise exceptions.HeroNotFoundError
 
 
 def find_more_heroes(hero_list, author, command='hero', lvl=''):
@@ -97,7 +82,7 @@ def find_more_heroes(hero_list, author, command='hero', lvl=''):
             text=f"Информация для: {author}"
         )
     else:
-        embed = hero_not_found()
+        raise exceptions.HeroNotFoundError
     return embed
 
 
@@ -142,8 +127,7 @@ def find_heroes(hero_name, allowed_error=5):
                 if (allowed_error - i) > 1:  # чтобы по прозвищам поиск был более строгий
                     for nick in hero.nick:
                         if damerau_levenshtein_distance(hero_name, nick.capitalize()) < i and hero not in hero_list:
-                            print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, hero.ru,
-                                                                                  i - 1))
+                            #print('{} -> {} -> {} | Погрешность: {} симв.'.format(hero_name, nick, hero.ru, i - 1))
                             if hero not in hero_list:
                                 hero_list.append(hero)
                                 break

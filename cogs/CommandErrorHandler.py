@@ -3,7 +3,7 @@ import traceback
 import sys
 from discord.ext import commands
 import pretty_errors
-from helpers import Error
+import exceptions
 from helpers import check
 
 pretty_errors.configure(
@@ -36,9 +36,9 @@ class CommandErrorHandler(commands.Cog):
         error: commands.CommandError
             The Exception raised.
         """
-        print("Общая обработка ошибок")
-        print(error)
-        print(type(error))
+        #print("Общая обработка ошибок")
+        #print(error)
+        #print(type(error))
         # This prevents any commands with local handlers being handled here in on_command_error.
         if hasattr(ctx.command, 'on_error'):
             return

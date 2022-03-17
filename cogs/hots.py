@@ -1,14 +1,12 @@
 import json
-from discord import Embed, Object, utils
+from discord import Embed, utils
 from discord.ext.commands import command, Cog, errors
-from discord.ext import commands
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
 
-from hots.function import open_hero, find_heroes, read_hero_from_message, hero_not_found, find_more_heroes, \
-    args_not_found, get_hero, get_master_opinion, add_master_opinion
+from hots.function import hero_not_found, find_more_heroes, get_hero, get_master_opinion, add_master_opinion
 from hots.Hero import Hero
 from hots.heroes import heroes_description, builds, embed_stlk_builds
-from hots.nexuscompendium import weekly_rotation, sales, ranked
+from hots import nexuscompendium
 from hots.patchnotes import last_pn
 from hots.skills import skill
 from hots.talents import talents
@@ -59,11 +57,11 @@ lvl_20_label = '20'
 
 
 mailing_channel_id = {
-    'test_fenrir': 845658540341592098, #test
-    'ru hots': 642853714515722241, #общение
-    'Dungeon': 858455796412710922, #hots камеры
-    'Stlk': 124864790110797824, #общие
-    'Читер': 841669769115336704 #хотс
+    'test_fenrir': 845658540341592098,  # test
+    'ru hots': 642853714515722241,      # общение
+    'Dungeon': 858455796412710922,      # hots камеры
+    'Stlk': 124864790110797824,         # общие
+    'Читер': 841669769115336704         # хотс
 }
 
 class Hots(Cog, name='Hots'):
@@ -76,17 +74,15 @@ class Hots(Cog, name='Hots'):
     @command(name='weekly')
     async def rotation(self, ctx):
         """
-        — Список героев еженедельной ротации
+        - Список героев еженедельной ротации
         """
-        embed = weekly_rotation()
-        await ctx.send(
-            embed=embed
-        )
+        embed = nexuscompendium.weekly_rotation()
+        await ctx.send(embed=embed)
 
     @command(name="pancho")
     async def pancho(self, ctx, hero_name):
         """
-        — Мнение Мастера
+        - Мнение Мастера
         """
         pancho = get_master_opinion(ctx, hero_name)
         if isinstance(pancho, Embed):
@@ -103,19 +99,18 @@ class Hots(Cog, name='Hots'):
         else:
             await ctx.send("Ошибка при записи")
 
-
     @command(name="patchnotes")
-    async def hots_notes(self, context):
+    async def hots_notes(self, ctx):
         """
-        — Информация по патчноутам
+        - Информация по патчноутам
         """
-        embed = last_pn(None, context.author)
-        await context.send(embed=embed)
+        embed = last_pn(None, ctx.author)
+        await ctx.send(embed=embed)
 
     @command(name='ban')
     async def ban_list(self, ctx):
         """
-        — Список героев рекомендуемых к бану
+        - Список героев рекомендуемых к бану
         """
         embed = ban_heroes()
         await ctx.send(
@@ -125,9 +120,9 @@ class Hots(Cog, name='Hots'):
     @command(name='sales')
     async def sales(self, ctx):
         """
-        — Список скидок на героев
+        - Список скидок на героев
         """
-        embed = sales()
+        embed = nexuscompendium.sales()
         await ctx.send(
             embed=embed
         )
@@ -135,9 +130,9 @@ class Hots(Cog, name='Hots'):
     @command(name='ranked')
     async def ranked(self, ctx):
         """
-        — Информация о сроках текущего сезона
+        - Информация о сроках текущего сезона
         """
-        embed = ranked()
+        embed = nexuscompendium.ranked()
         await ctx.send(
             embed=embed
         )
@@ -145,7 +140,7 @@ class Hots(Cog, name='Hots'):
     @command(name='data')
     async def data(self, ctx, hero_name):
         """
-        — Полное описания героя
+        - Полное описания героя
         """
         if hero_name is not None:
             hero = get_hero(hero_name)
@@ -182,7 +177,7 @@ class Hots(Cog, name='Hots'):
     @command(name='streams')
     async def streams(self, ctx, count=5):
         """
-        — Ссылки на запущенные стримы на твиче
+        - Ссылки на запущенные стримы на твиче
         """
         if isinstance(int(count), int):
             embed = get_streams(int(count))
@@ -195,7 +190,7 @@ class Hots(Cog, name='Hots'):
     @command(name='stlk')
     async def stlk_builds(self, ctx, *hero_name):
         """
-        — Авторские билды от про игрока **STLK**
+        - Авторские билды от про игрока **STLK**
         """
         name = ' '.join(hero_name)
         hero = get_hero(name)
@@ -209,7 +204,7 @@ class Hots(Cog, name='Hots'):
     @command(name='news')
     async def hots_news(self, ctx, *args):
         """
-        — Предложить новость для публикации
+        - Предложить новость для публикации
         """
         if ctx.message.author.id in config["owners"]:
             for guild in self.bot.guilds:

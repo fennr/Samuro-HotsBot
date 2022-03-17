@@ -1,4 +1,10 @@
-class MyException(Exception):
+from discord import Embed
+from helpers import functions
+
+config = functions.get_config()
+
+
+class HotsException(Exception):
     """Базовый класс для других исключений"""
 
     def __init__(self, *args):
@@ -14,7 +20,7 @@ class MyException(Exception):
             return 'Custom Error'
 
 
-class CommandError(MyException):
+class CommandError(HotsException):
     pass
 
 
@@ -24,3 +30,8 @@ class HeroNotFoundError(CommandError):
             return f'Не найден герой:, {self.message}'
         else:
             return 'Не найден герой'
+
+
+class WrongTalentLvl(CommandError):
+    def __str__(self):
+        return "Выбран невозможный уровень таланта"

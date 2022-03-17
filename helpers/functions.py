@@ -27,3 +27,10 @@ def get_pancho():
     else:
         with open("data/pancho.json") as file:
             return "data/pancho.json"
+
+def add_footer(embed):
+    embed.set_footer(
+        text=f"!help для просмотра справки по командам"
+        # context.message.author если использовать без slash
+    )
+    return embed

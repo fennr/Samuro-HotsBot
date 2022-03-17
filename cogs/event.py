@@ -79,8 +79,6 @@ class Event(commands.Cog, name="Event"):
         blue_bet = []
         red_bet = []
         for reaction in message.reactions:
-            #print(reaction)
-            #print(type(reaction))
             if reaction.emoji == blue:
                 async for user in reaction.users():
                     blue_bet.append(user.mention)

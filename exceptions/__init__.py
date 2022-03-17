@@ -1,3 +1,6 @@
+from .hots_exceptions import *
+
+
 class UserBlacklisted(Exception):
     """
     Thrown when a user is attempting something, but is blacklisted.
