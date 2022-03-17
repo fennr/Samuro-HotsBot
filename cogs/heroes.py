@@ -77,10 +77,11 @@ class Heroes(commands.Cog, name="Heroes"):
     @hots_skill.error
     @hots_talent.error
     async def heroes_hero_handler(self, ctx, error):
-        print("Обработка ошибок heroes")
+        #print("Обработка ошибок heroes")
         error = getattr(error, 'original', error)        # получаем пользовательские ошибки
         print(error)
-        print(type(error))
+        #print(type(error))
+        print(f"Сообщение вызвавшее ошибку: '{ctx.message.content}' guild {ctx.guild} by {ctx.author}")
         if isinstance(error, commands.MissingRequiredArgument):
             lvl = ':lvl:' if str(ctx.command) == 'talent' else ''
             embed = Embed(
