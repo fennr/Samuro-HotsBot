@@ -3,6 +3,8 @@ import traceback
 import sys
 from discord.ext import commands
 import pretty_errors
+from helpers import Error
+from helpers import check
 
 pretty_errors.configure(
     separator_character='*',
@@ -34,7 +36,9 @@ class CommandErrorHandler(commands.Cog):
         error: commands.CommandError
             The Exception raised.
         """
-
+        print("Общая обработка ошибок")
+        print(error)
+        print(type(error))
         # This prevents any commands with local handlers being handled here in on_command_error.
         if hasattr(ctx.command, 'on_error'):
             return
@@ -69,6 +73,9 @@ class CommandErrorHandler(commands.Cog):
         elif isinstance(error, commands.BadArgument):
             if ctx.command.qualified_name == 'tag list':  # Check if the command being invoked is 'tag list'
                 await ctx.send('I could not find that member. Please try again.')
+
+        elif isinstance(error, commands.errors.CheckFailure):
+            await ctx.send("Недостаточно прав для выполнения команды")
 
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.

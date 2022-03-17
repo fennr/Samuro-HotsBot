@@ -8,13 +8,14 @@ from disnake.ext import commands
 from discord.ext import commands
 
 from exceptions import *
+import traceback
 
 T = TypeVar("T")
 
 
 def is_owner() -> Callable[[T], T]:
     """
-    This is a custom check to see if the user executing the command is an owner of the bot.
+    Проверка что пользователь является создателем бота
     """
 
     async def predicate(context: commands.Context) -> bool:
@@ -24,10 +25,11 @@ def is_owner() -> Callable[[T], T]:
         else:
             with open("config.yaml") as file:
                 data = yaml.load(file, Loader=yaml.FullLoader)
-            print(data["owners"])
-            if context.author.id not in data["owners"]:
-                await context.send("Данная команда доступна только *fenrir#5455*")
-                raise UserNotOwner
+            try:
+                if context.author.id not in data["owners"]:
+                    raise UserNotOwner
+            except UserNotOwner as e:
+                print(e)
             return True
 
     return commands.check(predicate)
@@ -35,7 +37,7 @@ def is_owner() -> Callable[[T], T]:
 
 def is_admin() -> Callable[[T], T]:
     """
-    This is a custom check to see if the user executing the command is an owner of the bot.
+    Проверка что пользователь является администратором бота
     """
     async def predicate(context: commands.Context) -> bool:
         if not os.path.isfile("config.yaml"):
@@ -43,32 +45,40 @@ def is_admin() -> Callable[[T], T]:
         else:
             with open("config.yaml") as file:
                 data = yaml.load(file, Loader=yaml.FullLoader)
-            print(context.author.id)
-            print(data["admins"])
-            if context.author.id not in data["admins"]:
-                await context.send('Данная команда доступна только администратору')
-                raise UserNotAdmin
+            try:
+                if context.author.id not in data["admins"]:
+                    raise UserNotAdmin
+            except UserNotAdmin as e:
+                print(e)
             return True
 
     return commands.check(predicate)
 
 
 def is_samuro_dev() -> Callable[[T], T]:
+    '''
+    Проверка налачия роли Samuro_dev
+    '''
     async def predicate(context: commands.Context) -> bool:
         good_roles = [
              946480695218429952,  # Samuro_dev
              880865537058545686  # test
         ]
+        flag = False
         for role in context.author.roles:
             if role.id in good_roles:
-                return True
-        await context.send('Данная команда доступна только администратору')
-        return False
+                flag = True
+        try:
+            if not flag:
+                raise UserNotAdmin
+        except UserNotAdmin as e:
+            print(e)
+        return flag
     return commands.check(predicate)
 
 def is_lead() -> Callable[[T], T]:
     """
-    This is a custom check to see if the user executing the command is an owner of the bot.
+    Проверка наличия роли ведущего
     """
     async def predicate(context: commands.Context) -> bool:
         good_roles = [
@@ -78,18 +88,22 @@ def is_lead() -> Callable[[T], T]:
              789084039180451840,  # Ведущий
              880865537058545686  # test
         ]
+        flag = False
         for role in context.author.roles:
             if role.id in good_roles:
-                return True
-        await context.send('Данная команда доступна только администратору')
-        return False
-        #raise UserNotAdmin
+                flag = True
+        try:
+            if not flag:
+                raise UserNotAdmin
+        except UserNotAdmin as e:
+            print(e)
+        return flag
     return commands.check(predicate)
 
 
 def not_blacklisted() -> Callable[[T], T]:
     """
-    This is a custom check to see if the user executing the command is blacklisted.
+    Проверка что пользователь не находится в черном списке
     """
 
     async def predicate(context: commands.Context) -> bool:
