@@ -128,8 +128,8 @@ async def on_command_completion(ctx):
     command_name = ctx.command.qualified_name
     content = ctx.message.content[1:20]
     guild, guild_id = get_guild(ctx)
-    message = f"Executed '{command_name}' command in {guild} (ID: {guild_id}) " \
-              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
+    message = f"Executed '{ctx.message.content[1:]}' command in {guild} " \
+              f"by {ctx.message.author}"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
     log.info(message)
     sql.info_log(ctx, command_name, content[:20])
