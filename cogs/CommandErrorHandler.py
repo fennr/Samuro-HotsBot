@@ -56,11 +56,11 @@ class CommandErrorHandler(commands.Cog):
         # If nothing is found. We keep the exception passed to on_command_error.
         error = getattr(error, 'original', error)
 
-        print(f"Сообщение вызвавшее ошибку: '{ctx.message.content}' guild {ctx.guild} by {ctx.author}")
-
         # Anything in ignored will return and prevent anything happening.
         if isinstance(error, ignored):
             return
+        else:
+            print(f"Сообщение вызвавшее ошибку: '{ctx.message.content}' guild {ctx.guild} by {ctx.author}")
 
         if isinstance(error, commands.DisabledCommand):
             await ctx.send(f'{ctx.command} has been disabled.')
