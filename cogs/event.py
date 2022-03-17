@@ -1,6 +1,3 @@
-import os
-import yaml
-import psycopg2.extras
 import pytz
 from datetime import datetime
 from discord import Embed, utils, Member
@@ -9,6 +6,7 @@ from helpers import sql, check, functions
 from helpers import profile_lib as pl
 from discord_slash import cog_ext, SlashContext
 import time
+import asyncio
 
 config = functions.get_config()
 
@@ -73,7 +71,7 @@ class Event(commands.Cog, name="Event"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(blue)
         await embed_message.add_reaction(red)
-        time.sleep(delay)
+        await asyncio.sleep(delay)
         await embed_message.remove_reaction(blue, member=embed_message.author)
         await embed_message.remove_reaction(red, member=embed_message.author)
         message = await ctx.channel.fetch_message(embed_message.id)
