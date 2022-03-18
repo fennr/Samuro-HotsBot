@@ -39,3 +39,8 @@ class WrongTalentLvl(CommandError):
 class LeagueNotFound(CommandError):
     def __str__(self):
         return "Не найдены игры в шторм лиге"
+
+
+class WrongLeague(CommandError):
+    def __str__(self):
+        return "Введена некорректная лига"

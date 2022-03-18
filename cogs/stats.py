@@ -8,6 +8,7 @@ import openpyxl
 from openpyxl.styles import Font
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
+from utils import exceptions
 
 config = base.get_config()
 
@@ -76,8 +77,8 @@ class Stats(commands.Cog, name="Stats"):
         """
         try:
             league = League(league_type)
-        except:
-            await ctx.send("Выберите корректную лигу")
+        except Exception:
+            raise exceptions.WrongLeague
         con, cur = pl.get_con_cur()
         guild_id = pl.get_guild_id(ctx)
         select = pl.selects.get("PlayersLeague")
@@ -170,9 +171,14 @@ class Stats(commands.Cog, name="Stats"):
                            f"Осталось баллов: {stats.points}")
 
     @points_remove.error
+    @top_mmr.error
     async def points_handler(self, ctx, error):
+        error = getattr(error, 'original', error)  # получаем пользовательские ошибки
+        print(error)
         if isinstance(error, commands.errors.MissingRole):
             await ctx.send("Недостаточно прав для выполнения команды")
+        elif isinstance(error, exceptions.WrongLeague):
+            await ctx.send("Выберите корректную лигу")
 
 
 def setup(bot):

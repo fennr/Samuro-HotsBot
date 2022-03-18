@@ -2,8 +2,8 @@ import os
 import yaml
 import psycopg2.extras
 from discord.ext import commands
-from utils import check, exceptions, sql
 from psycopg2 import errorcodes, errors
+from utils import check, exceptions, sql
 from utils.library import profile as pl
 
 if not os.path.isfile("config.yaml"):
@@ -190,79 +190,13 @@ class Profile(commands.Cog, name="Profile"):
             await ctx.send(pl.profile_not_found(member_discord))
         con.close()
 
-    """
-    @commands.group(name="search")
-    async def search(self, ctx):
-        '''
-
-        :param ctx:
-        :return:
-        '''
-        if ctx.invoked_subcommand is None:
-            await Profile.search_team(self, ctx)
-
-    @search.command(name="team")
-    async def search_team(self, ctx, league=None):
-        profile, con, cur = get_profile_by_id(str(ctx.message.author.id))
-        if profile is not None:
-            if not profile.search:
-                profile.search = True
-                await ctx.send("Ваш профиль добавлен в ищущих группу\n"
-                               "Для отключения наберите *!search off*")
-                update = '''UPDATE heroesprofile SET search = %s WHERE id = %s'''
-                cur.execute(update, (profile.search, profile.id))
-            if league is None:
-                league = profile.league
-            select = '''SELECT * FROM heroesprofile WHERE LEAGUE = %s AND search = %s'''
-            cur.execute(select, (league, profile.search))
-            record = cur.fetchall()
-            if (len(record) == 0) or \
-                    (len(record) == 1 and record[0].id == str(ctx.message.author.id)):
-                await ctx.send(f"В данный момент нет игроков ранга {league} ищущих группу")
-            else:
-                await ctx.send(f"Игроки уровня {league}, которых сейчас можно позвать в пати:")
-                message = ''
-                for players in record:
-                    player = get_player(players)
-                    await Profile.profile_info(self, ctx, player.id)
-        else:
-            await ctx.send("Чтобы воспользоваться поиском ваш профиль должен быть добавлен в базу\n"
-                           "Используйте команду ```!profile add батлтаг#1234 @дискорд```")
-        con.commit()
-        con.close()
-
-    @search.command(name="on")
-    async def search_on(self, ctx):
-        profile, con, cur = get_profile_by_id(ctx.message.author.id)
-        if profile is not None:
-            profile.search = True
-            update = '''UPDATE heroesprofile SET search = %s WHERE id = %s'''
-            cur.execute(update, (profile.search, profile.id))
-            await ctx.send("Вы добавлены в ищущих группу")
-        else:
-            await ctx.send("Ваш профиль не добавлен в базу\n"
-                           "Используйте команду ```!profile add батлтаг#1234 @дискорд```")
-
-    @search.command(name="off")
-    async def search_off(self, ctx):
-        profile, con, cur = get_profile_by_id(str(ctx.message.author.id))
-        if profile is not None:
-            profile.search = False
-            update = '''UPDATE heroesprofile SET search = %s WHERE id = %s'''
-            cur.execute(update, (profile.search, profile.id))
-            await ctx.send("Поиск игроков отключен")
-        else:
-            await ctx.send("Ваш профиль не добавлен в базу\n"
-                           "Используйте команду ```!profile add батлтаг#1234 @дискорд```")
-    """
-
     @profile.error
     @profile_add.error
     @profile_test.error
     async def profile_handler(self, ctx, error):
         #print("Попали в обработку ошибок profile")
         error = getattr(error, 'original', error)  # получаем пользовательские ошибки
-        #print(error)
+        print(error)
         #print(type(error))
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
