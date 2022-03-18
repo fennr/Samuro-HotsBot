@@ -67,3 +67,5 @@ xlwt==1.3.0
 requests_html==0.10.0
 pretty_errors==1.2.25
 openpyxl==3.0.9
+multiprocess==0.70.11.1
+RestrictedPython==5.1
