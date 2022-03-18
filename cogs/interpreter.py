@@ -1,6 +1,7 @@
 from discord.ext.commands import command, Cog, errors
 from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
-
+from discord import File
+import os
 import re
 import multiprocess
 import RestrictedPython
@@ -58,7 +59,16 @@ class Inter(Cog, name='Hots'):
             output = "Timeout error - do you have an infinite loop?"
         except Exception as e:
             output = "Runtime error: {}".format(e)
-        await sent.edit(content="```\n{}```".format(output or "(no output to stdout)"))
+        if len(str(output)) < 4000:
+            await sent.edit(content="```\n{}```".format(output or "(no output to stdout)"))
+        else:
+            filepath = 'message.txt'
+            file = open(filepath, 'w')
+            file.write(output)
+            file.close()
+            await sent.edit(content="Превышение ограничения дискорда на длину сообщения")
+            await ctx.send(file=File(filepath))
+            os.remove(filepath)
 
 
 def setup(bot):
