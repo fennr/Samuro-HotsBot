@@ -1,7 +1,7 @@
 import json
 from discord import Embed, utils
 from discord.ext.commands import command, Cog, errors
-from discord_components import DiscordComponents, Button, ButtonStyle, InteractionType
+from discord_components import DiscordComponents, Button, ButtonStyle
 
 from hots.function import hero_not_found, find_more_heroes, get_hero, get_master_opinion, add_master_opinion
 from hots.Hero import Hero
@@ -12,7 +12,6 @@ from hots.skills import skill
 from hots.talents import talents
 from hots.tierlist import ban_heroes
 from hots.twitch import get_streams
-from hots.read_news import embed_news
 from helpers import functions, check
 
 # Only if you want to use variables that are in the config.yaml file.
@@ -201,45 +200,6 @@ class Hots(Cog, name='Hots'):
 
         await ctx.send(embed=embed)
 
-    @command(name='news')
-    async def hots_news(self, ctx, *args):
-        """
-        - Предложить новость для публикации
-        """
-        if ctx.message.author.id in config["owners"]:
-            for guild in self.bot.guilds:
-                try:
-                    channel = utils.find(lambda r: r.id in mailing_channel_id.values(), guild.text_channels)
-                    if channel is not None:
-                        embed = embed_news(ctx.author)
-                        await channel.send(embed=embed)
-                        print(f'{guild.name} : сообщение отправлено')
-                except:
-                    print(f'{guild.name} : недостаточно прав')
-            await ctx.send('Рассылка выполнена')
-        else:
-            if len(args) == 0:
-                await ctx.send('Добавьте описание новости после команды')
-            else:
-                description = ' '.join(args)
-                embed = Embed(
-                    title='Новая новость',
-                    description=description,
-                    color=config["info"]
-                )
-                embed.set_footer(
-                    text=f"От пользователя {ctx.author}"
-                )
-                owner = self.bot.get_user(int(config["owner"]))
-                # check if dm exists, if not create it
-                if owner.dm_channel is None:
-                    await owner.create_dm()
-                # if creation of dm successful
-                if owner.dm_channel is not None:
-                    await owner.dm_channel.send(embed=embed)
-                    message = 'Спасибо. Сообщение было отправлено'
-                    await ctx.send(message)
-
     @Cog.listener()
     async def on_button_click(self, res):
         """
@@ -380,13 +340,13 @@ class Hots(Cog, name='Hots'):
             components[0][3] = Button(style=ButtonStyle.blue, label=lastpn_label, disabled=True)
         if author == str(res.user):
             await res.respond(
-                type=InteractionType.UpdateMessage, embed=embed, components=components
+                type=6, embed=embed, components=components
             )
         else:
             error_text = 'Команда вызвана другим пользователем, взаимодействие невозможно\n' \
                          'Введите /data :hero: для получения информации по герою'
             await res.respond(
-                type=InteractionType.ChannelMessageWithSource, content=f"{error_text}"
+                type=5, content=f"{error_text}"
             )
             # можно использовать или embed или content content=f"{res.component.label} pressed",
 

@@ -1,10 +1,8 @@
 import json
 import re
-import os, sys, yaml
 from discord import Embed, File
 from hots.Hero import Hero
 from helpers import sql
-from discord.ext import commands
 from helpers import functions
 from scripts import ytparser
 from pprint import pprint
