@@ -18,6 +18,14 @@ pretty_errors.configure(
     truncate_code=True,
     display_locals=True
 )
+
+
+class MyExceptionWriter(pretty_errors.ExceptionWriter):
+    def write_link(self, filepath, line):
+        self.output_text([self.config.link_color, 'File "%s", line %s' % (filepath, line)])
+
+
+pretty_errors.exception_writer = MyExceptionWriter()
 pretty_errors.blacklist('c:/python')
 pretty_errors.replace_stderr()
 
