@@ -6,18 +6,17 @@ import json
 import os
 import platform
 import random
-import exceptions
 
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
-from helpers import sql, functions
-from helpers.log import get_guild, log_init, error_log
-from scripts import heroes_ru_names, google_table
+from helpers import sql
+from utils.library import base_functions
+from helpers.log import get_guild, log_init
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 if os.environ.get('TESTING'):
     TOKEN = os.environ.get('TOKEN')
@@ -109,10 +108,8 @@ async def on_message(message):
     if message.author == bot.user or message.author.bot:
         return
     # Ignores if a command is being executed by a blacklisted user
-    with open("blacklist.json") as file:
+    with open("data/blacklist.json") as file:
         blacklist = json.load(file)
-    with open("command_blacklist.json") as file:
-        command_bl = json.load(file)
     if message.author.id in blacklist["ids"]:
         print(f"banned {message.author}")
         return
