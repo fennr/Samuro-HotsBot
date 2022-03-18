@@ -4,8 +4,9 @@ import psycopg2.extras
 import exceptions
 from discord.ext import commands
 from helpers import sql, check
-from psycopg2 import errorcodes
+from psycopg2 import errorcodes, errors
 from helpers import profile_lib as pl
+import hots
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -14,6 +15,8 @@ if not os.path.isfile("config.yaml"):
 else:
     with open("config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
+
+UniqueViolation = errors.lookup(psycopg2.errorcodes.UNIQUE_VIOLATION)
 
 
 class Profile(commands.Cog, name="Profile"):
@@ -56,7 +59,7 @@ class Profile(commands.Cog, name="Profile"):
         player = pl.get_heroesprofile_data(btag=btag,
                                            user_id=pl.get_user_id(discord_user),
                                            guild_id=pl.get_guild_id(ctx))
-        if player is not None:
+        if isinstance(player, hots.Player.Player):
             con, cur = pl.get_con_cur()
             insert = pl.inserts.get('Player')
             cur.execute(insert, (player.btag, player.id, player.guild_id,
@@ -64,7 +67,7 @@ class Profile(commands.Cog, name="Profile"):
             pl.commit(con)
             await ctx.send(f"Профиль игрока {btag} добавлен в базу")
         else:
-            await ctx.send(pl.profile_not_found(btag))
+             await ctx.send(pl.profile_not_found(btag))
 
     @profile.command(name="remove")
     @check.is_owner()
@@ -260,8 +263,9 @@ class Profile(commands.Cog, name="Profile"):
     @profile_test.error
     async def profile_handler(self, ctx, error):
         print("Попали в обработку ошибок profile")
+        error = getattr(error, 'original', error)  # получаем пользовательские ошибки
+        print(error)
         print(type(error))
-        print(error.__class__.__name__)
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
                            "Пример: *#profile add player#1234 @player*")
@@ -271,10 +275,10 @@ class Profile(commands.Cog, name="Profile"):
             await ctx.send(error.message)
         if isinstance(error, exceptions.UserNotAdmin):
             await ctx.send(exceptions.UserNotAdmin.message)
-        if isinstance(error, commands.errors.CommandInvokeError):
-            error = error.__cause__  # получение оригинальной ошибки
-            if error.pgcode == errorcodes.UNIQUE_VIOLATION:
-                await ctx.send("Обнаружен дубликат записи. Профили дискорда и батлтаги должны быть уникальны")
+        if isinstance(error, exceptions.LeagueNotFound):
+            await ctx.send("Не найдены игры в шторм лиге")
+        if isinstance(error, UniqueViolation):
+            await ctx.send("Обнаружен дубликат записи. Профили дискорда и батлтаги должны быть уникальны")
 
 
 def setup(bot):

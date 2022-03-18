@@ -12,7 +12,7 @@ from hots.Team import Team
 from collections.abc import MutableMapping
 import time
 from datetime import datetime
-import ast
+import exceptions
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -215,7 +215,7 @@ def profile_not_found(user):
 
 
 def get_heroesprofile_data(btag, user_id, guild_id):
-    print("get_data")
+    #print("get_data")
     bname = btag.replace('#', '%23')
     base_url = 'https://www.heroesprofile.com'
     url = 'https://www.heroesprofile.com/Search/?searched_battletag=' + bname
@@ -224,7 +224,7 @@ def get_heroesprofile_data(btag, user_id, guild_id):
     response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
     response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
-    # print(url)
+    #print(url)
     error = soup.find('div', attrs={'id': 'choose_battletag'})
     if error is not None:
         links = error.find_all('a')
@@ -239,12 +239,14 @@ def get_heroesprofile_data(btag, user_id, guild_id):
 
     mmr_container = soup.find('section', attrs={'class': 'mmr-container'})
     mmr_info = mmr_container.find_all('div', attrs={'class': 'league-element'})
+    storm_flag = False
     for elem in mmr_info:
         if elem.h3.text == 'Storm League':
+            storm_flag = True
             tags = elem.find_all('div')
             for tag in tags[:1]:
                 profile_data = (" ".join(tag.text.split())).split()
-                # print(profile_data)
+                #print(profile_data)
                 profile_wr = profile_data[2]
                 if profile_data[3] == 'Master':
                     profile_league = profile_data[3]
@@ -258,6 +260,8 @@ def get_heroesprofile_data(btag, user_id, guild_id):
                     profile_mmr = 2200
                 return Player(btag=btag, id=user_id, guild_id=guild_id, mmr=profile_mmr, league=profile_league,
                               division=profile_division)
+    if not storm_flag:
+        raise exceptions.LeagueNotFound
     return None
 
 

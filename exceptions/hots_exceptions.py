@@ -35,3 +35,8 @@ class HeroNotFoundError(CommandError):
 class WrongTalentLvl(CommandError):
     def __str__(self):
         return "Выбран невозможный уровень таланта"
+
+
+class LeagueNotFound(CommandError):
+    def __str__(self):
+        return "Не найдены игры в шторм лиге"

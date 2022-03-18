@@ -395,6 +395,7 @@ class Hots(Cog, name='Hots'):
     @stlk_builds.error
     async def cog_command_error(self, ctx, error):
         print("Обработка ошибок hots")
+        error = getattr(error, 'original', error)  # получаем пользовательские ошибки
         if isinstance(error, errors.MissingRequiredArgument):
             embed = Embed(
                 title="Ошибка! Введите все аргументы",
