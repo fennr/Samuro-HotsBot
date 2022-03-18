@@ -74,7 +74,7 @@ def heroes_description_short(hero: Hero, author):
 
 
 def heroes_description(hero: Hero, author):
-    hero_json_file = 'hero/' + hero.json
+    hero_json_file = 'data/hero/' + hero.json
     with open(hero_json_file) as hero_json:
         hero_data = json.load(hero_json)
 

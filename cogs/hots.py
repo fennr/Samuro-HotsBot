@@ -13,6 +13,7 @@ from hots.talents import talents
 from hots.tierlist import ban_heroes
 from hots.twitch import get_streams
 from helpers import functions, check
+from pprint import pprint
 
 # Only if you want to use variables that are in the config.yaml file.
 config = functions.get_config()
@@ -212,8 +213,8 @@ class Hots(Cog, name='Hots'):
         """
         embed = None
         components = None
-        hero_name, tail = res.raw_data['d']['message']['embeds'][0]['title'].split(' / ', maxsplit=1)
-        text, author = res.raw_data['d']['message']['embeds'][-1]['footer']['text'].split(': ', maxsplit=1)
+        hero_name, tail = res.raw_data['message']['embeds'][0]['title'].split(' / ', maxsplit=1)
+        text, author = res.raw_data['message']['embeds'][-1]['footer']['text'].split(': ', maxsplit=1)
         hero = Hero(hero_name)
 
         default_hero_name = hero_name.lower().replace('.', '').replace("'", "")
@@ -338,15 +339,16 @@ class Hots(Cog, name='Hots'):
             embed = last_pn(hero, author)
             components = lastpn_components
             components[0][3] = Button(style=ButtonStyle.blue, label=lastpn_label, disabled=True)
+        #await res.send(embed=embed)
         if author == str(res.user):
             await res.respond(
-                type=6, embed=embed, components=components
+                type=7, embed=embed, components=components
             )
         else:
             error_text = 'Команда вызвана другим пользователем, взаимодействие невозможно\n' \
                          'Введите /data :hero: для получения информации по герою'
             await res.respond(
-                type=5, content=f"{error_text}"
+                type=4, content=f"{error_text}"
             )
             # можно использовать или embed или content content=f"{res.component.label} pressed",
 

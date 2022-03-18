@@ -36,13 +36,13 @@ class Slash(commands.Cog, name="Slash"):
     async def slash_ban(self, ctx: SlashContext):
         await hots.Hots.ban_list(self, ctx)
 
-    '''@cog_ext.cog_slash(name="data", description="Полные данные по герою")
+    @cog_ext.cog_slash(name="data", description="Полные данные по герою")
     async def slash_data(self, ctx: SlashContext, hero):
-        await heroes.Heroes.data(self, ctx, hero)'''
+        await hots.Hots.data(self, ctx, hero)
 
     @cog_ext.cog_slash(name="streams", description="Онлайн стримы на твиче")
     async def slash_streams(self, ctx: SlashContext, cnt):
-        await hots.Heroes.streams(self, ctx, cnt)
+        await hots.Hots.streams(self, ctx, cnt)
 
     @cog_ext.cog_slash(name="invite", description="Пригласить бота на свой канал")
     async def slash_invite(self, ctx: SlashContext):
@@ -54,23 +54,23 @@ class Slash(commands.Cog, name="Slash"):
 
     @cog_ext.cog_slash(name="hero", description="Описание героя")
     async def slash_hero(self, ctx: SlashContext, hero):
-        await heroes.hots.hots_hero(self, ctx, hero)
+        await heroes.Heroes.hots_hero(self, ctx, hero)
 
     @cog_ext.cog_slash(name="skill", description="Описание скиллов героя")
     async def slash_skill(self, ctx: SlashContext, hero):
-        await heroes.hots.hots_skill(self, ctx, hero)
+        await heroes.Heroes.hots_skill(self, ctx, hero)
 
     @cog_ext.cog_slash(name="talent", description="Описание талантов героя %lvl% уровня")
     async def slash_talent(self, ctx: SlashContext, hero, lvl):
-        await heroes.hots.hots_talent(self, ctx, hero, lvl)
+        await heroes.Heroes.hots_talent(self, ctx, hero, lvl)
 
     @cog_ext.cog_slash(name="patchnotes", description="Описание последнего обновления")
     async def slash_pn(self, ctx: SlashContext):
-        await heroes.hots.hots_notes(self, ctx)
+        await hots.Hots.hots_notes(self, ctx)
 
     @cog_ext.cog_slash(name="stlk", description="Билды от Сталка")
     async def slash_stlk_builds(self, ctx: SlashContext, hero):
-        await hots.Heroes.stlk_builds(self, ctx, hero)
+        await hots.Hots.stlk_builds(self, ctx, hero)
 
 
 def setup(bot):
