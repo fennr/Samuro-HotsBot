@@ -7,8 +7,7 @@ from typing import TypeVar, Callable
 from disnake.ext import commands
 from discord.ext import commands
 
-from exceptions import *
-import traceback
+from utils.exceptions import *
 
 T = TypeVar("T")
 

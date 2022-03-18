@@ -1,14 +1,11 @@
 import json
-import os
-import sys
-import yaml
 from discord import Embed
-from hots.function import cleanhtml
-from hots.Hero import Hero
-from helpers import functions
-import exceptions
+from utils.library.hots_functions import cleanhtml
+from utils.classes.Hero import Hero
+from utils.library import base_functions
+from utils import exceptions
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 short_patch = config["patch"][-5:]
 

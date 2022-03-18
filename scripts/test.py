@@ -1,9 +1,7 @@
 from collections.abc import MutableMapping
-from helpers import profile_lib as pl
-from hots.Stats import Stats
-import psycopg2.extras
+from utils.library import profile_functions as pl
+from utils.classes.Stats import Stats
 from scripts.ytparser import *
-from pprint import pprint
 import os
 import stackprinter
 stackprinter.set_excepthook(style='darkbg2')

@@ -1,12 +1,11 @@
 import os
 import yaml
 import psycopg2.extras
-import exceptions
 from discord.ext import commands
-from helpers import sql, check
+from helpers import sql
+from utils import check, exceptions
 from psycopg2 import errorcodes, errors
-from helpers import profile_lib as pl
-import hots
+from utils.library import profile_functions as pl
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -59,7 +58,7 @@ class Profile(commands.Cog, name="Profile"):
         player = pl.get_heroesprofile_data(btag=btag,
                                            user_id=pl.get_user_id(discord_user),
                                            guild_id=pl.get_guild_id(ctx))
-        if isinstance(player, hots.Player.Player):
+        if isinstance(player, utils.hots.Player.Player):
             con, cur = pl.get_con_cur()
             insert = pl.inserts.get('Player')
             cur.execute(insert, (player.btag, player.id, player.guild_id,

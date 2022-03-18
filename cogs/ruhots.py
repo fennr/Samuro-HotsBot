@@ -1,10 +1,8 @@
 from discord import Embed, utils
 from discord.ext import commands
-from discord.errors import Forbidden
-from helpers import profile_lib as pl
-from helpers import functions
+from utils.library import base_functions, profile_functions as pl
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 clear = '\u200b'
 

@@ -1,29 +1,29 @@
 import json
-from discord import Embed, utils
+from discord import Embed
 from discord.ext.commands import command, Cog, errors
 from discord_components import DiscordComponents, Button, ButtonStyle
 
-from hots.function import hero_not_found, find_more_heroes, get_hero, get_master_opinion, add_master_opinion
-from hots.Hero import Hero
-from hots.heroes import heroes_description, builds, embed_stlk_builds
-from hots import nexuscompendium
-from hots.patchnotes import last_pn
-from hots.skills import skill
-from hots.talents import talents
-from hots.tierlist import ban_heroes
-from hots.twitch import get_streams
-from helpers import functions, check
-from pprint import pprint
+from utils.library.hots_functions import hero_not_found, find_more_heroes, get_hero, get_master_opinion, add_master_opinion
+from utils.classes.Hero import Hero
+from utils.hots.heroes import heroes_description, builds, embed_stlk_builds
+from utils.hots import nexuscompendium
+from utils.hots.patchnotes import last_pn
+from utils.hots.skills import skill
+from utils.hots.talents import talents
+from utils.hots.tierlist import ban_heroes
+from utils.hots.twitch import get_streams
+from utils.library import base_functions
+from utils import check
 
 # Only if you want to use variables that are in the config.yaml file.
-config = functions.get_config()
+config = base_functions.get_config()
 
 short_patch = config["patch"][-5:]
 
 gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
 heroes_json_file = 'data/heroesdata' + short_patch + '.json'
 
-pancho_json_file = functions.get_pancho()
+pancho_json_file = base_functions.get_pancho()
 
 with open(heroes_json_file) as heroes_json:
     heroes_data = json.load(heroes_json)

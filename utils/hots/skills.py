@@ -5,8 +5,8 @@ import sys
 import yaml
 from discord import Embed
 
-from hots.function import cleanhtml
-from hots.Hero import Hero
+from utils.library.hots_functions import cleanhtml
+from utils.classes.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")

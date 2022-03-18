@@ -1,12 +1,10 @@
-import os
-import yaml
 from discord import Member
 from discord.ext import commands
 from datetime import date
-from helpers import profile_lib as pl
-from helpers import sql, check, functions
+from utils.library import base_functions, profile_functions as pl
+from utils import check
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 
 class Team(commands.Cog, name="Team"):

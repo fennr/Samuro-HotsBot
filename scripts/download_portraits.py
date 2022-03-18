@@ -1,7 +1,7 @@
 import json
 import requests
 
-from hots.Hero import Hero
+from utils.classes.Hero import Hero
 
 heroes_ru_json_file = 'data/heroesdata_ru.json'
 

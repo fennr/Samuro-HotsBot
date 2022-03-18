@@ -1,7 +1,6 @@
-from discord import Embed
-from helpers import functions
+from utils.library import base_functions
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 
 class HotsException(Exception):

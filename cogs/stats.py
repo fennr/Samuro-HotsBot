@@ -1,16 +1,15 @@
 import os
 from discord.ext import commands
-from helpers import functions
-from discord import Embed, utils, Member, File
-from helpers import profile_lib as pl
-from helpers import check
-from enum import Enum, unique
+from utils.library import base_functions, profile_functions as pl
+from discord import Embed, Member, File
+from utils import check
+from enum import Enum
 import openpyxl
 from openpyxl.styles import Font
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 
 class League(Enum):

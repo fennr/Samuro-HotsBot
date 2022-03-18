@@ -1,6 +1,6 @@
 import pytest
 
-from hots import nexuscompendium
+from utils.hots import nexuscompendium
 
 
 class Tests:

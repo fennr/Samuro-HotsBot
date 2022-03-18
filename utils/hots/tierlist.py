@@ -6,8 +6,7 @@ import yaml
 from bs4 import BeautifulSoup
 from discord import Embed
 
-from hots.function import open_hero
-from hots.Hero import Hero
+from utils.classes.Hero import Hero
 
 if not os.path.isfile("config.yaml"):
     sys.exit("'config.yaml' not found! Please add it and try again.")

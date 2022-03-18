@@ -1,12 +1,9 @@
-import os
 import json
 import csv
-from hots import function
-from hots.Hero import Hero
-from pprint import pprint
-from helpers import functions
+from utils.library import hots_functions, base_functions
+from utils.classes.Hero import Hero
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 if __name__ == '__main__':
     url = 'https://www.youtube.com/watch?v='
@@ -15,7 +12,7 @@ if __name__ == '__main__':
         reader = csv.DictReader(File, fieldnames=['Hero', 'title', 'url', 'Date'], dialect='excel', delimiter=';')
         heroes = {}
         for row in reader:
-            hero = function.get_hero(row['Hero'])
+            hero = hots_functions.get_hero(row['Hero'])
             if isinstance(hero, Hero):
                 item = heroes.get(hero.id)
                 video = dict(date=row['Date'], title=row['title'], url=row['url'])

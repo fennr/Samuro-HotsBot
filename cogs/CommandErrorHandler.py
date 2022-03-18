@@ -3,8 +3,6 @@ import traceback
 import sys
 from discord.ext import commands
 import pretty_errors
-import exceptions
-from helpers import check
 
 pretty_errors.configure(
     separator_character='*',

@@ -1,8 +1,7 @@
 import gspread
-import time
 import json
 
-from hots.Hero import Hero
+from utils.classes.Hero import Hero
 
 json_config = 'data/hots-stkr-b57fd2ec7336.json'
 json_data = 'data/stlk_builds.json'

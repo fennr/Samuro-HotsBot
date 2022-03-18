@@ -1,11 +1,11 @@
 from discord.ext import commands
 from discord.utils import get
 from discord import Colour
-from helpers import sql, check, functions
+from utils.library import base_functions, profile_functions as pl
+from utils import check
 from psycopg2 import errorcodes
-from helpers import profile_lib as pl
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 
 class Team(commands.Cog, name="Team"):

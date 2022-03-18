@@ -1,13 +1,9 @@
-import os
-import sys
-
-from discord import Embed, utils
-import yaml
+from discord import utils
 import random
 from discord.ext import commands
-from helpers import functions
+from utils.library import base_functions
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 ignore_list = [
     'slash',

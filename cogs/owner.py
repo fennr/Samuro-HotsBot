@@ -1,14 +1,15 @@
 import discord
-from helpers import check
+from utils import check
 import json
 from helpers import sql
 
 from discord import Embed, Member, File
 from discord.ext import commands
 from pprint import pprint
-from helpers import json_manager, functions
+from helpers import json_manager
+from utils.library import base_functions
 
-config = functions.get_config()
+config = base_functions.get_config()
 
 
 class owner(commands.Cog, name="Owner"):

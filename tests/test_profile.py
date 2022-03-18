@@ -1,7 +1,6 @@
-from unittest import TestCase
 from collections import namedtuple
-from cogs.profile import Profile, get_heroesprofile_data, get_player, change_mmr, get_discord_id
-from hots.Player import Player
+from cogs.profile import get_heroesprofile_data, get_player, change_mmr, get_discord_id
+from utils.classes.Player import Player
 
 record = dict(btag='Se7eN#22874',
               id=196583204164075520,

@@ -1,18 +1,16 @@
 import json
 import re
-from discord import Embed, File
-from hots.Hero import Hero
-from helpers import sql
-from helpers import functions
+from discord import Embed
+from utils.classes.Hero import Hero
+from utils.library import base_functions
 from scripts import ytparser
-from pprint import pprint
-import exceptions
+from utils import exceptions
 
-config = functions.get_config()
+config = base_functions.get_config()
 
-heroes_ru_json_file = functions.get_heroesdata_ru()
+heroes_ru_json_file = base_functions.get_heroesdata_ru()
 
-pancho_json_file = functions.get_pancho()
+pancho_json_file = base_functions.get_pancho()
 
 with open(pancho_json_file, encoding='utf-8') as pancho_json:
     pancho_data = json.load(pancho_json)

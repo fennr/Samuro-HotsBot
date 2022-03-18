@@ -6,17 +6,17 @@ import itertools as it
 from discord import Embed, utils, Member
 from helpers import sql
 from bs4 import BeautifulSoup
-from hots.Player import Player
-from hots.Stats import Stats
-from hots.Team import Team
+from utils.classes.Player import Player
+from utils.classes.Stats import Stats
+from utils.classes.Team import Team
 from collections.abc import MutableMapping
 from datetime import datetime
-import exceptions
+from utils import exceptions
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
 
-    with open("../config.yaml") as file:
+    with open("../../config.yaml") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
 else:
     with open("config.yaml") as file:
