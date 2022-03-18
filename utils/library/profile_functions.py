@@ -4,13 +4,12 @@ import yaml
 import psycopg2.extras
 import itertools as it
 from discord import Embed, utils, Member
-from helpers import sql, check
+from helpers import sql
 from bs4 import BeautifulSoup
 from hots.Player import Player
 from hots.Stats import Stats
 from hots.Team import Team
 from collections.abc import MutableMapping
-import time
 from datetime import datetime
 import exceptions
 
