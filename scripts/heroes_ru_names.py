@@ -107,7 +107,7 @@ def find_nick(hero_name):
 
 def create_heroes_ru_data():
     full_dict = {}
-    tree = os.walk('hero')
+    tree = os.walk('data/hero')
     tier_dict = create_tier_dict()
     heroes_json_file = 'data/heroesdata_ru.json'
     f = open(heroes_json_file, 'w')
@@ -127,7 +127,7 @@ def create_heroes_ru_data():
     for hero_json in heroes_json_list:
         hero_dict = {}
         if count < 150:
-            path = 'hero/' + hero_json
+            path = 'data/hero/' + hero_json
             with open(path, 'r') as read_file:
                 hero_data = json.load(read_file)
             count += 1
