@@ -1,10 +1,10 @@
 import json
 import requests
-from utils.library import base_functions
+from utils.library import base
 
-config = base_functions.get_config()
+config = base.get_config()
 
-file_path = '../data/'
+file_path = '../../data/'
 patch = config["patch"]
 
 

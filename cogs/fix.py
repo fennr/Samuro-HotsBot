@@ -1,11 +1,10 @@
 import psycopg2.extras
 from discord.ext import commands
-from helpers import sql
-from utils.library import base_functions, profile_functions as pl
-from utils import check
+from utils.library import base, profile as pl
+from utils import check, sql
 from utils.classes.Player import Player
 
-config = base_functions.get_config()
+config = base.get_config()
 
 class Fix(commands.Cog, name="Fix"):
     def __init__(self, bot):

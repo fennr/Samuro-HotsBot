@@ -2,15 +2,15 @@ import json
 import re
 from discord import Embed
 from utils.classes.Hero import Hero
-from utils.library import base_functions
-from scripts import ytparser
+from utils.library import base
+from utils.scripts import ytparser
 from utils import exceptions
 
-config = base_functions.get_config()
+config = base.get_config()
 
-heroes_ru_json_file = base_functions.get_heroesdata_ru()
+heroes_ru_json_file = base.get_heroesdata_ru()
 
-pancho_json_file = base_functions.get_pancho()
+pancho_json_file = base.get_pancho()
 
 with open(pancho_json_file, encoding='utf-8') as pancho_json:
     pancho_data = json.load(pancho_json)

@@ -5,7 +5,7 @@ import sys
 import yaml
 from discord import Embed
 
-from utils.library.hots_functions import cleanhtml
+from utils.library.hots import cleanhtml
 from utils.classes.Hero import Hero
 
 if not os.path.isfile("config.yaml"):

@@ -1,8 +1,8 @@
 from discord import Embed, utils
 from discord.ext import commands
-from utils.library import base_functions, profile_functions as pl
+from utils.library import base, profile as pl
 
-config = base_functions.get_config()
+config = base.get_config()
 
 clear = '\u200b'
 

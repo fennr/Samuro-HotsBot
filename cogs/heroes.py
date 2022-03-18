@@ -2,16 +2,15 @@ import inspect
 from discord.ext import commands
 from discord import Embed
 
-from utils.library.hots_functions import add_thumbnail, find_more_heroes, get_hero, get_master_opinion
+from utils.library.hots import add_thumbnail, find_more_heroes, get_hero, get_master_opinion
 from utils.hots.heroes import builds, heroes_description_short
 from utils.hots.skills import skills
 from utils.hots.talents import talents
 from utils.classes.Hero import Hero
-from helpers import log
-from utils.library import base_functions
-from utils import exceptions
+from utils.library import base
+from utils import exceptions, log
 
-config = base_functions.get_config()
+config = base.get_config()
 
 short_patch = config["patch"][-5:]
 
@@ -94,7 +93,7 @@ class Heroes(commands.Cog, name="Heroes"):
                 value=f"_{config['bot_prefix']}{ctx.command} Самуро {lvl}_",
                 inline=False
             )
-            embed = base_functions.add_footer(embed)
+            embed = base.add_footer(embed)
             log.error(ctx, "Неверно введены аргументы команды")
             await ctx.send(embed=embed)
 
@@ -104,7 +103,7 @@ class Heroes(commands.Cog, name="Heroes"):
                 title=text,
                 color=config["error"]
             )
-            embed = base_functions.add_footer(embed)
+            embed = base.add_footer(embed)
             await ctx.send(embed=embed)
 
         elif isinstance(error, exceptions.WrongTalentLvl):
@@ -112,7 +111,7 @@ class Heroes(commands.Cog, name="Heroes"):
                 title="Ошибка! Выберите правильный уровень таланта",
                 color=config["error"]
             )
-            embed = base_functions.add_footer(embed)
+            embed = base.add_footer(embed)
             await ctx.send(embed=embed)
 
 

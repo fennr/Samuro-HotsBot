@@ -12,11 +12,11 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
-from helpers import sql
-from utils.library import base_functions
-from helpers.log import get_guild, log_init
+from utils import sql
+from utils.library import base
+from utils.log import get_guild, log_init
 
-config = base_functions.get_config()
+config = base.get_config()
 
 if os.environ.get('TESTING'):
     TOKEN = os.environ.get('TOKEN')

@@ -1,11 +1,11 @@
 import os
 import discord
 from discord.ext import commands
-from utils.library import base_functions
+from utils.library import base
 
 guild_ids = [845658540341592096]  # Put your server ID in this array.
 
-config = base_functions.get_config()
+config = base.get_config()
 
 class general(commands.Cog, name="General"):
     def __init__(self, bot):

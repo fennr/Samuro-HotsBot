@@ -6,9 +6,9 @@ import operator
 from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
-from utils.library import base_functions, profile_functions as pl
+from utils.library import base, profile as pl
 
-config = base_functions.get_config()
+config = base.get_config()
 
 
 category_name = 'Новости'

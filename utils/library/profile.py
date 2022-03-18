@@ -4,14 +4,13 @@ import yaml
 import psycopg2.extras
 import itertools as it
 from discord import Embed, utils, Member
-from helpers import sql
 from bs4 import BeautifulSoup
 from utils.classes.Player import Player
 from utils.classes.Stats import Stats
 from utils.classes.Team import Team
 from collections.abc import MutableMapping
 from datetime import datetime
-from utils import exceptions
+from utils import exceptions, sql
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")

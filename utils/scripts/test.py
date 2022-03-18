@@ -1,7 +1,7 @@
 from collections.abc import MutableMapping
-from utils.library import profile_functions as pl
+from utils.library import profile as pl
 from utils.classes.Stats import Stats
-from scripts.ytparser import *
+from utils.scripts.ytparser import *
 import os
 import stackprinter
 stackprinter.set_excepthook(style='darkbg2')

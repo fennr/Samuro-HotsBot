@@ -1,6 +1,6 @@
-from utils.library import base_functions
+from utils.library import base
 
-config = base_functions.get_config()
+config = base.get_config()
 
 
 class HotsException(Exception):

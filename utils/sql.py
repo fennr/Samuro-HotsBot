@@ -3,7 +3,7 @@ import psycopg2.extras
 import os
 from datetime import datetime
 import pytz
-from helpers import log
+from utils import log
 
 
 def sql_init():

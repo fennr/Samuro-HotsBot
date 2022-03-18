@@ -2,10 +2,9 @@ import os
 import yaml
 import psycopg2.extras
 from discord.ext import commands
-from helpers import sql
-from utils import check, exceptions
+from utils import check, exceptions, sql
 from psycopg2 import errorcodes, errors
-from utils.library import profile_functions as pl
+from utils.library import profile as pl
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")

@@ -1,18 +1,18 @@
 import json
 import csv
-from utils.library import hots_functions, base_functions
+from utils.library import hots, base
 from utils.classes.Hero import Hero
 
-config = base_functions.get_config()
+config = base.get_config()
 
 if __name__ == '__main__':
     url = 'https://www.youtube.com/watch?v='
     master_opinion_json = '../data/pancho.json'
-    with open('../data/masters_opinion.csv', newline='', encoding='utf-8') as File:
+    with open('../../data/masters_opinion.csv', newline='', encoding='utf-8') as File:
         reader = csv.DictReader(File, fieldnames=['Hero', 'title', 'url', 'Date'], dialect='excel', delimiter=';')
         heroes = {}
         for row in reader:
-            hero = hots_functions.get_hero(row['Hero'])
+            hero = hots.get_hero(row['Hero'])
             if isinstance(hero, Hero):
                 item = heroes.get(hero.id)
                 video = dict(date=row['Date'], title=row['title'], url=row['url'])

@@ -1,11 +1,10 @@
 import os
-import sys
 import yaml
 
 import logging
 import traceback
 
-from helpers import sql
+from utils import sql
 
 if not os.path.isfile("config.yaml"):
     #sys.exit("'config.yaml' not found! Please add it and try again.")

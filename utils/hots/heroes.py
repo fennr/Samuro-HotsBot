@@ -5,7 +5,7 @@ import sys
 import yaml
 from discord import Embed
 
-from utils.library.hots_functions import add_thumbnail, cleanhtml
+from utils.library.hots import add_thumbnail, cleanhtml
 from utils.hots.patchnotes import get_last_update
 from utils.classes.Hero import Hero
 
@@ -31,7 +31,7 @@ with open(stlk_json_file, encoding='utf-8') as ru_json:
 
 
 def heroes_description_short(hero: Hero, author):
-    hero_json_file = 'hero/' + hero.json
+    hero_json_file = 'data/hero/' + hero.json
     with open(hero_json_file) as hero_json:
         hero_data = json.load(hero_json)
     hero_name = hero_data['cHeroId']
