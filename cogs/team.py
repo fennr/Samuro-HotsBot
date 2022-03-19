@@ -1,11 +1,13 @@
 from discord import Colour
 from discord.ext import commands
 from discord.utils import get
-from psycopg2 import errorcodes
+from psycopg2 import errorcodes, errors
 from utils import check
 from utils.library import files, profile as pl
 
 config = files.get_yaml()
+
+UniqueViolation = errors.lookup(errorcodes.UNIQUE_VIOLATION)
 
 
 class Team(commands.Cog, name="Team"):
@@ -117,7 +119,7 @@ class Team(commands.Cog, name="Team"):
         team = pl.get_team(cur.fetchone())
         if team is not None:
             embed = pl.get_team_embed(team)
-        await ctx.send(embed=embed)
+            await ctx.send(embed=embed)
 
     @team.command(name="close")
     async def team_close(self, ctx):
@@ -145,13 +147,12 @@ class Team(commands.Cog, name="Team"):
     @team_remove.error
     async def team_handler(self, ctx, error):
         print("Попали в обработку ошибок team")
+        error = getattr(error, 'original', error)  # получаем пользовательские ошибки
         print(type(error))
-        print(error.__class__.__name__)
-        if isinstance(error, commands.errors.CommandInvokeError):
-            print('Попали по адресу')
-            error = error.__cause__  # получение оригинальной ошибки
-            if error.pgcode == errorcodes.UNIQUE_VIOLATION:
-                await ctx.send("У вас уже создана команда или существует команда с таким названием")
+        print(error)
+        if isinstance(error, UniqueViolation):
+            await ctx.send("У вас уже создана команда или существует команда с таким названием")
+
 
 def setup(bot):
     bot.add_cog(Team(bot))
