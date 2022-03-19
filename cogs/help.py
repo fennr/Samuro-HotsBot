@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.errors import Forbidden
-from utils.library import files
+from utils import library
 
 """This custom help command is a perfect replacement for the default one on any Discord Bot written in Discord.py!
 However, you must put "bot.remove_command('help')" in your bot, and the command must be in a cog for it to work.
@@ -13,7 +13,7 @@ You need to set three variables to make that cog run.
 Have a look at line 51 to 57
 """
 
-config = files.get_yaml()
+config = library.get_yaml()
 
 async def send_embed(ctx, embed):
     """
@@ -47,7 +47,7 @@ def white_list(ctx) -> list:
             'Profile',
             'Stats',
         ]
-        if ctx.message.author.id in config["owners"]:
+        if library.get.author_id(ctx) in config["owners"]:
             return white_list + admin_list
         else:
             return white_list

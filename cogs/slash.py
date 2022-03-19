@@ -49,8 +49,8 @@ class Slash(commands.Cog, name="Slash"):
         await general.general.invite(self, ctx)
 
     @cog_ext.cog_slash(name="help", description="Все доступные команды")
-    async def slash_help(self, ctx: SlashContext):
-        await help.Help.help(self, ctx)
+    async def slash_help(self, ctx: SlashContext, unit):
+        await help.Help.help(self, ctx, unit)
 
     @cog_ext.cog_slash(name="hero", description="Описание героя")
     async def slash_hero(self, ctx: SlashContext, hero):
