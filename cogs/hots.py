@@ -14,8 +14,7 @@ from utils.hots.talents import talents
 from utils.hots.tierlist import ban_heroes
 from utils.hots.twitch import get_streams
 from utils.library import files
-from utils import check, exceptions
-from utils.classes import Const
+from utils import check
 
 # Only if you want to use variables that are in the config.yaml file.
 config = files.get_yaml()
