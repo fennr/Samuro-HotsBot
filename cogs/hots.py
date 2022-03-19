@@ -1,5 +1,7 @@
 import json
+import inspect
 from discord import Embed
+from discord.ext import commands
 from discord.ext.commands import command, Cog, errors
 from discord_components import DiscordComponents, Button, ButtonStyle
 
@@ -192,6 +194,9 @@ class Hots(Cog, name='Hots'):
         """
         - Авторские билды от про игрока **STLK**
         """
+        if len(hero_name) == 0:
+            param = inspect.Parameter(name="hero_name", kind=inspect.Parameter.VAR_POSITIONAL)
+            raise commands.MissingRequiredArgument(param)
         name = ' '.join(hero_name)
         hero = get_hero(name)
         if isinstance(hero, Hero):
