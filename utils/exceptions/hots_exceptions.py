@@ -1,6 +1,6 @@
-from utils.library import base
+from utils.library import files
 
-config = base.get_config()
+config = files.get_yaml("config.yaml")
 
 
 class HotsException(Exception):

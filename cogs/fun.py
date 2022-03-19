@@ -1,9 +1,9 @@
 from discord import utils
 import random
 from discord.ext import commands
-from utils.library import base
+from utils.library import files
 
-config = base.get_config()
+config = files.get_yaml()
 
 ignore_list = [
     'slash',

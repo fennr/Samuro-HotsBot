@@ -1,6 +1,4 @@
-import os
 import requests
-import yaml
 import psycopg2.extras
 import itertools as it
 from discord import Embed, utils, Member
@@ -10,16 +8,10 @@ from utils.classes.Stats import Stats
 from utils.classes.Team import Team
 from collections.abc import MutableMapping
 from datetime import datetime
-from utils import exceptions, sql
+import utils
+from utils import exceptions, sql, library
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-
-    with open("../../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+config = library.files.get_yaml()
 
 leagues = {
     "Bronze": "Бронза",

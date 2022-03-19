@@ -1,8 +1,8 @@
 import json
 import requests
-from utils.library import base
+from utils.library import files
 
-config = base.get_config()
+config = files.get_yaml()
 
 file_path = '../../data/'
 patch = config["patch"]

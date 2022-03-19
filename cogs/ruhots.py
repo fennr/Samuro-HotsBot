@@ -1,8 +1,8 @@
 from discord import Embed, utils
 from discord.ext import commands
-from utils.library import base, profile as pl
+from utils.library import files, profile as pl
 
-config = base.get_config()
+config = files.get_yaml()
 
 clear = '\u200b'
 

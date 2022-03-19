@@ -7,16 +7,10 @@ from utils.hots.heroes import builds, heroes_description_short
 from utils.hots.skills import skills
 from utils.hots.talents import talents
 from utils.classes.Hero import Hero
-from utils.library import base
+from utils.library import files
 from utils import exceptions, log
 
-config = base.get_config()
-
-short_patch = config["patch"][-5:]
-
-gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata' + short_patch + '.json'
-heroes_ru_json_file = 'data/heroesdata_ru.json'
+config = files.get_yaml()
 
 
 class Heroes(commands.Cog, name="Heroes"):
@@ -76,7 +70,7 @@ class Heroes(commands.Cog, name="Heroes"):
     @hots_hero.error
     @hots_skill.error
     @hots_talent.error
-    async def heroes_hero_handler(self, ctx, error):
+    async def heroes_handler(self, ctx, error):
         #print("Обработка ошибок heroes")
         error = getattr(error, 'original', error)        # получаем пользовательские ошибки
         print(error)
@@ -93,7 +87,7 @@ class Heroes(commands.Cog, name="Heroes"):
                 value=f"_{config['bot_prefix']}{ctx.command} Самуро {lvl}_",
                 inline=False
             )
-            embed = base.add_footer(embed)
+            embed = files.add_footer(embed)
             log.error(ctx, "Неверно введены аргументы команды")
             await ctx.send(embed=embed)
 
@@ -103,7 +97,7 @@ class Heroes(commands.Cog, name="Heroes"):
                 title=text,
                 color=config["error"]
             )
-            embed = base.add_footer(embed)
+            embed = files.add_footer(embed)
             await ctx.send(embed=embed)
 
         elif isinstance(error, exceptions.WrongTalentLvl):
@@ -111,7 +105,7 @@ class Heroes(commands.Cog, name="Heroes"):
                 title="Ошибка! Выберите правильный уровень таланта",
                 color=config["error"]
             )
-            embed = base.add_footer(embed)
+            embed = files.add_footer(embed)
             await ctx.send(embed=embed)
 
 

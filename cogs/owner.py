@@ -5,9 +5,9 @@ import json
 from discord import Embed, Member, File
 from discord.ext import commands
 from pprint import pprint
-from utils.library import base
+from utils.library import files
 
-config = base.get_config()
+config = files.get_yaml()
 
 
 class owner(commands.Cog, name="Owner"):

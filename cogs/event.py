@@ -2,12 +2,12 @@ import pytz
 from datetime import datetime
 from discord import Embed, utils, Member
 from discord.ext import commands
-from utils.library import base, profile as pl
+from utils.library import files, profile as pl
 from utils import check
 from discord_slash import cog_ext, SlashContext
 import asyncio
 
-config = base.get_config()
+config = files.get_yaml()
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 

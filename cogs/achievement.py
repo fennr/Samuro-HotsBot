@@ -1,10 +1,10 @@
 from discord import Member
 from discord.ext import commands
 from datetime import date
-from utils.library import base, profile as pl
+from utils.library import files, profile as pl
 from utils import check
 
-config = base.get_config()
+config = files.get_yaml()
 
 
 class Team(commands.Cog, name="Team"):

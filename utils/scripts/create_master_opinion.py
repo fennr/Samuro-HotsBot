@@ -1,9 +1,9 @@
 import json
 import csv
-from utils.library import hots, base
+from utils.library import hots, files
 from utils.classes.Hero import Hero
 
-config = base.get_config()
+config = files.get_yaml()
 
 if __name__ == '__main__':
     url = 'https://www.youtube.com/watch?v='

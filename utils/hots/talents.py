@@ -2,10 +2,10 @@ import json
 from discord import Embed
 from utils.library.hots import cleanhtml
 from utils.classes.Hero import Hero
-from utils.library import base
+from utils.library import files
 from utils import exceptions
 
-config = base.get_config()
+config = files.get_yaml()
 
 short_patch = config["patch"][-5:]
 

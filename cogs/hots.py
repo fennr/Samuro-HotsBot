@@ -1,4 +1,3 @@
-import json
 import inspect
 from discord import Embed
 from discord.ext import commands
@@ -14,23 +13,12 @@ from utils.hots.skills import skill
 from utils.hots.talents import talents
 from utils.hots.tierlist import ban_heroes
 from utils.hots.twitch import get_streams
-from utils.library import base
-from utils import check
+from utils.library import files
+from utils import check, exceptions
+from utils.classes import Const
 
 # Only if you want to use variables that are in the config.yaml file.
-config = base.get_config()
-
-short_patch = config["patch"][-5:]
-
-gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata' + short_patch + '.json'
-
-pancho_json_file = base.get_pancho()
-
-with open(heroes_json_file) as heroes_json:
-    heroes_data = json.load(heroes_json)
-with open(gamestrings_json_file, encoding='utf-8') as ru_json:
-    ru_data = json.load(ru_json)
+config = files.get_yaml()
 
 # menu
 heroes_label = 'Герой'
@@ -140,7 +128,7 @@ class Hots(Cog, name='Hots'):
         )
 
     @command(name='data')
-    async def data(self, ctx, hero_name):
+    async def heroes_data(self, ctx, hero_name):
         """
         - Полное описания героя
         """
@@ -358,11 +346,13 @@ class Hots(Cog, name='Hots'):
             # можно использовать или embed или content content=f"{res.component.label} pressed",
 
 
-    @data.error
+    @heroes_data.error
     @stlk_builds.error
-    async def cog_command_error(self, ctx, error):
+    async def hots_handler(self, ctx, error):
         print("Обработка ошибок hots")
         error = getattr(error, 'original', error)  # получаем пользовательские ошибки
+        print(error)
+        print(type(error))
         if isinstance(error, errors.MissingRequiredArgument):
             embed = Embed(
                 title="Ошибка! Введите все аргументы",
@@ -377,7 +367,10 @@ class Hots(Cog, name='Hots'):
                 text=f"{config['bot_prefix']}help для просмотра справки по командам"  # context.message.author если использовать без slash
             )
             await ctx.send(embed=embed)
-        if isinstance(error, errors.CommandInvokeError):
+
+
+
+        elif isinstance(error, errors.CommandInvokeError):
             text = "Ошибка! Герой не найден"
             embed = Embed(
                 title=text,
