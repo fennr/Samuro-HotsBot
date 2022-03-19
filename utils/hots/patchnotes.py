@@ -1,25 +1,11 @@
-import os
-import sys
 import xml.etree.ElementTree as ET
-
 import requests
-import yaml
 from bs4 import BeautifulSoup
 from discord import Embed
-
 from utils.classes.Hero import Hero
+from utils.library import files
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-short_patch = config["patch"][-5:]
-
-gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata' + short_patch + '.json'
-heroes_ru_json_file = 'data/heroesdata_ru.json'
+config = files.get_yaml()
 
 
 def get_last_update(url, embed=None):
@@ -42,7 +28,7 @@ def get_last_update(url, embed=None):
             value=f"[{value.text}]({value_link})",
             inline=True
         )
-    except:
+    except Exception:
         pass
     return embed
 
@@ -71,7 +57,7 @@ def last_pn(hero=None, author=''):
         value=f"[{soup.ol.li.a.text}]({soup.ol.li.a['href']})",
         inline=False
     )
-    print(soup.ol.li.a)
+    #print(soup.ol.li.a)
     for child in tree.find('{http://www.w3.org/2005/Atom}entry'):
         if child.tag == '{http://www.w3.org/2005/Atom}title':
             title = child.text

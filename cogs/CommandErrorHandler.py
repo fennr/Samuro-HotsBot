@@ -1,6 +1,7 @@
 import discord
 import traceback
 import sys
+from discord import errors
 from discord.ext import commands
 import pretty_errors
 

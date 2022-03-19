@@ -1,6 +1,6 @@
 import json
 import discord
-from discord import Embed, Member, File
+from discord import Embed, Member, File, errors
 from discord.ext import commands
 from utils import check, sql, json_manager
 from utils.library import files
@@ -292,12 +292,17 @@ class owner(commands.Cog, name="Owner"):
             await context.send(embed=embed)
 
 
-    @ban.error
-    async def on_command_error(ctx, error):
+
+    @serverinfo.error
+    async def owner_handler(self, ctx, error):
+        error = getattr(error, 'original', error)  # получаем пользовательские ошибки
+        print(error)
+        #print(type(error))
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('Введены не все аргументы :rolling_eyes:.')
-        if isinstance(error, commands.MissingPermissions):
-            await ctx.send("Не хватает прав :angry:")
+        if isinstance(error, errors.Forbidden):
+            pass  # print(error) #сообщение уже отправлено
+
 
 def setup(bot):
     bot.add_cog(owner(bot))

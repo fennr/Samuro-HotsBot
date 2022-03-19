@@ -331,7 +331,6 @@ class Hots(Cog, name='Hots'):
             embed = last_pn(hero, author)
             components = lastpn_components
             components[0][3] = Button(style=ButtonStyle.blue, label=lastpn_label, disabled=True)
-        #await res.send(embed=embed)
         if author == str(res.user):
             await res.respond(
                 type=7, embed=embed, components=components
@@ -348,10 +347,11 @@ class Hots(Cog, name='Hots'):
     @heroes_data.error
     @stlk_builds.error
     async def hots_handler(self, ctx, error):
-        print("Обработка ошибок hots")
+        #print("Обработка ошибок hots")
         error = getattr(error, 'original', error)  # получаем пользовательские ошибки
         print(error)
-        print(type(error))
+        #print(type(error))
+        print(f"Сообщение вызвавшее ошибку: '{ctx.message.content}' guild {ctx.guild} by {ctx.author}")
         if isinstance(error, errors.MissingRequiredArgument):
             embed = Embed(
                 title="Ошибка! Введите все аргументы",
@@ -374,6 +374,7 @@ class Hots(Cog, name='Hots'):
             )
             embed = files.add_footer(embed)
             await ctx.send(embed=embed)
+
 
 def setup(bot):
     DiscordComponents(bot)  # If you have this in an on_ready() event you can remove this line.
