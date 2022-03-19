@@ -1,45 +1,22 @@
 import json
-import os
-import sys
-
-import yaml
 from discord import Embed
-
+import utils
+from utils.classes import Const
 from utils.library.hots import add_thumbnail, cleanhtml
 from utils.hots.patchnotes import get_last_update
 from utils.classes.Hero import Hero
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-short_patch = config["patch"][-5:]
-
-gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata' + short_patch + '.json'
-heroes_ru_json_file = 'data/heroesdata_ru.json'
-stlk_json_file = 'data/stlk_builds.json'
-
-with open(heroes_json_file) as heroes_json:
-    heroes_data = json.load(heroes_json)
-with open(gamestrings_json_file, encoding='utf-8') as ru_json:
-    ru_data = json.load(ru_json)
-with open(stlk_json_file, encoding='utf-8') as ru_json:
-    stlk_data = json.load(ru_json)
+config = utils.files.get_yaml()
+data = Const.data
+jsons = Const.jsons
 
 
 def heroes_description_short(hero: Hero, author):
-    hero_json_file = 'data/hero/' + hero.json
-    with open(hero_json_file) as hero_json:
-        hero_data = json.load(hero_json)
-    hero_name = hero_data['cHeroId']
-    hero_unit = ru_data['gamestrings']['unit']
-    hero_description = hero_unit['description'][hero_name]
-    hero_expandedrole = hero_unit['expandedrole'][hero_name]
+    hero_unit = jsons.gamestrings['gamestrings']['unit']
+    hero_description = hero_unit['description'][hero.id]
+    hero_expandedrole = hero_unit['expandedrole'][hero.id]
 
-    full_hero = heroes_data[hero_data['cHeroId']]
+    full_hero = jsons.heroes[hero.id]
 
     hero_complexity = int(full_hero['ratings']['complexity'])
 
@@ -74,15 +51,10 @@ def heroes_description_short(hero: Hero, author):
 
 
 def heroes_description(hero: Hero, author):
-    hero_json_file = 'data/hero/' + hero.json
-    with open(hero_json_file) as hero_json:
-        hero_data = json.load(hero_json)
-
-    full_hero = heroes_data[hero_data['cHeroId']]
-    hero_name = hero_data['cHeroId']
-    hero_unit = ru_data['gamestrings']['unit']
-    hero_description = hero_unit['description'][hero_name]
-    hero_expandedrole = hero_unit['expandedrole'][hero_name]
+    full_hero = jsons.heroes[hero.id]
+    hero_unit = jsons.gamestrings['gamestrings']['unit']
+    hero_description = hero_unit['description'][hero.id]
+    hero_expandedrole = hero_unit['expandedrole'][hero.id]
 
     embed = Embed(
         title='{} / {} : Характеристики'.format(hero.en, hero.ru),
@@ -162,7 +134,7 @@ def embed_stlk_builds(hero: Hero, author, embed=None, ad=False):
             title=f"Билды на героя {hero.ru}",  # title="Описание героя:",
             color=config["success"]
         )
-    stlk_builds = stlk_data[hero.id]
+    stlk_builds = jsons.stlk[hero.id]
     description += '💬 ' + stlk_builds['comment1'] + '\n```' + stlk_builds['build1'] + '```'
     if len(stlk_builds['build2']) > 0:
         description += '\n💬 ' + stlk_builds['comment2'].capitalize() + '\n```' + stlk_builds['build2'] + '```'

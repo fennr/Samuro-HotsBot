@@ -1,19 +1,14 @@
-import json
 import re
 from discord import Embed
 from utils.classes.Hero import Hero
-from utils.library import base
+from utils.library import files
 from utils.scripts import ytparser
 from utils import exceptions
+from utils.classes import Const
 
-config = base.get_config()
+config = files.get_yaml("config.yaml")
 
-heroes_ru_json_file = base.get_heroesdata_ru()
-
-pancho_json_file = base.get_pancho()
-
-with open(pancho_json_file, encoding='utf-8') as pancho_json:
-    pancho_data = json.load(pancho_json)
+jsons = Const.jsons
 
 
 def damerau_levenshtein_distance(s1: str, s2: str) -> int:
@@ -83,9 +78,7 @@ def find_more_heroes(hero_list, author, command='hero', lvl=''):
 
 
 def open_hero(hero_name):
-    with open(heroes_ru_json_file, encoding='utf-8') as heroes_ru_json:
-        heroes_ru_list = json.load(heroes_ru_json)
-    for hero, data in heroes_ru_list.items():
+    for hero, data in jsons.heroes_ru.items():
         if hero_name == data['name_en'] or hero_name == data['name_ru'] or hero_name == hero:
             return data
     return None
@@ -105,14 +98,11 @@ def add_thumbnail(hero: Hero, embed):
 def find_heroes(hero_name, allowed_error=5):
     hero_name = hero_name.capitalize()
     hero_list = []
-    with open(heroes_ru_json_file, encoding='utf-8') as heroes_ru_json:
-        heroes_ru_list = json.load(heroes_ru_json)
-    # print(heroes_ru_list)
     for i in range(1, allowed_error):
         if (len(hero_name) < 3) and i > 1:  # исключить поиск коротких слов
             break
         if len(hero_list) == 0:
-            for data in heroes_ru_list.values():
+            for data in jsons.heroes_ru.values():
                 hero = Hero(data)
                 if (damerau_levenshtein_distance(hero_name, hero.en.capitalize()) < i) or \
                         (damerau_levenshtein_distance(hero_name, hero.ru.capitalize()) < i) or \
@@ -140,12 +130,15 @@ def get_hero(hero_name):
 
 def get_master_opinion(ctx, hero_name, embed=None):
     url = 'https://www.youtube.com/watch?v='
-    hero = get_hero(hero_name)
+    if isinstance(hero_name, Hero):
+        hero = hero_name
+    else:
+        hero = get_hero(hero_name)
     if isinstance(hero, list):
         embed = find_more_heroes(hero, ctx.message.author, command='pancho')
         return embed
     if isinstance(hero, Hero):
-        videos = pancho_data.get(hero.id)
+        videos = jsons.pancho.get(hero.id)
         if videos is not None:
             if len(videos) > 0:
                 video = videos[0]
@@ -176,7 +169,7 @@ def add_master_opinion(hero_name, url):
         hero = get_hero(hero_name)
         master_opinion_json = 'data/pancho.json'
         with open(master_opinion_json, encoding='utf-8') as File:
-            master_json = json.load(File)
+            master_json = jsons.load(File)
         item = master_json.get(hero.id)
         vid = dict(date=video['date'], title=video['title'], url=video['url'])
         if item is None:
@@ -186,7 +179,7 @@ def add_master_opinion(hero_name, url):
         else:
             master_json[hero.id].insert(0, vid)
         with open(master_opinion_json, 'w', encoding='utf-8') as result_file:
-            json.dump(master_json, result_file, ensure_ascii=False, indent=4)
+            jsons.dump(master_json, result_file, ensure_ascii=False, indent=4)
         return 0
     else:
         return 1
