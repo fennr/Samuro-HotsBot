@@ -3,6 +3,7 @@ import yaml
 import psycopg2.extras
 from psycopg2 import errorcodes, errors
 from discord.ext import commands
+from utils.classes.Player import Player
 from utils import check, exceptions, sql
 from utils.library import profile as pl
 
@@ -57,7 +58,7 @@ class Profile(commands.Cog, name="Profile"):
         player = pl.get_heroesprofile_data(btag=btag,
                                            user_id=pl.get_user_id(discord_user),
                                            guild_id=pl.get_guild_id(ctx))
-        if isinstance(player, utils.hots.Player.Player):
+        if isinstance(player, Player):
             con, cur = pl.get_con_cur()
             insert = pl.inserts.get('Player')
             cur.execute(insert, (player.btag, player.id, player.guild_id,
