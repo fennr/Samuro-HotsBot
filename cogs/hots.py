@@ -14,7 +14,7 @@ from utils.hots.talents import talents
 from utils.hots.tierlist import ban_heroes
 from utils.hots.twitch import get_streams
 from utils.library import files
-from utils import check
+from utils import check, exceptions
 
 # Only if you want to use variables that are in the config.yaml file.
 config = files.get_yaml()
@@ -366,20 +366,13 @@ class Hots(Cog, name='Hots'):
                 text=f"{config['bot_prefix']}help для просмотра справки по командам"  # context.message.author если использовать без slash
             )
             await ctx.send(embed=embed)
-
-
-
-        elif isinstance(error, errors.CommandInvokeError):
+        elif isinstance(error, exceptions.HeroNotFoundError):
             text = "Ошибка! Герой не найден"
             embed = Embed(
                 title=text,
                 color=config["error"]
             )
-            embed.set_footer(
-                text=f"{config['bot_prefix']}help для просмотра справки по командам"
-                # context.message.author если использовать без slash
-            )
-            print(text)
+            embed = files.add_footer(embed)
             await ctx.send(embed=embed)
 
 def setup(bot):
