@@ -1,5 +1,5 @@
-from discord import utils
 import random
+from discord import utils
 from discord.ext import commands
 from utils.library import files
 

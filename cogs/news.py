@@ -1,8 +1,6 @@
 import datetime
 import locale
-
 import operator
-
 from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage

@@ -1,11 +1,10 @@
-import discord
-from utils import check, sql, json_manager
 import json
-
+import discord
 from discord import Embed, Member, File
 from discord.ext import commands
-from pprint import pprint
+from utils import check, sql, json_manager
 from utils.library import files
+from pprint import pprint
 
 config = files.get_yaml()
 

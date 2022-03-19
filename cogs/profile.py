@@ -1,8 +1,8 @@
 import os
 import yaml
 import psycopg2.extras
-from discord.ext import commands
 from psycopg2 import errorcodes, errors
+from discord.ext import commands
 from utils import check, exceptions, sql
 from utils.library import profile as pl
 

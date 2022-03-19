@@ -1,7 +1,6 @@
 import os
-from discord.ext import commands
-from utils.library import files, profile as pl
 from discord import Embed, Member, File
+from discord.ext import commands
 from utils import check
 from enum import Enum
 import openpyxl
@@ -9,6 +8,7 @@ from openpyxl.styles import Font
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
 from utils import exceptions
+from utils.library import files, profile as pl
 
 config = files.get_yaml()
 

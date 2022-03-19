@@ -1,9 +1,9 @@
+from discord import Colour
 from discord.ext import commands
 from discord.utils import get
-from discord import Colour
-from utils.library import files, profile as pl
-from utils import check
 from psycopg2 import errorcodes
+from utils import check
+from utils.library import files, profile as pl
 
 config = files.get_yaml()
 
