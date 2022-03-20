@@ -108,6 +108,10 @@ def error_log(ctx, error, slash=False):
     con.close()
 
 
+def sql_close(con):
+    con.close()
+
+
 def get_connect():
     try:
         DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -115,6 +119,7 @@ def get_connect():
     except:
         return psycopg2.connect(dbname='postgres', user='postgres',
                                 password='1121', host='localhost')
+
 
 def get_cursor(con):
     return con.cursor(cursor_factory=psycopg2.extras.DictCursor)

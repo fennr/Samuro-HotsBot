@@ -8,7 +8,7 @@ from utils.classes.Stats import Stats
 from utils.classes.Team import Team
 from collections.abc import MutableMapping
 from datetime import datetime
-import utils
+from utils.classes import Const
 from utils import exceptions, sql, library
 
 config = library.files.get_yaml()
@@ -23,89 +23,22 @@ leagues = {
     "Grandmaster": "Грандмастер"
 }
 
-flatten_mmr = {
-    'Bronze.5': 0, 'Bronze.4': 2250, 'Bronze.3': 2300, 'Bronze.2': 2350, 'Bronze.1': 2400,
-    'Silver.5': 2450, 'Silver.4': 2470, 'Silver.3': 2490, 'Silver.2': 2510, 'Silver.1': 2530,
-    'Gold.5': 2550, 'Gold.4': 2575, 'Gold.3': 2600, 'Gold.2': 2625, 'Gold.1': 2650,
-    'Platinum.5': 2675, 'Platinum.4': 2695, 'Platinum.3': 2715, 'Platinum.2': 2735, 'Platinum.1': 2755,
-    'Diamond.5': 2775, 'Diamond.4': 2800, 'Diamond.3': 2825, 'Diamond.2': 2850, 'Diamond.1': 2875,
-    'Master.0': 2900, 'Grandmaster.0': 3100,
-}
-
-selects = {
-    'PlayersIdOrBtag': 'SELECT * FROM "Players" WHERE id = %s OR btag = %s',
-    'PlayersBtag': 'SELECT * FROM "Players" WHERE btag = %s',
-    'PlayersInBtag': 'SELECT * FROM "Players" WHERE btag IN (%s)',
-    'PlayersId': 'SELECT * FROM "Players" WHERE id = %s',
-    'PlayersTeam': 'SELECT * FROM "Players" WHERE team = %s',
-    'PlayersAll': 'SELECT * FROM "Players"',
-    'hpAll': 'SELECT * FROM "heroesprofile"',
-    'ehActive': 'SELECT * FROM "EventHistory" WHERE room_id = %s AND active = %s',
-    'usIdGuild': 'SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
-    'usAll': 'SELECT * FROM "UserStats"',
-    'usGuild': 'SELECT * FROM "UserStats" WHERE guild_id = %s',
-    'usPoints': 'SELECT * FROM "UserStats" WHERE guild_id = %s AND points > 0 ORDER BY points DESC LIMIT %s',
-    'usWins': 'SELECT * FROM "UserStats" WHERE guild_id = %s AND win > 0 ORDER BY win DESC LIMIT %s',
-    'teamName': 'SELECT * FROM "Teams" WHERE name = %s',
-    'teamId': 'SELECT * FROM "Teams" WHERE id = %s',
-    'teamLid': 'SELECT * FROM "Teams" WHERE leader = %s',
-    'teamIdName': 'SELECT * FROM "Teams" WHERE id = %s or name = %s',
-    'achievId': 'SELECT * FROM "Achievements" WHERE id = %s',
-    'achievAll': 'SELECT * FROM "Achievements" WHERE guild_id = %s',
-    'userAchiev': '''SELECT (ua.id, a.name, ua.date) FROM "UserAchievements" as ua
-                    INNER JOIN "Achievements" as a
-                    ON ua.achievement = a.id
-                    WHERE ua.id = %s''',
-    'PlayersLeague': '''SELECT p.* FROM "Players" as p
-                        INNER JOIN "UserStats" as us
-                        ON p.id = us.id AND p.guild_id = us.guild_id
-                        WHERE league = %s ORDER BY mmr DESC LIMIT %s''',
-}
-
-deletes = {
-    'PlayerIdOrBtag': 'DELETE FROM "Players" WHERE id = %s OR btag = %s',
-    'PlayerId': 'DELETE FROM "Players" WHERE id = %s',
-    'TeamLid': 'DELETE FROM "Teams" WHERE leader = %s',
-    'UserAchiev': '''DELETE FROM "UserAchievements" 
-                WHERE id = %s AND guild_id = %s AND achievement = %s''',
-    'AchievId': 'DELETE FROM "Achievements" WHERE id = %s AND guild_id = %s RETURNING name',
-}
-
-inserts = {
-    'Player': '''INSERT INTO "Players"(btag, id, guild_id, mmr, league, division)
-                VALUES (%s, %s, %s, %s, %s, %s)''',
-    'Team': '''INSERT INTO "Teams"(name, leader) 
-                VALUES (%s, %s) RETURNING id''',
-    'Achievement': '''INSERT INTO "Achievements"(guild_id, name) 
-                VALUES (%s, %s) RETURNING id''',
-    'UserAchiev': '''INSERT INTO "UserAchievements"(id, guild_id, achievement, date) 
-                VALUES(%s, %s, %s, %s) '''
-}
-
-updates = {
-    'PlayerMMR': 'UPDATE "Players" SET league = %s, division = %s, mmr = %s WHERE id=%s',
-    'PlayerTeam': 'UPDATE "Players" SET team = %s WHERE id = %s',
-    'TeamMembers': 'UPDATE "Teams" SET members = %s WHERE id = %s',
-    'StatsPoints': 'Update "UserStats" SET points = %s WHERE id = %s AND guild_id = %s',
-}
-
 
 def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
-    con, cur = get_con_cur()
+    con, cur = library.get.con_cur()
     placeholder = '%s'
     placeholders = ', '.join(placeholder for unused in team)
-    select = selects.get('PlayersInBtag') % placeholders
+    select = Const.selects.PlayersInBtag % placeholders
     cur.execute(select, team)
     records = cur.fetchall()
     for record in records:
-        player = get_player(record)
-        select = selects.get('usIdGuild')
+        player = library.get.player(record)
+        select = Const.selects.USIdGuild
         cur.execute(select, (player.id, guild_id))
         stats_rec = cur.fetchone()
         if stats_rec is None:
             player_stats = Stats(player.id, guild_id, player.btag)
-            insert = '''INSERT INTO "UserStats"(id, guild_id, win, lose, points, btag)
-                                                    VALUES (%s, %s, %s, %s, %s, %s)'''
+            insert = Const.inserts.UserStats
             cur.execute(insert, (player_stats.id, player_stats.guild_id, player_stats.win,
                                  player_stats.lose, player_stats.points, player_stats.btag))
         else:
@@ -120,11 +53,9 @@ def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
             player.mmr -= int(delta)
             player_stats.points += int(points)
             player_stats.lose += 1
-        player.league, player.division = get_league_division_by_mmr(player.mmr)
-        updateUS = '''UPDATE "UserStats" SET points = %s, win = %s, lose = %s 
-                WHERE id = %s AND guild_id = %s'''
-        updateP = '''UPDATE "Players" SET mmr = %s, league = %s, division = %s 
-                WHERE id = %s and guild_id = %s'''
+        player.league, player.division = library.get.league_division_by_mmr(player.mmr)
+        updateUS = Const.updates.USPointWinLose
+        updateP = Const.updates.PlayerMMR
         cur.execute(updateUS, (player_stats.points, player_stats.win, player_stats.lose,
                                player_stats.id, player_stats.guild_id))
         cur.execute(updateP, (player.mmr, player.league, player.division,
@@ -142,21 +73,6 @@ def flatten_dict(d: MutableMapping, parent_key: str = '', sep: str = '.') -> Mut
         else:
             items.append((new_key, v))
     return dict(items)
-
-
-def get_league_division_by_mmr(mmr):
-    league, division = next(
-        x[1][0].split(sep='.') for x in enumerate(reversed(flatten_mmr.items())) if x[1][1] < mmr)
-    return league, division
-
-
-def get_likes(ctx):
-    like = utils.get(ctx.guild.emojis, name="like")
-    dislike = utils.get(ctx.guild.emojis, name="dislike")
-    if like is None:
-        like = '\N{THUMBS UP SIGN}'
-        dislike = '\N{THUMBS DOWN SIGN}'
-    return like, dislike
 
 
 def min_diff_sets(data):
@@ -199,7 +115,7 @@ def min_diff_sets(data):
             return red_team, blue_team
 
 
-def profile_not_found(user):
+def profile_not_found(user) -> str:
     return f"Профиль {user} не найден в базе.\n" \
            f"Добавьте его командой #profile add батлтаг# @discord"
 
@@ -255,60 +171,23 @@ def get_heroesprofile_data(btag, user_id, guild_id):
     return None
 
 
-def get_player_data(player: Player):
-    return f"{get_discord_mention(player.id)} (*btag:* {player.btag}, *mmr:* {player.mmr})\n"
-
-
-def get_user_id(member):
-    return int(''.join([i for i in member if i.isdigit()]))
-
-
-def get_discord_mention(id):
-    return '<@' + str(id) + '>'
-
-
-def get_player(record):
-    if record is not None:
-        player = Player(btag=record.btag, id=record.id, guild_id=record.guild_id,
-                        mmr=record.mmr, league=record.league, division=record.division,
-                        team=record.team)
-        return player
-    return None
-
-
-def get_stats(record):
-    if record is not None:
-        stats = Stats(btag=record.btag, id=record.id, guild_id=record.guild_id,
-                      win=record.win, lose=record.lose, points=record.points)
-        return stats
-    return None
-
-
-def get_team(record):
-    if record is not None:
-        team = Team(id=record.id, name=record.name, leader=record.leader,
-                    members=record.members, points=record.points)
-        return team
-    return None
-
-
 def get_profile_by_id(id):
     sql.sql_init()
     con = sql.get_connect()
     cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-    select = selects.get('PlayersId')
+    select = Const.selects.PlayersId
     cur.execute(select, (id,))
     record = cur.fetchone()
-    player = get_player(record)
+    player = library.get.player(record)
     return player, con, cur
 
 
 def get_profile_by_id_or_btag(id_or_btag):
-    con, cur = get_con_cur()
-    user_id = get_user_id(id_or_btag)
-    select = selects.get('PlayersIdOrBtag')
+    con, cur = library.get.con_cur()
+    user_id = library.get.user_id(id_or_btag)
+    select = Const.selects.PlayersIdOrBtag
     cur.execute(select, (user_id, id_or_btag,))
-    player = get_player(cur.fetchone())
+    player = library.get.player(cur.fetchone())
     return player
 
 
@@ -317,19 +196,19 @@ def avatar(ctx, avamember: Member = None):
 
 
 def check_user(ctx):
-    user_id = get_author_id(ctx)
-    con, cur = get_con_cur()
-    select = selects.get('PlayersId')
+    user_id = library.get.author_id(ctx)
+    con, cur = library.get.con_cur()
+    select = Const.selects.PlayersId
     cur.execute(select, (user_id,))
-    player = get_player(cur.fetchone())
+    player = library.get.player(cur.fetchone())
     return player
 
 
 def get_user_team_embed(embed, team_id):
-    con, cur = get_con_cur()
-    select = selects.get('teamId')
+    con, cur = library.get.con_cur()
+    select = Const.selects.TeamId
     cur.execute(select, (team_id,))
-    team = get_team(cur.fetchone())
+    team = library.get.team(cur.fetchone())
     embed.add_field(
         name="Команда",
         value=team.name,
@@ -339,7 +218,7 @@ def get_user_team_embed(embed, team_id):
 
 
 def get_team_embed(team: Team):
-    con, cur = get_con_cur()
+    con, cur = library.get.con_cur()
     embed = Embed(
         title=f"Команда {team.name} (id: {team.id})",
         color=config["info"]
@@ -351,13 +230,13 @@ def get_team_embed(team: Team):
         inline=True,
     )
     if team.members > 1:
-        select = selects.get("PlayersTeam")
+        select = Const.selects.PlayersTeam
         cur.execute(select, (team.id, ))
         records = cur.fetchall()
         teams = ''
         for record in records:
-            player = get_player(record)
-            teams += f'<@{player.id}> (btag: {player.btag}, mmr: {player.mmr})\n'
+            player = library.get.player(record)
+            teams += f'{library.get.mention(player.id)} (btag: {player.btag}, mmr: {player.mmr})\n'
         embed.add_field(
             name="Команда",
             value=teams,
@@ -407,8 +286,8 @@ def get_profile_embed(ctx, player: Player):
 
 
 def get_achievements_embed(embed: Embed, player: Player):
-    con, cur = get_con_cur()
-    select = selects.get("userAchiev")
+    con, cur = library.get.con_cur()
+    select = Const.selects.UserAchiev
     cur.execute(select, (player.id, ))
     records = cur.fetchall()
     if cur.rowcount:
@@ -436,40 +315,6 @@ def change_mmr(player: Player, delta: int, plus=True):
         return player.mmr + delta
     else:
         return player.mmr - delta
-
-
-def get_guild_id(ctx):
-    if ctx.guild is None:
-        guild_id = ''
-    else:
-        try:
-            guild_id = ctx.message.guild.id
-        except:
-            guild_id = ctx.guild_id
-    return guild_id
-
-
-def get_author(ctx):
-    try:
-        author = ctx.author.name
-    except:
-        author = ctx.message.author.name
-    return author
-
-
-def get_author_id(ctx):
-    try:
-        author_id = ctx.message.author.id
-    except:
-        author_id = ctx.author.id
-    return author_id
-
-
-def get_con_cur():
-    sql.sql_init()
-    con = sql.get_connect()
-    cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-    return con, cur
 
 
 def commit(con):

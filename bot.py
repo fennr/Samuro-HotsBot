@@ -92,6 +92,7 @@ async def on_message(message):
 # Событие срабатывает каждый раз, когда команда отработала *успешно*
 @bot.event
 async def on_command_completion(ctx):
+
     command_name = ctx.command.qualified_name
     content = ctx.message.content[1:20]
     guild, guild_id = get_guild(ctx)
