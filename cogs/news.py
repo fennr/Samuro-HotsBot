@@ -4,7 +4,8 @@ import operator
 from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
-from utils.library import files, profile as pl
+from utils import library
+from utils.library import profile as pl
 from utils.classes.Const import config
 
 
@@ -245,7 +246,7 @@ class News(commands.Cog, name="News"):
                             data = io.BytesIO(await resp.read())'''
                 # await ctx.message.delete()
                 msg = await channel.send(embed=embed)
-                like, dislike = pl.get_likes(ctx)
+                like, dislike = library.get_likes(ctx)
                 await msg.add_reaction(like)
                 await msg.add_reaction(dislike)
                 await News.update_schedule(self, ctx, clear_message=False)
@@ -366,7 +367,7 @@ class News(commands.Cog, name="News"):
         channel = utils.get(ctx.guild.text_channels, name=schedule_name)
         if img is not None:
             msg = await channel.send(embed=embed, file=img)
-            like, dislike = pl.get_likes(ctx)
+            like, dislike = library.get_likes(ctx)
             await msg.add_reaction(like)
             await msg.add_reaction(dislike)
         else:
