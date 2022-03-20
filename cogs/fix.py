@@ -3,8 +3,7 @@ from discord.ext import commands
 from utils.library import files, profile as pl
 from utils import check, sql
 from utils.classes.Player import Player
-
-config = files.get_yaml()
+from utils.classes.Const import config
 
 class Fix(commands.Cog, name="Fix"):
     def __init__(self, bot):

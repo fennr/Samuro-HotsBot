@@ -5,8 +5,6 @@ bot_prefix: "!"       # отдельно один для хелпа
 patch: "2.55.1.87306" # актуальный патч хотса
 log: "log_base.log"   # файл для логов
 version: "0.4.371"    # версия бота
-yt_api: "AIzaSyAo-D35Tct18rJPqtiYv17QGS-bHhQBBo4"
-owner: 196583204164075520 # id создателя с полными правами
 owners:
   - 196583204164075520
 admins:
@@ -16,8 +14,6 @@ admins:
   - 669506866661031947 # L. HS
   - 372432550611910657 # KotJ
   - 407958848742359051 # PsyCN
-blacklist:
-  - 123456789
 main_color: 0xD75BF4
 error: 0xE02B2B
 success: 0x42F56C

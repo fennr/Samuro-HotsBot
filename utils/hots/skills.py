@@ -7,29 +7,13 @@ from discord import Embed
 
 from utils.library.hots import cleanhtml
 from utils.classes.Hero import Hero
-
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-short_patch = config["patch"][-5:]
-
-gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata' + short_patch + '.json'
-heroes_ru_json_file = 'data/heroesdata_ru.json'
-
-with open(heroes_json_file) as heroes_json:
-    heroes_data = json.load(heroes_json)
-with open(gamestrings_json_file, encoding='utf-8') as ru_json:
-    ru_data = json.load(ru_json)
-
+from utils.classes import Const
+from utils.classes.Const import config, data, jsons
 
 def wrong_btn_key():
     embed = Embed(
         title="Ошибка выбора клавиши".format(),
-        color=config["error"]
+        color=config.error
     )
     embed.add_field(
         name='После имени введите клавиши нужных способности (можно на русском)',
@@ -54,7 +38,7 @@ def skills(hero: Hero, author, types=None, btn_key=None):
         types = ['basic']
     embed = Embed(
         title="{} / {} : Cпособности".format(hero.en, hero.ru),
-        color=config["success"]
+        color=config.success
     )
     for elem in types:
         embed = skill(hero, author, elem, embed, btn_key)
@@ -62,7 +46,7 @@ def skills(hero: Hero, author, types=None, btn_key=None):
 
 
 def skill(hero: Hero, author=None, ability_type='basic', embed=None, key=None):
-    full_hero = heroes_data[hero.id]
+    full_hero = data.heroes[hero.id]
     ability = full_hero['abilities'][ability_type]
     if ability_type == 'basic':
         type_text = 'Базовые'
@@ -73,7 +57,7 @@ def skill(hero: Hero, author=None, ability_type='basic', embed=None, key=None):
     if embed is None:
         embed = Embed(
             title="{} / {} : {} cпособности".format(hero.en, hero.ru, type_text),
-            color=config["success"]
+            color=config.success
         )
     for i in range(len(ability)):  # считываем все абилки
         # считываем файл с переводом
@@ -97,15 +81,15 @@ def skill(hero: Hero, author=None, ability_type='basic', embed=None, key=None):
         try:  # может быть True и False
             full_talent_name_en = ability_nameID + '|' + \
                                   ability_buttonID + '|' + ability_hotkey + '|False'
-            ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
+            ability_name_ru = data.heroes_ru['gamestrings']['abiltalent']['name'][full_talent_name_en]
         except:
             full_talent_name_en = ability_nameID + '|' + \
                                   ability_buttonID + '|' + ability_hotkey + '|True'
-            ability_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
-        ability_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
+            ability_name_ru = data.heroes_ru['gamestrings']['abiltalent']['name'][full_talent_name_en]
+        ability_desc_ru = cleanhtml(data.heroes_ru['gamestrings']['abiltalent']['full'][full_talent_name_en])
         try:  # может не быть кулдауна
             # ability_desc = hero_data['abilities'][hero_data['cHeroId']][i]['description']
-            ability_cooldown = cleanhtml(ru_data['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
+            ability_cooldown = cleanhtml(data.heroes_ru['gamestrings']['abiltalent']['cooldown'][full_talent_name_en])
             cooldown_title, cooldown_time = ability_cooldown.split(':', 1)
             embed.add_field(
                 name='{} ({})'.format(ability_name_ru, ability_hotkey),
@@ -121,6 +105,5 @@ def skill(hero: Hero, author=None, ability_type='basic', embed=None, key=None):
             )
     embed.set_footer(
         text=f"Информация для: {author}"  # context.message.author если использовать без slash
-        # text=f"Текущий патч: {config['patch']}"
     )
     return embed

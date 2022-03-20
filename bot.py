@@ -18,8 +18,7 @@ from discord_slash import SlashCommand, SlashContext  # Importing the newly inst
 from utils import sql
 from utils.library import files
 from utils.log import get_guild, log_init
-
-config = files.get_yaml("config.yaml")
+from utils.classes.Const import config
 
 # Вставить TOKEN и APP_ID вашего бота
 if os.environ.get('TESTING'):
@@ -33,7 +32,7 @@ else:
 intents = discord.Intents.default()
 intents.members = True
 
-bot = Bot(command_prefix=config["bot_initial_prefix"], intents=intents, case_insensitive=True)
+bot = Bot(command_prefix=config.bot_initial_prefix, intents=intents, case_insensitive=True)
 slash = SlashCommand(bot, sync_commands=True)
 
 
@@ -77,15 +76,6 @@ async def on_message(message):
     # Игнорировать сообщения других ботов
     if message.author == bot.user or message.author.bot:
         return
-    # Игнорировать сообщения пользователей в черном списке
-    with open("data/blacklist.json") as file:
-        blacklist = json.load(file)
-    if message.author.id in blacklist["ids"]:
-        print(f"banned {message.author}")
-        return
-    if message.author.id in config["blacklist"]:
-        print(f"banned {message.author}")
-        return
     await bot.process_commands(message)
 
 
@@ -117,7 +107,7 @@ async def global_guild_only(ctx):
     white_list = [
         'help',
     ]
-    if ctx.message.author.id not in config["owners"]:
+    if ctx.message.author.id not in config.owners:
         if ctx.command.qualified_name not in white_list:
             if not ctx.guild:
                 await ctx.send('Личка бота закрыта, пожалуйста используйте бота на сервере\n'

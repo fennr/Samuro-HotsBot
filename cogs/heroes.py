@@ -9,8 +9,7 @@ from utils.hots.talents import talents
 from utils.classes.Hero import Hero
 from utils.library import files
 from utils import exceptions, log
-
-config = files.get_yaml()
+from utils.classes.Const import config
 
 
 class Heroes(commands.Cog, name="Heroes"):
@@ -80,11 +79,11 @@ class Heroes(commands.Cog, name="Heroes"):
             lvl = ':lvl:' if str(ctx.command) == 'talent' else ''
             embed = Embed(
                 title="Ошибка! Введите все аргументы",
-                color=config["error"]
+                color=config.error
             )
             embed.add_field(
                 name="Пример:",
-                value=f"_{config['bot_prefix']}{ctx.command} Самуро {lvl}_",
+                value=f"_{config.bot_prefix}{ctx.command} Самуро {lvl}_",
                 inline=False
             )
             embed = files.add_footer(embed)
@@ -95,7 +94,7 @@ class Heroes(commands.Cog, name="Heroes"):
             text = "Ошибка! Герой не найден"
             embed = Embed(
                 title=text,
-                color=config["error"]
+                color=config.error
             )
             embed = files.add_footer(embed)
             await ctx.send(embed=embed)
@@ -103,7 +102,7 @@ class Heroes(commands.Cog, name="Heroes"):
         elif isinstance(error, exceptions.WrongTalentLvl):
             embed = Embed(
                 title="Ошибка! Выберите правильный уровень таланта",
-                color=config["error"]
+                color=config.error
             )
             embed = files.add_footer(embed)
             await ctx.send(embed=embed)

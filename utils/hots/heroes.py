@@ -5,10 +5,7 @@ from utils.classes import Const
 from utils.library.hots import add_thumbnail, cleanhtml
 from utils.hots.patchnotes import get_last_update
 from utils.classes.Hero import Hero
-
-config = utils.files.get_yaml()
-data = Const.data
-jsons = Const.jsons
+from utils.classes.Const import config, data, jsons
 
 
 def heroes_description_short(hero: Hero, author):
@@ -30,7 +27,7 @@ def heroes_description_short(hero: Hero, author):
     embed = Embed(
         title='{} / {} ({})'.format(hero.en, hero.ru, hero_expandedrole),
         # title="Описание героя:",
-        color=config["success"]
+        color=config.success
     )
     embed.add_field(
         name="Описание",
@@ -59,7 +56,7 @@ def heroes_description(hero: Hero, author):
     embed = Embed(
         title='{} / {} : Характеристики'.format(hero.en, hero.ru),
         # title="Описание героя:",
-        color=config["success"]
+        color=config.success
     )
     embed.add_field(
         name="Описание",
@@ -119,7 +116,6 @@ def heroes_description(hero: Hero, author):
     embed = add_thumbnail(hero, embed)
     embed.set_footer(
         text=f"Информация для: {author}"  # context.message.author если использовать без slash
-        # text=f"Текущий патч: {config['patch']}"
     )
     return embed
 
@@ -132,7 +128,7 @@ def embed_stlk_builds(hero: Hero, author, embed=None, ad=False):
         description = ''
         embed = Embed(
             title=f"Билды на героя {hero.ru}",  # title="Описание героя:",
-            color=config["success"]
+            color=config.success
         )
     stlk_builds = jsons.stlk[hero.id]
     description += '💬 ' + stlk_builds['comment1'] + '\n```' + stlk_builds['build1'] + '```'
@@ -169,7 +165,7 @@ def builds(hero: Hero, author, embed=None):
     if embed is None:
         embed = Embed(
             title='{} / {} : Билды'.format(hero.en, hero.ru, ),  # title="Описание героя:",
-            color=config["success"],
+            color=config.success,
         )
     icy_veins_url_full = icy_veins_url + hero.en.lower().replace(' ', '-').replace('.',
                                                                                    '-').replace("'",
@@ -199,7 +195,6 @@ def builds(hero: Hero, author, embed=None):
     embed = embed_stlk_builds(hero, author, embed)
     embed.set_footer(
         text=f"Информация для: {author}"  # context.message.author если использовать без slash
-        # text=f"Текущий патч: {config['patch']}"
     )
 
     return embed

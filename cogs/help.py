@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.errors import Forbidden
 from utils import library
+from utils.classes.Const import config
 
 """This custom help command is a perfect replacement for the default one on any Discord Bot written in Discord.py!
 However, you must put "bot.remove_command('help')" in your bot, and the command must be in a cog for it to work.
@@ -12,8 +13,6 @@ https://gist.github.com/nonchris/1c7060a14a9d94e7929aa2ef14c41bc2
 You need to set three variables to make that cog run.
 Have a look at line 51 to 57
 """
-
-config = library.get_yaml()
 
 async def send_embed(ctx, embed):
     """
@@ -47,7 +46,7 @@ def white_list(ctx) -> list:
             'Profile',
             'Stats',
         ]
-        if library.get.author_id(ctx) in config["owners"]:
+        if library.get.author_id(ctx) in config.owners:
             return white_list + admin_list
         else:
             return white_list
@@ -67,11 +66,11 @@ class Help(commands.Cog):
         """Shows all modules of that bot"""
 
         # !SET THOSE VARIABLES TO MAKE THE COG FUNCTIONAL!
-        prefix = config["bot_prefix"]  # ENTER YOUR PREFIX - loaded from config, as string or how ever you want!
-        version = config["version"]  # enter version of your code
+        prefix = config.bot_prefix  # ENTER YOUR PREFIX - loaded from config, as string or how ever you want!
+        version = config.version  # enter version of your code
 
         # setting owner name - if you don't wanna be mentioned remove line 49-60 and adjust help text (line 88)
-        owner = config["owner"]  # ENTER YOU DISCORD-ID
+        owner = config.owners[0]  # ENTER YOU DISCORD-ID
         owner_name = "fenrir#5455"  # ENTER YOUR USERNAME#1234
 
         # checks if cog parameter was given

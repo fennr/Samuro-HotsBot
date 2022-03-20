@@ -4,19 +4,7 @@ from utils.library.hots import cleanhtml
 from utils.classes.Hero import Hero
 from utils.library import files
 from utils import exceptions
-
-config = files.get_yaml()
-
-short_patch = config["patch"][-5:]
-
-gamestrings_json_file = 'data/gamestrings' + short_patch + '.json'
-heroes_json_file = 'data/heroesdata' + short_patch + '.json'
-heroes_ru_json_file = 'data/heroesdata_ru.json'
-
-with open(heroes_json_file) as heroes_json:
-    heroes_data = json.load(heroes_json)
-with open(gamestrings_json_file, encoding='utf-8') as ru_json:
-    ru_data = json.load(ru_json)
+from utils.classes.Const import config, data, jsons
 
 
 def read_talent_lvl(input):
@@ -34,7 +22,7 @@ def read_talent_lvl(input):
 def wrong_talent_lvl(author):
     embed = Embed(
         title="Ошибка! Выберете правильный уровень таланта",
-        color=config["error"]
+        color=config.error
     )
     embed.set_footer(
         text=f"Информация для: {author}"  # context.message.author если использовать без slash
@@ -44,7 +32,7 @@ def wrong_talent_lvl(author):
 
 def talents(hero: Hero, lvl, author):
     lvl = str(lvl)
-    full_hero = heroes_data[hero.id]
+    full_hero = data.heroes[hero.id]
     level = 'level' + lvl
     try:
         talents_data = full_hero['talents'][level]
@@ -52,7 +40,7 @@ def talents(hero: Hero, lvl, author):
         raise exceptions.WrongTalentLvl
     embed = Embed(
         title="{} / {} : Таланты на {} уровне".format(hero.en, hero.ru, lvl),
-        color=config["success"]
+        color=config.success
     )
     for i in range(len(talents_data)):
         talent_nameID = talents_data[i]['nameId']
@@ -60,8 +48,8 @@ def talents(hero: Hero, lvl, author):
         talent_hotkey = talents_data[i]['abilityType']
         full_talent_name_en = talent_nameID + '|' + \
                               talent_buttonID + '|' + talent_hotkey + '|False'
-        talent_name_ru = ru_data['gamestrings']['abiltalent']['name'][full_talent_name_en]
-        talent_desc_ru = cleanhtml(ru_data['gamestrings']['abiltalent']['full'][full_talent_name_en])
+        talent_name_ru = data.heroes_ru['gamestrings']['abiltalent']['name'][full_talent_name_en]
+        talent_desc_ru = cleanhtml(data.heroes_ru['gamestrings']['abiltalent']['full'][full_talent_name_en])
         embed.add_field(
             name='{} ({})'.format(talent_name_ru, talent_hotkey),
             value="{}".format(talent_desc_ru),
@@ -69,6 +57,5 @@ def talents(hero: Hero, lvl, author):
         )
         embed.set_footer(
             text=f"Информация для: {author}"  # context.message.author если использовать без slash
-            # text=f"Текущий патч: {config['patch']}"
         )
     return embed

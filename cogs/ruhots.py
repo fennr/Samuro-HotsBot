@@ -1,8 +1,7 @@
 from discord import Embed, utils
 from discord.ext import commands
 from utils.library import files, profile as pl
-
-config = files.get_yaml()
+from utils.classes.Const import config
 
 clear = '\u200b'
 
@@ -56,7 +55,7 @@ class Ruhots(commands.Cog):
             embed = Embed(
                 title="Новый арт!",
                 description=description,
-                color=config["info"]
+                color=config.info
             )
             url = ctx.message.attachments[0].url
             embed.set_image(url=url)

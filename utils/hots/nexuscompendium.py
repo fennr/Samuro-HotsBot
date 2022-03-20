@@ -1,18 +1,8 @@
-import os
-import sys
-
 import requests
-import yaml
 from discord import Embed
-
 from utils.classes.Hero import Hero
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+from utils.classes.Const import config
 
-short_patch = config["patch"][-5:]
 
 
 def ranked():
@@ -25,7 +15,7 @@ def ranked():
     name = data['Ranked']['Name'].replace('Season', 'сезон')
     embed = Embed(
         title='{} '.format(name),
-        color=config["info"]
+        color=config.info
     )
     embed.add_field(
         name="Начало сезона",
@@ -38,7 +28,7 @@ def ranked():
         inline=True
     )
     embed.set_footer(
-        text=f"Текущий патч: {config['patch']}"
+        text=f"Текущий патч: {config.patch}"
     )
     return embed
 
@@ -54,7 +44,7 @@ def sales():
     text = ''
     embed = Embed(
         title='{} : {} - {}'.format('Скидки на героев', start_date, end_date),
-        color=config["info"]
+        color=config.info
     )
     count = 1
     for hero in heroes:
@@ -66,7 +56,7 @@ def sales():
         value=f"{text}"
     )
     embed.set_footer(
-        text=f"Текущий патч: {config['patch']}"
+        text=f"Текущий патч: {config.patch}"
     )
     return embed
 
@@ -81,7 +71,7 @@ def weekly_rotation():
     heroes = data['RotationHero']['Heroes']
     embed = Embed(
         title='{} : {} - {}'.format('Ротация героев', start_date, end_date),
-        color=config["info"]
+        color=config.info
     )
     hero_links = ''
     for hero_name in heroes:
@@ -94,7 +84,7 @@ def weekly_rotation():
     )
     embed.set_footer(
         # text=f"Информация для: {author}"  # context.message.author если использовать без slash
-        text=f"Текущий патч: {config['patch']}"
+        text=f"Текущий патч: {config.patch}"
     )
 
     return embed

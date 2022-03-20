@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup
 from discord import Embed
 from utils.classes.Hero import Hero
 from utils.library import files
+from utils.classes.Const import config
 
-config = files.get_yaml()
 
 
 def get_last_update(url, embed=None):
@@ -13,7 +13,7 @@ def get_last_update(url, embed=None):
         if embed is None:
             embed = Embed(
                 title="Последние изменения",
-                color=config["info"]
+                color=config.info
             )
         user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
         response = requests.get(url, headers={"User-Agent": f"{user_agent}"})
@@ -43,12 +43,12 @@ def last_pn(hero=None, author=''):
     if hero is not None:
         embed = Embed(
             title="{} / {} : Последний патч".format(hero.en, hero.ru),
-            color=config["info"]
+            color=config.info
         )
     else:
         embed = Embed(
             title="Патчноут",
-            color=config["info"]
+            color=config.info
         )
     response = requests.get('https://heroespatchnotes.com/patch/summary.html')
     soup = BeautifulSoup(response.text, 'html.parser')

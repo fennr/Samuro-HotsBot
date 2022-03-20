@@ -5,8 +5,6 @@ from psycopg2 import errorcodes, errors
 from utils.classes import Const
 from utils import exceptions, sql, library, check
 
-config = library.get_yaml()
-
 UniqueViolation = errors.lookup(errorcodes.UNIQUE_VIOLATION)
 
 

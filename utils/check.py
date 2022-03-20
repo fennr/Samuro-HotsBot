@@ -1,13 +1,10 @@
-import json
-import yaml
-import os
-import sys
 from typing import TypeVar, Callable
 
 from disnake.ext import commands
 from discord.ext import commands
 
 from utils.exceptions import *
+from utils.classes.Const import config
 
 T = TypeVar("T")
 
@@ -19,17 +16,12 @@ def is_owner() -> Callable[[T], T]:
 
     async def predicate(context: commands.Context) -> bool:
         print(context.author.id)
-        if not os.path.isfile("config.yaml"):
-            sys.exit("'config.yaml' not found! Please add it and try again.")
-        else:
-            with open("config.yaml") as file:
-                data = yaml.load(file, Loader=yaml.FullLoader)
-            try:
-                if context.author.id not in data["owners"]:
-                    raise UserNotOwner
-            except UserNotOwner as e:
-                print(e)
-            return True
+        try:
+            if context.author.id not in config.owners:
+                raise UserNotOwner
+        except UserNotOwner as e:
+            print(e)
+        return True
 
     return commands.check(predicate)
 
@@ -39,17 +31,12 @@ def is_admin() -> Callable[[T], T]:
     Проверка что пользователь является администратором бота
     """
     async def predicate(context: commands.Context) -> bool:
-        if not os.path.isfile("config.yaml"):
-            sys.exit("'config.yaml' not found! Please add it and try again.")
-        else:
-            with open("config.yaml") as file:
-                data = yaml.load(file, Loader=yaml.FullLoader)
-            try:
-                if context.author.id not in data["admins"]:
-                    raise UserNotAdmin
-            except UserNotAdmin as e:
-                print(e)
-            return True
+        try:
+            if context.author.id not in config.admins:
+                raise UserNotAdmin
+        except UserNotAdmin as e:
+            print(e)
+        return True
 
     return commands.check(predicate)
 
@@ -75,6 +62,7 @@ def is_samuro_dev() -> Callable[[T], T]:
         return flag
     return commands.check(predicate)
 
+
 def is_lead() -> Callable[[T], T]:
     """
     Проверка наличия роли ведущего
@@ -97,20 +85,4 @@ def is_lead() -> Callable[[T], T]:
         except UserNotAdmin as e:
             print(e)
         return flag
-    return commands.check(predicate)
-
-
-def not_blacklisted() -> Callable[[T], T]:
-    """
-    Проверка что пользователь не находится в черном списке
-    """
-
-    async def predicate(context: commands.Context) -> bool:
-        with open("blacklist.json") as file:
-            data = json.load(file)
-        if context.author.id in data["ids"]:
-            await context.send('Вам недоступна данная команда')
-            raise UserBlacklisted
-        return True
-
     return commands.check(predicate)

@@ -2,10 +2,9 @@ import os
 import discord
 from discord.ext import commands
 from utils.library import files
+from utils.classes.Const import config
 
 guild_ids = [845658540341592096]  # Put your server ID in this array.
-
-config = files.get_yaml()
 
 class general(commands.Cog, name="General"):
     def __init__(self, bot):
@@ -18,7 +17,7 @@ class general(commands.Cog, name="General"):
         """
         embed = discord.Embed(
             description="Русскоязычный бот по игре Heroes of the Storm",
-            color=config["success"]
+            color=config.success
         )
         embed.set_author(
             name="Samuro"
@@ -30,7 +29,7 @@ class general(commands.Cog, name="General"):
         )
         embed.add_field(
             name="Префикс:",
-            value=f"{config['bot_prefix']}",
+            value=f"{config.bot_prefix}",
             inline=False
         )
         embed.set_footer(
@@ -43,21 +42,19 @@ class general(commands.Cog, name="General"):
         """
         - Получить ссылку для приглашения бота на свой канал
         """
-        if config['state'] == 'prod':
+        try:
             APP_ID = os.environ.get('app_id_prod')
-        else:
-            APP_ID = config['app_test']
+        except:
+            APP_ID = os.environ.get('APP_ID')
         embed = discord.Embed(
             title="Приглашение на сервер",
             description=f"Для подключения Самуро перейдите по [ссылке](https://discordapp.com/oauth2/authorize?&client_id={APP_ID}&permissions=270416&scope=bot)\n"
                         f"По багам/вопросам писать: __fenrir#5455__",
-            color=config["info"]
+            color=config.info
         )
         await context.send(embed=embed)
         await context.author.send(embed=embed)
-        #await context.send("Я отправил ссылку в личку")
-        #await context.author.send(
-        #    f"Добавить Самуро на сервер: https://discordapp.com/oauth2/authorize?&client_id={config['app_test']}&permissions=270416&scope=bot")
+
 
     @commands.command(name="ping")
     async def ping(self, context):
@@ -65,7 +62,7 @@ class general(commands.Cog, name="General"):
         - Проверка жив ли бот
         """
         embed = discord.Embed(
-            color=config["success"]
+            color=config.success
         )
         embed.add_field(
             name="Pong!",
@@ -85,8 +82,7 @@ class general(commands.Cog, name="General"):
         poll_title = " ".join(args)
         embed = discord.Embed(
             title=f"{poll_title}",
-            # description=f"{poll_title}",
-            color=config["success"]
+            color=config.success
         )
         embed.set_footer(
             text=f"Опрос создан: {context.message.author} • Проголосовать!"
@@ -95,27 +91,6 @@ class general(commands.Cog, name="General"):
         await embed_message.add_reaction("👍")
         await embed_message.add_reaction("👎")
         await embed_message.add_reaction("🤷")
-
-    '''@commands.command(name="8ball")
-    async def eight_ball(self, context, *args):
-        """
-        Спроси бота о чем угодно
-        """
-        answers = ['Несомненно', 'Совершенно верно', 'Без сомнения',
-                   'Да - определенно', 'Насколько я понимаю, да', 'Скорее всего', 'Да',
-                   'Знаки говорят да', 'Ответ в тумане, спроси еще раз', 'Спроси еще раз позднее',
-                   'Лучше я не буду говорить',
-                   'Не могу сейчас сказать', 'Сконцентрируйся и спроси позже', 'Не расчитывай на это', 'Мой ответ нет',
-                   'Мои источники говорят нет', 'Прогнозы не очень хорошие', 'Очень сомнительно']
-        embed = discord.Embed(
-            # title="**Мой ответ:**",
-            title=f"{answers[random.randint(0, len(answers))]}",  # description
-            color=config["success"]
-        )
-        embed.set_footer(
-            text=f"Ответ для: {context.message.author}"
-        )
-        await context.send(embed=embed)'''
 
 
 def setup(bot):

@@ -3,7 +3,24 @@ from dataclasses import dataclass
 from utils.library import files
 
 conf = files.get_yaml("config.yaml")
-patch = conf["patch"][-5:]
+
+
+@dataclass(frozen=True)
+class Config:
+    bot_initial_prefix: list  # содержит несколько префиксов на которые бот отзывается
+    bot_prefix: str           # префикс выводящийся во всех справках как основной
+    patch: str
+    short_patch: str
+    log: str
+    version: str
+    owner: str
+    owners: list              # на случай если требуется несколько людей с суперправами
+    admins: list
+    main_color: int
+    error: int
+    success: int
+    warning: int
+    info: int
 
 
 @dataclass(frozen=True)
@@ -81,10 +98,28 @@ class Insert:
     Event: str
 
 
+config = Config(
+    bot_initial_prefix=conf["bot_initial_prefix"],
+    bot_prefix=conf["bot_prefix"],
+    patch=conf["patch"],
+    short_patch=conf["patch"][-5:],
+    log=conf["log"],
+    version=conf["version"],
+    owner=conf["owner"],
+    owners=conf["owners"],
+    admins=conf["admins"],
+    main_color=conf["main_color"],
+    error=conf["error"],
+    success=conf["success"],
+    warning=conf["warning"],
+    info=conf["info"],
+)
+
+
 data = FileName(
     config="config.yaml",
-    gamestrings=f"data/gamestrings{patch}.json",
-    heroes=f"data/heroesdata{patch}.json",
+    gamestrings=f"data/gamestrings{config.patch}.json",
+    heroes=f"data/heroesdata{config.patch}.json",
     heroes_ru=f"data/heroesdata_ru.json",
     pancho=f"data/pancho.json",
     stlk=f"data/stlk_builds.json"

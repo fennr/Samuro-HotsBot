@@ -15,9 +15,7 @@ from utils.hots.tierlist import ban_heroes
 from utils.hots.twitch import get_streams
 from utils.library import files
 from utils import check, exceptions
-
-# Only if you want to use variables that are in the config.yaml file.
-config = files.get_yaml()
+from utils.classes.Const import config
 
 # menu
 heroes_label = 'Герой'
@@ -355,22 +353,22 @@ class Hots(Cog, name='Hots'):
         if isinstance(error, errors.MissingRequiredArgument):
             embed = Embed(
                 title="Ошибка! Введите все аргументы",
-                color=config["error"]
+                color=config.error
             )
             embed.add_field(
                 name="Пример:",
-                value=f"_{config['bot_prefix']}{ctx.command} Самуро_",
+                value=f"_{config.bot_prefix}{ctx.command} Самуро_",
                 inline=False
             )
             embed.set_footer(
-                text=f"{config['bot_prefix']}help для просмотра справки по командам"  # context.message.author если использовать без slash
+                text=f"{config.bot_prefix}help для просмотра справки по командам"  # context.message.author если использовать без slash
             )
             await ctx.send(embed=embed)
         elif isinstance(error, exceptions.HeroNotFoundError):
             text = "Ошибка! Герой не найден"
             embed = Embed(
                 title=text,
-                color=config["error"]
+                color=config.error
             )
             embed = files.add_footer(embed)
             await ctx.send(embed=embed)

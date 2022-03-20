@@ -4,12 +4,7 @@ import sys
 import yaml
 from discord import Embed
 from twitchAPI.twitch import Twitch
-
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+from utils.classes.Const import config
 
 
 def get_streams(first=5):
@@ -25,7 +20,7 @@ def get_streams(first=5):
     count = 0
     embed = Embed(
         title='Стримы онлайн',
-        color=config["success"]
+        color=config.success
     )
     for stream in response_channels['data']:
         if count < first:

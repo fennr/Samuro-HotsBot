@@ -9,8 +9,7 @@ from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
 from utils.classes import Const
 from utils import exceptions, sql, library
-
-config = library.get_yaml()
+from utils.classes.Const import config
 
 
 class League(Enum):
@@ -86,7 +85,7 @@ class Stats(commands.Cog, name="Stats"):
         records = cur.fetchall()
         embed = Embed(
             title=f"Таблица лиги {league.value}",
-            color=config["info"]
+            color=config.info
         )
         value = ""
         for i, record in enumerate(records):
@@ -109,7 +108,7 @@ class Stats(commands.Cog, name="Stats"):
         records = cur.fetchall()
         embed = Embed(
             title=f"Таблица лидеров",
-            color=config["info"]
+            color=config.info
         )
         value = ""
         for i, record in enumerate(records):
@@ -132,7 +131,7 @@ class Stats(commands.Cog, name="Stats"):
         records = cur.fetchall()
         embed = Embed(
             title=f"Таблица лидеров",
-            color=config["info"]
+            color=config.info
         )
         value = ""
         # max_indent = len(max([self.bot.get_user(x.id).name for x in records])) + 1  # получать макс длину имени

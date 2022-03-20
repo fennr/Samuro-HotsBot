@@ -5,14 +5,8 @@ from psycopg2 import errorcodes, errors
 from discord.ext import commands
 from utils.classes import Const
 from utils import exceptions, sql, library, check, classes
+from utils.classes.Const import config
 
-if not os.path.isfile("config.yaml"):
-    # sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
 
 UniqueViolation = errors.lookup(psycopg2.errorcodes.UNIQUE_VIOLATION)
 

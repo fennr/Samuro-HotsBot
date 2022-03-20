@@ -5,8 +5,7 @@ from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
 from utils.library import files, profile as pl
-
-config = files.get_yaml()
+from utils.classes.Const import config
 
 
 category_name = 'Новости'
@@ -67,7 +66,7 @@ class News(commands.Cog, name="News"):
         """
         — Вывести в чат сообщение с напоминанием об ивенте
         """
-        if ctx.message.author.id in config["admins"]:
+        if ctx.message.author.id in config.admins:
             like = 'like'
             dislike = 'dislike'
             command, url = ctx.message.content.split(' ', maxsplit=1)
@@ -80,7 +79,7 @@ class News(commands.Cog, name="News"):
                     title="Привет, друг",
                     description=f'Скоро начнется мероприятие [{title}]({url})\n'
                                 f'Сервер: **{ctx.guild.name}**',
-                    color=config['info']
+                    color=config.info
                 )
             reactions: list = message.reactions
             for reaction in reactions:
@@ -99,7 +98,7 @@ class News(commands.Cog, name="News"):
                 embed = Embed(
                     title="Напоминание",
                     description=description,
-                    color=config['info']
+                    color=config.info
                 )
                 await channel.send(embed=embed)
             except:
@@ -107,7 +106,7 @@ class News(commands.Cog, name="News"):
 
     @commands.command(name="events_init")
     async def events_init(self, ctx):
-        if ctx.message.author.id in config["admins"]:
+        if ctx.message.author.id in config.admins:
             category = await ctx.guild.create_category(category_name, overwrites=None, reason=None)
             await ctx.guild.create_text_channel(schedule_name, category=category)
             await ctx.guild.create_text_channel(events_name, category=category)
@@ -117,13 +116,13 @@ class News(commands.Cog, name="News"):
             embed = Embed(
                 title="Error!",
                 description="You don't have the permission to use this command.",
-                color=config["error"]
+                color=config.error
             )
             await ctx.send(embed=embed)
 
     @commands.command(name="am")
     async def am(self, ctx):
-        if ctx.message.author.id in config["admins"]:
+        if ctx.message.author.id in config.admins:
             command, text = ctx.message.content.split(' ', maxsplit=1)
             await ctx.message.delete()
             await ctx.send(text)
@@ -148,7 +147,7 @@ class News(commands.Cog, name="News"):
             'dung_m': 472534563479093269,
             'stlk': 124864790110797824,
         }
-        if ctx.message.author.id in config["admins"]:
+        if ctx.message.author.id in config.admins:
             command, short_server_name, message = ctx.message.content.split(' ', maxsplit=2)
             if message[0] == ":" and message[-1:] == ":":
                 for guild in self.bot.guilds:
@@ -181,7 +180,7 @@ class News(commands.Cog, name="News"):
         — Указать заголовок, цвет(FFFFFF), текст
         """
         role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
-        if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
+        if ctx.message.author.id in config.admins or role in ctx.message.author.roles:
             command, header, color, description = ctx.message.content.split('\n', maxsplit=3)
             color = int(color, 16)
             embed = Embed(
@@ -207,7 +206,7 @@ class News(commands.Cog, name="News"):
         — Указать заголовок, дату(mm/dd), время(hh:mm), цвет(FFFFFF), текст
         """
         role = utils.find(lambda r: r.id in admin_role_id.values(), ctx.message.guild.roles)
-        if ctx.message.author.id in config["admins"] or role in ctx.message.author.roles:
+        if ctx.message.author.id in config.admins or role in ctx.message.author.roles:
             try:
                 news_data = ctx.message.content.split('\n', maxsplit=4)
                 news_data = news_data[1:]
@@ -261,14 +260,14 @@ class News(commands.Cog, name="News"):
                 embed = Embed(
                     title='Ошибка при вводе',
                     description=description,
-                    color=config["error"]
+                    color=config.error
                 )
                 await ctx.send(embed=embed)
         else:
             embed = Embed(
                 title="Error!",
                 description="You don't have the permission to use this command.",
-                color=config["error"]
+                color=config.error
             )
             await ctx.send(embed=embed)
 
@@ -310,13 +309,13 @@ class News(commands.Cog, name="News"):
         print(ctx.guild.name)
         if ctx.guild.name == 'RU︱Heroes of the Storm':
             img_name = 'scheduleHots.png'
-            color = config["info"]
+            color = config.info
         elif ctx.guild.name == 'RU︱Hearthstone':
             img_name = 'scheduleHS.png'
             color = int('DBC31E', 16)
         else:
             img_name = 'scheduleHS.png'
-            color = config["info"]
+            color = config.info
         if clear_message:
             pass
             # await ctx.message.delete()
@@ -362,7 +361,7 @@ class News(commands.Cog, name="News"):
             embed = Embed(
                 title='Ошибка чтения новостей',
                 description='Удалите сообщения в событиях созданные вручную и добавьте ивенты через #add_event',
-                color=config["error"]
+                color=config.error
             )'''
         channel = utils.get(ctx.guild.text_channels, name=schedule_name)
         if img is not None:
@@ -375,7 +374,7 @@ class News(commands.Cog, name="News"):
 
     @commands.command(name="test1")
     async def test1(self, ctx, *args):
-        if ctx.message.author.id in config["owners"]:
+        if ctx.message.author.id in config.owners:
             if len(args) == 0:
                 await ctx.send('Добавьте описание новости после команды')
             else:
@@ -383,12 +382,12 @@ class News(commands.Cog, name="News"):
                 embed = Embed(
                     title='Новая новость',
                     description=description,
-                    color=config["info"]
+                    color=config.info
                 )
                 embed.set_footer(
                     text=f"От пользователя {ctx.author}"
                 )
-                owner = self.bot.get_user(int(config["owner"]))
+                owner = self.bot.get_user(int(config.owners[0]))
                 # check if dm exists, if not create it
                 if owner.dm_channel is None:
                     await owner.create_dm()

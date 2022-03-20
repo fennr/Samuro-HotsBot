@@ -10,8 +10,7 @@ from collections.abc import MutableMapping
 from datetime import datetime
 from utils.classes import Const
 from utils import exceptions, sql, library
-
-config = library.files.get_yaml()
+from utils.classes.Const import config
 
 leagues = {
     "Bronze": "Бронза",
@@ -221,7 +220,7 @@ def get_team_embed(team: Team):
     con, cur = library.get.con_cur()
     embed = Embed(
         title=f"Команда {team.name} (id: {team.id})",
-        color=config["info"]
+        color=config.info
 
     )
     embed.add_field(
@@ -262,7 +261,7 @@ def get_stats_embed(embed, stats: Stats):
 def get_profile_embed(ctx, player: Player):
     embed = Embed(
         title=f"{player.btag}",
-        color=config["info"]
+        color=config.info
 
     )
     if player.division:

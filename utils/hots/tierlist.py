@@ -7,14 +7,7 @@ from bs4 import BeautifulSoup
 from discord import Embed
 
 from utils.classes.Hero import Hero
-
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-short_patch = config["patch"][-5:]
+from utils.classes.Const import config, data, jsons
 
 
 def ban_heroes(hero=None, author=None):
@@ -24,7 +17,7 @@ def ban_heroes(hero=None, author=None):
     ban_list = tier_s_html.find_all('span', attrs={'class': 'htl_ban_true'})
     embed = Embed(
         title="Рекомендуемый бан лист",
-        color=config["info"]
+        color=config.info
     )
     text = ''
     count = 1

@@ -6,8 +6,7 @@ from discord_slash import cog_ext, SlashContext
 from utils.classes import Const
 from utils import exceptions, sql, library, check
 import asyncio
-
-config = library.get_yaml()
+from utils.classes.Const import config
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 
@@ -62,7 +61,7 @@ class Event(commands.Cog, name="Event"):
         embed = Embed(
             title=f"{poll_title}",
             # description=f"{poll_title}",
-            color=config["success"]
+            color=config.success
         )
         embed.set_footer(
             text=f"4 минуты на голосование"
