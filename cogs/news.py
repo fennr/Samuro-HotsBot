@@ -305,7 +305,7 @@ class News(commands.Cog, name="News"):
         — Обновить устаревшее рассписание
         """
         img = None
-        img_path = 'img/'
+        img_path = 'data/img/'
         print(ctx.guild.name)
         if ctx.guild.name == 'RU︱Heroes of the Storm':
             img_name = 'scheduleHots.png'
