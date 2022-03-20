@@ -3,6 +3,7 @@
 ## Автор
 
  **[fennr (@fennr)](fennr.github.io/)**
+ [Дискорд для вопросов](https://discord.gg/2RD32kFEk8)
  
 ## Описание
 
