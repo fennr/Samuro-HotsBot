@@ -1,3 +1,13 @@
+""""
+Samuro Bot
+
+Автор: *fennr*
+github: https://github.com/fennr/Samuro-HotsBot
+
+Бот для сообществ по игре Heroes of the Storm
+
+"""
+
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 

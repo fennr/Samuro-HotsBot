@@ -1,3 +1,13 @@
+""""
+Samuro Bot
+
+Автор: *fennr*
+github: https://github.com/fennr/Samuro-HotsBot
+
+Бот для сообществ по игре Heroes of the Storm
+
+"""
+
 import os
 import discord
 from discord.ext import commands
