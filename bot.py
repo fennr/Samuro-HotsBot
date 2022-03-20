@@ -50,7 +50,7 @@ async def on_ready():
 # Setup the game status task of the bot
 @tasks.loop(minutes=1.0)
 async def status_task():
-    statuses = ["ARAM", f"{config['bot_prefix']}help", "Storm League"]
+    statuses = ["ARAM", f"{config.bot_prefix}help", "Storm League"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
@@ -125,7 +125,7 @@ async def on_member_join(member):
     embed = discord.Embed(
         title=title,
         description=message,
-        color=config["success"]
+        color=config.success
     )
     message = f"На сервер '{member.guild.name}' " \
               f"пришел пользователь '{member.name}'"

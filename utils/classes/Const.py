@@ -13,7 +13,6 @@ class Config:
     short_patch: str
     log: str
     version: str
-    owner: str
     owners: list              # на случай если требуется несколько людей с суперправами
     admins: list
     main_color: int
@@ -105,7 +104,6 @@ config = Config(
     short_patch=conf["patch"][-5:],
     log=conf["log"],
     version=conf["version"],
-    owner=conf["owner"],
     owners=conf["owners"],
     admins=conf["admins"],
     main_color=conf["main_color"],
@@ -118,8 +116,8 @@ config = Config(
 
 data = FileName(
     config="config.yaml",
-    gamestrings=f"data/gamestrings{config.patch}.json",
-    heroes=f"data/heroesdata{config.patch}.json",
+    gamestrings=f"data/gamestrings{config.short_patch}.json",
+    heroes=f"data/heroesdata{config.short_patch}.json",
     heroes_ru=f"data/heroesdata_ru.json",
     pancho=f"data/pancho.json",
     stlk=f"data/stlk_builds.json"
