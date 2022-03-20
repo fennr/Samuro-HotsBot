@@ -5,7 +5,7 @@
         "name_ru": "Абатур",
         "name_json": "abathur.json",
         "role": "Support",
-        "tier": "A",
+        "tier": "C",
         "nick": [
             ""
         ]
@@ -38,7 +38,7 @@
         "name_ru": "Ана",
         "name_json": "ana.json",
         "role": "Healer",
-        "tier": "C",
+        "tier": "B",
         "nick": [
             "Бабка"
         ]
@@ -72,7 +72,7 @@
         "name_ru": "Артанис",
         "name_json": "artanis.json",
         "role": "Bruiser",
-        "tier": "C",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -129,7 +129,7 @@
         "name_ru": "Светик",
         "name_json": "brightwing.json",
         "role": "Healer",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Светка",
             "Света",
@@ -142,7 +142,7 @@
         "name_ru": "Кассия",
         "name_json": "cassia.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Амазонка"
         ]
@@ -176,7 +176,7 @@
         "name_ru": "Хроми",
         "name_json": "chromie.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Хромая"
         ]
@@ -221,7 +221,7 @@
         "name_ru": "Диабло",
         "name_json": "diablo.json",
         "role": "Tank",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -232,7 +232,7 @@
         "name_ru": "Дива",
         "name_json": "dva.json",
         "role": "Bruiser",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Дива",
             "Дивуля",
@@ -290,7 +290,7 @@
         "name_ru": "Гаррош",
         "name_json": "garrosh.json",
         "role": "Tank",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             "Гарох"
         ]
@@ -301,7 +301,7 @@
         "name_ru": "Газлоу",
         "name_json": "gazlowe.json",
         "role": "Bruiser",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Газик"
         ]
@@ -345,7 +345,7 @@
         "name_ru": "Хандзо",
         "name_json": "hanzo.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -400,7 +400,7 @@
         "name_ru": "Джоанна",
         "name_json": "johanna.json",
         "role": "Tank",
-        "tier": "A",
+        "tier": "S",
         "nick": [
             ""
         ]
@@ -427,7 +427,8 @@
             "Кт",
             "Кель",
             "Каэль",
-            "Kael"
+            "Kael",
+            "Инвокер"
         ]
     },
     "KelThuzad": {
@@ -460,7 +461,7 @@
         "name_ru": "Каразим",
         "name_json": "kharazim.json",
         "role": "Healer",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Монк",
             "Монах",
@@ -484,7 +485,7 @@
         "name_ru": "Лили",
         "name_json": "lili.json",
         "role": "Healer",
-        "tier": "C",
+        "tier": "B",
         "nick": [
             "Мохнатка",
             "Панда"
@@ -499,7 +500,7 @@
         "tier": "A",
         "nick": [
             "Минг",
-            "Сорка"
+            "Лимин"
         ]
     },
     "LostVikings": {
@@ -549,7 +550,7 @@
         "name_ru": "Лунара",
         "name_json": "lunara.json",
         "role": "Ranged Assassin",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             "Коза",
             "Дриада"
@@ -572,7 +573,7 @@
         "name_ru": "Малфурион",
         "name_json": "malfurion.json",
         "role": "Healer",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -638,7 +639,7 @@
         "name_ru": "Мурадин",
         "name_json": "muradin.json",
         "role": "Tank",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             ""
         ]
@@ -660,7 +661,7 @@
         "name_ru": "Назибо",
         "name_json": "nazeebo.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Nazibo"
         ]
@@ -716,7 +717,7 @@
         "name_ru": "Рагнарос",
         "name_json": "ragnaros.json",
         "role": "Bruiser",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             "Рагна",
             "Ragna"
@@ -728,7 +729,7 @@
         "name_ru": "Рейнор",
         "name_json": "raynor.json",
         "role": "Ranged Assassin",
-        "tier": "B",
+        "tier": "A",
         "nick": [
             "Джимми",
             "Ковбой"
@@ -740,7 +741,7 @@
         "name_ru": "Регар",
         "name_json": "rehgar.json",
         "role": "Healer",
-        "tier": "B",
+        "tier": "S",
         "nick": [
             ""
         ]
@@ -798,7 +799,7 @@
         "name_ru": "Стежок",
         "name_json": "stitches.json",
         "role": "Tank",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Стич",
             "Пудж"
@@ -821,7 +822,7 @@
         "name_ru": "Сильвана",
         "name_json": "sylvanas.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             ""
         ]
@@ -876,7 +877,7 @@
         "name_ru": "Тайкус",
         "name_json": "tychus.json",
         "role": "Ranged Assassin",
-        "tier": "A",
+        "tier": "B",
         "nick": [
             "Такос"
         ]
@@ -931,7 +932,7 @@
         "name_ru": "Валла",
         "name_json": "valla.json",
         "role": "Ranged Assassin",
-        "tier": "S",
+        "tier": "A",
         "nick": [
             "Dh",
             "Дх",
@@ -999,7 +1000,7 @@
         "name_ru": "Заря",
         "name_json": "zarya.json",
         "role": "Support",
-        "tier": "B",
+        "tier": "C",
         "nick": [
             ""
         ]

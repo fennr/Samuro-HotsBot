@@ -1,81 +1,43 @@
 """"
-Основной файл бота
+Samuro Bot
+
+Автор: *fennr*
+github: https://github.com/fennr/Samuro-HotsBot
+
+Бот для сообществ по игре Heroes of the Storm
+
 """
 
 import json
 import os
 import platform
 import random
-import sys
-import logging
-import traceback
-import datetime
-
-import psycopg2
 
 import discord
-import yaml
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
-from discord_slash import SlashCommand  # Importing the newly installed library.
+from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
-from scripts import heroes_ru_names
-from helpers import sql, log
+from utils import sql
+from utils.library import files
+from utils.log import get_guild, log_init
+from utils.classes.Const import config
 
-if not os.path.isfile("config.yaml"):
-    sys.exit("'config.yaml' not found! Please add it and try again.")
+# Вставить TOKEN и APP_ID вашего бота
+if os.environ.get('TESTING'):
+    TOKEN = os.environ.get('TOKEN')
+    APP_ID = os.environ.get('APP_ID')
+    os.environ['TZ'] = 'Europe/Moscow'
 else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-GITHUB_TOKEN = os.environ.get('github_token')
-
-TOKEN = os.environ.get('token_prod')
-APP_ID = os.environ.get('app_id_prod')
-'''
-TOKEN = config['token_test']
-APP_ID = config['app_test']
-'''
-"""	
-Setup bot intents (events restrictions)
-For more information about intents, please go to the following websites:
-https://discordpy.readthedocs.io/en/latest/intents.html
-https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents
-
-
-Default Intents:
-intents.messages = True
-intents.reactions = True
-intents.guilds = True
-intents.emojis = True
-intents.bans = True
-intents.guild_typing = False
-intents.typing = False
-intents.dm_messages = False
-intents.dm_reactions = False
-intents.dm_typing = False
-intents.guild_messages = True
-intents.guild_reactions = True
-intents.integrations = True
-intents.invites = True
-intents.voice_states = False
-intents.webhooks = False
-
-Privileged Intents (Needs to be enabled on dev page), please use them only if you need them:
-intents.presences = True
-intents.members = True
-"""
-
+    TOKEN = os.environ.get('token_prod')
+    APP_ID = os.environ.get('app_id_prod')
 
 intents = discord.Intents.default()
 intents.members = True
 
-bot = Bot(command_prefix=config["bot_prefix"], intents=intents)
+bot = Bot(command_prefix=config.bot_initial_prefix, intents=intents, case_insensitive=True)
 slash = SlashCommand(bot, sync_commands=True)
 
-sql.sql_init()
-
-log = log.log_init()
 
 # The code in this even is executed when the bot is ready
 @bot.event
@@ -84,7 +46,6 @@ async def on_ready():
     print(f"Discord.py API version: {discord.__version__}")
     print(f"Python version: {platform.python_version()}")
     print(f"Running on: {platform.system()} {platform.release()} ({os.name})")
-    # print(f"All servers: {bot.guilds}")
     print("-------------------")
     status_task.start()
 
@@ -92,14 +53,15 @@ async def on_ready():
 # Setup the game status task of the bot
 @tasks.loop(minutes=1.0)
 async def status_task():
-    statuses = ["ARAM", f"{config['bot_prefix']}help", "квикосы"]
+    statuses = ["ARAM", f"{config.bot_prefix}help", "Storm League"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
-# Removes the default help command of discord.py to be able to create our custom help command.
+# Удаление стандартного хелпа
 bot.remove_command("help")
 
 if __name__ == "__main__":
+    # Загрузка всех cogs модулей
     for file in os.listdir("./cogs"):
         if file.endswith(".py"):
             extension = file[:-3]
@@ -111,100 +73,74 @@ if __name__ == "__main__":
                 print(f"Failed to load extension {extension}\n{exception}")
 
 
-# The code in this event is executed every time someone sends a message, with or without the prefix
+# Ивент срабатывающий при отправке любого сообщении, в том числе без префикса
 @bot.event
 async def on_message(message):
-    # Ignores if a command is being executed by a bot or by the bot itself
+    # Игнорировать сообщения других ботов
     if message.author == bot.user or message.author.bot:
-        return
-    # Ignores if a command is being executed by a blacklisted user
-    with open("blacklist.json") as file:
-        blacklist = json.load(file)
-    if message.author.id in blacklist["ids"]:
-        print(f"banned {message.author}")
-        return
-    if message.author.id in config["blacklist"]:
-        print(f"banned {message.author}")
         return
     await bot.process_commands(message)
 
 
-# The code in this event is executed every time a command has been *successfully* executed
+# Событие срабатывает каждый раз, когда команда отработала *успешно*
 @bot.event
 async def on_command_completion(ctx):
-    fullCommandName = ctx.command.qualified_name
-    split = fullCommandName.split(" ")
-    executedCommand = str(split[0])
-    # {ctx.channel.id} {ctx.message.id}
-    # {ctx.guild.name} {ctx.message.guild.id}
-    message = f"Executed {executedCommand} command in {ctx.guild.name} (ID: {ctx.message.guild.id}) " \
-              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
+
+    command_name = ctx.command.qualified_name
+    content = ctx.message.content[1:20]
+    guild, guild_id = get_guild(ctx)
+    message = f"Executed '{ctx.message.content[1:]}' command in {guild} " \
+              f"by {ctx.message.author}"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
-    log.info(message)
-    now = str(datetime.datetime.now())
-    #con = psycopg2.connect(dbname='discord', user='fenrir',
-    #                       password='1121', host='localhost')
-    con = sql.get_connect()
-    cur = con.cursor()
-    data = {'time': now, 'lvl': 'INFO', 'message': message}
-    cur.execute(
-        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
-    )
-    con.commit()
-    con.close()
 
 
-# The code in this event is executed every time a valid commands catches an error
+# Событие срабатывает каждый раз, когда слеш команда отработала *успешно*
 @bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        embed = discord.Embed(
-            title="Error!",
-            description="This command is on a %.2fs cool down" % error.retry_after,
-            color=config["error"]
-        )
-        await ctx.send(embed=embed)
-    elif isinstance(error, commands.MissingPermissions):
-        embed = discord.Embed(
-            title="Error!",
-            description="You are missing the permission `" + ", ".join(
-                error.missing_perms) + "` to execute this command!",
-            color=config["error"]
-        )
-        await ctx.send(embed=embed)
-    elif isinstance(error, commands.CommandNotFound):
-        embed = discord.Embed(
-            title="Ошибка! Такой команды не существует",
-            description=f"Воспользуйтесь справкой по команде {config['bot_prefix']}help",
-            color=config["error"]
-        )
-        await ctx.send(embed=embed)
-    message = f" in {ctx.guild.name} " \
-              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
-    log.error(str(error) + message)
-    now = str(datetime.datetime.now())
-    con = sql.get_connect()
-    cur = con.cursor()
-    data = {'time': now, 'lvl': 'ERROR', 'message': str(error) + message}
-    cur.execute(
-        "INSERT INTO logs(TIME, LVL, MESSAGE) VALUES (%(time)s, %(lvl)s, %(message)s)", data
-    )
-    con.commit()
-    con.close()
-    raise error
+async def on_slash_command(ctx: SlashContext):
+    executedCommand = ctx.name
+    guild, guild_id = get_guild(ctx)
+    message = f"Executed {executedCommand} command in {guild} (ID: {guild_id}) " \
+              f"by {ctx.author} (ID: {ctx.author_id})"
+    print(message)
 
-# Запрет писать боту в личку
+
+# Запрет писать боту в личку. Исключения: автор бота или команда help
 @bot.check
 async def global_guild_only(ctx):
-    if ctx.message.author.id not in config["owners"]:
-        if not ctx.guild:
-            await ctx.send('Личка бота закрыта, пожалуйста используйте бота на сервере\n'
-                           'Если по каким-то причинам неудобно использовать на публичном сервере всегда можно пригласить в свой по команде #invite')
-            raise commands.NoPrivateMessage  # replicating guild_only check: https://github.com/Rapptz/discord.py/blob/42a538edda79f92a26afe0ac902b45c1ea20154d/discord/ext/commands/core.py#L1832-L1846
+    white_list = [
+        'help',
+    ]
+    if ctx.message.author.id not in config.owners:
+        if ctx.command.qualified_name not in white_list:
+            if not ctx.guild:
+                await ctx.send('Личка бота закрыта, пожалуйста используйте бота на сервере\n'
+                               'Если по каким-то причинам неудобно использовать на публичном сервере нажмите на аватар и кликните по кнопке "Добавить на сервер"')
+                raise commands.NoPrivateMessage  # replicating guild_only check: https://github.com/Rapptz/discord.py/blob/42a538edda79f92a26afe0ac902b45c1ea20154d/discord/ext/commands/core.py#L1832-L1846
     return True
 
-# Генерируем файл с именами героев
-heroes_ru_names.create_heroes_ru_data()
-# Run the bot with the token
 
+# Приветствие при входе на сервер
+@bot.event
+async def on_member_join(member):
+    server = member.guild
+    title = "Привет друг!"
+    message = f"Добро пожаловать на сервер **{member.guild.name}**.\n"
+    embed = discord.Embed(
+        title=title,
+        description=message,
+        color=config.success
+    )
+    message = f"На сервер '{member.guild.name}' " \
+              f"пришел пользователь '{member.name}'"
+    print(message)
+    try:
+        await member.send(embed=embed)
+    except Exception:
+        print(f"Невозможно отправить сообщение пользователю {member.name}")
+
+
+# Генерируем файл с именами героев
+#heroes_ru_names.create_heroes_ru_data()
+
+# Run the bot with the token
 bot.run(TOKEN)

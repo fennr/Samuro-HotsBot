@@ -35,7 +35,7 @@ Imperius:
 Jaina:
 Crusader:
 Junkrat:Крыса
-Kaelthas:КТ, Кель, каэль, kael
+Kaelthas:КТ, Кель, каэль, kael, инвокер
 KelThuzad:КТЗ, келтузед, KTZ
 Kerrigan:
 Monk:Монк, монах, керамзит

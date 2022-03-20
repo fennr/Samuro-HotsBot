@@ -1,17 +1,19 @@
-bot_prefix: "#"
-token_test: "NjYxNDQzNjkyNDQ3NjYyMTAy.XgrfcQ.1hW0jbw6XusQ-4DUIQUkayr5WG4"
-app_test: "661443692447662102"
-github_test: "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"
-patch: "2.54.3.85894"
-log: "log_base.log"
-owner: 196583204164075520
+bot_initial_prefix:   # доступные префиксы
+  - '#'
+  - '!'
+bot_prefix: "!"       # отдельно один для хелпа
+patch: "2.55.1.87306" # актуальный патч хотса
+log: "log_base.log"   # файл для логов
+version: "1.0.000"    # версия бота
 owners:
-  - 196583204164075520
+  - 196583204164075520 # fennr
 admins:
-  - 196583204164075520 # я
-  - 261177857126957056 # мачука
-blacklist:
-  - 123456789
+  - 196583204164075520 # fennr
+  - 261177857126957056 # Мачука
+  - 472509840518807553 # lieberman
+  - 669506866661031947 # L. HS
+  - 372432550611910657 # KotJ
+  - 407958848742359051 # PsyCN
 main_color: 0xD75BF4
 error: 0xE02B2B
 success: 0x42F56C
