@@ -16,7 +16,6 @@ import utils.library.embeds
 from utils.classes import Const
 from utils import exceptions, library, check, classes
 
-
 UniqueViolation = errors.lookup(psycopg2.errorcodes.UNIQUE_VIOLATION)
 
 
@@ -104,7 +103,6 @@ class Profile(commands.Cog, name="Profile"):
         else:
             await ctx.send(library.profile_not_found(user_or_btag))
 
-
     @profile.command(name="update")
     @check.is_admin()
     async def profile_update(self, ctx, *args):
@@ -141,7 +139,6 @@ class Profile(commands.Cog, name="Profile"):
             select = Const.selects.USIdGuild
             cur.execute(select, (player.id, guild_id))
             stats = library.get.stats(cur.fetchone())
-            # print(stats)
             if stats is not None:
                 embed = utils.library.embeds.stats(embed, stats)
             if player.team is not None:

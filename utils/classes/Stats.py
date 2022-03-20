@@ -12,7 +12,7 @@ class Stats:
         return f'PlayerStats({self.btag}, id: {self.id})'
 
     def __str__(self):
-        return f"Stats(id={self.id}, guild_id={self.guild_id}, btag={self.btag} " \
+        return f"Stats(id={self.id}, guild_id={self.guild_id}, btag={self.btag}, " \
                f"win={self.win}, lose={self.lose}, points={self.points})"
 
     def __eq__(self, other):
