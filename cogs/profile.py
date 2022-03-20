@@ -134,15 +134,11 @@ class Profile(commands.Cog, name="Profile"):
         select = Const.selects.PlayersIdOrBtag
         cur.execute(select, (user_id, user_or_btag,))
         player = library.get.player(cur.fetchone())
-        print(player)
         if player is not None:
             embed = utils.library.embeds.profile(ctx, player)
             select = Const.selects.USIdGuild
             cur.execute(select, (player.id, guild_id))
-            record = cur.fetchone()
-            print(record)
-            stats = library.get.stats(record)
-            print(stats)
+            stats = library.get.stats(cur.fetchone())
             if stats is not None:
                 embed = utils.library.embeds.stats(embed, stats)
             if player.team is not None:

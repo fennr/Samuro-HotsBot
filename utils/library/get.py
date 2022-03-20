@@ -72,20 +72,25 @@ def player_data(pl: classes.Player) -> str:
     return f"{mention(pl.id)} (*btag:* {pl.btag}, *mmr:* {pl.mmr})\n"
 
 
-def player(record) -> classes.Player:
-    return classes.Player(btag=record.btag, id=record.id, guild_id=record.guild_id,
-                          mmr=record.mmr, league=record.league, division=record.division,
-                          team=record.team)
+def player(record):
+    if record is not None:
+        return classes.Player(btag=record.btag, id=record.id, guild_id=record.guild_id,
+                              mmr=record.mmr, league=record.league, division=record.division,
+                              team=record.team)
+    return None
 
 
-def stats(record) -> classes.Stats:
-    return classes.Stats(btag=record.btag, id=record.id, guild_id=record.guild_id,
-                         win=record.win, lose=record.lose, points=record.points)
+def stats(record):
+    if record is not None:
+        return classes.Stats(btag=record.btag, id=record.id, guild_id=record.guild_id,
+                             win=record.win, lose=record.lose, points=record.points)
+    return None
 
-
-def team(record) -> classes.Team:
-    return classes.Team(id=record.id, name=record.name, leader=record.leader,
-                        members=record.members, points=record.points)
+def team(record):
+    if record is not None:
+        return classes.Team(id=record.id, name=record.name, leader=record.leader,
+                            members=record.members, points=record.points)
+    return None
 
 
 def profile_by_id_or_btag(id_or_btag) -> classes.Player:
