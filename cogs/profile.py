@@ -1,11 +1,10 @@
-import os
-import yaml
 import psycopg2.extras
 from psycopg2 import errorcodes, errors
 from discord.ext import commands
+
+import utils.library.embeds
 from utils.classes import Const
-from utils import exceptions, sql, library, check, classes
-from utils.classes.Const import config
+from utils import exceptions, library, check, classes
 
 
 UniqueViolation = errors.lookup(psycopg2.errorcodes.UNIQUE_VIOLATION)
@@ -128,16 +127,16 @@ class Profile(commands.Cog, name="Profile"):
         cur.execute(select, (user_id, user_or_btag,))
         player = library.get.player(cur.fetchone())
         if player is not None:
-            embed = library.get_profile_embed(ctx, player)
+            embed = utils.library.embeds.profile(ctx, player)
             select = Const.selects.USIdGuild
             cur.execute(select, (player.id, guild_id))
             stats = library.get.stats(cur.fetchone())
             # print(stats)
             if stats is not None:
-                embed = library.get_stats_embed(embed, stats)
+                embed = utils.library.embeds.stats(embed, stats)
             if player.team is not None:
-                embed = library.get_user_team_embed(embed, player.team)
-            embed = library.get_achievements_embed(embed, player)
+                embed = utils.library.embeds.user_team(embed, player.team)
+            embed = utils.library.embeds.achievements(embed, player)
             guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
             member = guild.get_member(int(player.id))
             user_avatar = library.avatar(ctx, member)

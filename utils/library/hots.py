@@ -85,17 +85,6 @@ def open_hero(hero_name):
     return None
 
 
-def add_thumbnail(hero: Hero, embed):
-    ext = '.png'
-    thumb_url = 'https://nexuscompendium.com/images/portraits/'
-    hero_name = hero.en.lower().replace('.', '').replace("'", "").replace(' ', '-')
-    url = thumb_url + hero_name + ext
-    embed.set_thumbnail(
-        url=url
-    )
-    return embed
-
-
 def find_heroes(hero_name, allowed_error=5):
     hero_name = hero_name.capitalize()
     hero_list = []

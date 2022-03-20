@@ -3,6 +3,9 @@ from datetime import datetime
 from discord import Embed, utils, Member
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
+
+import utils.library.embeds
+import utils.library.profile
 from utils.classes import Const
 from utils import exceptions, sql, library, check
 import asyncio
@@ -138,7 +141,7 @@ class Event(commands.Cog, name="Event"):
                 cur.execute(select, (room_id, True))
                 record = cur.fetchone()
                 if record is None:
-                    players.sort(key=library.sort_by_mmr, reverse=True)
+                    players.sort(key=utils.library.profile.sort_by_mmr, reverse=True)
                     # обработка на случай одинакового ммр
                     unique_mmr = []
                     for player in players:

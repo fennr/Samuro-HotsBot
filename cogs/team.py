@@ -2,6 +2,8 @@ from discord import Colour
 from discord.ext import commands
 from discord.utils import get
 from psycopg2 import errorcodes, errors
+
+import utils.library.embeds
 from utils.classes import Const
 from utils import exceptions, sql, library, check
 
@@ -116,7 +118,7 @@ class Team(commands.Cog, name="Team"):
         cur.execute(select, (team_id, id_or_name))
         team = library.get.team(cur.fetchone())
         if team is not None:
-            embed = library.profile.get_team_embed(team)
+            embed = utils.library.embeds.team(team)
             await ctx.send(embed=embed)
 
     @team.command(name="close")

@@ -2,7 +2,8 @@ import json
 from discord import Embed
 import utils
 from utils.classes import Const
-from utils.library.hots import add_thumbnail, cleanhtml
+from utils.library.hots import cleanhtml
+from utils.library.embeds import add_thumbnail
 from utils.hots.patchnotes import get_last_update
 from utils.classes.Hero import Hero
 from utils.classes.Const import config, data, jsons

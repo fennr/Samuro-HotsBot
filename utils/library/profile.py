@@ -1,16 +1,13 @@
 import requests
 import psycopg2.extras
 import itertools as it
-from discord import Embed, utils, Member
+from discord import Member
 from bs4 import BeautifulSoup
 from utils.classes.Player import Player
 from utils.classes.Stats import Stats
-from utils.classes.Team import Team
 from collections.abc import MutableMapping
-from datetime import datetime
 from utils.classes import Const
 from utils import exceptions, sql, library
-from utils.classes.Const import config
 
 leagues = {
     "Bronze": "Бронза",
@@ -203,112 +200,6 @@ def check_user(ctx):
     return player
 
 
-def get_user_team_embed(embed, team_id):
-    con, cur = library.get.con_cur()
-    select = Const.selects.TeamId
-    cur.execute(select, (team_id,))
-    team = library.get.team(cur.fetchone())
-    embed.add_field(
-        name="Команда",
-        value=team.name,
-        inline=True,
-    )
-    return embed
-
-
-def get_team_embed(team: Team):
-    con, cur = library.get.con_cur()
-    embed = Embed(
-        title=f"Команда {team.name} (id: {team.id})",
-        color=config.info
-
-    )
-    embed.add_field(
-        name="Лидер",
-        value=f"<@{team.leader}>",
-        inline=True,
-    )
-    if team.members > 1:
-        select = Const.selects.PlayersTeam
-        cur.execute(select, (team.id, ))
-        records = cur.fetchall()
-        teams = ''
-        for record in records:
-            player = library.get.player(record)
-            teams += f'{library.get.mention(player.id)} (btag: {player.btag}, mmr: {player.mmr})\n'
-        embed.add_field(
-            name="Команда",
-            value=teams,
-            inline=False
-        )
-    return embed
-
-
-def get_stats_embed(embed, stats: Stats):
-    embed.add_field(
-        name="Баллов",
-        value=stats.points,
-        inline=True,
-    )
-    embed.add_field(
-        name="Статистика внутренних турниров\n(побед/поражений)",
-        value=f"{stats.win} / {stats.lose}",
-        inline=False
-    )
-    return embed
-
-
-def get_profile_embed(ctx, player: Player):
-    embed = Embed(
-        title=f"{player.btag}",
-        color=config.info
-
-    )
-    if player.division:
-        embed.add_field(
-            name="Лига",
-            value=f"{leagues.get(player.league)} {player.division}",
-            inline=True
-        )
-    else:
-        embed.add_field(
-            name="Лига",
-            value=leagues.get(player.league),
-            inline=True
-        )
-    embed.add_field(
-        name="ММР",
-        value=player.mmr,
-        inline=True
-    )
-    return embed
-
-
-def get_achievements_embed(embed: Embed, player: Player):
-    con, cur = library.get.con_cur()
-    select = Const.selects.UserAchiev
-    cur.execute(select, (player.id, ))
-    records = cur.fetchall()
-    if cur.rowcount:
-        achievements = ''
-        for record in records:
-            print(record.row)
-            user_id, achiev_name, achiev_date = record.row[1:-1].split(",")
-            date_obj = datetime.strptime(achiev_date, '%Y-%m-%d').date()
-            date = date_obj.strftime('%d %B %Y')
-            achievements += f"**{achiev_name}** - получено {date}\n"
-        embed.add_field(
-            name="Достижения",
-            value=achievements,
-            inline=False
-        )
-    return embed
-
-
-def sort_by_mmr(player):
-    return player.mmr
-
-
 def change_mmr(player: Player, delta: int, plus=True):
     if plus:
         return player.mmr + delta
@@ -319,3 +210,7 @@ def change_mmr(player: Player, delta: int, plus=True):
 def commit(con):
     con.commit()
     con.close()
+
+
+def sort_by_mmr(player):
+    return player.mmr

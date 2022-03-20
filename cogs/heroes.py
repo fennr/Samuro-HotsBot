@@ -2,7 +2,8 @@ import inspect
 from discord.ext import commands
 from discord import Embed
 
-from utils.library.hots import add_thumbnail, find_more_heroes, get_hero, get_master_opinion
+from utils.library.hots import find_more_heroes, get_hero, get_master_opinion
+from utils.library.embeds import add_thumbnail
 from utils.hots.heroes import builds, heroes_description_short
 from utils.hots.skills import skills
 from utils.hots.talents import talents
