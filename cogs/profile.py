@@ -3,9 +3,8 @@ import yaml
 import psycopg2.extras
 from psycopg2 import errorcodes, errors
 from discord.ext import commands
-from utils.classes.Player import Player
-from utils import check, exceptions, sql
-from utils.library import profile as pl
+from utils.classes import Const
+from utils import exceptions, sql, library, check, classes
 
 if not os.path.isfile("config.yaml"):
     # sys.exit("'config.yaml' not found! Please add it and try again.")
@@ -22,6 +21,7 @@ class Profile(commands.Cog, name="Profile"):
     """
     — Связь дискорд профиля с батлнет профилем
     """
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -41,11 +41,11 @@ class Profile(commands.Cog, name="Profile"):
     @profile.command(name="test")
     @check.is_admin()
     async def profile_test(self, ctx, user):
-        con, cur = pl.get_con_cur()
-        user_id = pl.get_user_id(user)
-        select = pl.selects.get('PlayersIdOrBtag')
+        con, cur = library.get.con_cur()
+        user_id = library.get.user_id(user)
+        select = Const.selects.PlayersIdOrBtag
         cur.execute(select, (user_id, user,))
-        player = pl.get_player(cur.fetchone())
+        player = library.get.player(cur.fetchone())
         print(player)
         print(type(player))
         con.close()
@@ -55,27 +55,27 @@ class Profile(commands.Cog, name="Profile"):
         """
         — Добавить аккаунт в базу
         """
-        player = pl.get_heroesprofile_data(btag=btag,
-                                           user_id=pl.get_user_id(discord_user),
-                                           guild_id=pl.get_guild_id(ctx))
-        if isinstance(player, Player):
-            con, cur = pl.get_con_cur()
-            insert = pl.inserts.get('Player')
+        player = library.get_heroesprofile_data(btag=btag,
+                                                user_id=library.get.user_id(discord_user),
+                                                guild_id=library.get.guild_id(ctx))
+        if isinstance(player, classes.Player):
+            con, cur = library.get.con_cur()
+            insert = Const.inserts.Player
             cur.execute(insert, (player.btag, player.id, player.guild_id,
                                  player.mmr, player.league, player.division))
-            pl.commit(con)
+            library.commit(con)
             await ctx.send(f"Профиль игрока {btag} добавлен в базу")
         else:
-             await ctx.send(pl.profile_not_found(btag))
+            await ctx.send(library.profile_not_found(btag))
 
     @profile.command(name="remove")
     @check.is_owner()
     async def profile_remove(self, ctx, user_or_btag):
-        user_id = pl.get_user_id(user_or_btag)
-        con, cur = pl.get_con_cur()
-        delete = pl.deletes.get('PlayerIdOrBtag')
+        user_id = library.get.user_id(user_or_btag)
+        con, cur = library.get.con_cur()
+        delete = Const.deletes.PlayerIdOrBtag
         cur.execute(delete, (user_id, user_or_btag,))
-        pl.commit(con)
+        library.commit(con)
         await ctx.send(f"Профиль {user_or_btag} удален из базы")
 
     # в фиксе оставить только ММР после фунции, которая пересчитывает лигу
@@ -85,94 +85,74 @@ class Profile(commands.Cog, name="Profile"):
         """
         — Исправить ММР игрока (admin only)
         """
-        user_id = pl.get_user_id(user_or_btag)
-        con, cur = pl.get_con_cur()
-        select = pl.selects.get('PlayersIdOrBtag')
+        user_id = library.get.user_id(user_or_btag)
+        con, cur = library.get.con_cur()
+        select = Const.selects.PlayersIdOrBtag
         cur.execute(select, (user_id, user_or_btag,))
-        player = pl.get_player(cur.fetchone())
+        player = library.get.player(cur.fetchone())
         if player is not None:
             player.mmr = mmr
-            player.league, player.division = pl.get_league_division_by_mmr(int(mmr))
-            update = pl.updates.get('PlayerMMR')
-            cur.execute(update, (player.league, player.division, player.mmr, player.id))
+            player.league, player.division = library.get.league_division_by_mmr(int(mmr))
+            update = Const.updates.PlayerMMR
+            cur.execute(update, (player.mmr, player.league, player.division, player.id))
             con.commit()
             con.close()
             await ctx.send(f"Профиль игрока {player.btag} обновлен")
         else:
-            await ctx.send(pl.profile_not_found(user_or_btag))
+            await ctx.send(library.profile_not_found(user_or_btag))
 
-    #удалить данную команду, сделать просто функцию с дельтой куда передается Player,
-    # внутри дельты проверку на изменение лиги и изменение ее тоже
-    @profile.command(name="delta")
-    async def profile_delta(self, ctx, btag, delta, plus='+'):
-        sql.sql_init()
-        con = sql.get_connect()
-        cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
-        select = """SELECT * FROM heroesprofile WHERE btag = %s"""
-        cur.execute(select, (btag,))
-        record = cur.fetchone()
-        if record is not None:
-            if plus == '+':
-                mmr_new = record.mmr + int(delta)
-                winrate_new = record.win + 1
-                update = """UPDATE heroesprofile SET win = %s, mmr = %s WHERE btag = %s"""
-            else:
-                mmr_new = record.mmr - int(delta)
-                winrate_new = record.lose + 1
-                update = """UPDATE heroesprofile SET lose = %s, mmr = %s WHERE btag = %s"""
-            cur.execute(update, (winrate_new, mmr_new, btag))
-            con.commit()
-            con.close()
 
     @profile.command(name="update")
     @check.is_admin()
     async def profile_update(self, ctx, *args):
-        con, cur = pl.get_con_cur()
+        con, cur = library.get.con_cur()
         for user in args:
-            user_id = pl.get_user_id(user)
-            select = pl.selects.get('PlayersIdOrBtag')
-            cur.execute(select, (user_id, user, ))
-            player = pl.get_player(cur.fetchone())
+            user_id = library.get.user_id(user)
+            select = Const.selects.PlayersIdOrBtag
+            cur.execute(select, (user_id, user,))
+            player = library.get.player(cur.fetchone())
             if player is not None:
-                player_new = pl.get_heroesprofile_data(player.btag, player.id, ctx.guild.id)
-                update = '''UPDATE "Players" SET MMR = %s WHERE id=%s'''
-                cur.execute(update, (player_new.mmr, player_new.id))
+                player_new = library.get_heroesprofile_data(player.btag, player.id, ctx.guild.id)
+                player_new.league, player_new.division = library.get.league_division_by_mmr(player_new.mmr)
+                update = Const.updates.PlayerMMR
+                cur.execute(update, (player_new.mmr, player_new.league, player_new.division,
+                                     player_new.id))
                 await ctx.send(f"Профиль игрока {player.btag} обновлен")
             else:
-                await ctx.send(pl.profile_not_found(user))
-        pl.commit(con)
+                await ctx.send(library.profile_not_found(user))
+        library .commit(con)
 
     @profile.command(name="info")
     async def profile_info(self, ctx, user_or_btag):
         """
         — Получить информацию о профиле
         """
-        con, cur = pl.get_con_cur()
-        user_id = pl.get_user_id(user_or_btag)
-        guild_id = pl.get_guild_id(ctx)
-        select = pl.selects.get('PlayersIdOrBtag')
+        con, cur = library.get.con_cur()
+        user_id = library.get.user_id(user_or_btag)
+        guild_id = library.get.guild_id(ctx)
+        select = Const.selects.PlayersIdOrBtag
         cur.execute(select, (user_id, user_or_btag,))
-        player = pl.get_player(cur.fetchone())
+        player = library.get.player(cur.fetchone())
         if player is not None:
-            embed = pl.get_profile_embed(ctx, player)
-            select = pl.selects.get('usIdGuild')
+            embed = library.get_profile_embed(ctx, player)
+            select = Const.selects.USIdGuild
             cur.execute(select, (player.id, guild_id))
-            stats = pl.get_stats(cur.fetchone())
-            #print(stats)
+            stats = library.get.stats(cur.fetchone())
+            # print(stats)
             if stats is not None:
-                embed = pl.get_stats_embed(embed, stats)
+                embed = library.get_stats_embed(embed, stats)
             if player.team is not None:
-                embed = pl.get_user_team_embed(embed, player.team)
-            embed = pl.get_achievements_embed(embed, player)
+                embed = library.get_user_team_embed(embed, player.team)
+            embed = library.get_achievements_embed(embed, player)
             guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
             member = guild.get_member(int(player.id))
-            user_avatar = pl.avatar(ctx, member)
+            user_avatar = library.avatar(ctx, member)
             embed.set_thumbnail(
                 url=user_avatar
             )
             await ctx.send(embed=embed)
         else:
-            await ctx.send(pl.profile_not_found(user_or_btag))
+            await ctx.send(library.profile_not_found(user_or_btag))
         con.close()
 
     @profile.command(name="btag")
@@ -180,25 +160,25 @@ class Profile(commands.Cog, name="Profile"):
         """
         — Посмотреть батлтаг профиля
         """
-        con, cur = pl.get_con_cur()
-        user_id = pl.get_user_id(member_discord)
-        select = pl.selects.get('PlayersId')
+        con, cur = library.get.con_cur()
+        user_id = library.get.user_id(member_discord)
+        select = Const.selects.PlayersId
         cur.execute(select, (user_id,))
-        player = pl.get_player(cur.fetchone())
+        player = library.get.player(cur.fetchone())
         if player is not None:
             await ctx.send(f"Батлтег {member_discord}: *{player.btag}*")
         else:
-            await ctx.send(pl.profile_not_found(member_discord))
+            await ctx.send(library.profile_not_found(member_discord))
         con.close()
 
     @profile.error
     @profile_add.error
     @profile_test.error
     async def profile_handler(self, ctx, error):
-        #print("Попали в обработку ошибок profile")
+        # print("Попали в обработку ошибок profile")
         error = getattr(error, 'original', error)  # получаем пользовательские ошибки
         print(error)
-        #print(type(error))
+        # print(type(error))
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
                            "Пример: *#profile add player#1234 @player*")
