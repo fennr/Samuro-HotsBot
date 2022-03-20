@@ -7,10 +7,10 @@ import openpyxl
 from openpyxl.styles import Font
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
-from utils import exceptions
-from utils.library import files, profile as pl
+from utils.classes import Const
+from utils import exceptions, sql, library
 
-config = files.get_yaml()
+config = library.get_yaml()
 
 
 class League(Enum):
@@ -39,9 +39,9 @@ class Stats(commands.Cog, name="Stats"):
     async def top_excel(self, ctx):
         headings = ['id', 'guild_id', 'Победы', 'Поражения', 'Очки', 'Батлтег']
         filepath = 'UserStats.xlsx'
-        con, cur = pl.get_con_cur()
-        guild_id = pl.get_guild_id(ctx)
-        select = pl.selects.get('usGuild')
+        con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
+        select = Const.selects.USGuild
         cur.execute(select, (guild_id, ))
         data = cur.fetchall()
         cur.close()
@@ -79,9 +79,9 @@ class Stats(commands.Cog, name="Stats"):
             league = League(league_type)
         except Exception:
             raise exceptions.WrongLeague
-        con, cur = pl.get_con_cur()
-        guild_id = pl.get_guild_id(ctx)
-        select = pl.selects.get("PlayersLeague")
+        con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
+        select = Const.selects.PlayersLeague
         cur.execute(select, (league.name, count))
         records = cur.fetchall()
         embed = Embed(
@@ -90,7 +90,7 @@ class Stats(commands.Cog, name="Stats"):
         )
         value = ""
         for i, record in enumerate(records):
-            value += f"{i + 1}. {pl.get_discord_mention(record.id)} (mmr: {record.mmr})\n"
+            value += f"{i + 1}. {library.get.mention(record.id)} (mmr: {record.mmr})\n"
         embed.add_field(
             name=f"Топ {count} игроков",
             value=value
@@ -102,9 +102,9 @@ class Stats(commands.Cog, name="Stats"):
         """
         - Лидеры по числу побед
         """
-        con, cur = pl.get_con_cur()
-        guild_id = pl.get_guild_id(ctx)
-        select = pl.selects.get("usWins")
+        con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
+        select = Const.selects.USWins
         cur.execute(select, (guild_id, count))
         records = cur.fetchall()
         embed = Embed(
@@ -113,7 +113,7 @@ class Stats(commands.Cog, name="Stats"):
         )
         value = ""
         for i, record in enumerate(records):
-            value += f"{i + 1}. {pl.get_discord_mention(record.id)} — {record.win}\n"
+            value += f"{i + 1}. {library.get.mention(record.id)} — {record.win}\n"
         embed.add_field(
             name=f"Топ {count} игроков по числу побед",
             value=value
@@ -125,9 +125,9 @@ class Stats(commands.Cog, name="Stats"):
         """
         - Лидеры по заработанным очкам
         """
-        con, cur = pl.get_con_cur()
-        guild_id = pl.get_guild_id(ctx)
-        select = pl.selects.get("usPoints")
+        con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
+        select = Const.selects.USPoints
         cur.execute(select, (guild_id, count, ))
         records = cur.fetchall()
         embed = Embed(
@@ -137,7 +137,7 @@ class Stats(commands.Cog, name="Stats"):
         value = ""
         # max_indent = len(max([self.bot.get_user(x.id).name for x in records])) + 1  # получать макс длину имени
         for i, record in enumerate(records):
-            value += f"{i+1}. {pl.get_discord_mention(record.id)} — {record.points}\n"
+            value += f"{i+1}. {library.get.mention(record.id)} — {record.points}\n"
         embed.add_field(
             name=f"Топ {count} игроков по числу баллов",
             value=value
@@ -153,18 +153,18 @@ class Stats(commands.Cog, name="Stats"):
                         commands.has_role(880865537058545686),  # test
                         )
     async def points_remove(self, ctx, user: Member, count=0):
-        con, cur = pl.get_con_cur()
-        guild_id =pl.get_guild_id(ctx)
-        select = pl.selects.get("usIdGuild")
+        con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
+        select = Const.selects.USIdGuild
         cur.execute(select, (user.id, guild_id))
         record = cur.fetchone()
-        stats = pl.get_stats(record)
+        stats = library.get.stats(record)
         if stats.points < count:
             await ctx.send(f"Недостаточно баллов\n"
-                           f"Баллов у {pl.get_discord_mention(stats.id)}: {stats.points}")
+                           f"Баллов у {library.get.mention(stats.id)}: {stats.points}")
         else:
             stats.points -= count
-            update = pl.updates.get("StatsPoints")
+            update = Const.updates.USPoints
             cur.execute(update, (stats.points, stats.id, stats.guild_id))
             pl.commit(con)
             await ctx.send(f"Баллы успешно сняты\n"
