@@ -118,7 +118,7 @@ def get_connect():
         return psycopg2.connect(DATABASE_URL)
     except:
         return psycopg2.connect(dbname='postgres', user='postgres',
-                                password='1121', host='localhost')
+                                password=os.environ.get('PASS'), host='localhost')
 
 
 def get_cursor(con):

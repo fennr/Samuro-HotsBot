@@ -1,20 +1,9 @@
-import os
-import yaml
-
 import logging
 import traceback
-
 from utils import sql
+from utils.classes.Const import config
 
-if not os.path.isfile("config.yaml"):
-    #sys.exit("'config.yaml' not found! Please add it and try again.")
-    with open("../config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-else:
-    with open("config.yaml") as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
-
-logfile = config["log"]
+logfile = config.log
 log = logging.getLogger("my_log")
 log.setLevel(logging.INFO)
 FH = logging.FileHandler(logfile, encoding='utf-8')
