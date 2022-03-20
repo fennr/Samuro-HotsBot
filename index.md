@@ -1,8 +1,4 @@
 # Samuro Bot for Heroes of the Storm
-
-## Автор
-
- **[fennr (@fennr)](fennr.github.io/)**
  
 ## Описание
 
