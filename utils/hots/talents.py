@@ -32,7 +32,7 @@ def wrong_talent_lvl(author):
 
 def talents(hero: Hero, lvl, author):
     lvl = str(lvl)
-    full_hero = data.heroes[hero.id]
+    full_hero = jsons.heroes[hero.id]
     level = 'level' + lvl
     try:
         talents_data = full_hero['talents'][level]
@@ -48,8 +48,8 @@ def talents(hero: Hero, lvl, author):
         talent_hotkey = talents_data[i]['abilityType']
         full_talent_name_en = talent_nameID + '|' + \
                               talent_buttonID + '|' + talent_hotkey + '|False'
-        talent_name_ru = data.heroes_ru['gamestrings']['abiltalent']['name'][full_talent_name_en]
-        talent_desc_ru = cleanhtml(data.heroes_ru['gamestrings']['abiltalent']['full'][full_talent_name_en])
+        talent_name_ru = jsons.gamestrings['gamestrings']['abiltalent']['name'][full_talent_name_en]
+        talent_desc_ru = cleanhtml(jsons.gamestrings['gamestrings']['abiltalent']['full'][full_talent_name_en])
         embed.add_field(
             name='{} ({})'.format(talent_name_ru, talent_hotkey),
             value="{}".format(talent_desc_ru),
