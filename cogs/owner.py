@@ -9,7 +9,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 """
 
 import discord
-from discord import Embed, Member, File, errors
+from discord import Embed, errors
 from discord.ext import commands
 from utils import check
 from utils.library import files

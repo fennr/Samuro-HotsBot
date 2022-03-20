@@ -15,7 +15,7 @@ from psycopg2 import errorcodes, errors
 
 import utils.library.embeds
 from utils.classes import Const
-from utils import exceptions, sql, library, check
+from utils import library, check
 
 UniqueViolation = errors.lookup(errorcodes.UNIQUE_VIOLATION)
 

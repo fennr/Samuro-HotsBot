@@ -15,7 +15,6 @@ from discord import Embed, utils, File
 from discord.ext import commands
 from discord_components import ComponentMessage
 from utils import library
-from utils.library import profile as pl
 from utils.classes.Const import config
 
 

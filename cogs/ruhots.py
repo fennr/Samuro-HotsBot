@@ -10,7 +10,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 from discord import Embed, utils
 from discord.ext import commands
-from utils.library import files, profile as pl
+from utils import library
 from utils.classes.Const import config
 
 clear = '\u200b'
@@ -49,7 +49,7 @@ class Ruhots(commands.Cog):
         """
         — Выложить арт в исскуство
         """
-        like, dislike = pl.get_likes(ctx)
+        like, dislike = library.get.likes(ctx)
         if ctx.guild.id == 642852514865217578:  # RU hots
             art_id = 708678722127134810
         elif ctx.guild.id == 754063467610374224:  # RU HS

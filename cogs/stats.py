@@ -18,7 +18,7 @@ from openpyxl.styles import Font
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
 from utils.classes import Const
-from utils import exceptions, sql, library
+from utils import exceptions, library
 from utils.classes.Const import config
 
 
