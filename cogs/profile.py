@@ -120,7 +120,7 @@ class Profile(commands.Cog, name="Profile"):
                 await ctx.send(f"Профиль игрока {player.btag} обновлен")
             else:
                 await ctx.send(library.profile_not_found(user))
-        library .commit(con)
+        library.commit(con)
 
     @profile.command(name="info")
     async def profile_info(self, ctx, user_or_btag):

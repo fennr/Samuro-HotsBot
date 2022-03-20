@@ -59,7 +59,7 @@ def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
         cur.execute(updateUS, (player_stats.points, player_stats.win, player_stats.lose,
                                player_stats.id, player_stats.guild_id))
         cur.execute(updateP, (player.mmr, player.league, player.division,
-                              player.id, player.guild_id))
+                              player.id))
         print(f"{player.btag} -> {player.mmr} mmr ({player.league})")
     commit(con)
 

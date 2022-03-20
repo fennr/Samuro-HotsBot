@@ -66,7 +66,7 @@ class Team(commands.Cog, name="Team"):
                 cur.execute(updateP, (team.id, player.id, ))
                 updateT = Const.updates.TeamMembers
                 cur.execute(updateT, (team.members+1, team.id, ))
-                pl.commit(con)
+                library.commit(con)
                 await ctx.send(f"Игрок <@{player.id}> добавлен в команду {team.name}\n"
                                f"Всего игроков в команде - {team.members+1}")
                 member = ctx.guild.get_member(player.id)
@@ -96,7 +96,7 @@ class Team(commands.Cog, name="Team"):
                 cur.execute(updateP, (None, player.id,))
                 updateT = Const.updates.TeamMembers
                 cur.execute(updateT, (team.members - 1, team.id,))
-                pl.commit(con)
+                library.commit(con)
                 await ctx.send(f"Игрок {library.get.mention(player.id)} исключен из команды {team.name}\n"
                                f"Всего игроков в команде - {team.members - 1}")
                 member = ctx.guild.get_member(player.id)
@@ -123,7 +123,8 @@ class Team(commands.Cog, name="Team"):
 
     @team.command(name="close")
     async def team_close(self, ctx):
-        player, con, cur = pl.get_profile_by_id(pl.get_author_id(ctx))
+        con, cur = library.get.con_cur()
+        player = library.get.profile_by_id_or_btag(library.get.author_id(ctx))
         if player is not None:
             print(player)
             select = Const.selects.TeamLid

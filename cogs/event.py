@@ -181,7 +181,6 @@ class Event(commands.Cog, name="Event"):
             select = Const.selects.EHActive
             cur.execute(select, (room_id, True))
             record = cur.fetchone()
-            con.close()
             if record is not None:
                 if winner == 'blue':
                     win_team = [record.blue1, record.blue2, record.blue3, record.blue4, record.blue5]
