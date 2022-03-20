@@ -2,10 +2,10 @@ from discord import Colour
 from discord.ext import commands
 from discord.utils import get
 from psycopg2 import errorcodes, errors
-from utils import check
-from utils.library import files, profile as pl
+from utils.classes import Const
+from utils import exceptions, sql, library, check
 
-config = files.get_yaml()
+config = library.get_yaml()
 
 UniqueViolation = errors.lookup(errorcodes.UNIQUE_VIOLATION)
 
@@ -28,16 +28,16 @@ class Team(commands.Cog, name="Team"):
         '''
         — Создает команду team_name
         '''
-        con, cur = pl.get_con_cur()
+        con, cur = library.get.con_cur()
         print(leader)
-        player = pl.get_profile_by_id_or_btag(leader)
+        player = library.get.profile_by_id_or_btag(leader)
         if player is not None:
-            insert = pl.inserts.get('Team')
+            insert = Const.inserts.Team
             cur.execute(insert, (team_name, player.id))
             team_id = cur.fetchone()[0]
-            update = pl.updates.get('PlayerTeam')
+            update = Const.updates.PlayerTeam
             cur.execute(update, (team_id, player.id))
-            pl.commit(con)
+            library.commit(con)
             await ctx.send(f"Команда {team_name} создана")
             print(color)
             await ctx.guild.create_role(name=team_name, color=color)
@@ -52,19 +52,19 @@ class Team(commands.Cog, name="Team"):
         """
         — Добавить в команду игрока @user
         """
-        con, cur = pl.get_con_cur()
-        user_id = pl.get_author_id(ctx)
-        select = pl.selects.get('teamLid')
+        con, cur = library.get.con_cur()
+        user_id = library.get.author_id(ctx)
+        select = Const.selects.TeamLid
         cur.execute(select, (user_id, ))
-        team = pl.get_team(cur.fetchone())
+        team = library.get.team(cur.fetchone())
         if team is not None:
-            player = pl.get_profile_by_id_or_btag(user)
+            player = library.get.profile_by_id_or_btag(user)
             if player.team is None:
-                updateP = pl.updates.get('PlayerTeam')
+                updateP = Const.updates.PlayerTeam
                 print(team.id)
                 print(player.id)
                 cur.execute(updateP, (team.id, player.id, ))
-                updateT = pl.updates.get('TeamMembers')
+                updateT = Const.updates.TeamMembers
                 cur.execute(updateT, (team.members+1, team.id, ))
                 pl.commit(con)
                 await ctx.send(f"Игрок <@{player.id}> добавлен в команду {team.name}\n"
@@ -82,22 +82,22 @@ class Team(commands.Cog, name="Team"):
         """
         — Удалить из команды @user
         """
-        con, cur = pl.get_con_cur()
-        user_id = pl.get_author_id(ctx)
-        select = pl.selects.get('teamLid')
+        con, cur = library.get.con_cur()
+        user_id = library.get.author_id(ctx)
+        select = Const.selects.TeamLid
         cur.execute(select, (user_id, ))
-        team = pl.get_team(cur.fetchone())
+        team = library.get.team(cur.fetchone())
         print(team)
         if team is not None:
-            player = pl.get_profile_by_id_or_btag(user)
+            player = library.get.profile_by_id_or_btag(user)
             print(player)
             if player.team is not None:
-                updateP = pl.updates.get('PlayerTeam')
+                updateP = Const.updates.PlayerTeam
                 cur.execute(updateP, (None, player.id,))
-                updateT = pl.updates.get('TeamMembers')
+                updateT = Const.updates.TeamMembers
                 cur.execute(updateT, (team.members - 1, team.id,))
                 pl.commit(con)
-                await ctx.send(f"Игрок <@{player.id}> исключен из команды {team.name}\n"
+                await ctx.send(f"Игрок {library.get.mention(player.id)} исключен из команды {team.name}\n"
                                f"Всего игроков в команде - {team.members - 1}")
                 member = ctx.guild.get_member(player.id)
                 role = get(member.guild.roles, name=team.name)
@@ -112,13 +112,13 @@ class Team(commands.Cog, name="Team"):
         """
         — Информация о команде по имени или ID
         """
-        con, cur = pl.get_con_cur()
+        con, cur = library.get.con_cur()
         team_id = int(id_or_name) if id_or_name.isdigit() else None
-        select = pl.selects.get('teamIdName')
+        select = Const.selects.TeamIdName
         cur.execute(select, (team_id, id_or_name))
-        team = pl.get_team(cur.fetchone())
+        team = library.get.team(cur.fetchone())
         if team is not None:
-            embed = pl.get_team_embed(team)
+            embed = library.profile.get_team_embed(team)
             await ctx.send(embed=embed)
 
     @team.command(name="close")
@@ -126,12 +126,12 @@ class Team(commands.Cog, name="Team"):
         player, con, cur = pl.get_profile_by_id(pl.get_author_id(ctx))
         if player is not None:
             print(player)
-            select = pl.selects.get('teamLid')
+            select = Const.selects.TeamLid
             cur.execute(select, (player.id, ))
             record = cur.fetchone()
             if record is not None:
                 print(record)
-                delete = pl.deletes.get("TeamLid")
+                delete = Const.deletes.TeamLid
                 cur.execute(delete, (player.id, ))
                 pl.commit(con)
                 await ctx.send(f"Команда {record.name} была распущена")
