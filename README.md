@@ -1,5 +1,7 @@
 # Samuro Bot for Heroes of the Storm
 
+**[Пригласить на свой discord сервер](https://discord.com/oauth2/authorize?client_id=664368184790614016&permissions=137707703313&scope=applications.commands%20bot)**
+
 ## Автор
 
  **[fennr (@fennr)](fennr.github.io/)**
