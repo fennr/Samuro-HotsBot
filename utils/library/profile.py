@@ -20,7 +20,7 @@ leagues = {
 }
 
 
-def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner=True):
+async def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner=True):
     con, cur = library.get.con_cur()
     placeholder = '%s'
     placeholders = ', '.join(placeholder for unused in team)
