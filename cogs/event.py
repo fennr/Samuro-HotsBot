@@ -10,6 +10,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 import pytz
 from datetime import datetime
+import discord
 from discord import Embed, utils, Member
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
@@ -28,8 +29,8 @@ async def event_report(ctx, text):
     if ctx.guild_id == 642852514865217578:  # RU Hots
         channel_id = 879385907923390464
     else:
-        channel_id = 946304981475151902
-    channel = utils.get(ctx.guild.channels, id=channel_id)
+        channel_id = 880863858653286401
+    channel = discord.utils.get(ctx.guild.channels, id=channel_id)
     message = f"Сообщение от пользователя {ctx.author.mention}:\n{text}"
     await channel.send(message)
     await ctx.send("Сообщение отправлено администрации", hidden=True)
