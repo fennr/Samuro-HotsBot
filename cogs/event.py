@@ -27,7 +27,7 @@ guild_ids = [845658540341592096]  # Сервер ID для тестирован�
 
 async def event_report(ctx, text):
     if ctx.guild_id == 642852514865217578:  # RU Hots
-        channel_id = 879385907923390464
+        channel_id = 848504279513956372
     else:
         channel_id = 880863858653286401
     channel = discord.utils.get(ctx.guild.channels, id=channel_id)
