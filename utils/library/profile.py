@@ -20,7 +20,7 @@ leagues = {
 }
 
 
-def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
+def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner=True):
     con, cur = library.get.con_cur()
     placeholder = '%s'
     placeholders = ', '.join(placeholder for unused in team)
@@ -49,7 +49,11 @@ def team_change_stats(team: list, guild_id, delta=7, points=1, winner=True):
             player.mmr -= int(delta)
             player_stats.points += int(points)
             player_stats.lose += 1
+        old_league = player.league
         player.league, player.division = library.get.league_division_by_mmr(player.mmr)
+        if (old_league != player.league) and ((player.league == 'Master') or (player.league == 'Grandmaster')):
+            await ctx.send(
+                f"{library.mention(player.id)} ты достиг {library.profile.leagues[player.league]} лиги. Мои поздравления")
         updateUS = Const.updates.USPointWinLose
         updateP = Const.updates.PlayerMMR
         cur.execute(updateUS, (player_stats.points, player_stats.win, player_stats.lose,
