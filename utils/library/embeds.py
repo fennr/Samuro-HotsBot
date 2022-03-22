@@ -85,9 +85,12 @@ def team(team: Team) -> Embed:
         color=config.info
 
     )
+    select = Const.selects.PlayersId
+    cur.execute(select, (team.leader, ))
+    leader = library.get.player(cur.fetchone())
     embed.add_field(
         name="Лидер",
-        value=f"<@{team.leader}>",
+        value=f"{library.get.mention(leader.id)} (btag: {leader.btag}, mmr: {leader.mmr})",
         inline=True,
     )
     if team.members > 1:
