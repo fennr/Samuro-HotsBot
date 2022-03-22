@@ -61,7 +61,10 @@ def likes(ctx):
 
 
 def user_id(member):
-    return int(''.join([i for i in member if i.isdigit()]))
+    if isinstance(member, int):
+        return member
+    else:
+        return int(''.join([i for i in member if i.isdigit()]))
 
 
 def mention(discord_id: int) -> str:
@@ -95,9 +98,10 @@ def team(record):
 
 def profile_by_id_or_btag(id_or_btag) -> classes.Player:
     con, cur = con_cur()
+    print(id_or_btag)
     player_id = user_id(id_or_btag)
     select = Const.selects.PlayersIdOrBtag
-    cur.execute(select, (player_id, id_or_btag,))
+    cur.execute(select, (player_id, str(id_or_btag),))
     pl = player(cur.fetchone())
     return pl
 

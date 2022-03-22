@@ -7,7 +7,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 Бот для сообществ по игре Heroes of the Storm
 
 """
-
+import discord
 from discord import Colour
 from discord.ext import commands
 from discord.utils import get
@@ -144,12 +144,11 @@ class Team(commands.Cog, name="Team"):
                 print(record)
                 delete = Const.deletes.TeamLid
                 cur.execute(delete, (player.id, ))
-                pl.commit(con)
+                library.commit(con)
                 await ctx.send(f"Команда {record.name} была распущена")
-                role = get(ctx.message.guild.roles, name=record.name)
+                role = discord.utils.get(ctx.message.guild.roles, name=record.name)
                 if role:
                     await role.delete()
-                await ctx.guild.delete_role(ctx.guild, name=record.name)
             else:
                 ctx.send("Вы не имеете полномочий на данную команду")
 
