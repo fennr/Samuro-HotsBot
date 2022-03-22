@@ -54,7 +54,7 @@ class Team(commands.Cog, name="Team"):
     @check.is_admin()
     async def achievement_assign(self, ctx, member: Member, id):
         con, cur = library.get.con_cur()
-        guild_id = library.get.guild_id()
+        guild_id = library.get.guild_id(ctx)
         select = Const.selects.AchievId
         cur.execute(select, (id,))
         record = cur.fetchone()
