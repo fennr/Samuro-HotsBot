@@ -255,7 +255,7 @@ class News(commands.Cog, name="News"):
                             data = io.BytesIO(await resp.read())'''
                 # await ctx.message.delete()
                 msg = await channel.send(embed=embed)
-                like, dislike = library.get_likes(ctx)
+                like, dislike = library.get.likes(ctx)
                 await msg.add_reaction(like)
                 await msg.add_reaction(dislike)
                 await News.update_schedule(self, ctx, clear_message=False)
@@ -376,7 +376,7 @@ class News(commands.Cog, name="News"):
         channel = utils.get(ctx.guild.text_channels, name=schedule_name)
         if img is not None:
             msg = await channel.send(embed=embed, file=img)
-            like, dislike = library.get_likes(ctx)
+            like, dislike = library.get.likes(ctx)
             await msg.add_reaction(like)
             await msg.add_reaction(dislike)
         else:
