@@ -50,7 +50,7 @@ class Team(commands.Cog, name="Team"):
             library.commit(con)
             await ctx.send(f"Команда {team_name} создана")
             print(color)
-            await ctx.guild.create_role(name=team_name, color=color)
+            await ctx.guild.create_role(name=team_name, color=color, mentionable=True)
             member = ctx.guild.get_member(player.id)
             role = get(member.guild.roles, name=team_name)
             await member.add_roles(role)
