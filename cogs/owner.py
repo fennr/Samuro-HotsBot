@@ -12,11 +12,8 @@ import discord
 from discord import Embed, errors
 from discord.ext import commands
 from utils import check
-from utils.library import files
+from utils.classes.Const import config
 from pprint import pprint
-
-config = files.get_yaml()
-
 
 class owner(commands.Cog, name="Owner"):
     def __init__(self, bot):
@@ -80,6 +77,7 @@ class owner(commands.Cog, name="Owner"):
         The bot will say anything you want.
         """
         if context.message.author.id in config.owners:
+            print(args)
             await context.send(args)
         else:
             embed = Embed(

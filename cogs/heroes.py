@@ -98,7 +98,6 @@ class Heroes(commands.Cog, name="Heroes"):
                 inline=False
             )
             embed = files.add_footer(embed)
-            log.error(ctx, "Неверно введены аргументы команды")
             await ctx.send(embed=embed)
 
         elif isinstance(error, exceptions.HeroNotFoundError):
