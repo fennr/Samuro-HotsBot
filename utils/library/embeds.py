@@ -97,7 +97,8 @@ def team(team: Team) -> Embed:
         teams = ''
         for record in records:
             player = library.get.player(record)
-            teams += f'{library.get.mention(player.id)} (btag: {player.btag}, mmr: {player.mmr})\n'
+            if player.id != team.leader:
+                teams += f'{library.get.mention(player.id)} (btag: {player.btag}, mmr: {player.mmr})\n'
         embed.add_field(
             name="Команда",
             value=teams,
