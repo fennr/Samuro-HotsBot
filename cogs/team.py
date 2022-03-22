@@ -103,16 +103,20 @@ class Team(commands.Cog, name="Team"):
             print(player)
             if player.team is not None:
                 if player.team == team.id:
-                    updateP = Const.updates.PlayerTeam
-                    cur.execute(updateP, (None, player.id,))
-                    updateT = Const.updates.TeamMembers
-                    cur.execute(updateT, (team.members - 1, team.id,))
-                    library.commit(con)
-                    await ctx.send(f"Игрок {library.get.mention(player.id)} исключен из команды {team.name}\n"
-                                   f"Всего игроков в команде - {team.members - 1}")
-                    member = ctx.guild.get_member(player.id)
-                    role = get(member.guild.roles, name=team.name)
-                    await member.remove_roles(role)
+                    if player.id != team.leader:
+                        updateP = Const.updates.PlayerTeam
+                        cur.execute(updateP, (None, player.id,))
+                        updateT = Const.updates.TeamMembers
+                        cur.execute(updateT, (team.members - 1, team.id,))
+                        library.commit(con)
+                        await ctx.send(f"Игрок {library.get.mention(player.id)} исключен из команды {team.name}\n"
+                                       f"Всего игроков в команде - {team.members - 1}")
+                        member = ctx.guild.get_member(player.id)
+                        role = get(member.guild.roles, name=team.name)
+                        await member.remove_roles(role)
+                    else:
+                        await ctx.send(f"Невозможно исключить лидера команды.\n"
+                                       f"!team close для удаления команды")
                 else:
                     await ctx.send(f"Игрок состоит в другой команде")
             else:
