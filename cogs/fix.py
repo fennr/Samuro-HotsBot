@@ -10,6 +10,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 import psycopg2.extras
 from discord.ext import commands
+import discord
 from utils.library import files, profile as pl
 from utils import check, sql
 from utils.classes.Player import Player
@@ -29,6 +30,17 @@ class Fix(commands.Cog, name="Fix"):
         """
         if ctx.invoked_subcommand is None:
             await ctx.send("Выберите что исправлять")
+
+    @fix.command(name="role")
+    @check.is_owner()
+    async def fix_role(self, ctx, role):
+        role = discord.utils.get(ctx.message.guild.roles, name=role)
+        if role:
+            await role.edit(mentionable=True)
+            await ctx.send(f"Добавлена возможность тегать роль {role}")
+        else:
+            await ctx.send(f"Не найдена роль {role}")
+
 
     @fix.command(name="points")
     @check.is_owner()
