@@ -83,6 +83,7 @@ class Event(commands.Cog, name="Event"):
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(blue)
         await embed_message.add_reaction(red)
+        await ctx.message.delete()
         await asyncio.sleep(delay)
         await embed_message.remove_reaction(blue, member=embed_message.author)
         await embed_message.remove_reaction(red, member=embed_message.author)

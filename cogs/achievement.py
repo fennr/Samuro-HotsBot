@@ -63,6 +63,7 @@ class Team(commands.Cog, name="Team"):
         insert = Const.inserts.UserAchiev
         cur.execute(insert, (member.id, guild_id, id, today))
         library.commit(con)
+        await ctx.message.delete()
         await ctx.send(f"{member.mention} теперь **{record.name}**")
 
     @achievement.command(name="remove")
