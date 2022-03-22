@@ -102,6 +102,7 @@ class Team(commands.Cog, name="Team"):
             player = library.get.profile_by_id_or_btag(user)
             print(player)
             if player.team is not None:
+                if player.team == team.id:
                     updateP = Const.updates.PlayerTeam
                     cur.execute(updateP, (None, player.id,))
                     updateT = Const.updates.TeamMembers
@@ -112,6 +113,8 @@ class Team(commands.Cog, name="Team"):
                     member = ctx.guild.get_member(player.id)
                     role = get(member.guild.roles, name=team.name)
                     await member.remove_roles(role)
+                else:
+                    await ctx.send(f"Игрок состоит в другой команде")
             else:
                 await ctx.send("Игрок не состоит в команде")
         else:
