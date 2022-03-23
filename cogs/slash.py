@@ -20,23 +20,23 @@ class Slash(commands.Cog, name="Slash"):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(name="voice setup", description="Настройка")
+    @cog_ext.cog_slash(name="voice_setup", description="Настройка")
     async def slash_voice_setup(self, ctx: SlashContext):
         await voice.Voice.setup(self, ctx)
 
-    @cog_ext.cog_slash(name="voice name", description="Переименовать комнату")
+    @cog_ext.cog_slash(name="voice_name", description="Переименовать комнату")
     async def slash_voice_name(self, ctx: SlashContext, name):
         await voice.Voice.name(self, ctx, name=name)
 
-    @cog_ext.cog_slash(name="voice limit", description="Установить лимит участников")
+    @cog_ext.cog_slash(name="voice_limit", description="Установить лимит участников")
     async def slash_voice_limit(self, ctx: SlashContext, limit):
         await voice.Voice.limit(self, ctx, limit=limit)
 
-    @cog_ext.cog_slash(name="voice lock", description="Сделать комнату закрытой")
+    @cog_ext.cog_slash(name="voice_lock", description="Сделать комнату закрытой")
     async def slash_voice_lock(self, ctx: SlashContext):
         await voice.Voice.lock(self, ctx)
 
-    @cog_ext.cog_slash(name="voice unlock", description="Сделать комнату открытой")
+    @cog_ext.cog_slash(name="voice_unlock", description="Сделать комнату открытой")
     async def slash_voice_unlock(self, ctx: SlashContext):
         await voice.Voice.unlock(self, ctx)
 
