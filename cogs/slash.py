@@ -12,7 +12,6 @@ from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 from cogs import general, help, heroes, hots, profile, event, voice
 from utils import check
-from bot import slash
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
 
