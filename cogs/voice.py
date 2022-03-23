@@ -4,6 +4,8 @@ from discord.ext import commands
 import traceback
 import sqlite3
 import validators
+from utils import library
+
 
 
 class voice(commands.Cog):
@@ -12,10 +14,9 @@ class voice(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         guildID = member.guild.id
-        c.execute("SELECT voiceChannelID FROM guild WHERE guildID = ?", (guildID,))
+        c.execute("SELECT voiceChannelID FROM guild WHERE guildID = %s", (guildID,))
         voice=c.fetchone()
         if voice is None:
             pass
@@ -23,18 +24,18 @@ class voice(commands.Cog):
             voiceID = voice[0]
             try:
                 if after.channel.id == voiceID:
-                    c.execute("SELECT * FROM voiceChannel WHERE userID = ?", (member.id,))
+                    c.execute("SELECT * FROM voiceChannel WHERE userID = %s", (member.id,))
                     cooldown=c.fetchone()
                     if cooldown is None:
                         pass
                     else:
                         await member.send("Creating channels too quickly you've been put on a 15 second cooldown!")
                         await asyncio.sleep(15)
-                    c.execute("SELECT voiceCategoryID FROM guild WHERE guildID = ?", (guildID,))
+                    c.execute("SELECT voiceCategoryID FROM guild WHERE guildID = %s", (guildID,))
                     voice=c.fetchone()
-                    c.execute("SELECT channelName, channelLimit FROM userSettings WHERE userID = ?", (member.id,))
+                    c.execute("SELECT channelName, channelLimit FROM userSettings WHERE userID = %s", (member.id,))
                     setting=c.fetchone()
-                    c.execute("SELECT channelLimit FROM guildSettings WHERE guildID = ?", (guildID,))
+                    c.execute("SELECT channelLimit FROM guildSettings WHERE guildID = %s", (guildID,))
                     guildSetting=c.fetchone()
                     if setting is None:
                         name = f"{member.name}'s channel"
@@ -60,14 +61,14 @@ class voice(commands.Cog):
                     await member.move_to(channel2)
                     await channel2.set_permissions(self.bot.user, connect=True,read_messages=True)
                     await channel2.edit(name= name, user_limit = limit)
-                    c.execute("INSERT INTO voiceChannel VALUES (?, ?)", (id,channelID))
+                    c.execute("INSERT INTO voiceChannel VALUES (%s, %s)", (id,channelID))
                     conn.commit()
                     def check(a,b,c):
                         return len(channel2.members) == 0
                     await self.bot.wait_for('voice_state_update', check=check)
                     await channel2.delete()
                     await asyncio.sleep(3)
-                    c.execute('DELETE FROM voiceChannel WHERE userID=?', (id,))
+                    c.execute('DELETE FROM voiceChannel WHERE userID=%s', (id,))
             except:
                 pass
         conn.commit()
@@ -96,8 +97,7 @@ class voice(commands.Cog):
 
     @voice.command()
     async def setup(self, ctx):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         guildID = ctx.guild.id
         id = ctx.author.id
         if ctx.author.id == ctx.guild.owner_id or ctx.author.id == 151028268856770560:
@@ -119,14 +119,15 @@ class voice(commands.Cog):
                 else:
                     try:
                         channel = await ctx.guild.create_voice_channel(channel.content, category=new_cat)
-                        c.execute("SELECT * FROM guild WHERE guildID = ? AND ownerID=?", (guildID, id))
+                        c.execute("SELECT * FROM guild WHERE guildID = %s AND ownerID=%s", (guildID, id))
                         voice=c.fetchone()
                         if voice is None:
-                            c.execute ("INSERT INTO guild VALUES (?, ?, ?, ?)",(guildID,id,channel.id,new_cat.id))
+                            c.execute ("INSERT INTO guild VALUES (%s, %s, %s, %s)",(guildID,id,channel.id,new_cat.id))
                         else:
-                            c.execute ("UPDATE guild SET guildID = ?, ownerID = ?, voiceChannelID = ?, voiceCategoryID = ? WHERE guildID = ?",(guildID,id,channel.id,new_cat.id, guildID))
+                            c.execute ("UPDATE guild SET guildID = %s, ownerID = %s, voiceChannelID = %s, voiceCategoryID = %s WHERE guildID = %s",(guildID,id,channel.id,new_cat.id, guildID))
                         await ctx.channel.send("**You are all setup and ready to go!**")
-                    except:
+                    except Exception as e:
+                        print(e)
                         await ctx.channel.send("You didn't enter the names properly.\nUse `.voice setup` again!")
         else:
             await ctx.channel.send(f"{ctx.author.mention} only the owner of the server can setup the bot!")
@@ -135,15 +136,14 @@ class voice(commands.Cog):
 
     @commands.command()
     async def setlimit(self, ctx, num):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         if ctx.author.id == ctx.guild.owner.id or ctx.author.id == 151028268856770560:
-            c.execute("SELECT * FROM guildSettings WHERE guildID = ?", (ctx.guild.id,))
+            c.execute("SELECT * FROM guildSettings WHERE guildID = %s", (ctx.guild.id,))
             voice=c.fetchone()
             if voice is None:
-                c.execute("INSERT INTO guildSettings VALUES (?, ?, ?)", (ctx.guild.id,f"{ctx.author.name}'s channel",num))
+                c.execute("INSERT INTO guildSettings VALUES (%s, %s, %s)", (ctx.guild.id,f"{ctx.author.name}'s channel",num))
             else:
-                c.execute("UPDATE guildSettings SET channelLimit = ? WHERE guildID = ?", (num, ctx.guild.id))
+                c.execute("UPDATE guildSettings SET channelLimit = %s WHERE guildID = %s", (num, ctx.guild.id))
             await ctx.send("You have changed the default channel limit for your server!")
         else:
             await ctx.channel.send(f"{ctx.author.mention} only the owner of the server can setup the bot!")
@@ -156,10 +156,9 @@ class voice(commands.Cog):
 
     @voice.command()
     async def lock(self, ctx):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         id = ctx.author.id
-        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = %s", (id,))
         voice=c.fetchone()
         if voice is None:
             await ctx.channel.send(f"{ctx.author.mention} You don't own a channel.")
@@ -174,10 +173,9 @@ class voice(commands.Cog):
 
     @voice.command()
     async def unlock(self, ctx):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         id = ctx.author.id
-        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = %s", (id,))
         voice=c.fetchone()
         if voice is None:
             await ctx.channel.send(f"{ctx.author.mention} You don't own a channel.")
@@ -192,10 +190,9 @@ class voice(commands.Cog):
 
     @voice.command(aliases=["allow"])
     async def permit(self, ctx, member : discord.Member):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         id = ctx.author.id
-        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = %s", (id,))
         voice=c.fetchone()
         if voice is None:
             await ctx.channel.send(f"{ctx.author.mention} You don't own a channel.")
@@ -209,11 +206,10 @@ class voice(commands.Cog):
 
     @voice.command(aliases=["deny"])
     async def reject(self, ctx, member : discord.Member):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         id = ctx.author.id
         guildID = ctx.guild.id
-        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = %s", (id,))
         voice=c.fetchone()
         if voice is None:
             await ctx.channel.send(f"{ctx.author.mention} You don't own a channel.")
@@ -222,7 +218,7 @@ class voice(commands.Cog):
             channel = self.bot.get_channel(channelID)
             for members in channel.members:
                 if members.id == member.id:
-                    c.execute("SELECT voiceChannelID FROM guild WHERE guildID = ?", (guildID,))
+                    c.execute("SELECT voiceChannelID FROM guild WHERE guildID = %s", (guildID,))
                     voice=c.fetchone()
                     channel2 = self.bot.get_channel(voice[0])
                     await member.move_to(channel2)
@@ -235,10 +231,9 @@ class voice(commands.Cog):
 
     @voice.command()
     async def limit(self, ctx, limit):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         id = ctx.author.id
-        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = %s", (id,))
         voice=c.fetchone()
         if voice is None:
             await ctx.channel.send(f"{ctx.author.mention} You don't own a channel.")
@@ -247,22 +242,21 @@ class voice(commands.Cog):
             channel = self.bot.get_channel(channelID)
             await channel.edit(user_limit = limit)
             await ctx.channel.send(f'{ctx.author.mention} You have set the channel limit to be '+ '{}!'.format(limit))
-            c.execute("SELECT channelName FROM userSettings WHERE userID = ?", (id,))
+            c.execute("SELECT channelName FROM userSettings WHERE userID = %s", (id,))
             voice=c.fetchone()
             if voice is None:
-                c.execute("INSERT INTO userSettings VALUES (?, ?, ?)", (id,f'{ctx.author.name}',limit))
+                c.execute("INSERT INTO userSettings VALUES (%s, %s, %s)", (id,f'{ctx.author.name}',limit))
             else:
-                c.execute("UPDATE userSettings SET channelLimit = ? WHERE userID = ?", (limit, id))
+                c.execute("UPDATE userSettings SET channelLimit = %s WHERE userID = %s", (limit, id))
         conn.commit()
         conn.close()
 
 
     @voice.command()
     async def name(self, ctx,*, name):
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         id = ctx.author.id
-        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = ?", (id,))
+        c.execute("SELECT voiceID FROM voiceChannel WHERE userID = %s", (id,))
         voice=c.fetchone()
         if voice is None:
             await ctx.channel.send(f"{ctx.author.mention} You don't own a channel.")
@@ -271,26 +265,25 @@ class voice(commands.Cog):
             channel = self.bot.get_channel(channelID)
             await channel.edit(name = name)
             await ctx.channel.send(f'{ctx.author.mention} You have changed the channel name to '+ '{}!'.format(name))
-            c.execute("SELECT channelName FROM userSettings WHERE userID = ?", (id,))
+            c.execute("SELECT channelName FROM userSettings WHERE userID = %s", (id,))
             voice=c.fetchone()
             if voice is None:
-                c.execute("INSERT INTO userSettings VALUES (?, ?, ?)", (id,name,0))
+                c.execute("INSERT INTO userSettings VALUES (%s, %s, %s)", (id,name,0))
             else:
-                c.execute("UPDATE userSettings SET channelName = ? WHERE userID = ?", (name, id))
+                c.execute("UPDATE userSettings SET channelName = %s WHERE userID = %s", (name, id))
         conn.commit()
         conn.close()
 
     @voice.command()
     async def claim(self, ctx):
         x = False
-        conn = sqlite3.connect('voice.db')
-        c = conn.cursor()
+        conn, c = library.get.con_cur()
         channel = ctx.author.voice.channel
         if channel == None:
             await ctx.channel.send(f"{ctx.author.mention} you're not in a voice channel.")
         else:
             id = ctx.author.id
-            c.execute("SELECT userID FROM voiceChannel WHERE voiceID = ?", (channel.id,))
+            c.execute("SELECT userID FROM voiceChannel WHERE voiceID = %s", (channel.id,))
             voice=c.fetchone()
             if voice is None:
                 await ctx.channel.send(f"{ctx.author.mention} You can't own that channel!")
@@ -302,7 +295,7 @@ class voice(commands.Cog):
                         x = True
                 if x == False:
                     await ctx.channel.send(f"{ctx.author.mention} You are now the owner of the channel!")
-                    c.execute("UPDATE voiceChannel SET userID = ? WHERE voiceID = ?", (id, channel.id))
+                    c.execute("UPDATE voiceChannel SET userID = %s WHERE voiceID = %s", (id, channel.id))
             conn.commit()
             conn.close()
 
