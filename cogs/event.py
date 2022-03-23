@@ -235,6 +235,16 @@ class Event(commands.Cog, name="Event"):
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 
+    @event.command(name="msg")
+    @check.is_samuro_dev()
+    async def event_msg(self, ctx, user_id, *message):
+        msg = ' '.join(message)
+        try:
+            user = await self.bot.fetch_user(user_id)
+            await user.send(msg)
+        except:
+            pass
+
     @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
     async def event_report1(self, ctx: SlashContext, text):
         await event_report(ctx, text)

@@ -10,8 +10,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
-
-from cogs import general, help, heroes, hots, profile
+from cogs import general, help, heroes, hots, profile, event, voice
 from utils import check
 
 guild_ids = [845658540341592096]  # Сервер ID для тестирования
@@ -21,6 +20,26 @@ class Slash(commands.Cog, name="Slash"):
     def __init__(self, bot):
         self.bot = bot
 
+    @cog_ext.cog_slash(name="voice_setup", description="Настройка")
+    async def slash_voice_setup(self, ctx: SlashContext):
+        await voice.Voice.setup(self, ctx)
+
+    @cog_ext.cog_slash(name="voice_name", description="Переименовать комнату")
+    async def slash_voice_name(self, ctx: SlashContext, name):
+        await voice.Voice.name(self, ctx, name=name)
+
+    @cog_ext.cog_slash(name="voice_limit", description="Установить лимит участников")
+    async def slash_voice_limit(self, ctx: SlashContext, limit):
+        await voice.Voice.limit(self, ctx, limit=limit)
+
+    @cog_ext.cog_slash(name="voice_lock", description="Сделать комнату закрытой")
+    async def slash_voice_lock(self, ctx: SlashContext):
+        await voice.Voice.lock(self, ctx)
+
+    @cog_ext.cog_slash(name="voice_unlock", description="Сделать комнату открытой")
+    async def slash_voice_unlock(self, ctx: SlashContext):
+        await voice.Voice.unlock(self, ctx)
+
     @cog_ext.cog_slash(name="profile", description="Батлнет профиль")
     async def slash_profile(self, ctx: SlashContext, user):
         await profile.Profile.profile_info(self, ctx, user)
@@ -28,7 +47,7 @@ class Slash(commands.Cog, name="Slash"):
     @cog_ext.cog_slash(name="5x5", description="Подбор команд")
     @check.is_admin()
     async def slash_5x5(self, ctx: SlashContext, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10):
-        await profile.Profile.event_5x5(self, ctx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
+        await event.Event.event_5x5(self, ctx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
 
     @cog_ext.cog_slash(name="add", description="Добавить профиль")
     async def slash_add(self, ctx: SlashContext, battletag, user):
@@ -48,7 +67,7 @@ class Slash(commands.Cog, name="Slash"):
 
     @cog_ext.cog_slash(name="data", description="Полные данные по герою")
     async def slash_data(self, ctx: SlashContext, hero):
-        await hots.Hots.data(self, ctx, hero)
+        await hots.Hots.heroes_data(self, ctx, hero)
 
     @cog_ext.cog_slash(name="streams", description="Онлайн стримы на твиче")
     async def slash_streams(self, ctx: SlashContext, cnt):
