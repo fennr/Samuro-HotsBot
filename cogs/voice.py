@@ -160,9 +160,9 @@ class Voice(commands.Cog):
         conn.commit()
         conn.close()
 
-    @setup.error
+    '''@setup.error
     async def info_error(self, ctx, error):
-        print(error)
+        print(error)'''
 
     @voice.command()
     async def lock(self, ctx):
