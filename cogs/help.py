@@ -55,6 +55,7 @@ def white_list(ctx) -> list:
             'Heroes',
             'Profile',
             'Stats',
+            'Voice'
         ]
         if library.get.author_id(ctx) in config.owners:
             return white_list + admin_list
