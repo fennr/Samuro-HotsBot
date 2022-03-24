@@ -78,6 +78,22 @@ def stats(embed: Embed, stats: Stats) -> Embed:
     return embed
 
 
+def votes(embed, player):
+    con, cur = library.get.con_cur()
+    select = Const.selects.VoteStatsId
+    cur.execute(select, (player.id, ))
+    record = cur.fetchone()
+    print(record)
+    if record is not None:
+        all = record.correct + record.wrong
+        rate = round(record.correct / all * 100, 2)
+        embed.add_field(
+            name="Точность ставок",
+            value=f"{rate} % (из {all})",
+            inline=True
+        )
+    return embed
+
 def team(team: Team) -> Embed:
     con, cur = library.get.con_cur()
     embed = Embed(

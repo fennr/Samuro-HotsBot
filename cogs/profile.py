@@ -141,6 +141,7 @@ class Profile(commands.Cog, name="Profile"):
             stats = library.get.stats(cur.fetchone())
             if stats is not None:
                 embed = utils.library.embeds.stats(embed, stats)
+            embed = utils.library.embeds.votes(embed, player)
             if player.team is not None:
                 embed = utils.library.embeds.user_team(embed, player.team)
             embed = utils.library.embeds.achievements(embed, player)

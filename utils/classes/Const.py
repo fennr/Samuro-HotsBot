@@ -65,6 +65,8 @@ class Select:
     AchievId: str
     UserAchiev: str
     PlayersLeague: str
+    VotesEvent: str
+    VoteStatsId: str
 
 
 @dataclass(frozen=True)
@@ -95,6 +97,7 @@ class Insert:
     UserAchiev: str
     UserStats: str
     Event: str
+    Votes: str
 
 
 config = Config(
@@ -169,6 +172,9 @@ selects = Select(
                         INNER JOIN "UserStats" as us
                         ON p.id = us.id AND p.guild_id = us.guild_id
                         WHERE league = %s ORDER BY mmr DESC LIMIT %s''',
+    VotesEvent='''SELECT * FROM "Votes" WHERE event_id = %s''',
+    VoteStatsId='''SELECT * FROM "VoteStats" WHERE id = %s''',
+
 )
 
 deletes = Delete(
@@ -198,6 +204,7 @@ inserts = Insert(
                     VALUES (%s, %s, %s, %s, %s,
                     %s, %s, %s, %s, %s, 
                     %s, %s, %s, %s, %s )''',
+    Votes='''INSERT INTO "Votes"(id, event_id, vote) VALUES (%s, %s, %s)'''
 )
 
 updates = Update(

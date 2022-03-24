@@ -65,20 +65,22 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=240.0):
+    async def event_poll(self, ctx, *, delay=300.0):
         """
         — Создание голосования на победу
         """
+        con, cur = library.get.con_cur()
         blue = '🟦'
         red = '🟥'
         poll_title = "Кто победит?"
+        guild_id = library.get.guild_id(ctx)
         embed = Embed(
             title=f"{poll_title}",
             # description=f"{poll_title}",
             color=config.success
         )
         embed.set_footer(
-            text=f"4 минуты на голосование"
+            text=f"5 минут на голосование"
         )
         embed_message = await ctx.send(embed=embed)
         await embed_message.add_reaction(blue)
@@ -94,20 +96,62 @@ class Event(commands.Cog, name="Event"):
         for reaction in message.reactions:
             if reaction.emoji == blue:
                 async for user in reaction.users():
-                    blue_bet.append(user.mention)
+                    blue_bet.append(user.id)
             if reaction.emoji == red:
                 async for user in reaction.users():
-                    red_bet.append(user.mention)
-        self.votes_blue = set(blue_bet) - set(red_bet)
-        self.votes_red = set(red_bet) - set(blue_bet)
+                    red_bet.append(user.id)
+        try:
+            select = Const.selects.EHActive
+            cur.execute(select, (ctx.channel.id, True))
+            record = cur.fetchone()
+            self.votes_blue = set(blue_bet) - set(red_bet)
+            for user in self.votes_blue:
+                insert = Const.inserts.Votes
+                cur.execute(insert, (user, record.event_id, 'blue'))
+            self.votes_red = set(red_bet) - set(blue_bet)
+            for user in self.votes_red:
+                insert = Const.inserts.Votes
+                cur.execute(insert, (user, record.event_id, 'red'))
+        except Exception as e:
+            print(e)
+            print("Ошибка записи голосования")
+        library.commit(con)
         await embed_message.delete()
         await ctx.send(f"Голосование завершено")
 
     @event.command(name="poll_end")
-    async def event_poll_end(self, ctx, winner):
+    async def event_poll_end(self, ctx, winner, event_id):
+        con, cur = library.get.con_cur()
+        select = Const.selects.VotesEvent
+        cur.execute(select, (event_id, ))
+        records = cur.fetchall()
+        text_blue = ''
+        text_red = ''
+        for record in records:
+            if record.vote == winner:
+                correct = 1
+                wrong = 0
+            else:
+                correct = 0
+                wrong = 1
+            select = '''SELECT * FROM "VoteStats" WHERE id = %s'''
+            cur.execute(select, (record.id, ))
+            r = cur.fetchone()
+            if r is None:
+                insert = '''INSERT INTO "VoteStats"(id, correct, wrong) VALUES (%s, %s, %s)'''
+                cur.execute(insert, (record.id, correct, wrong))
+            else:
+                update = '''UPDATE "VoteStats" SET correct = %s, wrong = %s WHERE id = %s'''
+                cur.execute(update, (r.correct + correct, r.wrong + wrong,
+                                     record.id))
+            delete = '''DELETE FROM "Votes" WHERE id = %s AND event_id = %s'''
+            cur.execute(delete, (record.id, record.event_id))
+            library.commit(con)
+            if record.vote == 'blue':
+                text_blue += f"{library.get.mention(record.id)} "
+            else:
+                text_red += f"{library.get.mention(record.id)} "
 
-        text_blue = ', '.join(self.votes_blue)
-        text_red = ', '.join(self.votes_red)
         if winner == 'blue':
             await ctx.send(f"Победила команда **синих**")
             if len(text_blue) > 0:
@@ -210,7 +254,7 @@ class Event(commands.Cog, name="Event"):
                 await library.team_change_stats(ctx, team=lose_team, guild_id=guild_id, winner=False)
                 await ctx.send(f"Очки за поражение начислены")
                 await ctx.send(f"Матч успешно закрыт")
-                await self.event_poll_end(ctx, winner)
+                await self.event_poll_end(ctx, winner, record.event_id)
             else:
                 await ctx.send(f"Открытых матчей не найдено")
             library.commit(con)
