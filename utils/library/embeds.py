@@ -66,12 +66,12 @@ def achievements(embed: Embed, player: Player):
 
 def stats(embed: Embed, stats: Stats) -> Embed:
     embed.add_field(
-        name="Баллов",
+        name="Баллы",
         value=stats.points,
         inline=True,
     )
     embed.add_field(
-        name="Статистика внутренних турниров\n(побед/поражений)",
+        name="Статистика 5х5\n(побед/поражений)",
         value=f"{stats.win} / {stats.lose}",
         inline=False
     )
