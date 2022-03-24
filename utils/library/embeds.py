@@ -89,7 +89,7 @@ def votes(embed, player):
         rate = round(record.correct / all * 100)
         embed.add_field(
             name="Точность ставок",
-            value=f"{rate} % (из {all})",
+            value=f"{rate}% (из {all})",
             inline=True
         )
     return embed
