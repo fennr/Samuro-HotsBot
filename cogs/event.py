@@ -112,12 +112,13 @@ class Event(commands.Cog, name="Event"):
             for user in self.votes_red:
                 insert = Const.inserts.Votes
                 cur.execute(insert, (user, record.event_id, 'red'))
+            library.commit(con)
+            await ctx.send(f"Голосование завершено")
         except Exception as e:
             print(e)
             print("Ошибка записи голосования")
-        library.commit(con)
+            await ctx.send(f"Ошибка голосования. Голосование должно создаваться в комнате ивента")
         await embed_message.delete()
-        await ctx.send(f"Голосование завершено")
 
     @event.command(name="poll_end")
     async def event_poll_end(self, ctx, winner, event_id):
