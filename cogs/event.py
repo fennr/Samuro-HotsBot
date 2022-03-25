@@ -129,6 +129,7 @@ class Event(commands.Cog, name="Event"):
         text_blue = ''
         text_red = ''
         for record in records:
+            print(record)
             if record.vote == winner:
                 correct = 1
                 wrong = 0
