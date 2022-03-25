@@ -11,6 +11,10 @@ def con_cur():
     return con, cur
 
 
+def cur(con):
+    return con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+
+
 def author(ctx) -> str:
     try:
         return ctx.message.author.name

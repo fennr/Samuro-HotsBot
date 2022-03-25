@@ -129,14 +129,13 @@ class Event(commands.Cog, name="Event"):
         text_blue = ''
         text_red = ''
         for record in records:
-            print(record)
+            cur = library.get.cur(con)
             if record.vote == winner:
                 correct = 1
                 wrong = 0
             else:
                 correct = 0
                 wrong = 1
-            con, cur = library.get.con_cur()
             select = '''SELECT * FROM "VoteStats" WHERE id = %s'''
             cur.execute(select, (record.id, ))
             r = cur.fetchone()
