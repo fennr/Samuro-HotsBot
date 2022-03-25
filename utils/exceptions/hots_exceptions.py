@@ -44,3 +44,8 @@ class LeagueNotFound(CommandError):
 class WrongLeague(CommandError):
     def __str__(self):
         return "Введена некорректная лига"
+
+
+class NoActiveEvents(CommandError):
+    def __str__(self):
+        return "Нет активных матчей"
