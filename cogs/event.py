@@ -65,7 +65,7 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=300.0):
+    async def event_poll(self, ctx, *, delay=5.0):
         """
         — Создание голосования на победу
         """
@@ -136,6 +136,7 @@ class Event(commands.Cog, name="Event"):
             else:
                 correct = 0
                 wrong = 1
+            con, cur = library.get.con_cur()
             select = '''SELECT * FROM "VoteStats" WHERE id = %s'''
             cur.execute(select, (record.id, ))
             r = cur.fetchone()
@@ -256,7 +257,7 @@ class Event(commands.Cog, name="Event"):
                 await library.team_change_stats(ctx, team=lose_team, guild_id=guild_id, winner=False)
                 await ctx.send(f"Очки за поражение начислены")
                 await ctx.send(f"Матч успешно закрыт")
-                #await self.event_poll_end(ctx, winner, record.event_id)
+                await self.event_poll_end(ctx, winner, record.event_id)
             else:
                 await ctx.send(f"Открытых матчей не найдено")
             library.commit(con)
