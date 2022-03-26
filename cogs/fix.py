@@ -14,7 +14,8 @@ import discord
 from utils.library import files, profile as pl
 from utils import check, sql
 from utils.classes.Player import Player
-from utils.classes.Const import config
+from utils.classes import Const
+from utils import exceptions, sql, library
 
 class Fix(commands.Cog, name="Fix"):
     def __init__(self, bot):
@@ -45,17 +46,17 @@ class Fix(commands.Cog, name="Fix"):
     @fix.command(name="points")
     @check.is_owner()
     async def fex_points(self, ctx):
-        con, cur = pl.get_con_cur()
-        guild_id = pl.get_guild_id(ctx)
-        select = pl.selects.get("usAll")
+        con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
+        select = Const.selects.US
         cur.execute(select)
         rec = cur.fetchall()
         for record in rec:
-            stats = pl.get_stats(record)
+            stats = library.get.stats(record)
             stats.points = stats.win * 3 + stats.lose * 1
-            update = pl.updates.get("StatsPoints")
+            update = Const.updates.USPoints
             cur.execute(update, (stats.points, stats.id, stats.guild_id))
-        pl.commit(con)
+        library.commit(con)
         await ctx.send("Очки за все игры были пересчитаны")
 
     @fix.command(name="new_table")
