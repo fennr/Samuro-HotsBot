@@ -31,5 +31,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          build-args: TOKEN=$TOKEN, APP_ID=$APP_ID, YT_API=YT_API
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/samuro-bot:latest
+          secrets: |
+            "TOKEN=${{ secrets.TOKEN }}"
+            "APP_ID=${{ secrets.APP_ID }}"
+            "YT_API=${{ secrets.YT_API }}"
