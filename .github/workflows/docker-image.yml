@@ -32,7 +32,3 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/samuro-bot:latest
-          secrets: |
-            "TOKEN=${{ secrets.TOKEN }}"
-            "APP_ID=${{ secrets.APP_ID }}"
-            "YT_API=${{ secrets.YT_API }}"

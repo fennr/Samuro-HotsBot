@@ -14,14 +14,6 @@ COPY --from=build /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.
 WORKDIR /discord_bot
 ENV PYTHONPATH=/usr/local/lib/python3.9/site-packages
 
-# genenv
-RUN --mount=type=secret,id=TOKEN \
-  --mount=type=secret,id=APP_ID \
-  --mount=type=secret,id=YT_API \
-  export TOKEN=$(cat /run/secrets/TOKEN) && \
-  export APP_ID=$(cat /run/secrets/APP_ID) && \
-  export YT_API=$(cat /run/secrets/YT_API)
-
 #Don't generate .pyc files, enable tracebacks on segfaults and disable STDOUT / STDERR buffering
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
