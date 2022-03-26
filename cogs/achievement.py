@@ -36,7 +36,8 @@ class Team(commands.Cog, name="Team"):
             achievements = ''
             for record in records:
                 achievements += f'{record.name}, id = **{record.id}**\n'
-            await ctx.send(achievements)
+            if len(achievements) > 0:
+                await ctx.send(achievements)
 
     @achievement.command(name="create")
     @check.is_admin()

@@ -261,11 +261,15 @@ class Event(commands.Cog, name="Event"):
                 await ctx.send(f"Очки за победу начислены")
                 await library.team_change_stats(ctx, team=lose_team, guild_id=guild_id, winner=False)
                 await ctx.send(f"Очки за поражение начислены")
-                await ctx.send(f"Матч успешно закрыт")
-                await self.event_poll_end(ctx, winner, record.event_id)
+                try:
+                    await self.event_poll_end(ctx, winner, record.event_id)
+                except Exception as e:
+                    print(e)
+                    print(f"Ошибка закрытия голосования")
             else:
                 await ctx.send(f"Открытых матчей не найдено")
             library.commit(con)
+            await ctx.send(f"Матч успешно закрыт")
         else:
             await ctx.send(f"Укажите победителя *red* или *blue*")
 
