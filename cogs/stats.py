@@ -50,7 +50,7 @@ class Stats(commands.Cog, name="Stats"):
         filepath = 'UserStats.xlsx'
         con, cur = library.get.con_cur()
         guild_id = library.get.guild_id(ctx)
-        select = Const.selects.USGuild
+        select = Const.selects.US
         cur.execute(select, (guild_id, ))
         data = cur.fetchall()
         cur.close()
