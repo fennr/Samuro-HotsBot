@@ -64,7 +64,7 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=300.0):
+    async def event_poll(self, ctx, *, delay=10.0):
         """
         — Создание голосования на победу
         """
@@ -87,33 +87,44 @@ class Event(commands.Cog, name="Event"):
             text=f"5 минут на голосование"
         )
         embed_message = await ctx.send(embed=embed)
-        await embed_message.add_reaction(blue)
-        await embed_message.add_reaction(red)
-        await ctx.message.delete()
-        await asyncio.sleep(delay)
-        await embed_message.remove_reaction(blue, member=embed_message.author)
-        await embed_message.remove_reaction(red, member=embed_message.author)
-        message = await ctx.channel.fetch_message(embed_message.id)
-        # print(message.reactions)
-        blue_bet = []
-        red_bet = []
-        for reaction in message.reactions:
-            if reaction.emoji == blue:
-                async for user in reaction.users():
-                    blue_bet.append(user.id)
-            if reaction.emoji == red:
-                async for user in reaction.users():
-                    red_bet.append(user.id)
-        self.votes_blue = set(blue_bet) - set(red_bet)
-        for user in self.votes_blue:
-            insert = Const.inserts.Votes
-            cur.execute(insert, (user, record.event_id, 'blue'))
-        self.votes_red = set(red_bet) - set(blue_bet)
-        for user in self.votes_red:
-            insert = Const.inserts.Votes
-            cur.execute(insert, (user, record.event_id, 'red'))
-        library.commit(con)
-        await ctx.send(f"Голосование завершено")
+        try:
+            await embed_message.add_reaction(blue)
+            await embed_message.add_reaction(red)
+            await ctx.message.delete()
+            await asyncio.sleep(delay)
+            await embed_message.remove_reaction(blue, member=embed_message.author)
+            await embed_message.remove_reaction(red, member=embed_message.author)
+            message = await ctx.channel.fetch_message(embed_message.id)
+            select = Const.selects.EHActive
+            cur.execute(select, (ctx.channel.id, True))
+            record = cur.fetchone()
+            if record is None:
+                raise exceptions.NoActiveEvents
+            blue_bet = []
+            red_bet = []
+            for reaction in message.reactions:
+                if reaction.emoji == blue:
+                    async for user in reaction.users():
+                        blue_bet.append(user.id)
+                if reaction.emoji == red:
+                    async for user in reaction.users():
+                        red_bet.append(user.id)
+            self.votes_blue = set(blue_bet) - set(red_bet)
+            for user in self.votes_blue:
+                insert = Const.inserts.Votes
+                cur.execute(insert, (user, record.event_id, 'blue'))
+            self.votes_red = set(red_bet) - set(blue_bet)
+            for user in self.votes_red:
+                insert = Const.inserts.Votes
+                cur.execute(insert, (user, record.event_id, 'red'))
+            library.commit(con)
+            await embed_message.delete()
+            await ctx.send(f"Голосование завершено")
+        except Exception as e:
+            await embed_message.delete()
+            print(e)
+            print("Ошибка при создании голосования")
+            await ctx.send(e)
 
     @event.command(name="poll_end")
     async def event_poll_end(self, ctx, winner, event_id):
@@ -124,7 +135,7 @@ class Event(commands.Cog, name="Event"):
         text_blue = ''
         text_red = ''
         for record in records:
-            cur = library.get.cur(con)
+            con, cur = library.get.con_cur()
             if record.vote == winner:
                 correct = 1
                 wrong = 0
