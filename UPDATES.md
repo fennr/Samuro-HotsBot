@@ -3,6 +3,8 @@
 ### Version 2.2
 
 * Голосования добавлены в базу данных
+* Добавлен Dockerfile
+* Добавлен Docker Image CI
 
 ### Version 2.1
 

@@ -48,6 +48,20 @@ APP_ID = os.environ.get('APP_ID')
 ```
 * Запустить файл [bot.py](bot.py)
 
+### Запуск в Docker контейнере
+
+* Записать переменные в файл .env в корневой папке
+```.env
+TOKEN=123456
+APP_ID=12345
+YT_API=12345
+```
+
+* Запустить
+```shell script
+docker run --env-file=.env fenrir1121/samuro-bot
+```
+
 ## COGs
 
 ### Игровые
