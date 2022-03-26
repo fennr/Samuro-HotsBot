@@ -20,8 +20,7 @@ RUN --mount=type=secret,id=TOKEN \
   --mount=type=secret,id=YT_API \
   export TOKEN=$(cat /run/secrets/TOKEN) && \
   export APP_ID=$(cat /run/secrets/APP_ID) && \
-  export YT_API=$(cat /run/secrets/YT_API) && \
-  python genenv.py
+  export YT_API=$(cat /run/secrets/YT_API)
 
 #Don't generate .pyc files, enable tracebacks on segfaults and disable STDOUT / STDERR buffering
 ENV LANG C.UTF-8
