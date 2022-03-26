@@ -184,7 +184,9 @@ deletes = Delete(
     UserAchiev='''DELETE FROM "UserAchievements" 
                 WHERE id = %s AND guild_id = %s AND achievement = %s''',
     AchievId='DELETE FROM "Achievements" WHERE id = %s AND guild_id = %s RETURNING name',
-    EventActive='''DELETE FROM "EventHistory" WHERE room_id = %s AND active = %s''',
+    EventActive='''DELETE FROM "EventHistory" WHERE room_id = %s AND active = %s
+                   RETURNING blue1, blue2, blue3, blue4, blue5,
+                             red1, red2, red3, red4, red5''',
 )
 
 inserts = Insert(

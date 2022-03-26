@@ -42,6 +42,11 @@ class Fix(commands.Cog, name="Fix"):
         else:
             await ctx.send(f"Не найдена роль {role}")
 
+    @fix.command(name="new_role")
+    @check.is_owner()
+    async def fix_new_role(self, ctx, role_name, color=discord.Colour.red()):
+        role = await ctx.guild.create_role(name=role_name, color=color, mentionable=True)
+        await ctx.send(f"Создана роль {role.mention}")
 
     @fix.command(name="points")
     @check.is_owner()

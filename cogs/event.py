@@ -209,6 +209,7 @@ class Event(commands.Cog, name="Event"):
                     # обработка на случай одинакового ммр
                     unique_mmr = []
                     for player in players:
+                        await library.add_role(ctx, player)  # добавление роли 5х5 если она есть
                         while player.mmr in unique_mmr:
                             player.mmr = float(player.mmr) + 0.1
                         unique_mmr.append(player.mmr)
@@ -283,6 +284,14 @@ class Event(commands.Cog, name="Event"):
         room_id = ctx.channel.id
         delete = Const.deletes.EventActive
         cur.execute(delete, (room_id, True))
+        try:  # Зачистка роли
+            record = cur.fetchone()
+            for btag in record:
+                player = library.get.profile_by_id_or_btag(btag)
+                await library.remove_role(ctx, player)
+        except Exception as e:
+            print(e)
+            print("Нет роли 5x5")
         library.commit(con)
         if cur.rowcount:  # счетчик записей, найдет 1 или 0
             await ctx.send(f"Активный матч был отменен, можно пересоздать команды")

@@ -1,7 +1,7 @@
 import requests
 import psycopg2.extras
 import itertools as it
-from discord import Member
+from discord import Member, utils
 from bs4 import BeautifulSoup
 from utils.classes.Player import Player
 from utils.classes.Stats import Stats
@@ -19,6 +19,25 @@ leagues = {
     "Grandmaster": "Грандмастер"
 }
 
+async def add_role(ctx, player, role_name='5x5'):
+    try:
+        member = ctx.guild.get_member(player.id)
+        role = utils.get(member.guild.roles, name=role_name)
+        await member.add_roles(role)
+    except Exception as e:
+        print(e)
+        print(f"Не создана роль 5x5")
+
+
+async def remove_role(ctx, player, role_name='5x5'):
+    try:
+        member = ctx.guild.get_member(player.id)
+        role = utils.get(member.guild.roles, name=role_name)
+        await member.remove_roles(role)
+    except Exception as e:
+        print(e)
+        print(f"Не создана роль 5x5")
+
 
 async def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner=True):
     con, cur = library.get.con_cur()
@@ -29,6 +48,7 @@ async def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner
     records = cur.fetchall()
     for record in records:
         player = library.get.player(record)
+        await remove_role(ctx, player)  # снятие роли если это возможно
         select = Const.selects.USIdGuild
         cur.execute(select, (player.id, guild_id))
         stats_rec = cur.fetchone()
