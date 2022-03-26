@@ -314,7 +314,7 @@ class Event(commands.Cog, name="Event"):
         print(f"Сообщение вызвавшее ошибку: '{ctx.message.content}' guild {ctx.guild} by {ctx.author}")
 
         if isinstance(error, exceptions.NoActiveEvents):
-            await ctx.send(f"Ошибка голосования. Голосование должно создаваться в комнате ивента")
+            await ctx.send(f"Ошибка голосования. В комнате нет активных игр")
 
 
 def setup(bot):
