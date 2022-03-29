@@ -64,10 +64,11 @@ async def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner
         if winner:
             player.mmr += int(delta)
             player_stats.win += 1
+            player.points += points * 3
         else:
             player.mmr -= int(delta)
             player_stats.lose += 1
-        player.points = (player_stats.win * 3) + (player_stats.lose * 1)
+            player.points += points
         old_league = player.league
         player.league, player.division = library.get.league_division_by_mmr(player.mmr)
         if (old_league != player.league) and ((player.league == 'Master') or (player.league == 'Grandmaster')):
