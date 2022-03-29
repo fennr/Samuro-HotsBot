@@ -64,7 +64,7 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=10.0):
+    async def event_poll(self, ctx, *, delay=300.0):
         """
         — Создание голосования на победу
         """

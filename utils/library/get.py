@@ -102,7 +102,6 @@ def team(record):
 
 def profile_by_id_or_btag(id_or_btag) -> classes.Player:
     con, cur = con_cur()
-    print(id_or_btag)
     player_id = user_id(id_or_btag)
     select = Const.selects.PlayersIdOrBtag
     cur.execute(select, (player_id, str(id_or_btag),))
