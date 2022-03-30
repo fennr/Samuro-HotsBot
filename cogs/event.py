@@ -258,9 +258,9 @@ class Event(commands.Cog, name="Event"):
                 update = Const.updates.EHWinner
                 cur.execute(update, (winner, delta, points, False,
                                      room_id, True))
-                await library.team_change_stats(ctx, team=win_team, guild_id=guild_id)
+                await library.team_change_stats(ctx, team=win_team, delta=delta, guild_id=guild_id)
                 await ctx.send(f"Очки за победу начислены")
-                await library.team_change_stats(ctx, team=lose_team, guild_id=guild_id, winner=False)
+                await library.team_change_stats(ctx, team=lose_team, delta=delta, guild_id=guild_id, winner=False)
                 await ctx.send(f"Очки за поражение начислены")
                 try:
                     await self.event_poll_end(ctx, winner, record.event_id)

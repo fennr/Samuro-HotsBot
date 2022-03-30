@@ -39,7 +39,7 @@ async def remove_role(ctx, player, role_name='5x5'):
         print(f"Не создана роль 5x5")
 
 
-async def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner=True):
+async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner=True):
     con, cur = library.get.con_cur()
     placeholder = '%s'
     placeholders = ', '.join(placeholder for unused in team)
@@ -72,6 +72,7 @@ async def team_change_stats(ctx, team: list, guild_id, delta=7, points=1, winner
         old_league = player.league
         player.league, player.division = library.get.league_division_by_mmr(player.mmr)
         if (old_league != player.league) and ((player.league == 'Master') or (player.league == 'Grandmaster')):
+            player.mmr += delta+1
             await ctx.send(
                 f"{library.mention(player.id)} ты достиг {library.profile.leagues[player.league]} лиги. Мои поздравления")
         updateUS = Const.updates.USPointWinLose
