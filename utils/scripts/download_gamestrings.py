@@ -1,32 +1,26 @@
 import json
 import requests
-from utils.library import files
-
-config = files.get_yaml()
+from utils.classes.Const import config
 
 file_path = '../../data/'
-patch = config["patch"]
 
-
-def download_gamestrings(dir, patch_number):
-    short_pn = patch_number[-5:]
-    print(short_pn)
+def download_gamestrings(dir):
     gs_file = 'gamestrings'
     gs_url = 'https://raw.githubusercontent.com/HeroesToolChest/heroes-data/master/heroesdata/' \
-             + patch_number + '/gamestrings/gamestrings_' + short_pn + '_ruru.json'
+             + config.patch + '/gamestrings/gamestrings_' + config.short_patch + '_ruru.json'
     print(gs_url)
     response_gs = requests.get(gs_url)
-    game_strings_file = dir + gs_file + short_pn + '.json'
+    game_strings_file = dir + gs_file + config.short_patch + '.json'
     with open(game_strings_file, 'w', encoding='utf-8') as gamestrings_json:
         json.dump(response_gs.json(), gamestrings_json, ensure_ascii=False, indent=4)
     print(game_strings_file, 'записан')
 
     hd_file = 'heroesdata'
     hd_url = 'https://raw.githubusercontent.com/HeroesToolChest/heroes-data/master/heroesdata/' \
-             + patch_number + '/data/herodata_' + short_pn + '_localized.json'
+             + config.patch + '/data/herodata_' + config.short_patch + '_localized.json'
     print(hd_url)
     response_hd = requests.get(hd_url)
-    hero_data_file = dir + hd_file + short_pn + '.json'
+    hero_data_file = dir + hd_file + config.short_patch + '.json'
     with open(hero_data_file, 'w', encoding='utf-8') as herodata_json:
         json.dump(response_hd.json(), herodata_json, ensure_ascii=False, indent=4)
     print(hero_data_file, 'записан')
@@ -37,5 +31,5 @@ def test():
 
 
 if __name__ == '__main__':
-    download_gamestrings(file_path, patch)
+    download_gamestrings(file_path)
     # test()
