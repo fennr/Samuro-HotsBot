@@ -70,9 +70,11 @@ def stats(embed: Embed, stats: Stats) -> Embed:
         value=stats.points,
         inline=True,
     )
+    all = stats.win + stats.lose
+    rate = round(stats.win / all * 100)
     embed.add_field(
-        name="Статистика 5х5\n(побед/поражений)",
-        value=f"{stats.win} / {stats.lose}",
+        name="Винрейт 5х5",
+        value=f"{rate}% ({stats.win} из {all})",
         inline=False
     )
     return embed
@@ -88,8 +90,8 @@ def votes(embed, player):
         all = record.correct + record.wrong
         rate = round(record.correct / all * 100)
         embed.add_field(
-            name="Точность ставок",
-            value=f"{rate}% (из {all})",
+            name="Ставки",
+            value=f"{rate}% ({record.correct} из {all})",
             inline=True
         )
     return embed
