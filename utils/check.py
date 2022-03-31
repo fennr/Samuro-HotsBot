@@ -47,7 +47,7 @@ def is_samuro_dev() -> Callable[[T], T]:
     '''
     async def predicate(context: commands.Context) -> bool:
         good_roles = [
-             946480695218429952,  # Samuro_dev
+             959144584720580618,  # Samuro_dev
              880865537058545686  # test
         ]
         flag = False
@@ -71,7 +71,7 @@ def is_lead() -> Callable[[T], T]:
         good_roles = [
              703884580041785344,  # Создатель
              703884637755408466,  # Админ
-             946480695218429952,  # Samuro_dev
+             959144584720580618,  # Samuro_dev
              789084039180451840,  # Ведущий
              880865537058545686  # test
         ]
