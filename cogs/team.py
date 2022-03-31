@@ -127,14 +127,15 @@ class Team(commands.Cog, name="Team"):
             await ctx.send("У вас нет прав на удаление участника из команды")
 
     @team.command(name="info")
-    async def team_info(self, ctx, id_or_name):
+    async def team_info(self, ctx, role: discord.Role):
         """
         — Информация о команде по имени или ID
         """
         con, cur = library.get.con_cur()
-        team_id = int(id_or_name) if id_or_name.isdigit() else None
+        team_name = role.name
+        print(team_name)
         select = Const.selects.TeamIdName
-        cur.execute(select, (team_id, id_or_name))
+        cur.execute(select, ('1', team_name))
         team = library.get.team(cur.fetchone())
         if team is not None:
             embed = utils.library.embeds.team(team)
