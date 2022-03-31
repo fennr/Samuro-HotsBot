@@ -75,7 +75,7 @@ def stats(embed: Embed, stats: Stats) -> Embed:
     embed.add_field(
         name="Винрейт 5х5",
         value=f"{rate}% ({stats.win} из {all})",
-        inline=False
+        inline=True
     )
     return embed
 
