@@ -41,19 +41,20 @@ class Team(commands.Cog, name="Team"):
         con, cur = library.get.con_cur()
         print(leader)
         player = library.get.profile_by_id_or_btag(leader)
-        team_name = team_name.replace('_', ' ')
+        team_n = team_name.replace('_', ' ')
+        print(team_n)
         if player is not None:
             insert = Const.inserts.Team
-            cur.execute(insert, (team_name, player.id))
+            cur.execute(insert, (team_n, player.id))
             team_id = cur.fetchone()[0]
             update = Const.updates.PlayerTeam
             cur.execute(update, (team_id, player.id))
             library.commit(con)
-            await ctx.send(f"Команда {team_name} создана")
+            await ctx.send(f"Команда {team_n} создана")
             print(color)
-            await ctx.guild.create_role(name=team_name, color=color, mentionable=True)
+            await ctx.guild.create_role(name=team_n, color=color, mentionable=True)
             member = ctx.guild.get_member(player.id)
-            role = get(member.guild.roles, name=team_name)
+            role = get(member.guild.roles, name=team_n)
             await member.add_roles(role)
         else:
             print("Для использования команды добавьте Ваш профиль в базу")
