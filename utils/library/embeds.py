@@ -51,7 +51,7 @@ def achievements(embed: Embed, player: Player):
     if cur.rowcount:
         achievements = ''
         for record in records:
-            print(record.row)
+            #print(record.row)
             user_id, achiev_name, achiev_date = record.row[1:-1].split(",")
             date_obj = datetime.strptime(achiev_date, '%Y-%m-%d').date()
             date = date_obj.strftime('%d %B %Y')
@@ -85,7 +85,7 @@ def votes(embed, player):
     select = Const.selects.VoteStatsId
     cur.execute(select, (player.id, ))
     record = cur.fetchone()
-    print(record)
+    #print(record)
     if record is not None:
         all = record.correct + record.wrong
         rate = round(record.correct / all * 100)

@@ -41,6 +41,7 @@ class Team(commands.Cog, name="Team"):
         con, cur = library.get.con_cur()
         print(leader)
         player = library.get.profile_by_id_or_btag(leader)
+        team_name = team_name.replace('_', ' ')
         if player is not None:
             insert = Const.inserts.Team
             cur.execute(insert, (team_name, player.id))
