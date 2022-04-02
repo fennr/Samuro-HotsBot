@@ -22,8 +22,11 @@ class Ruhots(commands.Cog):
 
     @commands.command(name="hrc")
     async def hrc(self, ctx):
+        """
+        - Правила челленджа между Сталком и Крюгером
+        """
         description = f"Состязание между стримерами **Stalk** и **CRYGER**, проходящее на *Trovo*\n" \
-                      f"[Правила](https://discord.com/channels/124864790110797824/957299624060805130/959014912263331900)\n" \
+                      f"[Правила](https://discord.gg/jRrxwSWBQY)\n" \
                       f"[Таблица со статистикой](https://bit.ly/HeroesRC)\n" \
                       f"[Канал Stalk](https://trovo.live/stlk)\n" \
                       f"[Канал CRYGER](https://trovo.live/CRYGER)"
