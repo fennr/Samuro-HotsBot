@@ -17,8 +17,21 @@ clear = '\u200b'
 
 class Ruhots(commands.Cog):
     """
-    — Команды для сервера RU Heroes of the Storm
+    — Команды для отдельных серверов
     """
+
+    @commands.command(name="hrc")
+    async def hrc(self, ctx):
+        description = f"Состязание между стримерами **Stalk** и **CRYGER**, проходящее на *Trovo*\n" \
+                      f"[Правила](https://discord.com/channels/124864790110797824/957299624060805130/959014912263331900)\n" \
+                      f"[Таблица со статистикой](https://bit.ly/HeroesRC)\n" \
+                      f"[Канал Stalk](https://trovo.live/stlk)\n" \
+                      f"[Канал CRYGER](https://trovo.live/CRYGER)"
+        embed = Embed(
+            title="Heroes Race Challenge",
+            description=description
+        )
+        await ctx.send(embed=embed)
 
     @commands.command(name="test_art")
     @commands.check_any(commands.has_role(825399436863733791),  # ru hots
