@@ -143,20 +143,16 @@ class News(commands.Cog, name="News"):
             'test': 'Fenrir︱Test',
             'ruhots': 'RU︱Heroes of the Storm',
             'lounge': 'RU︱Heroes of the Storm',
-            'mem': 'RU︱Heroes of the Storm',
             'kato': 'Awokato game',
             'dung_h': 'Dungeon Шмэтокрыла',
-            'dung_m': 'Dungeon Шмэтокрыла',
-            'stlk': 'STLK',
+            'pepeSquad': 'pepeSquad',
         }
         server_rooms = {
-            'test': 845658540341592099,
+            'test': 880863858653286401,
             'ruhots': 642853714515722241,
             'lounge': 886270709393928242,
-            'mem': 642853869944045579,
             'kato': 835521779521814538,
             'dung_h': 858455796412710922,
-            'dung_m': 472534563479093269,
             'stlk': 124864790110797824,
         }
         if ctx.message.author.id in config.admins:

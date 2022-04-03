@@ -2,8 +2,12 @@ from collections.abc import MutableMapping
 from utils.library import profile as pl
 from utils.classes.Stats import Stats
 from utils.scripts.ytparser import *
+from pprint import pprint
 import os
 import stackprinter
+import trovoApi
+
+c = trovoApi.TrovoClient("9637368b14df5d39619fc6e4af4a79ec")
 stackprinter.set_excepthook(style='darkbg2')
 
 mmr = {
@@ -120,6 +124,8 @@ def get_video():
 def do_stuff():
     raise ValueError('Error message')
 
+
+
 if __name__ == '__main__':
-    do_stuff()  # Вызывает ValueError
+    pprint(c.get_top_channels(limit=10, category_id='10265')['top_channels_lists'])
 

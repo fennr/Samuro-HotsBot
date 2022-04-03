@@ -4,7 +4,9 @@ import sys
 import yaml
 from discord import Embed
 from twitchAPI.twitch import Twitch
+import trovoApi
 from utils.classes.Const import config
+c = trovoApi.TrovoClient(os.environ.get('TROVO_ID'))
 
 
 def get_streams(first=5):
@@ -31,4 +33,21 @@ def get_streams(first=5):
                 inline=False
             )
             count += 1
+    return embed
+
+
+def get_trovo_streams(limit=5):
+    hots_category = '10265'
+    response = c.get_top_channels(limit=limit, category_id=hots_category)['top_channels_lists']
+    embed = Embed(
+        title='Trovo стримы онлайн',
+        color=config.success
+    )
+    for count, stream in enumerate(response):
+        link = f"[{stream['title']}]({stream['channel_url']})"
+        embed.add_field(
+            name=f"{count + 1}. {stream['nick_name']}",
+            value=f"{link}\nЗрителей: {stream['current_viewers']}",
+            inline=False
+        )
     return embed
