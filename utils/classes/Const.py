@@ -100,6 +100,13 @@ class Insert:
     Votes: str
 
 
+@dataclass(frozen=True)
+class Event:
+    role: str
+    blue: str
+    red: str
+    role_id: int
+
 config = Config(
     bot_initial_prefix=conf["bot_initial_prefix"],
     bot_prefix=conf["bot_prefix"],
@@ -219,4 +226,11 @@ updates = Update(
     EHWinner='''UPDATE "EventHistory" SET winner = %s, delta_mmr = %s, points = %s, active = %s 
                 WHERE room_id = %s AND active = %s''',
 
+)
+
+events = Event(
+    role='5x5',
+    role_id=957359993261281290,  # роль 5x5
+    blue='blue',
+    red='red',
 )
