@@ -10,6 +10,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option
 from cogs import general, help, heroes, hots, profile, event, voice
 from utils import check, exceptions
 
@@ -49,9 +50,25 @@ class Slash(commands.Cog, name="Slash"):
     async def slash_5x5(self, ctx: SlashContext, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10):
         await event.Event.event_5x5(self, ctx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)'''
 
-    @cog_ext.cog_slash(name="add", description="Добавить профиль")
-    async def slash_add(self, ctx: SlashContext, battletag, user):
-        await profile.Profile.profile_add(self, ctx, battletag, user)
+    @cog_ext.cog_slash(name="profile_add",
+                       description="Добавить профиль",
+                       options=[
+                           create_option(
+                               name="battletag",
+                               description="Введите батлтег",
+                               option_type=3,
+                               required=True,
+                           ),
+                           create_option(
+                               name="discord",
+                               description="Введите дискорд профиль",
+                               option_type=3,
+                               required=True,
+                           )
+                       ]
+                       )
+    async def slash_add(self, ctx: SlashContext, battletag, discord):
+        await profile.Profile.profile_add(self, ctx, battletag, discord)
 
     @cog_ext.cog_slash(name="info", description="Описание бота")
     async def slash_info(self, ctx: SlashContext):
