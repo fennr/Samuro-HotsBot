@@ -36,6 +36,17 @@ async def event_report(ctx, text):
     await ctx.send("Сообщение отправлено администрации", hidden=True)
 
 
+async def insert_votes(ctx, cur, record, one, two):
+    votes = set(one) - set(two)
+    for user_id in votes:
+        member = ctx.guild.get_member(user_id)
+        if discord.utils.get(member.roles, id=Const.events.role_id):
+            await ctx.send(f"Предупреждение игроку {member.mention} за попытку голосования")
+        else:
+            insert = Const.inserts.Votes
+            cur.execute(insert, (user_id, record.event_id, Const.events.blue))
+
+
 class Event(commands.Cog, name="Event"):
     """
     — Модуль работы с ивентами
@@ -46,8 +57,6 @@ class Event(commands.Cog, name="Event"):
 
     def __init__(self, bot):
         self.bot = bot
-        self.votes_blue = set()
-        self.votes_red = set()
 
     @commands.group(name="event")
     async def event(self, ctx):
@@ -62,9 +71,14 @@ class Event(commands.Cog, name="Event"):
     async def event_test(self, ctx, *, avamember: Member = None):
         await ctx.send('Тест прав на ивенты пройден')
 
+    @event.command(name="role")
+    @check.is_lead()
+    async def event_role(self, ctx):
+        ctx.guild.get()
+
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=300.0):
+    async def event_poll(self, ctx, *, delay=5.0):
         """
         — Создание голосования на победу
         """
@@ -109,14 +123,8 @@ class Event(commands.Cog, name="Event"):
                 if reaction.emoji == red:
                     async for user in reaction.users():
                         red_bet.append(user.id)
-            self.votes_blue = set(blue_bet) - set(red_bet)
-            for user in self.votes_blue:
-                insert = Const.inserts.Votes
-                cur.execute(insert, (user, record.event_id, 'blue'))
-            self.votes_red = set(red_bet) - set(blue_bet)
-            for user in self.votes_red:
-                insert = Const.inserts.Votes
-                cur.execute(insert, (user, record.event_id, 'red'))
+            await insert_votes(ctx, cur, record, blue_bet, red_bet)
+            await insert_votes(ctx, cur, record, red_bet, blue_bet)
             library.commit(con)
             await embed_message.delete()
             await ctx.send(f"Голосование завершено")
@@ -172,8 +180,6 @@ class Event(commands.Cog, name="Event"):
                 await ctx.send(f"За победу **красных** проголосовали: {text_red}")
             if len(text_blue) > 0:
                 await ctx.send(f"За победу синих проголосовали: {text_blue}")
-        self.votes_blue = set()
-        self.votes_red = set()
 
     @event.command(name="5x5")
     @check.is_lead()
@@ -219,7 +225,7 @@ class Event(commands.Cog, name="Event"):
                     team_two_mmr += (float(players[-2].mmr),)
                     team_one = [player for player in players if float(player.mmr) in team_one_mmr]
                     team_two = [player for player in players if float(player.mmr) in team_two_mmr]
-                    print(team_one)
+                    #print(team_one)
                     now = str(datetime.now(pytz.timezone('Europe/Moscow')))[:19]
                     insert = Const.inserts.Event
                     cur.execute(insert, (now, admin, guild_id, True, room_id,  # ctx.message.author.name
@@ -295,8 +301,6 @@ class Event(commands.Cog, name="Event"):
         library.commit(con)
         if cur.rowcount:  # счетчик записей, найдет 1 или 0
             await ctx.send(f"Активный матч был отменен, можно пересоздать команды")
-            self.votes_blue = set()
-            self.votes_red = set()
         else:
             await ctx.send(f"В этой комнате нет открытых матчей")
 

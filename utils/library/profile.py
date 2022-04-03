@@ -103,7 +103,7 @@ def min_diff_sets(data):
         Return:
         - min diff between sum of numbers in two sets
     """
-    print(data)
+    #print(data)
     if len(data) == 1:
         return data[0]
     s = sum(data)
@@ -123,7 +123,7 @@ def min_diff_sets(data):
     # `res` = [min_diff_between_sum_of_numbers_in_two_sets,
     #           ((set_1), (set_2))
     #         ]
-    print(c)
+    #print(c)
     res = sorted([(abs(sum(i[0]) - sum(i[1])), i) for i in c],
                  key=lambda x: x[0])
     # print(res)
