@@ -22,7 +22,7 @@ from utils.hots.patchnotes import last_pn
 from utils.hots.skills import skill
 from utils.hots.talents import talents
 from utils.hots.tierlist import ban_heroes
-from utils.hots.twitch import get_streams
+from utils.hots.twitch import get_streams, get_trovo_streams
 from utils.library import files
 from utils import check, exceptions
 from utils.classes.Const import config
@@ -183,6 +183,14 @@ class Hots(Cog, name='Hots'):
         await ctx.send(
             embed=embed
         )
+
+    @command(name='trovo')
+    async def streams_trovo(self, ctx, limit=5):
+        """
+        - Запущенные на trovo стримы
+        """
+        embed = get_trovo_streams(limit)
+        await ctx.send(embed=embed)
 
     @command(name='stlk')
     async def stlk_builds(self, ctx, *hero_name):

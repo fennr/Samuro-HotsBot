@@ -107,7 +107,7 @@ class Voice(commands.Cog):
         conn, c = library.get.con_cur()
         guildID = ctx.guild.id
         id = ctx.author.id
-        if ctx.author.id == ctx.guild.owner_id or ctx.author.id in config.owners:
+        if ctx.author.id == ctx.guild.owner_id or ctx.author.id in Const.config.owners:
             def check(m):
                 return m.author.id == ctx.author.id
             await ctx.channel.send("**На каждый вопрос дается 60 секунд на ответ!**")
