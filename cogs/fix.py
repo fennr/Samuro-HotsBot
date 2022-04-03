@@ -34,7 +34,7 @@ class Fix(commands.Cog, name="Fix"):
 
     @fix.command(name="role")
     @check.is_owner()
-    async def fix_role(self, ctx, role_id):
+    async def fix_role(self, ctx, role_id: int):
         role = discord.utils.get(ctx.message.guild.roles, id=role_id)
         if role:
             await role.edit(mentionable=True)
