@@ -145,7 +145,7 @@ class News(commands.Cog, name="News"):
             'lounge': 'RU︱Heroes of the Storm',
             'kato': 'Awokato game',
             'dung_h': 'Dungeon Шмэтокрыла',
-            'pepeSquad': 'pepeSquad',
+            'stlk': 'pepeSquad',
         }
         server_rooms = {
             'test': 880863858653286401,
@@ -170,7 +170,7 @@ class News(commands.Cog, name="News"):
                             channel = guild.get_channel(room)
                             await channel.send(message)
                         except:
-                            pass
+                            print(f'Ошибка доступа к {room}')
                 else:
                     server = server_name.setdefault(short_server_name)
                     if guild.name == server:
