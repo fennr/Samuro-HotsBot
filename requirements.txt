@@ -54,4 +54,5 @@ yarl==1.7.2
 zipp==3.7.0
 psycopg2-binary
 validators
+python-trovo==0.1.5
 
