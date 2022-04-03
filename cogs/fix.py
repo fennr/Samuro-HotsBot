@@ -34,13 +34,13 @@ class Fix(commands.Cog, name="Fix"):
 
     @fix.command(name="role")
     @check.is_owner()
-    async def fix_role(self, ctx, role):
-        role = discord.utils.get(ctx.message.guild.roles, name=role)
+    async def fix_role(self, ctx, role_id):
+        role = discord.utils.get(ctx.message.guild.roles, id=role_id)
         if role:
             await role.edit(mentionable=True)
-            await ctx.send(f"Добавлена возможность тегать роль {role}")
+            await ctx.send(f"Добавлена возможность тегать роль {role.mention}")
         else:
-            await ctx.send(f"Не найдена роль {role}")
+            await ctx.send(f"Не найдена роль id={role}")
 
     @fix.command(name="new_role")
     @check.is_owner()
