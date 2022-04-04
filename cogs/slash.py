@@ -45,6 +45,10 @@ class Slash(commands.Cog, name="Slash"):
     async def slash_profile(self, ctx: SlashContext, user):
         await profile.Profile.profile_info(self, ctx, user)
 
+    @cog_ext.cog_slash(name="login", description="Авторизоваться на сервере")
+    async def slash_login(self, ctx: SlashContext, battletag):
+        await profile.Profile.login(self, ctx, battletag)
+
     '''@cog_ext.cog_slash(name="5x5", description="Подбор команд")
     @check.is_admin()
     async def slash_5x5(self, ctx: SlashContext, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10):
