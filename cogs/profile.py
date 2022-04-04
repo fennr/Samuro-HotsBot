@@ -29,19 +29,29 @@ class Profile(commands.Cog, name="Profile"):
 
     @commands.command(name="login")
     async def login(self, ctx, battletag: str):
-        player = library.get_heroesprofile_data(btag=battletag,
-                                                user_id=library.get.author_id(ctx),
-                                                guild_id=library.get.guild_id(ctx))
-        if isinstance(player, classes.Player):
-            con, cur = library.get.con_cur()
-            insert = Const.inserts.Player
-            cur.execute(insert, (player.btag, player.id, player.guild_id,
-                                 player.mmr, player.league, player.division))
-            library.commit(con)
-            await ctx.send(f"Профиль игрока {battletag} добавлен в базу")
-            await library.add_role(ctx, player, player.league)
+        author_id = library.get.author_id(ctx)
+        con, cur = library.get.con_cur()
+        select = Const.selects.PlayersId
+        cur.execute(select, (author_id, ))
+        record = cur.fetchone()
+        if record is None:
+            player = library.get_heroesprofile_data(btag=battletag,
+                                                    user_id=author_id,
+                                                    guild_id=library.get.guild_id(ctx))
+            if isinstance(player, classes.Player):
+                con, cur = library.get.con_cur()
+                insert = Const.inserts.Player
+                cur.execute(insert, (player.btag, player.id, player.guild_id,
+                                     player.mmr, player.league, player.division))
+                library.commit(con)
+                await ctx.send(f"Посмотреть свой профиль можно командой *!profile*. Добро пожаловать.")
+                await library.add_role(ctx, player, player.league)
+            else:
+                await ctx.send(library.profile_not_found(battletag))
         else:
-            await ctx.send(library.profile_not_found(battletag))
+            player = library.get.player(record)
+            await library.add_role(ctx, player, player.league)
+            await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
 
     @commands.group(name="profile")
     async def profile(self, ctx):
