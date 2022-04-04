@@ -25,8 +25,8 @@ async def add_role(ctx, player, role_name='5x5'):
         role = utils.get(member.guild.roles, name=role_name)
         await member.add_roles(role)
     except Exception as e:
+        await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}")
         print(e)
-        print(f"Не создана роль 5x5")
 
 
 async def remove_role(ctx, player, role_name='5x5'):
