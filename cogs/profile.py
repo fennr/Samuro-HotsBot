@@ -44,14 +44,20 @@ class Profile(commands.Cog, name="Profile"):
                 cur.execute(insert, (player.btag, player.id, player.guild_id,
                                      player.mmr, player.league, player.division))
                 library.commit(con)
-                await library.add_role(ctx, player, player.league)
-                await ctx.send(f"Посмотреть свой профиль можно командой *!profile*. Добро пожаловать.")
+                try:
+                    await library.add_role(ctx, player, player.league)
+                    await ctx.send(f"Посмотреть свой профиль можно командой *!profile*. Добро пожаловать.")
+                except Exception:
+                    print(Exception)
             else:
                 await ctx.send(library.profile_not_found(battletag))
         else:
             player = library.get.player(record)
-            await library.add_role(ctx, player, player.league)
-            await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
+            try:
+                await library.add_role(ctx, player, player.league)
+                await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
+            except Exception:
+                print(Exception)
 
     @commands.group(name="profile")
     async def profile(self, ctx):
