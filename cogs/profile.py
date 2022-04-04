@@ -27,6 +27,21 @@ class Profile(commands.Cog, name="Profile"):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(name="login")
+    async def login(self, ctx, battletag: str):
+        player = library.get_heroesprofile_data(btag=battletag,
+                                                user_id=library.get.author_id(ctx),
+                                                guild_id=library.get.guild_id(ctx))
+        if isinstance(player, classes.Player):
+            con, cur = library.get.con_cur()
+            insert = Const.inserts.Player
+            cur.execute(insert, (player.btag, player.id, player.guild_id,
+                                 player.mmr, player.league, player.division))
+            library.commit(con)
+            await ctx.send(f"Профиль игрока {battletag} добавлен в базу")
+        else:
+            await ctx.send(library.profile_not_found(battletag))
+
     @commands.group(name="profile")
     async def profile(self, ctx):
         """
