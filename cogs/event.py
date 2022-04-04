@@ -188,7 +188,7 @@ class Event(commands.Cog, name="Event"):
         @ x 10 - создать 5х5 на 10 человек
         """
         if len(args) != 10:
-            await ctx.send("Введите 10 участников турнира")
+            await ctx.send("Введите 10 участников")
         else:
             con, cur = library.get.con_cur()
             guild_id = library.get.guild_id(ctx)
@@ -240,6 +240,44 @@ class Event(commands.Cog, name="Event"):
                     await ctx.send(f"**Красная команда:** \n{team_two_discord}")  # mean(team_blue):.2f
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
+
+    @event.command(name="1x4")
+    @check.is_lead()
+    async def event_1x4(self, ctx, *args):
+        """
+        - Смертокрыл против героев
+        """
+        if len(args) != 5:
+            await ctx.send("Введите 5 участников")
+        else:
+            con, cur = library.get.con_cur()
+            guild_id = library.get.guild_id(ctx)
+            room_id = ctx.channel.id
+            admin = library.get.author(ctx)
+            players = []
+            bad_flag = False
+            for name in args:
+                user_id = library.get.user_id(name)
+                select = Const.selects.PlayersIdOrBtag
+                cur.execute(select, (user_id, name))
+                player = library.get.player(cur.fetchone())
+                if player is not None:
+                    players.append(player)
+                else:
+                    bad_flag = True
+                    await ctx.send(f"Участника {name} нет в базе")
+            if not bad_flag:
+                select = Const.selects.EHActive
+                cur.execute(select, (room_id, True))
+                record = cur.fetchone()
+                if record is None:
+                    deathwing = players[0]
+                    heroes = players[1:]
+                    team_heroes = ' '.join([library.get.player_data(player) for player in heroes])
+                    await ctx.send(f"**Синяя команда:** \n{deathwing}")
+                    await ctx.send(f"**Красная команда:** \n{team_heroes}")  # mean(team_blue):.2f
+
+
 
     @event.command(name="winner")
     @check.is_lead()
