@@ -39,6 +39,7 @@ class Profile(commands.Cog, name="Profile"):
                                  player.mmr, player.league, player.division))
             library.commit(con)
             await ctx.send(f"Профиль игрока {battletag} добавлен в базу")
+            await library.add_role(ctx, player, player.league)
         else:
             await ctx.send(library.profile_not_found(battletag))
 
