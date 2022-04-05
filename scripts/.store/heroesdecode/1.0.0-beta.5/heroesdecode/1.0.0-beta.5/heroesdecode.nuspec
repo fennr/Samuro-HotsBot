@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>HeroesDecode</id>
+    <version>1.0.0-beta.5</version>
+    <authors>Kevin Oliva</authors>
+    <license type="file">LICENSE</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://github.com/HeroesToolChest/HeroesDecode</projectUrl>
+    <description>Dotnet global tool to parse Heroes of the Storm replay files (.StormReplay) and provide quick information to the console.</description>
+    <releaseNotes>https://github.com/HeroesToolChest/HeroesDecode/releases</releaseNotes>
+    <copyright>Copyright © 2020 - 2021 Kevin Oliva</copyright>
+    <packageTypes>
+      <packageType name="DotnetTool" />
+    </packageTypes>
+    <repository url="https://github.com/HeroesToolChest/HeroesDecode" />
+  </metadata>
+</package>
