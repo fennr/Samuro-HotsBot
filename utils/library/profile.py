@@ -29,6 +29,7 @@ async def add_role(ctx, player: Player, role_name='5x5'):
         await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
     except Exception as e:
         await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}>")
+        print(f"Вероятно не создана роль {role_name}")
         print(e)
 
 
