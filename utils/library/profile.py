@@ -19,11 +19,13 @@ leagues = {
     "Grandmaster": "Грандмастер"
 }
 
-async def add_role(ctx, player, role_name='5x5'):
+
+async def add_role(ctx, player: Player, role_name='5x5'):
     try:
         member = ctx.guild.get_member(player.id)
         role = utils.get(member.guild.roles, name=role_name)
         await member.add_roles(role)
+        await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
     except Exception as e:
         await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}>")
         print(e)

@@ -53,9 +53,9 @@ class Profile(commands.Cog, name="Profile"):
                 await ctx.send(library.profile_not_found(battletag))
         else:
             player = library.get.player(record)
+            print(player)
             try:
                 await library.add_role(ctx, player, player.league)
-                await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
             except Exception:
                 print(Exception)
 
