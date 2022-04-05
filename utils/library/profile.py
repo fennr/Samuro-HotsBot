@@ -23,10 +23,10 @@ leagues = {
 
 async def add_role(ctx, player: Player, role_name='5x5'):
     try:
-        member = ctx.author
+        member = ctx.guild.get_member(player.id)
         role = discord.utils.get(member.guild.roles, name=role_name)
         await member.add_roles(role)
-        await ctx.send(f"Присвоена роль *{role.mention}*. Добро пожаловать на сервер.")
+        await ctx.send(f"Присвоена роль *{role.mention}*")
     except Exception as e:
         await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}>")
         print(f"Вероятно не создана роль {role_name}")
@@ -75,6 +75,12 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
             player_stats.points += points
         old_league = player.league
         player.league, player.division = library.get.league_division_by_mmr(player.mmr)
+        if (old_league != player.league):
+            try:
+                await remove_role(ctx, player, old_league)
+                await add_role(ctx, player, player.league)
+            except Exception:
+                print(f"Не созданы роли {old_league}, {player.league}")
         if (old_league != player.league) and ((player.league == 'Master') or (player.league == 'Grandmaster')):
             player.mmr += delta+1
             await ctx.send(

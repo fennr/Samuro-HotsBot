@@ -126,7 +126,14 @@ class Profile(commands.Cog, name="Profile"):
         player = library.get.player(cur.fetchone())
         if player is not None:
             player.mmr = mmr
+            old_league = player.league
             player.league, player.division = library.get.league_division_by_mmr(int(mmr))
+            if (old_league != player.league):
+                try:
+                    await library.remove_role(ctx, player, old_league)
+                    await library.add_role(ctx, player, player.league)
+                except Exception:
+                    print(f"Не созданы роли {old_league}, {player.league}")
             update = Const.updates.PlayerMMR
             cur.execute(update, (player.mmr, player.league, player.division, player.id))
             con.commit()
