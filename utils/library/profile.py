@@ -26,7 +26,7 @@ async def add_role(ctx, player: Player, role_name='5x5'):
         member = ctx.author
         role = discord.utils.get(member.guild.roles, name=role_name)
         await member.add_roles(role)
-        await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
+        await ctx.send(f"Присвоена роль *{role.mention}*. Добро пожаловать на сервер.")
     except Exception as e:
         await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}>")
         print(f"Вероятно не создана роль {role_name}")
