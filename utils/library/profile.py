@@ -1,6 +1,7 @@
 import requests
 import psycopg2.extras
 import itertools as it
+import discord
 from discord import Member, utils
 from bs4 import BeautifulSoup
 from utils.classes.Player import Player
@@ -28,7 +29,7 @@ async def add_role(ctx, player: Player, role_name='5x5'):
         print(player.id)
         member = ctx.guild.get_member(player.id)
         print(member)
-        role = utils.get(ctx.guild.roles, name=role_name)
+        role = discord.utils.get(member.guild.roles, name=role_name)
         print(role)
         await member.add_roles(role)
         await ctx.send(f"Присвоена роль *{player.league}*. Добро пожаловать на сервер.")
