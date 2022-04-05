@@ -22,6 +22,9 @@ leagues = {
 
 async def add_role(ctx, player: Player, role_name='5x5'):
     try:
+        print(player)
+        print(type(player))
+        print(player.id)
         member = ctx.guild.get_member(player.id)
         role = utils.get(member.guild.roles, name=role_name)
         await member.add_roles(role)
