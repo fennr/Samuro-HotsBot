@@ -126,8 +126,8 @@ config = Config(
 
 data = FileName(
     config="config.yaml",
-    gamestrings=f"data/gamestrings{config.short_patch}.json",
-    heroes=f"data/heroesdata{config.short_patch}.json",
+    gamestrings=f"data/gamestrings/gamestrings_{config.short_patch}_ruru.json",
+    heroes=f"data/heroesdata_{config.short_patch}.json",
     heroes_ru=f"data/heroesdata_ru.json",
     pancho=f"data/pancho.json",
     stlk=f"data/stlk_builds.json"
