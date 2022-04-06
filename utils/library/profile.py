@@ -148,8 +148,7 @@ def min_diff_sets(data):
 
 
 def profile_not_found(user) -> str:
-    return f"Профиль {user} не найден в базе. Используйте команду\n" \
-           f"```/profile_add <battletag> <discord>```"
+    return f"Профиль {user} не найден в базе. Используйте команду */login*"
 
 
 def get_heroesprofile_data(btag, user_id, guild_id):
