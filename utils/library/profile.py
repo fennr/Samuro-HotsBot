@@ -29,7 +29,7 @@ async def add_role(ctx, player: Player, role_name='5x5', message=True):
         if message:
             await ctx.send(f"Присвоена роль *{role.mention}*")
     except Exception as e:
-        await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}>")
+        #await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}>")
         print(f"Вероятно не создана роль {role_name}")
         print(e)
 
@@ -41,7 +41,7 @@ async def remove_role(ctx, player, role_name='5x5'):
         await member.remove_roles(role)
     except Exception as e:
         print(e)
-        print(f"Не создана роль 5x5")
+        print(f"Нет роли {role_name} чтобы ее снять")
 
 
 async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner=True):
@@ -79,7 +79,7 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
         if (old_league != player.league):
             try:
                 await remove_role(ctx, player, old_league)
-                await add_role(ctx, player, player.league)
+                await add_role(ctx, player, player.league, message=False)
             except Exception:
                 print(f"Не созданы роли {old_league}, {player.league}")
         if (old_league != player.league) and ((player.league == 'Master') or (player.league == 'Grandmaster')):
