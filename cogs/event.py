@@ -215,7 +215,7 @@ class Event(commands.Cog, name="Event"):
                     # обработка на случай одинакового ммр
                     unique_mmr = []
                     for player in players:
-                        await library.add_role(ctx, player)  # добавление роли 5х5 если она есть
+                        await library.add_role(ctx, player, message=False)  # добавление роли 5х5 если она есть
                         while player.mmr in unique_mmr:
                             player.mmr = float(player.mmr) + 0.1
                         unique_mmr.append(player.mmr)
