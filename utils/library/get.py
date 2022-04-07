@@ -1,4 +1,4 @@
-from discord import utils
+from discord import utils, Member
 import psycopg2.extras
 from utils import classes, sql
 from utils.classes import Const
@@ -65,7 +65,9 @@ def likes(ctx):
 
 
 def user_id(member):
-    if isinstance(member, int):
+    if isinstance(member, Member):
+        return member.id
+    elif isinstance(member, int):
         return member
     else:
         return int(''.join([i for i in member if i.isdigit()]))
