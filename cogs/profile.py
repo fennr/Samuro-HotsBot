@@ -10,6 +10,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 import psycopg2.extras
 from psycopg2 import errorcodes, errors
+import discord
 from discord.ext import commands
 
 import utils.library.embeds
@@ -85,7 +86,7 @@ class Profile(commands.Cog, name="Profile"):
         con.close()
 
     @profile.command(name="add")
-    async def profile_add(self, ctx, btag, discord_user):
+    async def profile_add(self, ctx, btag: str, discord_user: discord.Member):
         """
         — Добавить аккаунт в базу
         """
@@ -99,6 +100,11 @@ class Profile(commands.Cog, name="Profile"):
                                  player.mmr, player.league, player.division))
             library.commit(con)
             await ctx.send(f"Профиль игрока {btag} добавлен в базу")
+            try:
+                await library.add_role(ctx, player, player.league)
+                await ctx.send(f"Посмотреть свой профиль можно командой *!profile*. Добро пожаловать.")
+            except Exception:
+                print(Exception)
         else:
             await ctx.send(library.profile_not_found(btag))
 
@@ -221,7 +227,7 @@ class Profile(commands.Cog, name="Profile"):
         # print(type(error))
         if isinstance(error, commands.errors.MissingRequiredArgument):
             await ctx.send("Не хватает аргументов. Необходимо указать батлтег и дискорд профиль\n"
-                           "Пример: *#profile add player#1234 @player*")
+                           "Пример: */profile_add player#1234 @player*")
         if isinstance(error, commands.errors.MissingPermissions):
             await ctx.send('Недостаточно прав')
         if isinstance(error, exceptions.UserNotOwner):
@@ -230,6 +236,8 @@ class Profile(commands.Cog, name="Profile"):
             await ctx.send(exceptions.UserNotAdmin.message)
         if isinstance(error, exceptions.LeagueNotFound):
             await ctx.send("Не найдены игры в шторм лиге")
+        if isinstance(error, commands.errors.BadArgument):
+            await ctx.send("Неверно введены аргументы")
         if isinstance(error, UniqueViolation):
             await ctx.send("Обнаружен дубликат записи. Профили дискорда и батлтаги должны быть уникальны")
 
