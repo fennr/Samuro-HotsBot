@@ -41,7 +41,7 @@ async def insert_votes(ctx, cur, record, one, two):
     for user_id in votes:
         member = ctx.guild.get_member(user_id)
         if discord.utils.get(member.roles, id=Const.events.role_id):
-            await ctx.send(f"Предупреждение игроку {member.mention} за попытку голосования")
+            await ctx.send(f"Запрещено голосовать находять в матче {member.mention}")
         else:
             insert = Const.inserts.Votes
             cur.execute(insert, (user_id, record.event_id, Const.events.blue))
@@ -78,7 +78,7 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="poll")
     @check.is_lead()
-    async def event_poll(self, ctx, *, delay=5.0):
+    async def event_poll(self, ctx, *, delay=300.0):
         """
         — Создание голосования на победу
         """
