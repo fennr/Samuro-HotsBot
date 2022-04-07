@@ -21,10 +21,6 @@ class Slash(commands.Cog, name="Slash"):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(name="voice_setup", description="Настройка")
-    async def slash_voice_setup(self, ctx: SlashContext):
-        await voice.Voice.setup(self, ctx)
-
     @cog_ext.cog_slash(name="voice_name", description="Переименовать комнату")
     async def slash_voice_name(self, ctx: SlashContext, name):
         await voice.Voice.name(self, ctx, name=name)
@@ -58,14 +54,14 @@ class Slash(commands.Cog, name="Slash"):
                        description="Добавить профиль",
                        options=[
                            create_option(
-                               name="battletag",
+                               name="battle#tag",
                                description="Введите батлтег",
                                option_type=3,
                                required=True,
                            ),
                            create_option(
-                               name="discord",
-                               description="Введите дискорд профиль",
+                               name="@discord",
+                               description="Введите @дискорд профиль",
                                option_type=3,
                                required=True,
                            )
