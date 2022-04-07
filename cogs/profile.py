@@ -181,6 +181,10 @@ class Profile(commands.Cog, name="Profile"):
         cur.execute(select, (user_id, user_or_btag,))
         player = library.get.player(cur.fetchone())
         if player is not None:
+            try:
+                await library.add_role(ctx, player, player.league)
+            except:
+                print(f"Нет роли {player.league}")
             embed = utils.library.embeds.profile(ctx, player)
             select = Const.selects.USIdGuild
             cur.execute(select, (player.id, guild_id))
