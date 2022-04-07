@@ -90,6 +90,7 @@ class Profile(commands.Cog, name="Profile"):
         """
         — Добавить аккаунт в базу
         """
+        print(discord_user)
         player = library.get_heroesprofile_data(btag=btag,
                                                 user_id=library.get.user_id(discord_user),
                                                 guild_id=library.get.guild_id(ctx))

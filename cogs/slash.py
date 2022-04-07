@@ -54,14 +54,14 @@ class Slash(commands.Cog, name="Slash"):
                        description="Добавить профиль",
                        options=[
                            create_option(
-                               name="battle#tag",
+                               name="battletag",
                                description="Введите батлтег",
                                option_type=3,
                                required=True,
                            ),
                            create_option(
-                               name="@discord",
-                               description="Введите @дискорд профиль",
+                               name="discord",
+                               description="Введите дискорд через упоминание",
                                option_type=3,
                                required=True,
                            )
