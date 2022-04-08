@@ -182,7 +182,7 @@ class Profile(commands.Cog, name="Profile"):
         player = library.get.player(cur.fetchone())
         if player is not None:
             try:
-                await library.add_role(ctx, player, player.league)
+                await library.add_role(ctx, player, player.league, message=False)
             except:
                 print(f"Нет роли {player.league}")
             embed = utils.library.embeds.profile(ctx, player)
