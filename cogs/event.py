@@ -277,8 +277,6 @@ class Event(commands.Cog, name="Event"):
                     await ctx.send(f"**Синяя команда:** \n{deathwing}")
                     await ctx.send(f"**Красная команда:** \n{team_heroes}")  # mean(team_blue):.2f
 
-
-
     @event.command(name="winner")
     @check.is_lead()
     async def event_winner(self, ctx, winner=None, delta=6, points=1):
@@ -343,7 +341,7 @@ class Event(commands.Cog, name="Event"):
             await ctx.send(f"В этой комнате нет открытых матчей")
 
     @event.command(name="msg")
-    @check.is_samuro_dev()
+    @check.is_owner()
     async def event_msg(self, ctx, user_id, *message):
         msg = ' '.join(message)
         try:
