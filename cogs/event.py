@@ -343,6 +343,15 @@ class Event(commands.Cog, name="Event"):
     @event.command(name="msg")
     @check.is_owner()
     async def event_msg(self, ctx, member: discord.Member, *, message: str):
+        try:
+            user = await self.bot.fetch_user(member.id)
+            await user.send(message)
+        except:
+            pass
+
+    @event.command(name="msg_embed")
+    @check.is_owner()
+    async def event_msg(self, ctx, member: discord.Member, *, message: str):
         embed = discord.Embed(
             description=message,
             color=Const.config.info
