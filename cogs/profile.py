@@ -90,9 +90,14 @@ class Profile(commands.Cog, name="Profile"):
         """
         — Добавить аккаунт в базу
         """
-        print(discord_user)
+        print(type(discord_user))
+        if isinstance(discord_user, str):
+            name, discriminator = discord_user.split(sep='#')
+            user = discord.utils.get(ctx.guild.members, name=name, discriminator=discriminator)
+        else:
+            user = discord_user
         player = library.get_heroesprofile_data(btag=btag,
-                                                user_id=library.get.user_id(discord_user),
+                                                user_id=library.get.user_id(user),
                                                 guild_id=library.get.guild_id(ctx))
         if isinstance(player, classes.Player):
             con, cur = library.get.con_cur()
@@ -100,7 +105,7 @@ class Profile(commands.Cog, name="Profile"):
             cur.execute(insert, (player.btag, player.id, player.guild_id,
                                  player.mmr, player.league, player.division))
             library.commit(con)
-            await ctx.send(f"Профиль игрока {btag} добавлен в базу")
+            #await ctx.send(f"Профиль игрока {btag} добавлен в базу")
             try:
                 await library.add_role(ctx, player, player.league)
                 await ctx.send(f"Посмотреть свой профиль можно командой *!profile*. Добро пожаловать.")

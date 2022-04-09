@@ -1,6 +1,6 @@
 from discord import utils, Member
 import psycopg2.extras
-from utils import classes, sql
+from utils import classes, sql, exceptions
 from utils.classes import Const
 
 
@@ -109,4 +109,11 @@ def profile_by_id_or_btag(id_or_btag) -> classes.Player:
     cur.execute(select, (player_id, str(id_or_btag),))
     pl = player(cur.fetchone())
     return pl
+
+
+def league(league_name):
+    for leag in Const.League:
+        if league_name == leag.name or league_name == leag.value:
+            return leag.value
+    raise exceptions.WrongLeague
 

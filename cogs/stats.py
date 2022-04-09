@@ -31,6 +31,7 @@ class League(Enum):
     Master = "Мастер"
     Grandmaster = "Грандмастер"
 
+
 class Stats(commands.Cog, name="Stats"):
     """
     — Просмотр таблиц лидеров
@@ -84,10 +85,9 @@ class Stats(commands.Cog, name="Stats"):
         """
         - Лидеры по ммр
         """
-        try:
-            league = League(league_type)
-        except Exception:
-            raise exceptions.WrongLeague
+        test = library.get.league(league_type.capitalize())
+        league = League(test)
+        print(league, league.name, league.value)
         con, cur = library.get.con_cur()
         guild_id = library.get.guild_id(ctx)
         select = Const.selects.PlayersLeague
@@ -100,11 +100,14 @@ class Stats(commands.Cog, name="Stats"):
         value = ""
         for i, record in enumerate(records):
             value += f"{i + 1}. {library.get.mention(record.id)} (mmr: {record.mmr})\n"
-        embed.add_field(
-            name=f"Топ {count} игроков",
-            value=value
-        )
-        await ctx.send(embed=embed)
+        if len(value) > 0:
+            embed.add_field(
+                name=f"Топ {count} игроков",
+                value=value
+            )
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send("Нет игроков выбранной лиги")
 
     @top.command(name="wins")
     async def top_wins(self, ctx, count=10):
