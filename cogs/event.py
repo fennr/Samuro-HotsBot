@@ -342,17 +342,17 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="msg")
     @check.is_owner()
-    async def event_msg(self, ctx, user_id, *message):
-        msg = ' '.join(message)
+    async def event_msg(self, ctx, member: discord.Member, *, message: str):
         embed = discord.Embed(
-            description=msg,
+            description=message,
             color=Const.config.info
         )
         try:
-            user = await self.bot.fetch_user(user_id)
+            user = await self.bot.fetch_user(member.id)
             await user.send(embed=embed)
         except:
             pass
+
 
     @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
     async def event_report1(self, ctx: SlashContext, text):
@@ -367,7 +367,7 @@ class Event(commands.Cog, name="Event"):
         # print("Обработка ошибок heroes")
         error = getattr(error, 'original', error)  # получаем пользовательские ошибки
         print(error)
-        # print(type(error))
+        print(type(error))
         print(f"Сообщение вызвавшее ошибку: '{ctx.message.content}' guild {ctx.guild} by {ctx.author}")
 
         if isinstance(error, exceptions.NoActiveEvents):
