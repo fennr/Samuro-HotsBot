@@ -230,7 +230,7 @@ updates = Update(
 )
 
 events = Event(
-    role='5x5',
+    role='5x5 player',
     role_id=957359993261281290,  # роль 5x5
     blue='blue',
     red='red',

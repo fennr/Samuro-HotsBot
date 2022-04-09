@@ -123,8 +123,8 @@ class Event(commands.Cog, name="Event"):
                 if reaction.emoji == red:
                     async for user in reaction.users():
                         red_bet.append(user.id)
-            await insert_votes(ctx, cur, record, blue_bet, red_bet, color=Const.Event.blue)
-            await insert_votes(ctx, cur, record, red_bet, blue_bet, color=Const.Event.red)
+            await insert_votes(ctx, cur, record, blue_bet, red_bet, color=Const.events.blue)
+            await insert_votes(ctx, cur, record, red_bet, blue_bet, color=Const.events.red)
             library.commit(con)
             await embed_message.delete()
             await ctx.send(f"Голосование завершено")
