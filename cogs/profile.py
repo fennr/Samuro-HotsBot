@@ -90,10 +90,12 @@ class Profile(commands.Cog, name="Profile"):
         """
         — Добавить аккаунт в базу
         """
-        print(type(discord_user))
         if isinstance(discord_user, str):
-            name, discriminator = discord_user.split(sep='#')
-            user = discord.utils.get(ctx.guild.members, name=name, discriminator=discriminator)
+            try:
+                name, discriminator = discord_user.split(sep='#')
+                user = discord.utils.get(ctx.guild.members, name=name, discriminator=discriminator)
+            except Exception as e:
+                user = ctx.guild.get_member(library.get.user_id(discord_user))
         else:
             user = discord_user
         player = library.get_heroesprofile_data(btag=btag,
@@ -105,10 +107,10 @@ class Profile(commands.Cog, name="Profile"):
             cur.execute(insert, (player.btag, player.id, player.guild_id,
                                  player.mmr, player.league, player.division))
             library.commit(con)
-            #await ctx.send(f"Профиль игрока {btag} добавлен в базу")
+            await ctx.send(f"Профиль игрока {btag} добавлен")
             try:
-                await library.add_role(ctx, player, player.league)
-                await ctx.send(f"Посмотреть свой профиль можно командой *!profile*. Добро пожаловать.")
+                await library.add_role(ctx, player, player.league, message=False)
+                #await ctx.send(f"Посмотреть свой профиль можно командой *!profile*. Добро пожаловать.")
             except Exception:
                 print(Exception)
         else:
