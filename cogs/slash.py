@@ -7,7 +7,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 Бот для сообществ по игре Heroes of the Storm
 
 """
-
+from discord import Member
 from discord.ext import commands
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option
@@ -73,6 +73,10 @@ class Slash(commands.Cog, name="Slash"):
     @cog_ext.cog_slash(name="info", description="Описание бота")
     async def slash_info(self, ctx: SlashContext):
         await general.general.info(self, ctx)
+
+    @cog_ext.cog_slash(name="avatar", description="Вывести аватар")
+    async def slash_avatar(self, ctx:SlashContext, member: Member):
+        await general.general.avatar(self, ctx, member)
 
     @cog_ext.cog_slash(name="weekly", description="Список героев еженедельной ротации")
     async def slash_rotate(self, ctx: SlashContext):
