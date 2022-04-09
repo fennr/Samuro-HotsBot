@@ -21,7 +21,7 @@ leagues = {
 }
 
 
-async def add_role(ctx, player: Player, role_name='5x5', message=True):
+async def add_role(ctx, player: Player, role_name='5x5 player', message=True):
     try:
         member = ctx.guild.get_member(player.id)
         role = discord.utils.get(member.guild.roles, name=role_name)
