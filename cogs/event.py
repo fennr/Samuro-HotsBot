@@ -36,7 +36,7 @@ async def event_report(ctx, text):
     await ctx.send("Сообщение отправлено администрации", hidden=True)
 
 
-async def insert_votes(ctx, cur, record, one, two):
+async def insert_votes(ctx, cur, record, one, two, color):
     votes = set(one) - set(two)
     for user_id in votes:
         member = ctx.guild.get_member(user_id)
@@ -44,7 +44,7 @@ async def insert_votes(ctx, cur, record, one, two):
             await ctx.send(f"Запрещено голосовать находять в матче {member.mention}")
         else:
             insert = Const.inserts.Votes
-            cur.execute(insert, (user_id, record.event_id, Const.events.blue))
+            cur.execute(insert, (user_id, record.event_id, color))
 
 
 class Event(commands.Cog, name="Event"):
@@ -123,8 +123,8 @@ class Event(commands.Cog, name="Event"):
                 if reaction.emoji == red:
                     async for user in reaction.users():
                         red_bet.append(user.id)
-            await insert_votes(ctx, cur, record, blue_bet, red_bet)
-            await insert_votes(ctx, cur, record, red_bet, blue_bet)
+            await insert_votes(ctx, cur, record, blue_bet, red_bet, color=Const.Event.blue)
+            await insert_votes(ctx, cur, record, red_bet, blue_bet, color=Const.Event.red)
             library.commit(con)
             await embed_message.delete()
             await ctx.send(f"Голосование завершено")
