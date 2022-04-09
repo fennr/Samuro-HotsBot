@@ -351,7 +351,7 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="msg_embed")
     @check.is_owner()
-    async def event_msg(self, ctx, member: discord.Member, *, message: str):
+    async def event_msg_embed(self, ctx, member: discord.Member, *, message: str):
         embed = discord.Embed(
             description=message,
             color=Const.config.info
