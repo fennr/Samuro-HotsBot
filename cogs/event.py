@@ -344,9 +344,13 @@ class Event(commands.Cog, name="Event"):
     @check.is_owner()
     async def event_msg(self, ctx, user_id, *message):
         msg = ' '.join(message)
+        embed = discord.Embed(
+            description=msg,
+            color=Const.config.info
+        )
         try:
             user = await self.bot.fetch_user(user_id)
-            await user.send(msg)
+            await user.send(embed=embed)
         except:
             pass
 
