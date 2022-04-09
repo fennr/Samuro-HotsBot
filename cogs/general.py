@@ -10,9 +10,11 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 import os
 import discord
+from discord import Embed
 from discord.ext import commands
 from utils.library import files
 from utils.classes.Const import config
+from utils import library
 
 guild_ids = [845658540341592096]  # Put your server ID in this array.
 
@@ -101,6 +103,19 @@ class general(commands.Cog, name="General"):
         await embed_message.add_reaction("👍")
         await embed_message.add_reaction("👎")
         await embed_message.add_reaction("🤷")
+
+    @commands.command(name="avatar")
+    async def avatar(self, ctx, member: discord.Member):
+        user_avatar = library.avatar(ctx, member)
+        embed = Embed(
+            title=f"{member.name}",
+            color=config.info
+
+        )
+        embed.set_image(
+            url=user_avatar
+        )
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
