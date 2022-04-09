@@ -34,7 +34,7 @@ async def add_role(ctx, player: Player, role_name='5x5 player', message=True):
         print(e)
 
 
-async def remove_role(ctx, player, role_name='5x5'):
+async def remove_role(ctx, player, role_name=Const.events.role):
     try:
         member = ctx.guild.get_member(player.id)
         role = utils.get(member.guild.roles, name=role_name)
