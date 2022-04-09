@@ -1,6 +1,7 @@
 import json
 from dataclasses import dataclass
 from utils.library import files
+from enum import Enum
 
 conf = files.get_yaml("config.yaml")
 
@@ -234,3 +235,12 @@ events = Event(
     blue='blue',
     red='red',
 )
+
+class League(Enum):
+    Bronze = "Бронза"
+    Silver = "Серебро"
+    Gold = "Золото"
+    Platinum = "Платина"
+    Diamond = "Алмаз"
+    Master = "Мастер"
+    Grandmaster = "Грандмастер"

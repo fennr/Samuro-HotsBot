@@ -67,8 +67,8 @@ class Slash(commands.Cog, name="Slash"):
                            )
                        ]
                        )
-    async def slash_add(self, ctx: SlashContext, battletag, discord):
-        await profile.Profile.profile_add(self, ctx, battletag, discord)
+    async def slash_add(self, ctx: SlashContext, battletag: str, discord: Member):
+        await profile.Profile.profile_add(self, ctx, btag=battletag, discord_user=discord)
 
     @cog_ext.cog_slash(name="info", description="Описание бота")
     async def slash_info(self, ctx: SlashContext):
