@@ -14,6 +14,7 @@ class Config:
     short_patch: str
     log: str
     version: str
+    update: str
     owners: list              # на случай если требуется несколько людей с суперправами
     admins: list
     main_color: int
@@ -115,6 +116,7 @@ config = Config(
     short_patch=conf["patch"][-5:],
     log=conf["log"],
     version=conf["version"],
+    update=conf["update"],
     owners=conf["owners"],
     admins=conf["admins"],
     main_color=conf["main_color"],
