@@ -10,6 +10,7 @@ github: https://github.com/fennr/Samuro-HotsBot
 
 import inspect
 import os
+from sys import platform
 import subprocess
 import discord
 from discord import Embed
@@ -84,10 +85,12 @@ class Hots(Cog, name='Hots'):
         attachment = ctx.message.attachments[0]
         replay = f'data/replays/{attachment.filename}'
         await attachment.save(replay)
+        if platform == 'linux':
+            command = ["./scripts/HeroesDecode/Linux/heroesdecode", "-p", replay]
+        elif platform == 'win32':
+            command = ["./scripts/HeroesDecode/Windows/heroesdecode", "-p", replay]
         if full is not None:
-            command = ["dotnet", "scripts/HeroesDecode/heroesdecode.dll", "-p", replay, "-s"]
-        else:
-            command = ["dotnet", "scripts/HeroesDecode/heroesdecode.dll", "-p", replay]
+            command.append("-s")
         p = subprocess.Popen(
             command,
             stdin=subprocess.PIPE,
