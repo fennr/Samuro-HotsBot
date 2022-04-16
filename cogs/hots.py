@@ -116,7 +116,7 @@ class Hots(Cog, name='Hots'):
         guild = self.bot.get_guild(stormru_id)
         emoji = discord.utils.get(guild.emojis, name=rqg_emoji)
         await ctx.send(f"{emoji} Rage & Quit Gaming {emoji}\n"
-                       f"Киберспортиная команда ру региона, основанная в 2020 году"
+                       f"Киберспортивная команда СНГ региона, основанная в 2020 году\n"
                        f"Состав: {rqg_url}")
 
     @command(name="pancho")
