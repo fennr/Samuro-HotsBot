@@ -111,10 +111,11 @@ class Hots(Cog, name='Hots'):
     @command(name="rqg")
     async def rqg_site(self, ctx):
         stormru_id = 124864790110797824
-        rqg_emoji = 'RQG'
+        rqg_emoji = 'RQG2'
+        rqg_url = 'https://heroeslounge.gg/team/view/RQG'
         guild = self.bot.get_guild(stormru_id)
         emoji = discord.utils.get(guild.emojis, name=rqg_emoji)
-        await ctx.send(emoji)
+        await ctx.send(f"{emoji} {rqg_url} {emoji}")
 
     @command(name="pancho")
     async def pancho(self, ctx, hero_name):
