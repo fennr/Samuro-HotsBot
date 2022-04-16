@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-p = subprocess.Popen(["dotnet", "HeroesDecode/heroesdecode.dll", "-p", "replay.StormReplay", "-s"],
+p = subprocess.Popen(["dotnet", "scripts/HeroesDecode/heroesdecode.dll", "-p", "scripts/replay.StormReplay", "-s"],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                  )

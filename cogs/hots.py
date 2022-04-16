@@ -9,6 +9,9 @@ github: https://github.com/fennr/Samuro-HotsBot
 """
 
 import inspect
+import os
+import subprocess
+import discord
 from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import command, Cog, errors
@@ -75,6 +78,32 @@ class Hots(Cog, name='Hots'):
         """
         embed = nexuscompendium.weekly_rotation()
         await ctx.send(embed=embed)
+
+    @command(name="replay")
+    async def replay_parser(self, ctx, full=None):
+        attachment = ctx.message.attachments[0]
+        replay = f'data/replays/{attachment.filename}'
+        await attachment.save(replay)
+        if full is not None:
+            command = ["dotnet", "scripts/HeroesDecode/heroesdecode.dll", "-p", replay, "-s"]
+        else:
+            command = ["dotnet", "scripts/HeroesDecode/heroesdecode.dll", "-p", replay]
+        p = subprocess.Popen(
+            command,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            )
+        stdout, stderr = p.communicate()
+        p.wait()
+        out = stdout.decode('cp866')
+        output_file = f'{replay}.txt'
+        with open(output_file, "w") as file:
+            file.write(out)
+        await ctx.send(file=discord.File(output_file))
+        os.remove(output_file)
+        os.remove(replay)
+        #print(out)
+        #print(stderr)
 
     @command(name="pancho")
     async def pancho(self, ctx, hero_name):

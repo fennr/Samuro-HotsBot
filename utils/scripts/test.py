@@ -127,5 +127,9 @@ def do_stuff():
 
 
 if __name__ == '__main__':
-    pprint(c.get_top_channels(limit=10, category_id='10265')['top_channels_lists'])
+    hots_category = '10265'
+    stlk = 105741560
+    limit = 5
+    #pprint(c.get_top_channels(limit=10, category_id='10265')['top_channels_lists'])
+    pprint(c.get_channel_info_by_id(stlk))
 

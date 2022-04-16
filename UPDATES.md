@@ -2,6 +2,9 @@
 
 ### Version 2.2
 
+* Добавлен парсинг реплеев
+* Запуск через docker 
+| docker run --env-file=.env fenrir1121/samuro-bot:latest
 * Голосования добавлены в базу данных
 * Добавлен Dockerfile
 * Добавлен Docker Image CI
