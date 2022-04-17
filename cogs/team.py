@@ -134,8 +134,8 @@ class Team(commands.Cog, name="Team"):
         con, cur = library.get.con_cur()
         team_name = role.name
         print(team_name)
-        select = Const.selects.TeamIdName
-        cur.execute(select, ('1', team_name))
+        select = Const.selects.TeamName
+        cur.execute(select, (team_name, ))
         team = library.get.team(cur.fetchone())
         if team is not None:
             embed = utils.library.embeds.team(team)
