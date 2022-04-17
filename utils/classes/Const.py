@@ -57,6 +57,7 @@ class Select:
     USIdGuild: str
     US: str
     USGuild: str
+    USGuildAll: str
     USPoints: str
     USWins: str
     TeamName: str
@@ -165,6 +166,7 @@ selects = Select(
     EHActive='SELECT * FROM "EventHistory" WHERE room_id = %s AND active = %s',
     USIdGuild='SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
     US='SELECT * FROM "UserStats"',
+    USGuildAll= 'SELECT * FROM "UserStats" WHERE guild_id = %s',
     USGuild='SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s',
     USPoints='SELECT * FROM "UserStats" WHERE guild_id = %s AND points > 0 ORDER BY points DESC LIMIT %s',
     USWins='SELECT * FROM "UserStats" WHERE guild_id = %s AND win > 0 ORDER BY win DESC LIMIT %s',

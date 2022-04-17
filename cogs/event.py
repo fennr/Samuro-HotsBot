@@ -342,25 +342,45 @@ class Event(commands.Cog, name="Event"):
 
     @event.command(name="msg")
     @check.is_owner()
-    async def event_msg(self, ctx, member: discord.Member, *, message: str):
+    async def event_msg(self, ctx, member_id: int, *, message: str):
         try:
-            user = await self.bot.fetch_user(member.id)
+            user = await self.bot.fetch_user(member_id)
             await user.send(message)
         except:
             pass
 
     @event.command(name="msg_embed")
     @check.is_owner()
-    async def event_msg_embed(self, ctx, member: discord.Member, *, message: str):
+    async def event_msg_embed(self, ctx, member_id: int, *, message: str):
         embed = discord.Embed(
             description=message,
             color=Const.config.info
         )
         try:
-            user = await self.bot.fetch_user(member.id)
+            user = await self.bot.fetch_user(member_id)
             await user.send(embed=embed)
         except:
             pass
+
+    @event.command(name="msg_all")
+    @check.is_owner()
+    async def event_msg_all(self, ctx, *, message: str):
+        con, cur = library.get.con_cur()
+        ruhots_id = 642852514865217578
+        test_id = 845658540341592096
+        url = 'https://discord.gg/stormru'
+        guild_id = ruhots_id
+        select = Const.selects.USGuildAll
+        cur.execute(select, (guild_id, ))
+        records = cur.fetchall()
+        for record in records:
+            try:
+                await self.event_msg_embed(ctx, member_id=record.id, message=message)
+                await self.event_msg(ctx, member_id=record.id, message=url)
+                print(f"Сообщение отправлено {record.btag}")
+            except:
+                print(f"Невозможно отправить сообщение {record.btag}")
+
 
 
     @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
