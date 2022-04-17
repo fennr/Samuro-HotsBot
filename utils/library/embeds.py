@@ -96,10 +96,11 @@ def votes(embed, player):
         )
     return embed
 
+
 def team(team: Team) -> Embed:
     con, cur = library.get.con_cur()
     embed = Embed(
-        title=f"Команда {team.name} (id: {team.id})",
+        title=f"Команда {team.name}",
         color=config.info
 
     )
