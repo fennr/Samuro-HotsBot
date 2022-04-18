@@ -179,7 +179,7 @@ selects = Select(
     UserAchiev='''SELECT (ua.id, a.name, ua.date) FROM "UserAchievements" as ua
                     INNER JOIN "Achievements" as a
                     ON ua.achievement = a.id
-                    WHERE ua.id = %s''',
+                    WHERE ua.id = %s AND ua.guild_id = %s''',
     PlayersLeague='''SELECT p.* FROM "Players" as p
                         INNER JOIN "UserStats" as us
                         ON p.id = us.id AND p.guild_id = us.guild_id

@@ -43,10 +43,11 @@ def profile(ctx, player: Player):
     return embed
 
 
-def achievements(embed: Embed, player: Player):
+def achievements(ctx, embed: Embed, player: Player):
     con, cur = library.get.con_cur()
+    guild_id = library.get.guild_id(ctx)
     select = Const.selects.UserAchiev
-    cur.execute(select, (player.id,))
+    cur.execute(select, (player.id, guild_id))
     records = cur.fetchall()
     if cur.rowcount:
         achievements = ''
