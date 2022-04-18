@@ -212,10 +212,10 @@ inserts = Insert(
                 VALUES(%s, %s, %s, %s) ''',
     UserStats='''INSERT INTO "UserStats"(id, guild_id, win, lose, points, btag)
                  VALUES (%s, %s, %s, %s, %s, %s)''',
-    Event='''INSERT INTO "EventHistory"(time, admin, guild_id, active, room_id, 
+    Event='''INSERT INTO "EventHistory"(time, admin, guild_id, active, room_id, type,
                     blue1, blue2, blue3, blue4, blue5, 
                     red1, red2, red3, red4, red5)
-                    VALUES (%s, %s, %s, %s, %s,
+                    VALUES (%s, %s, %s, %s, %s, %s,
                     %s, %s, %s, %s, %s, 
                     %s, %s, %s, %s, %s )''',
     Votes='''INSERT INTO "Votes"(id, event_id, vote) VALUES (%s, %s, %s)'''

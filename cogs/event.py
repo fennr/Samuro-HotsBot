@@ -228,7 +228,7 @@ class Event(commands.Cog, name="Event"):
                     #print(team_one)
                     now = str(datetime.now(pytz.timezone('Europe/Moscow')))[:19]
                     insert = Const.inserts.Event
-                    cur.execute(insert, (now, admin, guild_id, True, room_id,  # ctx.message.author.name
+                    cur.execute(insert, (now, admin, guild_id, True, room_id, '5x5',  # ctx.message.author.name
                                          team_one[0].btag, team_one[1].btag, team_one[2].btag, team_one[3].btag,
                                          team_one[4].btag,
                                          team_two[0].btag, team_two[1].btag, team_two[2].btag, team_two[3].btag,
@@ -270,12 +270,22 @@ class Event(commands.Cog, name="Event"):
                 select = Const.selects.EHActive
                 cur.execute(select, (room_id, True))
                 record = cur.fetchone()
+                print(record)
                 if record is None:
                     deathwing = players[0]
+                    team_deathwing = library.get.player_data(players[0])
                     heroes = players[1:]
                     team_heroes = ' '.join([library.get.player_data(player) for player in heroes])
-                    await ctx.send(f"**Синяя команда:** \n{deathwing}")
-                    await ctx.send(f"**Красная команда:** \n{team_heroes}")  # mean(team_blue):.2f
+                    now = str(datetime.now(pytz.timezone('Europe/Moscow')))[:19]
+                    insert = Const.inserts.Event
+                    cur.execute(insert, (now, admin, guild_id, True, room_id, '1x4',  # ctx.message.author.name
+                                         heroes[0].btag, heroes[1].btag, heroes[2].btag, heroes[3].btag,
+                                         '',
+                                         deathwing.btag, '', '', '',
+                                         ''))
+                    library.commit(con)
+                    await ctx.send(f"**Разрушитель:** \n{team_deathwing}")
+                    await ctx.send(f"**Герои:** \n{team_heroes}")  # mean(team_blue):.2f
 
     @event.command(name="winner")
     @check.is_lead()
@@ -283,7 +293,8 @@ class Event(commands.Cog, name="Event"):
         """
         red | blue - выбрать победителя
         """
-        if winner == 'blue' or winner == 'red':
+        win_type = ['blue', 'red', 'dw', 'heroes']
+        if winner in win_type:
             con, cur = library.get.con_cur()
             room_id = ctx.channel.id
             guild_id = library.get.guild_id(ctx)
@@ -291,19 +302,29 @@ class Event(commands.Cog, name="Event"):
             cur.execute(select, (room_id, True))
             record = cur.fetchone()
             if record is not None:
+                eh_winner = winner
                 if winner == 'blue':
                     win_team = [record.blue1, record.blue2, record.blue3, record.blue4, record.blue5]
                     lose_team = [record.red1, record.red2, record.red3, record.red4, record.red5]
-                else:  # red
+                elif winner == 'red':  # red
                     lose_team = [record.blue1, record.blue2, record.blue3, record.blue4, record.blue5]
                     win_team = [record.red1, record.red2, record.red3, record.red4, record.red5]
+                elif winner == 'dw':
+                    eh_winner = Const.events.red
+                    win_team = [record.red1]
+                    lose_team = [record.blue1, record.blue2, record.blue3, record.blue4, record.blue5]
+                elif winner == 'heroes':
+                    eh_winner = Const.events.blue
+                    win_team = [record.blue1, record.blue2, record.blue3, record.blue4, record.blue5]
+                    lose_team = [record.red1]
                 update = Const.updates.EHWinner
-                cur.execute(update, (winner, delta, points, False,
+                cur.execute(update, (eh_winner, delta, points, False,
                                      room_id, True))
-                await library.team_change_stats(ctx, team=win_team, delta=delta, guild_id=guild_id)
-                await ctx.send(f"Очки за победу начислены")
-                await library.team_change_stats(ctx, team=lose_team, delta=delta, guild_id=guild_id, winner=False)
-                await ctx.send(f"Очки за поражение начислены")
+                if winner == 'blue' or winner == 'red':
+                    await library.team_change_stats(ctx, team=win_team, delta=delta, guild_id=guild_id)
+                    await ctx.send(f"Очки за победу начислены")
+                    await library.team_change_stats(ctx, team=lose_team, delta=delta, guild_id=guild_id, winner=False)
+                    await ctx.send(f"Очки за поражение начислены")
                 try:
                     await self.event_poll_end(ctx, winner, record.event_id)
                 except Exception as e:
@@ -313,6 +334,10 @@ class Event(commands.Cog, name="Event"):
                 await ctx.send(f"Открытых матчей не найдено")
             library.commit(con)
             await ctx.send(f"Матч успешно закрыт")
+            if winner == 'heroes':
+                await ctx.send(f"Победила команда героев!")
+            elif winner == 'dw':
+                await ctx.send(f"ПОБЕДИЛО ВОПЛОЩЕНИЕ СИЛЫ!")
         else:
             await ctx.send(f"Укажите победителя *red* или *blue*")
 
