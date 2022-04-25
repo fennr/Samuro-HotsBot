@@ -42,6 +42,21 @@ class Fix(commands.Cog, name="Fix"):
         else:
             await ctx.send(f"Не найдена роль id={role}")
 
+    @fix.command(name="role_color")
+    @check.is_owner()
+    async def role_up_color(self, ctx, role: discord.Role, color: discord.Colour):
+        pos = len(ctx.guild.roles)
+        while True:
+            try:
+                await role.edit(position=pos)
+                print(f'Роль поднята до позиции {pos}')
+                break
+            except:
+                pos -= 1
+                if pos < 1:
+                    break
+        await role.edit(color=color)
+
     @fix.command(name="new_role")
     @check.is_owner()
     async def fix_new_role(self, ctx, role_name, color=discord.Colour.red()):

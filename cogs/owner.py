@@ -159,17 +159,5 @@ class owner(commands.Cog, name="Owner"):
             await context.send(embed=embed)
 
 
-
-    @serverinfo.error
-    async def owner_handler(self, ctx, error):
-        error = getattr(error, 'original', error)  # получаем пользовательские ошибки
-        print(error)
-        #print(type(error))
-        if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send('Введены не все аргументы :rolling_eyes:.')
-        if isinstance(error, errors.Forbidden):
-            pass  # print(error) #сообщение уже отправлено
-
-
 def setup(bot):
     bot.add_cog(owner(bot))

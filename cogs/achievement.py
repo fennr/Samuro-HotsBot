@@ -61,11 +61,14 @@ class Team(commands.Cog, name="Team"):
         record = cur.fetchone()
         print(record)
         today = date.today()
-        insert = Const.inserts.UserAchiev
-        cur.execute(insert, (member.id, guild_id, id, today))
-        library.commit(con)
+        try:
+            insert = Const.inserts.UserAchiev
+            cur.execute(insert, (member.id, guild_id, id, today))
+            library.commit(con)
+            await ctx.send(f"{member.mention} теперь **{record.name}**")
+        except Exception:
+            print('На выбранном сервере нет такого достижения')
         await ctx.message.delete()
-        await ctx.send(f"{member.mention} теперь **{record.name}**")
 
     @achievement.command(name="remove")
     @check.is_admin()
