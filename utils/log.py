@@ -1,7 +1,6 @@
 import logging
 import traceback
 from utils import sql
-from utils.classes.Const import config
 
 #logfile = config.log
 log = logging.getLogger("my_log")
