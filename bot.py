@@ -78,6 +78,7 @@ if __name__ == "__main__":
 async def on_message(message):
     # Игнорировать сообщения пользователей в блек листе
     if message.author.id in [*black_list]:
+        print(f"Блокировка команды от пользователя {message.author}")
         return
     # Игнорировать сообщения других ботов
     if message.author == bot.user or message.author.bot:
