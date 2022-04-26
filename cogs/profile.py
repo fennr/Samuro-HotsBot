@@ -208,7 +208,11 @@ class Profile(commands.Cog, name="Profile"):
             embed.set_thumbnail(
                 url=user_avatar
             )
-            await ctx.send(embed=embed)
+            if player.id not in [*Const.black_list]:
+                await ctx.send(embed=embed)
+            else:
+                await ctx.send(f"Профиль недоступен\n"
+                         f"**Причина:** {Const.black_list[player.id]}")
         else:
             await ctx.send(library.profile_not_found(user_or_btag))
         con.close()

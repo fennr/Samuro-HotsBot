@@ -44,5 +44,5 @@ def black_list():
     records = cur.fetchall()
     bl = {}
     for record in records:
-        bl[record.id] = record.name
+        bl[record.id] = record.reason
     return bl

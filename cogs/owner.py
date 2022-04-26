@@ -166,14 +166,14 @@ class owner(commands.Cog, name="Owner"):
 
     @bl.command(name="add")
     @check.is_owner()
-    async def ban_add(self, ctx, member_id, member_name):
+    async def ban_add(self, ctx, member_id, member_name, *, reason):
         try:
             con, cur = library.get.con_cur()
             insert = Const.inserts.BlackList
-            cur.execute(insert, (member_id, member_name))
+            cur.execute(insert, (member_id, member_name, reason))
             library.commit(con)
             await ctx.send("Пользователь добавлен в черный список")
-            Const.black_list[member_id] = member_name
+            Const.black_list[member_id] = reason
         except Exception:
             print(f"Ошибка добавления в черный список")
 

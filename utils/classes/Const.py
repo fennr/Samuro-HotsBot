@@ -224,7 +224,7 @@ inserts = Insert(
                     %s, %s, %s, %s, %s, 
                     %s, %s, %s, %s, %s )''',
     Votes='''INSERT INTO "Votes"(id, event_id, vote) VALUES (%s, %s, %s)''',
-    BlackList='''INSERT INTO "BlackList"(id, name) VALUES (%s, %s)''',
+    BlackList='''INSERT INTO "BlackList"(id, name, reason) VALUES (%s, %s, %s)''',
 )
 
 updates = Update(
