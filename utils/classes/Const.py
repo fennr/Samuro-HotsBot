@@ -5,6 +5,8 @@ from enum import Enum
 
 conf = files.get_yaml("config.yaml")
 
+black_list = files.black_list()
+
 
 @dataclass(frozen=True)
 class Config:
@@ -70,6 +72,7 @@ class Select:
     PlayersLeague: str
     VotesEvent: str
     VoteStatsId: str
+    BlackList: str
 
 
 @dataclass(frozen=True)
@@ -101,6 +104,7 @@ class Insert:
     UserStats: str
     Event: str
     Votes: str
+    BlackList: str
 
 
 @dataclass(frozen=True)
@@ -186,6 +190,7 @@ selects = Select(
                         WHERE league = %s ORDER BY mmr DESC LIMIT %s''',
     VotesEvent='''SELECT * FROM "Votes" WHERE event_id = %s''',
     VoteStatsId='''SELECT * FROM "VoteStats" WHERE id = %s''',
+    BlackList='''SELECT * FROM "BlackList"'''
 
 )
 
@@ -218,7 +223,8 @@ inserts = Insert(
                     VALUES (%s, %s, %s, %s, %s, %s,
                     %s, %s, %s, %s, %s, 
                     %s, %s, %s, %s, %s )''',
-    Votes='''INSERT INTO "Votes"(id, event_id, vote) VALUES (%s, %s, %s)'''
+    Votes='''INSERT INTO "Votes"(id, event_id, vote) VALUES (%s, %s, %s)''',
+    BlackList='''INSERT INTO "BlackList"(id, name) VALUES (%s, %s)''',
 )
 
 updates = Update(

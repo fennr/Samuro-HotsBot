@@ -1,6 +1,8 @@
 import os
 import yaml
 import json
+import psycopg2.extras
+from utils import sql
 
 
 def get_yaml(file: str = "config.yaml", path=""):
@@ -31,3 +33,16 @@ def add_footer(embed):
         # context.message.author если использовать без slash
     )
     return embed
+
+
+def black_list():
+    sql.sql_init()
+    con = sql.get_connect()
+    cur = con.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor)
+    select = 'SELECT * FROM "BlackList"'
+    cur.execute(select, )
+    records = cur.fetchall()
+    bl = {}
+    for record in records:
+        bl[record.id] = record.name
+    return bl

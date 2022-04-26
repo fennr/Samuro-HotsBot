@@ -3,15 +3,15 @@ import traceback
 from utils import sql
 from utils.classes.Const import config
 
-logfile = config.log
+#logfile = config.log
 log = logging.getLogger("my_log")
 log.setLevel(logging.INFO)
-FH = logging.FileHandler(logfile, encoding='utf-8')
+#FH = logging.FileHandler(logfile, encoding='utf-8')
 str_logging_format = "%(asctime)s-%(levelname)s-%(message)s"
 log_format = '%(asctime)s : [%(levelname)s] : %(message)s'
 basic_formater = logging.Formatter(log_format)
-FH.setFormatter(basic_formater)
-log.addHandler(FH)
+#FH.setFormatter(basic_formater)
+#log.addHandler(FH)
 
 
 def log_init():
@@ -32,13 +32,13 @@ def error_log(line_no):
     ## задаем формат ошибочных сообщений, добавляем номер строки
     err_formater = logging.Formatter('%(asctime)s : [%(levelname)s][LINE ' + line_no + '] : %(message)s')
     ## устанавливаем формат ошибок в логгер
-    FH.setFormatter(err_formater)
-    log.addHandler(FH)
+    #FH.setFormatter(err_formater)
+    #log.addHandler(FH)
     ## пишем сообщение error
     log.error(traceback.format_exc())
     ## возвращаем базовый формат сообщений
-    FH.setFormatter(basic_formater)
-    log.addHandler(FH)
+    #FH.setFormatter(basic_formater)
+    #log.addHandler(FH)
 
 
 def get_guild(ctx):

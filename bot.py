@@ -18,10 +18,8 @@ from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
-from utils import sql
-from utils.library import files
 from utils.log import get_guild, log_init
-from utils.classes.Const import config
+from utils.classes.Const import config, black_list
 
 # Вставить TOKEN и APP_ID вашего бота
 if os.environ.get('TESTING'):
@@ -78,6 +76,9 @@ if __name__ == "__main__":
 # Ивент срабатывающий при отправке любого сообщении, в том числе без префикса
 @bot.event
 async def on_message(message):
+    # Игнорировать сообщения пользователей в блек листе
+    if message.author.id in [*black_list]:
+        return
     # Игнорировать сообщения других ботов
     if message.author == bot.user or message.author.bot:
         return

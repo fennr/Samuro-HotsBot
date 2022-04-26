@@ -13,7 +13,9 @@ from discord import Embed, errors
 from discord.ext import commands
 from utils import check
 from utils.classes.Const import config
+from utils.classes import Const
 from pprint import pprint
+from utils import exceptions, sql, library, check
 
 class owner(commands.Cog, name="Owner"):
     def __init__(self, bot):
@@ -49,7 +51,6 @@ class owner(commands.Cog, name="Owner"):
             )
         await context.author.send(embed=embed)
 
-
     @commands.command(name="shutdown")
     async def shutdown(self, context):
         """
@@ -69,7 +70,6 @@ class owner(commands.Cog, name="Owner"):
                 color=0xE02B2B
             )
             await context.send(embed=embed)
-
 
     @commands.command(name="say", aliases=["echo"])
     async def say(self, context, *, args):
@@ -157,6 +157,27 @@ class owner(commands.Cog, name="Owner"):
                 text=f"Created at: {time}"
             )
             await context.send(embed=embed)
+
+    @commands.group(name="bl")
+    @check.is_owner()
+    async def bl(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send('Выберите действие')
+
+    @bl.command(name="add")
+    @check.is_owner()
+    async def ban_add(self, ctx, member_id, member_name):
+        try:
+            con, cur = library.get.con_cur()
+            insert = Const.inserts.BlackList
+            cur.execute(insert, (member_id, member_name))
+            library.commit(con)
+            await ctx.send("Пользователь добавлен в черный список")
+            Const.black_list[member_id] = member_name
+        except Exception:
+            print(f"Ошибка добавления в черный список")
+
+
 
 
 def setup(bot):
