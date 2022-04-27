@@ -161,7 +161,7 @@ class Stats(commands.Cog, name="Stats"):
                         commands.has_role(703884637755408466),  # Админ
                         commands.has_role(711230509967212564),  # Старший модер
                         commands.has_role(711230315540250624),  # Модер
-                        commands.has_role(946480695218429952),  # Samuro_dev
+                        commands.has_role(959144584720580618),  # Samuro_dev
                         commands.has_role(880865537058545686),  # test
                         )
     async def points_remove(self, ctx, user: Member, count=0):
@@ -178,7 +178,7 @@ class Stats(commands.Cog, name="Stats"):
             stats.points -= count
             update = Const.updates.USPoints
             cur.execute(update, (stats.points, stats.id, stats.guild_id))
-            pl.commit(con)
+            library.commit(con)
             await ctx.send(f"Баллы успешно сняты\n"
                            f"Осталось баллов: {stats.points}")
 
