@@ -28,6 +28,8 @@ guild_ids = [845658540341592096]  # Сервер ID для тестирован�
 async def event_report(ctx, text):
     if ctx.guild_id == 642852514865217578:  # RU Hots
         channel_id = 848504279513956372
+    elif ctx.guild_id == 124864790110797824:  # RU Community
+        channel_id = 969887602482237440
     else:
         channel_id = 880863858653286401
     channel = discord.utils.get(ctx.guild.channels, id=channel_id)
@@ -408,11 +410,11 @@ class Event(commands.Cog, name="Event"):
 
 
 
-    @cog_ext.cog_slash(name="report", description="Репорт за слив игры в 5x5")
+    @cog_ext.cog_slash(name="report", description="Сообщение администрации")
     async def event_report1(self, ctx: SlashContext, text):
         await event_report(ctx, text)
 
-    @cog_ext.cog_slash(name="репорт", description="Репорт за слив игры в 5x5")
+    @cog_ext.cog_slash(name="репорт", description="Сообщение администрации")
     async def event_report2(self, ctx: SlashContext, text):
         await event_report(ctx, text)
 
