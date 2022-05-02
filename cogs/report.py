@@ -43,7 +43,7 @@ class Report(commands.Cog, name="Report"):
             description=message,
             color=config.success
         )
-        await ctx.message.delete()
+        #await ctx.message.delete()
         await ctx.send(embed=embed, components=[menu_buttons])
 
     @Cog.listener()
@@ -52,11 +52,12 @@ class Report(commands.Cog, name="Report"):
             await interaction.channel.delete()
         if interaction.component.label in labels['Questions'].values():
             category = discord.utils.get(interaction.guild.categories, name=TICKET_CATEGORY)
-            overwrites = {
-                interaction.author: discord.PermissionOverwrite(send_messages=True)
-            }
             name = f"{interaction.component.label}-{interaction.author.name}"
-            channel = await interaction.guild.create_text_channel(name, category=category, overwrites=overwrites)
+            channel = await interaction.guild.create_text_channel(name, category=category, sync_permissions=True)
+            overwrite = discord.PermissionOverwrite()
+            overwrite.send_messages = True
+            overwrite.read_messages = True
+            await channel.set_permissions(target=interaction.author, overwrite=overwrite)
             ticket_created_embed = discord.Embed(
                 title="Заявка открыта",
                 description=f"""Привет {interaction.author.name}! Опиши в чате ниже подробно проблему и ближайшее время тебе ответит модератор.
