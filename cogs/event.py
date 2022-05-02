@@ -408,8 +408,6 @@ class Event(commands.Cog, name="Event"):
             except:
                 print(f"Невозможно отправить сообщение {record.btag}")
 
-
-
     @cog_ext.cog_slash(name="report", description="Сообщение администрации")
     async def event_report1(self, ctx: SlashContext, text):
         await event_report(ctx, text)

@@ -262,145 +262,148 @@ class Hots(Cog, name='Hots'):
         - DeferredUpdateMessage
         - UpdateMessage
         """
-        embed = None
-        components = None
-        hero_name, tail = res.raw_data['message']['embeds'][0]['title'].split(' / ', maxsplit=1)
-        text, author = res.raw_data['message']['embeds'][-1]['footer']['text'].split(': ', maxsplit=1)
-        hero = Hero(hero_name)
+        try:
+            embed = None
+            components = None
+            hero_name, tail = res.raw_data['message']['embeds'][0]['title'].split(' / ', maxsplit=1)
+            text, author = res.raw_data['message']['embeds'][-1]['footer']['text'].split(': ', maxsplit=1)
+            hero = Hero(hero_name)
 
-        default_hero_name = hero_name.lower().replace('.', '').replace("'", "")
-        heroespn_url = 'https://heroespatchnotes.com/hero/'
-        heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
+            default_hero_name = hero_name.lower().replace('.', '').replace("'", "")
+            heroespn_url = 'https://heroespatchnotes.com/hero/'
+            heroespn_url_full = heroespn_url + default_hero_name.replace(' ', '') + '.html'
 
-        menu_buttons = [
-            Button(style=ButtonStyle.blue, label=heroes_label),
-            Button(style=ButtonStyle.blue, label=skills_label),
-            Button(style=ButtonStyle.blue, label=talent_label),
-            Button(style=ButtonStyle.blue, label=lastpn_label),
-        ]
-        hero_buttons = [
-            Button(style=ButtonStyle.grey, label=descrp_label),
-            Button(style=ButtonStyle.grey, label=builds_label),
-            Button(style=ButtonStyle.URL, label=patchn_label, url=heroespn_url_full),
-        ]
-        skill_buttons = [
-            Button(style=ButtonStyle.grey, label=basic_label),
-            Button(style=ButtonStyle.grey, label=heroic_label),
-            Button(style=ButtonStyle.grey, label=trait_label),
-        ]
-        talent_buttons1 = [
-            Button(style=ButtonStyle.grey, label=lvl_01_label),
-            Button(style=ButtonStyle.grey, label=lvl_04_label),
-            Button(style=ButtonStyle.grey, label=lvl_07_label),
-            Button(style=ButtonStyle.grey, label=lvl_10_label),
-        ]
-        talent_buttons2 = [
-            Button(style=ButtonStyle.grey, label=lvl_13_label),
-            Button(style=ButtonStyle.grey, label=lvl_16_label),
-            Button(style=ButtonStyle.grey, label=lvl_20_label),
-        ]
+            menu_buttons = [
+                Button(style=ButtonStyle.blue, label=heroes_label),
+                Button(style=ButtonStyle.blue, label=skills_label),
+                Button(style=ButtonStyle.blue, label=talent_label),
+                Button(style=ButtonStyle.blue, label=lastpn_label),
+            ]
+            hero_buttons = [
+                Button(style=ButtonStyle.grey, label=descrp_label),
+                Button(style=ButtonStyle.grey, label=builds_label),
+                Button(style=ButtonStyle.URL, label=patchn_label, url=heroespn_url_full),
+            ]
+            skill_buttons = [
+                Button(style=ButtonStyle.grey, label=basic_label),
+                Button(style=ButtonStyle.grey, label=heroic_label),
+                Button(style=ButtonStyle.grey, label=trait_label),
+            ]
+            talent_buttons1 = [
+                Button(style=ButtonStyle.grey, label=lvl_01_label),
+                Button(style=ButtonStyle.grey, label=lvl_04_label),
+                Button(style=ButtonStyle.grey, label=lvl_07_label),
+                Button(style=ButtonStyle.grey, label=lvl_10_label),
+            ]
+            talent_buttons2 = [
+                Button(style=ButtonStyle.grey, label=lvl_13_label),
+                Button(style=ButtonStyle.grey, label=lvl_16_label),
+                Button(style=ButtonStyle.grey, label=lvl_20_label),
+            ]
 
-        skill_components = [
-            skill_buttons,
-            menu_buttons
-        ]
-        hero_components = [
-            hero_buttons,
-            menu_buttons
-        ]
-        talent_components = [
-            talent_buttons1,
-            talent_buttons2,
-            menu_buttons
-        ]
-        lastpn_components = [
-            menu_buttons
-        ]
+            skill_components = [
+                skill_buttons,
+                menu_buttons
+            ]
+            hero_components = [
+                hero_buttons,
+                menu_buttons
+            ]
+            talent_components = [
+                talent_buttons1,
+                talent_buttons2,
+                menu_buttons
+            ]
+            lastpn_components = [
+                menu_buttons
+            ]
 
-        if res.component.label == descrp_label:
-            embed = heroes_description(hero, author)
-            components = hero_components
-            components[0][0] = Button(style=ButtonStyle.grey, label=descrp_label, disabled=True)
-            components[1][0] = Button(style=ButtonStyle.blue, label=heroes_label, disabled=True)
-        if res.component.label == builds_label or \
-                res.component.label == heroes_label:
-            embed = builds(hero, author)
-            components = hero_components
-            components[0][1] = Button(style=ButtonStyle.grey, label=builds_label, disabled=True)
-            components[1][0] = Button(style=ButtonStyle.blue, label=heroes_label, disabled=True)
+            if res.component.label == descrp_label:
+                embed = heroes_description(hero, author)
+                components = hero_components
+                components[0][0] = Button(style=ButtonStyle.grey, label=descrp_label, disabled=True)
+                components[1][0] = Button(style=ButtonStyle.blue, label=heroes_label, disabled=True)
+            if res.component.label == builds_label or \
+                    res.component.label == heroes_label:
+                embed = builds(hero, author)
+                components = hero_components
+                components[0][1] = Button(style=ButtonStyle.grey, label=builds_label, disabled=True)
+                components[1][0] = Button(style=ButtonStyle.blue, label=heroes_label, disabled=True)
 
-        if res.component.label == skills_label:
-            embed = skill(hero, author)
-            components = skill_components
-            components[0][0] = Button(style=ButtonStyle.grey, label=basic_label, disabled=True)
-            components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
-        if res.component.label == basic_label:
-            embed = skill(hero, author, 'basic')
-            components = skill_components
-            components[0][0] = Button(style=ButtonStyle.grey, label=basic_label, disabled=True)
-            components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
-        if res.component.label == heroic_label:
-            embed = skill(hero, author, 'heroic')
-            components = skill_components
-            components[0][1] = Button(style=ButtonStyle.grey, label=heroic_label, disabled=True)
-            components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
-        if res.component.label == trait_label:
-            embed = skill(hero, author, 'trait')
-            components = skill_components
-            components[0][2] = Button(style=ButtonStyle.grey, label=trait_label, disabled=True)
-            components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
+            if res.component.label == skills_label:
+                embed = skill(hero, author)
+                components = skill_components
+                components[0][0] = Button(style=ButtonStyle.grey, label=basic_label, disabled=True)
+                components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
+            if res.component.label == basic_label:
+                embed = skill(hero, author, 'basic')
+                components = skill_components
+                components[0][0] = Button(style=ButtonStyle.grey, label=basic_label, disabled=True)
+                components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
+            if res.component.label == heroic_label:
+                embed = skill(hero, author, 'heroic')
+                components = skill_components
+                components[0][1] = Button(style=ButtonStyle.grey, label=heroic_label, disabled=True)
+                components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
+            if res.component.label == trait_label:
+                embed = skill(hero, author, 'trait')
+                components = skill_components
+                components[0][2] = Button(style=ButtonStyle.grey, label=trait_label, disabled=True)
+                components[1][1] = Button(style=ButtonStyle.blue, label=skills_label, disabled=True)
 
-        if res.component.label == talent_label or \
-                res.component.label == lvl_01_label:
-            embed = talents(hero, 1, author)
-            components = talent_components
-            components[0][0] = Button(style=ButtonStyle.grey, label=lvl_01_label, disabled=True)
-            components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
-        if res.component.label == lvl_04_label:
-            embed = talents(hero, 4, author)
-            components = talent_components
-            components[0][1] = Button(style=ButtonStyle.grey, label=lvl_04_label, disabled=True)
-            components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
-        if res.component.label == lvl_07_label:
-            embed = talents(hero, 7, author)
-            components = talent_components
-            components[0][2] = Button(style=ButtonStyle.grey, label=lvl_07_label, disabled=True)
-            components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
-        if res.component.label == lvl_10_label:
-            embed = talents(hero, 10, author)
-            components = talent_components
-            components[0][3] = Button(style=ButtonStyle.grey, label=lvl_10_label, disabled=True)
-            components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
-        if res.component.label == lvl_13_label:
-            embed = talents(hero, 13, author)
-            components = talent_components
-            components[1][0] = Button(style=ButtonStyle.grey, label=lvl_13_label, disabled=True)
-            components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
-        if res.component.label == lvl_16_label:
-            embed = talents(hero, 16, author)
-            components = talent_components
-            components[1][1] = Button(style=ButtonStyle.grey, label=lvl_16_label, disabled=True)
-            components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
-        if res.component.label == lvl_20_label:
-            embed = talents(hero, 20, author)
-            components = talent_components
-            components[1][2] = Button(style=ButtonStyle.grey, label=lvl_20_label, disabled=True)
-            components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
-        if res.component.label == lastpn_label:
-            embed = last_pn(hero, author)
-            components = lastpn_components
-            components[0][3] = Button(style=ButtonStyle.blue, label=lastpn_label, disabled=True)
-        if author == str(res.user):
-            await res.respond(
-                type=7, embed=embed, components=components
-            )
-        else:
-            error_text = 'Команда вызвана другим пользователем, взаимодействие невозможно\n' \
-                         'Введите /data :hero: для получения информации по герою'
-            await res.respond(
-                type=4, content=f"{error_text}"
-            )
-            # можно использовать или embed или content content=f"{res.component.label} pressed",
+            if res.component.label == talent_label or \
+                    res.component.label == lvl_01_label:
+                embed = talents(hero, 1, author)
+                components = talent_components
+                components[0][0] = Button(style=ButtonStyle.grey, label=lvl_01_label, disabled=True)
+                components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
+            if res.component.label == lvl_04_label:
+                embed = talents(hero, 4, author)
+                components = talent_components
+                components[0][1] = Button(style=ButtonStyle.grey, label=lvl_04_label, disabled=True)
+                components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
+            if res.component.label == lvl_07_label:
+                embed = talents(hero, 7, author)
+                components = talent_components
+                components[0][2] = Button(style=ButtonStyle.grey, label=lvl_07_label, disabled=True)
+                components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
+            if res.component.label == lvl_10_label:
+                embed = talents(hero, 10, author)
+                components = talent_components
+                components[0][3] = Button(style=ButtonStyle.grey, label=lvl_10_label, disabled=True)
+                components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
+            if res.component.label == lvl_13_label:
+                embed = talents(hero, 13, author)
+                components = talent_components
+                components[1][0] = Button(style=ButtonStyle.grey, label=lvl_13_label, disabled=True)
+                components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
+            if res.component.label == lvl_16_label:
+                embed = talents(hero, 16, author)
+                components = talent_components
+                components[1][1] = Button(style=ButtonStyle.grey, label=lvl_16_label, disabled=True)
+                components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
+            if res.component.label == lvl_20_label:
+                embed = talents(hero, 20, author)
+                components = talent_components
+                components[1][2] = Button(style=ButtonStyle.grey, label=lvl_20_label, disabled=True)
+                components[2][2] = Button(style=ButtonStyle.blue, label=talent_label, disabled=True)
+            if res.component.label == lastpn_label:
+                embed = last_pn(hero, author)
+                components = lastpn_components
+                components[0][3] = Button(style=ButtonStyle.blue, label=lastpn_label, disabled=True)
+            if author == str(res.user):
+                await res.respond(
+                    type=7, embed=embed, components=components
+                )
+            else:
+                error_text = 'Команда вызвана другим пользователем, взаимодействие невозможно\n' \
+                             'Введите /data :hero: для получения информации по герою'
+                await res.respond(
+                    type=4, content=f"{error_text}"
+                )
+                # можно использовать или embed или content content=f"{res.component.label} pressed",
+        except:
+            pass
 
 
     @heroes_data.error
