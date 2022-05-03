@@ -13,6 +13,7 @@ cssselect==1.1.0
 discord==1.7.3
 discord-components==2.1.2
 discord-py-slash-command==3.0.3
+discord-py-interactions>=4.1.0
 discord.py==1.7.3
 disnake==2.4.0
 et-xmlfile==1.1.0

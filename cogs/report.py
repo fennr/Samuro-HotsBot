@@ -2,7 +2,8 @@ import discord
 from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import command, Cog, errors
-from discord_components import DiscordComponents, Button, ButtonStyle
+from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
+from discord_slash.context import ComponentContext
 from utils import check
 from utils.classes.Const import config
 
@@ -43,13 +44,34 @@ class Report(commands.Cog, name="Report"):
             description=message,
             color=config.success
         )
-        #await ctx.message.delete()
+        await ctx.message.delete()
         await ctx.send(embed=embed, components=[menu_buttons])
+
+    @command(name='select')
+    async def select_test(self, ctx):
+        select = Select(
+            options=[  # the options in your dropdown
+                SelectOption(label="Выбор 1", value="v1", emoji="🥼"),
+                SelectOption(label="Выбор 2", value="v2", emoji="🧪"),
+                SelectOption(label="Выбор 3", value="v2", emoji="🧫"),
+            ],
+            placeholder="Choose your option",  # the placeholder text to show when no options have been chosen
+            min_values=1,  # the minimum number of options a user must select
+            max_values=2,  # the maximum number of options a user can select
+        )
+        await ctx.message.delete()
+        await ctx.send("test", components=[select])
+
+    @Cog.listener()
+    async def on_component(self, ctx: ComponentContext):
+        # ctx.selected_options is a list of all the values the user selected
+        await ctx.send(content=f"You selected {ctx.selected_options}")
 
     @Cog.listener()
     async def on_button_click(self, interaction):
         if interaction.component.label == labels['Close']:
-            await interaction.channel.delete()
+            print(interaction.raw_data)
+            # await interaction.channel.delete()
         if interaction.component.label in labels['Questions'].values():
             category = discord.utils.get(interaction.guild.categories, name=TICKET_CATEGORY)
             name = f"{interaction.component.label}-{interaction.author.name}"
