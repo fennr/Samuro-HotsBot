@@ -50,7 +50,8 @@ class Report(commands.Cog, name="Report"):
     @command(name='ruhots_report')
     @check.is_admin()
     async def ruhots_report(self, ctx):
-        message = 'Воспользовавшись кнопками ниже можно связаться с модерацией по интересующим вопросам'
+        message = 'Воспользовавшись кнопками ниже можно написать модераторам' \
+                  '\nпо интересующим вопросам'
         embed_image = Embed(
             color=config.grey,
         )
@@ -62,8 +63,8 @@ class Report(commands.Cog, name="Report"):
         filename = 'support.png'
         file = discord.File('data/img/support-ruhots.png', filename=filename)
         embed_image.set_image(url=f'attachment://{filename}')
-        await ctx.send(file=file, embed=embed_image)
-        await ctx.send(embed=embed, components=[menu_buttons])
+        await ctx.send(file=file, embeds=[embed_image, embed], components=[menu_buttons])
+        #await ctx.send(embed=embed, components=[menu_buttons])
 
     @command(name='select')
     async def select_test(self, ctx):
