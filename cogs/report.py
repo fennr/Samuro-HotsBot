@@ -3,7 +3,9 @@ from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import command, Cog, errors
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
-from discord_slash.context import ComponentContext
+from discord_slash import cog_ext, SlashCommand
+from discord_slash.context import ComponentContext, MenuContext
+from discord_slash.model import ContextMenuType
 from utils import check
 from utils.classes.Const import config
 
@@ -49,18 +51,21 @@ class Report(commands.Cog, name="Report"):
 
     @command(name='select')
     async def select_test(self, ctx):
+        stalk = discord.utils.get(ctx.guild.emojis, name='stalk')
+        rqg = discord.utils.get(ctx.guild.emojis, name='RQG2')
+        event_5x5 = discord.utils.get(ctx.guild.emojis, name='kotj')
         select = Select(
             options=[  # the options in your dropdown
-                SelectOption(label="Lab Coat", value="coat", emoji="🥼"),
-                SelectOption(label="Test Tube", value="tube", emoji="🧪"),
-                SelectOption(label="Petri Dish", value="dish", emoji="🧫"),
+                SelectOption(label="Сталк", value="stlk", emoji=stalk),
+                SelectOption(label="RQG", value="rqg", emoji=rqg),
+                SelectOption(label="Бои 5х5", value="5x5", emoji=event_5x5),
             ],
-            placeholder="Choose your option",  # the placeholder text to show when no options have been chosen
+            placeholder="Выберите подписки",  # the placeholder text to show when no options have been chosen
             min_values=1,  # the minimum number of options a user must select
             max_values=2,  # the maximum number of options a user can select
         )
         await ctx.message.delete()
-        await ctx.send("test", components=[select])
+        await ctx.send("Здесь можно подписаться на разделы", components=[select])
 
     @Cog.listener()
     async def on_component(self, ctx: ComponentContext):
