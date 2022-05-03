@@ -3,9 +3,7 @@ from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import command, Cog, errors
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
-from discord_slash import cog_ext, SlashCommand
 from discord_slash.context import ComponentContext, MenuContext
-from discord_slash.model import ContextMenuType
 from utils import check
 from utils.classes.Const import config
 
@@ -76,7 +74,7 @@ class Report(commands.Cog, name="Report"):
     async def on_button_click(self, interaction):
         if interaction.component.label == labels['Close']:
             print(interaction.raw_data)
-            # await interaction.channel.delete()
+            await interaction.channel.delete()
         if interaction.component.label in labels['Questions'].values():
             category = discord.utils.get(interaction.guild.categories, name=TICKET_CATEGORY)
             name = f"{interaction.component.label}-{interaction.author.name}"

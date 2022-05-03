@@ -7,10 +7,10 @@ github: https://github.com/fennr/Samuro-HotsBot
 Бот для сообществ по игре Heroes of the Storm
 
 """
-import discord
-from discord.commands import CommandPermission, SlashCommandGroup
+from discord import Member
 from discord.ext import commands
-
+from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option
 from cogs import general, help, heroes, hots, profile, event, voice
 from utils import check, exceptions
 
@@ -21,29 +21,7 @@ class Slash(commands.Cog, name="Slash"):
     def __init__(self, bot):
         self.bot = bot
 
-    greetings = SlashCommandGroup("greetings", "Various greeting from cogs!")
-
-    international_greetings = greetings.create_subgroup("international", "International greetings")
-
-    secret_greetings = SlashCommandGroup(
-        "secret_greetings",
-        "Secret greetings",
-        permissions=[CommandPermission("owner", 2, True)],  # Ensures the owner_id user can access this, and no one else
-    )
-
-    @greetings.command(guild_ids=guild_ids)
-    async def hello(self, ctx):
-        await ctx.respond("Hello, this is a slash subcommand from a cog!")
-
-    @international_greetings.command(guild_ids=guild_ids)
-    async def aloha(self, ctx):
-        await ctx.respond("Aloha, a Hawaiian greeting")
-
-    @secret_greetings.command(guild_ids=guild_ids)
-    async def secret_handshake(self, ctx, member: discord.Member):
-        await ctx.respond(f"{member.mention} secret handshakes you")
-
-    '''@cog_ext.cog_slash(name="voice_name", description="Переименовать комнату")
+    @cog_ext.cog_slash(name="voice_name", description="Переименовать комнату")
     async def slash_voice_name(self, ctx: SlashContext, name):
         await voice.Voice.name(self, ctx, name=name)
 
@@ -67,10 +45,10 @@ class Slash(commands.Cog, name="Slash"):
     async def slash_login(self, ctx: SlashContext, battletag):
         await profile.Profile.login(self, ctx, battletag)
 
-    @cog_ext.cog_slash(name="5x5", description="Подбор команд")
+    '''@cog_ext.cog_slash(name="5x5", description="Подбор команд")
     @check.is_admin()
     async def slash_5x5(self, ctx: SlashContext, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10):
-        await event.Event.event_5x5(self, ctx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)
+        await event.Event.event_5x5(self, ctx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10)'''
 
     @cog_ext.cog_slash(name="profile_add",
                        description="Добавить профиль",
@@ -142,7 +120,7 @@ class Slash(commands.Cog, name="Slash"):
 
     @cog_ext.cog_slash(name="stlk", description="Билды от Сталка")
     async def slash_stlk_builds(self, ctx: SlashContext, hero):
-        await hots.Hots.stlk_builds(self, ctx, hero)'''
+        await hots.Hots.stlk_builds(self, ctx, hero)
 
 
 def setup(bot):

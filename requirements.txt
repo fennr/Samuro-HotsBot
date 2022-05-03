@@ -13,7 +13,7 @@ cssselect==1.1.0
 discord-components==2.1.2
 discord-py-slash-command>=3.0.3
 discord-py-interactions>=4.1.0
-py-cord==2.0.0b4
+discord==1.7.3
 et-xmlfile==1.1.0
 fake-useragent==0.1.11
 google-auth>=2.6.2
