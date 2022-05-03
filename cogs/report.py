@@ -47,6 +47,19 @@ class Report(commands.Cog, name="Report"):
         await ctx.message.delete()
         await ctx.send(embed=embed, components=[menu_buttons])
 
+    @command(name='ruhots_report')
+    @check.is_admin()
+    async def ruhots_report(self, ctx):
+        message = 'Воспользовавшись кнопками ниже можно связаться с модерацией по интересующим вопросам'
+        embed = Embed(
+            title='Поддержка',
+            description=message,
+            color=0xf21f18,
+        )
+        await ctx.message.delete()
+        await ctx.send(file=discord.File('data/img/support-ruhots.png'))
+        await ctx.send(embed=embed, components=[menu_buttons])
+
     @command(name='select')
     async def select_test(self, ctx):
         stalk = discord.utils.get(ctx.guild.emojis, name='stalk')
@@ -67,8 +80,9 @@ class Report(commands.Cog, name="Report"):
 
     @Cog.listener()
     async def on_component(self, ctx: ComponentContext):
-        # ctx.selected_options is a list of all the values the user selected
-        await ctx.send(content=f"You selected {ctx.selected_options}")
+        if ctx.selected_options is not None:
+            # ctx.selected_options is a list of all the values the user selected
+            await ctx.send(content=f"You selected {ctx.selected_options}")
 
     @Cog.listener()
     async def on_button_click(self, interaction):
