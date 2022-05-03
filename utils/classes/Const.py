@@ -24,6 +24,7 @@ class Config:
     success: int
     warning: int
     info: int
+    grey: int
 
 
 @dataclass(frozen=True)
@@ -129,6 +130,7 @@ config = Config(
     success=conf["success"],
     warning=conf["warning"],
     info=conf["info"],
+    grey=conf["grey"],
 )
 
 

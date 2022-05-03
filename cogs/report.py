@@ -51,13 +51,18 @@ class Report(commands.Cog, name="Report"):
     @check.is_admin()
     async def ruhots_report(self, ctx):
         message = 'Воспользовавшись кнопками ниже можно связаться с модерацией по интересующим вопросам'
+        embed_image = Embed(
+            color=config.grey,
+        )
         embed = Embed(
-            title='Поддержка',
             description=message,
-            color=0xf21f18,
+            color=config.grey
         )
         await ctx.message.delete()
-        await ctx.send(file=discord.File('data/img/support-ruhots.png'))
+        filename = 'support.png'
+        file = discord.File('data/img/support-ruhots.png', filename=filename)
+        embed_image.set_image(url=f'attachment://{filename}')
+        await ctx.send(file=file, embed=embed_image)
         await ctx.send(embed=embed, components=[menu_buttons])
 
     @command(name='select')
