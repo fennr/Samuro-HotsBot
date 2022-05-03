@@ -20,7 +20,7 @@ from utils import library, check
 UniqueViolation = errors.lookup(errorcodes.UNIQUE_VIOLATION)
 
 
-class Team(commands.Cog, name="Team"):
+class Teams(commands.Cog, name="Teams"):
     """
     — Модуль работы с Командами/Кланами
     """
@@ -175,4 +175,4 @@ class Team(commands.Cog, name="Team"):
 
 
 def setup(bot):
-    bot.add_cog(Team(bot))
+    bot.add_cog(Teams(bot))

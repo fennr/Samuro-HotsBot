@@ -1,6 +1,4 @@
 from typing import TypeVar, Callable
-
-from disnake.ext import commands
 from discord.ext import commands
 
 from utils.exceptions import *

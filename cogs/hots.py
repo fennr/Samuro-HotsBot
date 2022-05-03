@@ -80,6 +80,7 @@ class Hots(Cog, name='Hots'):
         embed = nexuscompendium.weekly_rotation()
         await ctx.send(embed=embed)
 
+
     @command(name="replay")
     async def replay_parser(self, ctx, full=None):
         attachment = ctx.message.attachments[0]
