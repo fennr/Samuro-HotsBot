@@ -51,9 +51,9 @@ class Report(commands.Cog, name="Report"):
     async def select_test(self, ctx):
         select = Select(
             options=[  # the options in your dropdown
-                SelectOption(label="Выбор 1", value="v1", emoji="🥼"),
-                SelectOption(label="Выбор 2", value="v2", emoji="🧪"),
-                SelectOption(label="Выбор 3", value="v2", emoji="🧫"),
+                SelectOption(label="Lab Coat", value="coat", emoji="🥼"),
+                SelectOption(label="Test Tube", value="tube", emoji="🧪"),
+                SelectOption(label="Petri Dish", value="dish", emoji="🧫"),
             ],
             placeholder="Choose your option",  # the placeholder text to show when no options have been chosen
             min_values=1,  # the minimum number of options a user must select
