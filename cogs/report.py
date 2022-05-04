@@ -50,8 +50,8 @@ class Report(commands.Cog, name="Report"):
     @command(name='ruhots_report')
     @check.is_admin()
     async def ruhots_report(self, ctx):
-        message = 'Воспользовавшись кнопками ниже можно написать модераторам' \
-                  '\nпо интересующим вопросам'
+        message = 'Воспользовавшись кнопками ниже можно написать модераторам\n' \
+                  'по интересующим вопросам'
         embed_image = Embed(
             color=config.grey,
         )
@@ -64,7 +64,6 @@ class Report(commands.Cog, name="Report"):
         file = discord.File('data/img/support-ruhots.png', filename=filename)
         embed_image.set_image(url=f'attachment://{filename}')
         await ctx.send(file=file, embeds=[embed_image, embed], components=[menu_buttons])
-        #await ctx.send(embed=embed, components=[menu_buttons])
 
     @command(name='select')
     async def select_test(self, ctx):
@@ -105,8 +104,8 @@ class Report(commands.Cog, name="Report"):
             await channel.set_permissions(target=interaction.author, overwrite=overwrite)
             ticket_created_embed = discord.Embed(
                 title="Заявка открыта",
-                description=f"""Привет {interaction.author.name}! Опиши в чате ниже подробно проблему и ближайшее время тебе ответит модератор.
-                    Если вопрос решен, заявку можно закрыть нажав кнопку ниже""",
+                description=f"""Привет {interaction.author.name}! Напиши свое сообщение в данном чате.\n
+                Если вопрос решен, заявку можно закрыть нажав кнопку ниже""",
             )
             await channel.send(
                 interaction.author.mention, embed=ticket_created_embed, components=[remove_button]
