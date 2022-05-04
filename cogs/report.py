@@ -92,7 +92,6 @@ class Report(commands.Cog, name="Report"):
     @Cog.listener()
     async def on_button_click(self, interaction):
         if interaction.component.label == labels['Close']:
-            print(interaction.raw_data)
             await interaction.channel.delete()
         if interaction.component.label in labels['Questions'].values():
             category = discord.utils.get(interaction.guild.categories, name=TICKET_CATEGORY)
