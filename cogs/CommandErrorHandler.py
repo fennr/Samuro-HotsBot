@@ -14,6 +14,7 @@ import sys
 from discord import errors
 from discord.ext import commands
 import pretty_errors
+from utils.classes.Const import config
 
 pretty_errors.configure(
     separator_character='*',
@@ -56,6 +57,13 @@ class CommandErrorHandler(commands.Cog):
         #print("Общая обработка ошибок")
         #print(error)
         #print(type(error))
+        owner = await self.bot.fetch_user(config.owners[0])
+        try:
+            invite = await ctx.channel.create_invite()
+        except Exception:
+            print(Exception)
+            invite = None
+        await owner.send(f"{ctx.author}\n{ctx.command}\n{invite}\n{error}")
         # This prevents any commands with local handlers being handled here in on_command_error.
         if hasattr(ctx.command, 'on_error'):
             return
