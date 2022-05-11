@@ -94,6 +94,7 @@ class Delete:
     UserAchiev: str
     AchievId: str
     EventActive: str
+    BlackList: str
 
 
 @dataclass(frozen=True)
@@ -206,6 +207,7 @@ deletes = Delete(
     EventActive='''DELETE FROM "EventHistory" WHERE room_id = %s AND active = %s
                    RETURNING blue1, blue2, blue3, blue4, blue5,
                              red1, red2, red3, red4, red5''',
+    BlackList='''DELETE FROM "BlackList" WHERE id = %s''',
 )
 
 inserts = Insert(

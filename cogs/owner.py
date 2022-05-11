@@ -177,6 +177,20 @@ class owner(commands.Cog, name="Owner"):
         except Exception:
             print(f"Ошибка добавления в черный список")
 
+    @bl.command(name="remove")
+    async def ban_remove(self, ctx, member_id):
+        try:
+            con, cur = library.get.con_cur()
+            delete = Const.deletes.BlackList
+            cur.execute(delete, (member_id, ))
+            library.commit(con)
+            if cur.rowcount:
+                await ctx.send("Пользователь удален из черного списка")
+            else:
+                await ctx.send("В черном списке нет такого пользователя")
+        except:
+            print("Ошибка удаления из черного списка")
+
 
 
 
