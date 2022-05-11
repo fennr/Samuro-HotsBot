@@ -185,6 +185,7 @@ class owner(commands.Cog, name="Owner"):
             cur.execute(delete, (member_id, ))
             library.commit(con)
             if cur.rowcount:
+                Const.black_list.pop(member_id)
                 await ctx.send("Пользователь удален из черного списка")
             else:
                 await ctx.send("В черном списке нет такого пользователя")
