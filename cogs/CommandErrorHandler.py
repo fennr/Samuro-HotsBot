@@ -57,13 +57,6 @@ class CommandErrorHandler(commands.Cog):
         #print("Общая обработка ошибок")
         #print(error)
         #print(type(error))
-        owner = await self.bot.fetch_user(config.owners[0])
-        try:
-            invite = await ctx.channel.create_invite()
-        except Exception:
-            print(Exception)
-            invite = None
-        await owner.send(f"{ctx.author}\n{ctx.command}\n{invite}\n{error}")
         # This prevents any commands with local handlers being handled here in on_command_error.
         if hasattr(ctx.command, 'on_error'):
             return
@@ -111,6 +104,13 @@ class CommandErrorHandler(commands.Cog):
                 traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
             except:
                 print(error)
+                owner = await self.bot.fetch_user(config.owners[0])
+                try:
+                    invite = await ctx.channel.create_invite()
+                except Exception:
+                    print(Exception)
+                    invite = None
+                await owner.send(f"{ctx.author}\n{ctx.command}\n{invite}\n{error}")
 
     """Below is an example of a Local Error Handler for our command do_repeat"""
 
