@@ -79,6 +79,13 @@ class CommandErrorHandler(commands.Cog):
             return
         else:
             print(f"Сообщение вызвавшее ошибку: '{ctx.message.content}' guild {ctx.guild} by {ctx.author}")
+            owner = await self.bot.fetch_user(config.owners[0])
+            try:
+                invite = await ctx.channel.create_invite()
+            except Exception:
+                print(Exception)
+                invite = None
+            await owner.send(f"{ctx.author}\n{ctx.command}\n{invite}\n{error}")
 
         if isinstance(error, commands.DisabledCommand):
             await ctx.send(f'{ctx.command} has been disabled.')
@@ -104,16 +111,9 @@ class CommandErrorHandler(commands.Cog):
                 traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
             except:
                 print(error)
-                owner = await self.bot.fetch_user(config.owners[0])
-                try:
-                    invite = await ctx.channel.create_invite()
-                except Exception:
-                    print(Exception)
-                    invite = None
-                await owner.send(f"{ctx.author}\n{ctx.command}\n{invite}\n{error}")
+
 
     """Below is an example of a Local Error Handler for our command do_repeat"""
-
     @commands.command(name='repeat', aliases=['mimic', 'copy'])
     async def do_repeat(self, ctx, *, inp: str):
         """A simple command which repeats your input!
