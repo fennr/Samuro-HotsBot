@@ -223,7 +223,10 @@ def get_profile_by_id_or_btag(id_or_btag):
 
 
 def avatar(ctx, avamember: Member = None):
-    return avamember.avatar_url
+    try:  # discord
+        return avamember.avatar_url
+    except:  # pycord
+        return avamember.avatar
 
 
 def check_user(ctx):
