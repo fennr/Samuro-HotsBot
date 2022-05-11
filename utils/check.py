@@ -73,6 +73,7 @@ def is_lead() -> Callable[[T], T]:
              880865537058545686,  # test
              274543866743357442,  # Stalk admin
              961241562036174858,  # 5x5 admin
+             972888717574414366,  # Букмекер
         ]
         flag = False
         for role in context.author.roles:
