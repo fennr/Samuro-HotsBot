@@ -63,9 +63,10 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
             cur.execute(insert, (player_stats.id, player_stats.guild_id, player_stats.win,
                                  player_stats.lose, player_stats.points, player_stats.btag))
         else:
-            player_stats = Stats(id=stats_rec.id, guild_id=stats_rec.guild_id,
-                                 btag=stats_rec.btag, win=stats_rec.win, lose=stats_rec.lose,
-                                 points=stats_rec.points)
+            player_stats = library.get.stats(stats_rec)
+        player_stats.winstreak = winstreak_change(player_stats, winner)
+        player_stats.max_ws = max_ws_change(player_stats)
+        player.mmr = winstreak_mmr_change(player, player_stats.winstreak, winner)
         if winner:
             player.mmr += int(delta)
             player_stats.win += 1
@@ -86,14 +87,46 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
             player.mmr += delta+1
             await ctx.send(
                 f"{library.mention(player.id)} ты достиг {library.profile.leagues[player.league]} лиги. Мои поздравления")
-        updateUS = Const.updates.USPointWinLose
+        updateUS = Const.updates.USPointWinLoseWinStr
         updateP = Const.updates.PlayerMMR
         cur.execute(updateUS, (player_stats.points, player_stats.win, player_stats.lose,
+                               player_stats.winstreak, player_stats.max_ws,
                                player_stats.id, player_stats.guild_id))
         cur.execute(updateP, (player.mmr, player.league, player.division,
                               player.id))
         print(f"{player.btag} -> {player.mmr} mmr ({player.league})")
     commit(con)
+
+
+def winstreak_change(stats: Stats, winner):
+    winstreak = stats.winstreak
+    if winner:
+        if stats.winstreak >= 0:
+            winstreak += 1
+        else:
+            winstreak = 1
+    else:
+        if stats.winstreak >= 0:
+            winstreak = -1
+        else:
+            winstreak -= 1
+    return winstreak
+
+
+def winstreak_mmr_change(profile: Player, winstreak, winner):
+    mmr = profile.mmr
+    if winner and winstreak > 2:
+        mmr += winstreak * 2
+    if not winner and winstreak < -2:
+        mmr -= winstreak * 2
+    return mmr
+
+
+def max_ws_change(stats: Stats):
+    if stats.winstreak > stats.max_ws:
+        return stats.winstreak
+    else:
+        return stats.max_ws
 
 
 def flatten_dict(d: MutableMapping, parent_key: str = '', sep: str = '.') -> MutableMapping:

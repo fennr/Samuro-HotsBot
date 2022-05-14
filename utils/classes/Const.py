@@ -82,7 +82,7 @@ class Update:
     PlayerTeam: str
     TeamMembers: str
     USPoints: str
-    USPointWinLose: str
+    USPointWinLoseWinStr: str
     EHWinner: str
 
 
@@ -236,8 +236,10 @@ updates = Update(
     PlayerTeam='UPDATE "Players" SET team = %s WHERE id = %s',
     TeamMembers='UPDATE "Teams" SET members = %s WHERE id = %s',
     USPoints='Update "UserStats" SET points = %s WHERE id = %s AND guild_id = %s',
-    USPointWinLose='''UPDATE "UserStats" SET points = %s, win = %s, lose = %s 
-                      WHERE id = %s AND guild_id = %s''',
+    USPointWinLoseWinStr='''UPDATE "UserStats" SET 
+                            points = %s, win = %s, lose = %s, 
+                            winstreak = %s, max_ws = %s 
+                            WHERE id = %s AND guild_id = %s''',
     EHWinner='''UPDATE "EventHistory" SET winner = %s, delta_mmr = %s, points = %s, active = %s 
                 WHERE room_id = %s AND active = %s''',
 

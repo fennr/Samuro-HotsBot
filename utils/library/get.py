@@ -92,7 +92,9 @@ def player(record):
 def stats(record):
     if record is not None:
         return classes.Stats(btag=record.btag, id=record.id, guild_id=record.guild_id,
-                             win=record.win, lose=record.lose, points=record.points)
+                             win=record.win, lose=record.lose,
+                             points=record.points,
+                             winstreak=record.winstreak, max_ws=record.max_ws)
     return None
 
 def team(record):
