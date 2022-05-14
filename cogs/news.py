@@ -140,7 +140,7 @@ class News(commands.Cog, name="News"):
     @commands.command(name="pm")
     async def pm(self, ctx):
         server_name = {
-            'test': 'Fenrir︱Test',
+            'test': 'Samuro_dev',
             'ruhots': 'RU︱Heroes of the Storm',
             'lounge': 'RU︱Heroes of the Storm',
             'kato': 'Awokato game',
@@ -148,7 +148,7 @@ class News(commands.Cog, name="News"):
             'stlk': 'pepeSquad',
         }
         server_rooms = {
-            'test': 880863858653286401,
+            'test': 845658540341592098,
             'ruhots': 642853714515722241,
             'lounge': 886270709393928242,
             'kato': 835521779521814538,
