@@ -167,8 +167,9 @@ class Stats(commands.Cog, name="Stats"):
     async def points_remove(self, ctx, user: Member, count=0):
         con, cur = library.get.con_cur()
         guild_id = library.get.guild_id(ctx)
+        user_id = library.get.user_id(user)
         select = Const.selects.USIdGuild
-        cur.execute(select, (user.id, guild_id))
+        cur.execute(select, (user_id, guild_id))
         record = cur.fetchone()
         stats = library.get.stats(record)
         if stats.points < count:
@@ -193,7 +194,7 @@ class Stats(commands.Cog, name="Stats"):
         library.commit(con)
         row_count = cur.rowcount
         if row_count > 0:
-            await ctx.send(f"Статистика профилей удалена\nВсего обновлено {row_count} профилей")
+            await ctx.send(f"Статистика профилей удалена\nОбновлено профилей: {row_count}")
         else:
             await ctx.send(f"Не обновлено ни одного профиля")
 

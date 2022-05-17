@@ -70,7 +70,7 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
         if winner:
             player.mmr += int(delta)
             player_stats.win += 1
-            player_stats.points += points * 3
+            player_stats.points += points + 3
         else:
             player.mmr -= int(delta)
             player_stats.lose += 1

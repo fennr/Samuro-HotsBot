@@ -66,18 +66,19 @@ def achievements(ctx, embed: Embed, player: Player):
 
 
 def stats(embed: Embed, stats: Stats) -> Embed:
-    embed.add_field(
-        name="Баллы",
-        value=stats.points,
-        inline=True,
-    )
-    all = stats.win + stats.lose
-    rate = round(stats.win / all * 100)
-    embed.add_field(
-        name="Винрейт 5х5",
-        value=f"{rate}% ({stats.win} из {all})",
-        inline=True
-    )
+    if stats.win + stats.lose > 0:
+        embed.add_field(
+            name="Баллы",
+            value=stats.points,
+            inline=True,
+        )
+        all = stats.win + stats.lose
+        rate = round(stats.win / all * 100)
+        embed.add_field(
+            name="Винрейт 5х5",
+            value=f"{rate}% ({stats.win} из {all})",
+            inline=True
+        )
     return embed
 
 
@@ -88,13 +89,14 @@ def votes(embed, player):
     record = cur.fetchone()
     #print(record)
     if record is not None:
-        all = record.correct + record.wrong
-        rate = round(record.correct / all * 100)
-        embed.add_field(
-            name="Ставки",
-            value=f"{rate}% ({record.correct} из {all})",
-            inline=True
-        )
+        if record.correct + record. wrong > 0:
+            all = record.correct + record.wrong
+            rate = round(record.correct / all * 100)
+            embed.add_field(
+                name="Ставки",
+                value=f"{rate}% ({record.correct} из {all})",
+                inline=True
+            )
     return embed
 
 
