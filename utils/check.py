@@ -13,12 +13,12 @@ def is_owner() -> Callable[[T], T]:
     """
 
     async def predicate(context: commands.Context) -> bool:
-        print(context.author.id)
         try:
             if context.author.id not in config.owners:
                 raise UserNotOwner
         except UserNotOwner as e:
             print(e)
+            return False
         return True
 
     return commands.check(predicate)
@@ -34,6 +34,7 @@ def is_admin() -> Callable[[T], T]:
                 raise UserNotAdmin
         except UserNotAdmin as e:
             print(e)
+            return False
         return True
 
     return commands.check(predicate)

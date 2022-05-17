@@ -14,6 +14,8 @@ import sys
 from discord import errors
 from discord.ext import commands
 import pretty_errors
+
+import utils.check
 from utils.classes.Const import config
 
 pretty_errors.configure(
@@ -103,6 +105,9 @@ class CommandErrorHandler(commands.Cog):
 
         elif isinstance(error, commands.errors.CheckFailure):
             await ctx.send("Недостаточно прав для выполнения команды")
+
+        elif isinstance(error, utils.check.UserNotAdmin):
+            await ctx.send(f"Недостаточно прав для выполнения команды")
 
         else:
             # All other Errors not returned come here. And we can just print the default TraceBack.

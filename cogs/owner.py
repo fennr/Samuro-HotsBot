@@ -21,6 +21,11 @@ class owner(commands.Cog, name="Owner"):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(name="check_test")
+    @check.is_owner()
+    async def check_test(self, ctx):
+            await ctx.send(f"Проверка прав доступа пройдена")
+
     # The below code bans player.
     @commands.command(name="user_kick")
     @check.is_owner()
@@ -193,6 +198,13 @@ class owner(commands.Cog, name="Owner"):
             print("Ошибка удаления из черного списка")
 
 
+    @check_test.error
+    async def owner_handler(self,ctx, error):
+        error = getattr(error, 'original', error)  # получаем пользовательские ошибки
+        print(error)
+        # print(type(error))
+        if isinstance(error, exceptions.UserNotOwner):
+            ctx.send(f"Недостаточно прав для выполнения команды")
 
 
 def setup(bot):
