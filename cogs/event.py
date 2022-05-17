@@ -139,6 +139,7 @@ class Event(commands.Cog, name="Event"):
     @event.command(name="poll_end")
     async def event_poll_end(self, ctx, winner, event_id):
         con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
         select = Const.selects.VotesEvent
         cur.execute(select, (event_id,))
         records = cur.fetchall()
@@ -162,6 +163,13 @@ class Event(commands.Cog, name="Event"):
                 update = '''UPDATE "VoteStats" SET correct = %s, wrong = %s WHERE id = %s'''
                 cur.execute(update, (r.correct + correct, r.wrong + wrong,
                                      record.id))
+            if correct == 1:
+                select1 = '''SELECT * FROM "UserStats" WHERE id = %s AND guild_id = %s'''
+                cur.execute(select1, (record.id, guild_id))
+                player_stats = library.get.stats(cur.fetchone())
+                points = player_stats.points + 1
+                update = Const.updates.USPoints
+                cur.execute(update, (points, record.id, guild_id))
             delete = '''DELETE FROM "Votes" WHERE id = %s AND event_id = %s'''
             cur.execute(delete, (record.id, record.event_id))
             library.commit(con)
