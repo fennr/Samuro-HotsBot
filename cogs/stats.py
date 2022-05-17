@@ -182,6 +182,21 @@ class Stats(commands.Cog, name="Stats"):
             await ctx.send(f"Баллы успешно сняты\n"
                            f"Осталось баллов: {stats.points}")
 
+
+    @top.command(name="end_season")
+    @check.is_owner()
+    async def end_season(self, ctx):
+        con, cur = library.get.con_cur()
+        guild_id = library.get.guild_id(ctx)
+        update = Const.updates.USGuildRemoveStats
+        cur.execute(update, (guild_id, ))
+        library.commit(con)
+        row_count = cur.rowcount
+        if row_count > 0:
+            await ctx.send(f"Статистика профилей удалена\nВсего обновлено {row_count} профилей")
+        else:
+            await ctx.send(f"Не обновлено ни одного профиля")
+
     @points_remove.error
     @top_mmr.error
     async def points_handler(self, ctx, error):
