@@ -244,7 +244,7 @@ updates = Update(
     EHWinner='''UPDATE "EventHistory" SET winner = %s, delta_mmr = %s, points = %s, active = %s 
                 WHERE room_id = %s AND active = %s''',
     USGuildRemoveStats='''UPDATE "UserStats" SET win = 0, lose = 0, winstreak = 0
-                          WHERE guild_id = %s AND points = 0''',
+                          WHERE guild_id = %s AND points < 10''',
 
 )
 
