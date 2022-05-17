@@ -164,7 +164,7 @@ class Stats(commands.Cog, name="Stats"):
                         commands.has_role(959144584720580618),  # Samuro_dev
                         commands.has_role(880865537058545686),  # test
                         )
-    async def points_remove(self, ctx, user: Member, count=0):
+    async def points_remove(self, ctx, user, count=0):
         con, cur = library.get.con_cur()
         guild_id = library.get.guild_id(ctx)
         user_id = library.get.user_id(user)
