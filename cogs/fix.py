@@ -53,6 +53,17 @@ class Fix(commands.Cog, name="Fix"):
         except:
             print(f"Ошибка перемещения роли")
 
+    @fix.command(name="base_role")
+    @check.is_owner()
+    async def fix_base_role(self, ctx, role: discord.Role):
+        try:
+            command_role_id = 796717939239813141  # Роли
+            command_role = discord.utils.get(ctx.message.guild.roles, id=command_role_id)
+            await role.edit(position=command_role.position-1)
+            print(f"Роль добавлена в раздел с ролями")
+        except:
+            print(f"Ошибка перемещения роли")
+
     @fix.command(name="role_color")
     @check.is_owner()
     async def role_up_color(self, ctx, role: discord.Role, color: discord.Colour):

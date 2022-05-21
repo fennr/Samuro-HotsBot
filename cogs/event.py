@@ -43,7 +43,7 @@ async def insert_votes(ctx, cur, record, one, two, color):
     for user_id in votes:
         member = ctx.guild.get_member(user_id)
         if discord.utils.get(member.roles, id=Const.events.role_id):
-            await ctx.send(f"Запрещено голосовать находять в матче {member.mention}")
+            await ctx.send(f"Запрещено голосовать находясь в матче {member.mention}")
         else:
             insert = Const.inserts.Votes
             cur.execute(insert, (user_id, record.event_id, color))
