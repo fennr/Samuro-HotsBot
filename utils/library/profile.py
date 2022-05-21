@@ -116,9 +116,9 @@ def winstreak_change(stats: Stats, winner):
 def winstreak_mmr_change(profile: Player, winstreak, winner):
     mmr = profile.mmr
     if winner and winstreak > 2:
-        mmr += winstreak * 2
+        mmr += winstreak + 2
     if not winner and winstreak < -2:
-        mmr -= winstreak * 2
+        mmr -= winstreak + 2
     return mmr
 
 
