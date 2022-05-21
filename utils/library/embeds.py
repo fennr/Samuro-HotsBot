@@ -79,6 +79,12 @@ def stats(embed: Embed, stats: Stats) -> Embed:
             value=f"{rate}% ({stats.win} из {all})",
             inline=True
         )
+    if stats.winstreak > 2:
+        embed.add_field(
+            name="Винстрик",
+            value=f"{stats.winstreak} (best: {stats.max_ws})",
+            inline=True
+        )
     return embed
 
 
