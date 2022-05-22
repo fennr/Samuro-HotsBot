@@ -164,34 +164,37 @@ class owner(commands.Cog, name="Owner"):
             await context.send(embed=embed)
 
     @commands.group(name="bl")
-    @check.is_owner()
+    @check.is_admin()
     async def bl(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send('Выберите действие')
 
     @bl.command(name="add")
-    @check.is_owner()
+    @check.is_admin()
     async def ban_add(self, ctx, member_id, member_name, *, reason):
         try:
             con, cur = library.get.con_cur()
             insert = Const.inserts.BlackList
-            cur.execute(insert, (member_id, member_name, reason))
+            user_id = library.get.user_id(member_id)
+            cur.execute(insert, (user_id, member_name, reason))
             library.commit(con)
             await ctx.send("Пользователь добавлен в черный список")
             #Const.black_list[member_id] = reason
-            library.files.black_list()
+            Const.black_list = library.files.black_list()
         except Exception:
             print(f"Ошибка добавления в черный список")
 
     @bl.command(name="remove")
+    @check.is_admin()
     async def ban_remove(self, ctx, member_id):
         try:
             con, cur = library.get.con_cur()
             delete = Const.deletes.BlackList
-            cur.execute(delete, (member_id, ))
+            user_id = library.get.user_id(member_id)
+            cur.execute(delete, (user_id, ))
             library.commit(con)
             if cur.rowcount:
-                Const.black_list.pop(member_id)
+                Const.black_list = library.files.black_list()
                 await ctx.send("Пользователь удален из черного списка")
             else:
                 await ctx.send("В черном списке нет такого пользователя")

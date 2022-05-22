@@ -208,6 +208,9 @@ class Event(commands.Cog, name="Event"):
             bad_flag = False
             for name in args:
                 user_id = library.get.user_id(name)
+                if user_id in Const.black_list:
+                    bad_flag = True
+                    await ctx.send(f"Участник {name} не может принимать участие")
                 select = Const.selects.PlayersIdOrBtag
                 cur.execute(select, (user_id, name))
                 player = library.get.player(cur.fetchone())
