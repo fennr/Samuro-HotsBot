@@ -19,7 +19,8 @@ from discord.ext.commands import Bot
 from discord_slash import SlashCommand, SlashContext  # Importing the newly installed library.
 
 from utils.log import get_guild, log_init
-from utils.classes.Const import config, black_list
+from utils.classes import Const
+from utils.classes.Const import config
 
 # Вставить TOKEN и APP_ID вашего бота
 if os.environ.get('TESTING'):
@@ -77,7 +78,7 @@ if __name__ == "__main__":
 @bot.event
 async def on_message(message):
     # Игнорировать сообщения пользователей в блек листе
-    if message.author.id in [*black_list]:
+    if message.author.id in [*Const.black_list]:
         print(f"Блокировка команды от пользователя {message.author}")
         return
     # Игнорировать сообщения других ботов
