@@ -45,4 +45,5 @@ def black_list():
     bl = {}
     for record in records:
         bl[record.id] = record.reason
+    print(bl)
     return bl

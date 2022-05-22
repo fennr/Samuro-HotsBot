@@ -178,7 +178,8 @@ class owner(commands.Cog, name="Owner"):
             cur.execute(insert, (member_id, member_name, reason))
             library.commit(con)
             await ctx.send("Пользователь добавлен в черный список")
-            Const.black_list[member_id] = reason
+            #Const.black_list[member_id] = reason
+            library.files.black_list()
         except Exception:
             print(f"Ошибка добавления в черный список")
 
