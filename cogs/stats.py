@@ -81,7 +81,7 @@ class Stats(commands.Cog, name="Stats"):
         await ctx.send("Файл отправлен личным сообщением")
 
     @top.command(name="mmr")
-    async def top_mmr(self, ctx, league_type="Мастер", count=10):
+    async def top_mmr(self, ctx, league_type="Грандмастер", count=5):
         """
         - Лидеры по ммр
         """
