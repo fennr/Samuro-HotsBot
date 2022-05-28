@@ -95,7 +95,7 @@ async def on_command_completion(ctx):
     content = ctx.message.content[1:20]
     guild, guild_id = get_guild(ctx)
     message = f"Executed '{ctx.message.content[1:]}' command in {guild} " \
-              f"by {ctx.message.author}"
+              f"by {ctx.message.author} (ID: {ctx.message.author.id})"
     print(message)  # {ctx.guild.name} {ctx.message.guild.id}
 
 
