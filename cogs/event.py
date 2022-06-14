@@ -48,6 +48,9 @@ async def insert_votes(ctx, cur, record, one, two, color):
             insert = Const.inserts.Votes
             cur.execute(insert, (user_id, record.event_id, color))
 
+async def add_emojis(message, emojis: list):
+    for emoji in emojis:
+        await message.add_reaction(emoji)
 
 class Event(commands.Cog, name="Event"):
     """
@@ -205,6 +208,7 @@ class Event(commands.Cog, name="Event"):
             room_id = ctx.channel.id
             admin = library.get.author(ctx)
             players = []
+            numbers = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
             bad_flag = False
             for name in args:
                 user_id = library.get.user_id(name)
@@ -249,8 +253,10 @@ class Event(commands.Cog, name="Event"):
                     library.commit(con)
                     team_one_discord = ' '.join([library.get.player_data(player) for player in team_one])
                     team_two_discord = ' '.join([library.get.player_data(player) for player in team_two])
-                    await ctx.send(f"**Синяя команда:** \n{team_one_discord}")
-                    await ctx.send(f"**Красная команда:** \n{team_two_discord}")  # mean(team_blue):.2f
+                    message_blue = await ctx.send(f"**Синяя команда:** \n{team_one_discord}")
+                    message_red = await ctx.send(f"**Красная команда:** \n{team_two_discord}")  # mean(team_blue):.2f
+                    await add_emojis(message_blue, numbers)
+                    await add_emojis(message_red, numbers)
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
