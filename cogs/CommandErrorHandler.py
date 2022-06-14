@@ -91,7 +91,11 @@ class CommandErrorHandler(commands.Cog):
 
         if isinstance(error, commands.DisabledCommand):
             await ctx.send(f'{ctx.command} has been disabled.')
-
+        elif isinstance(error, commands.CommandOnCooldown):
+            minutes, seconds = divmod(error.retry_after, 60)
+            hours, minutes = divmod(minutes, 60)
+            hours = hours % 24
+            await ctx.send(f"`{ctx.command}` в кулдауне, повторите попытку через {f'{round(hours)} часов' if round(hours) > 0 else ''} {f'{round(minutes)} минут' if round(minutes) > 0 else ''} {f'{round(seconds)} секунд' if round(seconds) > 0 else ''}")
         elif isinstance(error, commands.NoPrivateMessage):
             try:
                 await ctx.author.send(f'{ctx.command} can not be used in Private Messages.')
