@@ -71,6 +71,37 @@ class Event(commands.Cog, name="Event"):
         if ctx.invoked_subcommand is None:
             await ctx.send('Для подбора команд используйте команду #event 5x5 @10_профилей')
 
+    @event.command(name="map")
+    @check.is_lead()
+    async def event_map(self, ctx):
+        maps = '''
+0. Alterac Pass
+1. Battlefield Of Eternity
+2. Braxis Holdout
+3. Cursed Hollow
+4. Dragon Shire
+5. Garden of Terror
+6. Hanamura Temple
+7. Infernal Shrines
+8. Sky Temple
+9. Tomb of the Spider Queen
+10. Towers of Doom
+'''
+        img_path = 'data/img/'
+        img_name = 'maps.png'
+        img = discord.File(img_path + img_name)
+        img.filename = img_name
+        numbers = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
+        embed = Embed(
+            title="Выбор карты",
+            description=maps,
+            color=Const.config.info,
+        )
+        embed.set_image(url=f'attachment://{img_name}')
+        message = await ctx.send(embed=embed, file=img)
+        await add_emojis(message, numbers)
+
+
     @event.command(name="test")
     @check.is_lead()
     async def event_test(self, ctx, *, avamember: Member = None):
