@@ -74,6 +74,7 @@ class Event(commands.Cog, name="Event"):
     @event.command(name="map")
     @check.is_lead()
     async def event_map(self, ctx):
+        await ctx.message.delete()
         maps = '''
 0. Alterac Pass
 1. Battlefield Of Eternity
