@@ -67,6 +67,8 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
         player_stats.winstreak = winstreak_change(player_stats, winner)
         player_stats.max_ws = max_ws_change(player_stats)
         player.mmr = winstreak_mmr_change(player, player_stats.winstreak, winner)
+        if player.mmr > 2900:
+            delta = int(delta / 2)
         if winner:
             player.mmr += int(delta)
             player_stats.win += 1
@@ -115,10 +117,14 @@ def winstreak_change(stats: Stats, winner):
 
 def winstreak_mmr_change(profile: Player, winstreak, winner):
     mmr = profile.mmr
+    if mmr > 2900:
+        fix = 2
+    else:
+        fix = 1
     if winner and winstreak > 2:
-        mmr += winstreak + 2
+        mmr += int((winstreak * 2) / fix)
     if not winner and winstreak < -2:
-        mmr += winstreak - 3
+        mmr -= int((winstreak * 2) / fix)
     return mmr
 
 
