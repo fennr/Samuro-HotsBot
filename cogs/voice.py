@@ -29,7 +29,6 @@ class Voice(commands.Cog):
                 voiceID = v[0]
                 try:
                     if after.channel.id == voiceID:
-                        print(voiceID)
                         c.execute(
                             "SELECT * FROM voiceChannel WHERE userID = %s", (member.id,)
                         )
@@ -37,7 +36,7 @@ class Voice(commands.Cog):
                         if cooldown is None:
                             pass
                         else:
-                            #await member.send("")
+                            # await member.send("")
                             await asyncio.sleep(3)
                         c.execute(
                             "SELECT voiceCategoryID FROM guild WHERE guildID = %s AND voicechannelid = %s",
@@ -45,8 +44,8 @@ class Voice(commands.Cog):
                         )
                         voice = c.fetchone()
                         c.execute(
-                            "SELECT channelName, channelLimit FROM userSettings WHERE userID = %s",
-                            (member.id,),
+                            "SELECT channelName, channelLimit FROM userSettings WHERE userID = %s AND categoryid = %s",
+                            (member.id, voice),
                         )
                         setting = c.fetchone()
                         c.execute(
@@ -77,7 +76,6 @@ class Voice(commands.Cog):
                             name, category=category
                         )
                         channelID = channel2.id
-                        print(type(channel2))
                         await member.move_to(channel2)
                         await channel2.set_permissions(
                             self.bot.user, connect=True, read_messages=True
@@ -362,14 +360,20 @@ class Voice(commands.Cog):
             await ctx.channel.send(
                 f"{ctx.author.mention} Вы изменили имя канала на " + "{}!".format(name)
             )
-            c.execute("SELECT channelName FROM userSettings WHERE userID = %s", (id,))
+            c.execute(
+                "SELECT channelName FROM userSettings WHERE userID = %s AND categoryID = %s",
+                (id, channel.category.id),
+            )
             voice = c.fetchone()
             if voice is None:
-                c.execute("INSERT INTO userSettings VALUES (%s, %s, %s)", (id, name, 0))
+                c.execute(
+                    "INSERT INTO userSettings VALUES (%s, %s, %s, %s)",
+                    (id, name, 0, channel.category.id),
+                )
             else:
                 c.execute(
-                    "UPDATE userSettings SET channelName = %s WHERE userID = %s",
-                    (name, id),
+                    "UPDATE userSettings SET channelName = %s WHERE userID = %s AND categoryid = %s",
+                    (name, id, channel.category.id),
                 )
         conn.commit()
         conn.close()
