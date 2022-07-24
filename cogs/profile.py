@@ -205,10 +205,9 @@ class Profile(commands.Cog, name="Profile"):
             # guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
             member = ctx.guild.get_member(player.id)
             if member:
-                print(member)
                 #user_avatar = library.avatar(ctx, member)
                 embed.set_thumbnail(
-                    url=str(member.avatar_url)
+                    url=member.avatar_url
                 )
             if player.id not in [*Const.black_list]:
                 await ctx.send(embed=embed)
