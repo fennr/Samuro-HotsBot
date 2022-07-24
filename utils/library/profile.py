@@ -66,7 +66,9 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
             player_stats = library.get.stats(stats_rec)
         player_stats.winstreak = winstreak_change(player_stats, winner)
         player_stats.max_ws = max_ws_change(player_stats)
+        print(f"{player.btag}: mmr={player.mmr}, win={winner}, ws={player_stats.winstreak}", sep=" -> ")
         player.mmr = winstreak_mmr_change(player, player_stats.winstreak, winner)
+        print(f"ws_mmr={player.mmr}", sep=' -> ')
         if player.mmr > 2900:
             delta = int(delta / 2)
         if winner:
@@ -77,18 +79,15 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
             player.mmr -= int(delta)
             player_stats.lose += 1
             player_stats.points += points
+        print(f"new_mmr={player.mmr}")
         old_league = player.league
         player.league, player.division = library.get.league_division_by_mmr(player.mmr)
-        if (old_league != player.league):
+        if old_league != player.league:
             try:
                 await remove_role(ctx, player, old_league)
                 await add_role(ctx, player, player.league, message=False)
             except Exception:
                 print(f"Не созданы роли {old_league}, {player.league}")
-        if (old_league != player.league) and ((player.league == 'Master') or (player.league == 'Grandmaster')):
-            player.mmr += delta+1
-            await ctx.send(
-                f"{library.mention(player.id)} ты достиг {library.profile.leagues[player.league]} лиги. Мои поздравления")
         updateUS = Const.updates.USPointWinLoseWinStr
         updateP = Const.updates.PlayerMMR
         cur.execute(updateUS, (player_stats.points, player_stats.win, player_stats.lose,
@@ -96,7 +95,6 @@ async def team_change_stats(ctx, team: list, guild_id, delta=6, points=1, winner
                                player_stats.id, player_stats.guild_id))
         cur.execute(updateP, (player.mmr, player.league, player.division,
                               player.id))
-        print(f"{player.btag} -> {player.mmr} mmr ({player.league})")
     commit(con)
 
 
@@ -121,9 +119,9 @@ def winstreak_mmr_change(profile: Player, winstreak, winner):
         fix = 2
     else:
         fix = 1
-    if winner and winstreak > 2:
+    if winner and (winstreak > 2):
         mmr += int((winstreak * 2) / fix)
-    if (not winner) and winstreak < -2:
+    if (not winner) and (winstreak < -2):
         mmr -= int((winstreak * 2) / fix)
     return mmr
 
