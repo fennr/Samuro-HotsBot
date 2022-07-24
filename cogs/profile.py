@@ -206,7 +206,7 @@ class Profile(commands.Cog, name="Profile"):
             member = guild.get_member(int(player.id))
             user_avatar = library.avatar(ctx, member)
             embed.set_thumbnail(
-                url=user_avatar
+                url=member.avatar_url
             )
             if player.id not in [*Const.black_list]:
                 await ctx.send(embed=embed)
