@@ -202,8 +202,8 @@ class Profile(commands.Cog, name="Profile"):
             if player.team is not None:
                 embed = utils.library.embeds.user_team(embed, player.team)
             embed = utils.library.embeds.achievements(ctx, embed, player)
-            guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
-            member = guild.get_member(int(player.id))
+            # guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
+            member = ctx.guild.get_member(player.id)
             if member:
                 print(member)
                 #user_avatar = library.avatar(ctx, member)
