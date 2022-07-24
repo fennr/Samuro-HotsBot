@@ -204,10 +204,10 @@ class Profile(commands.Cog, name="Profile"):
             embed = utils.library.embeds.achievements(ctx, embed, player)
             guild = [guild for guild in self.bot.guilds if guild.id == player.guild_id][0]
             member = guild.get_member(int(player.id))
-            user_avatar = library.avatar(ctx, member)
+            '''user_avatar = library.avatar(ctx, member)
             embed.set_thumbnail(
                 url=member.avatar_url
-            )
+            )'''
             if player.id not in [*Const.black_list]:
                 await ctx.send(embed=embed)
             else:
