@@ -141,6 +141,7 @@ async def on_member_join(member):
     try:
         await member.send(embed=embed)
     except Exception:
+        print(Exception)
         print(f"Невозможно отправить сообщение пользователю {member.name}")
 
 
