@@ -473,8 +473,12 @@ class Event(commands.Cog, name="Event"):
         try:
             user = await self.bot.fetch_user(member_id)
             await user.send(message)
-        except Exception:
-            print(Exception)
+        except Exception as e:
+            if hasattr(e, 'message'):
+                print(e.message)
+            else:
+                print(getattr(e, 'message', repr(e)))
+                print(getattr(e, 'message', str(e)))
 
     @event.command(name="msg_embed")
     @check.is_owner()
