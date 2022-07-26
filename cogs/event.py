@@ -292,6 +292,57 @@ class Event(commands.Cog, name="Event"):
                 else:
                     await ctx.send(f"Для создания нового матча завершите предыдущий")
 
+    @event.command(name="5x5manual")
+    @check.is_lead()
+    async def event_5x5_manual(self, ctx, *args):
+        if len(args) != 10:
+            await ctx.send("Введите 10 участников")
+        else:
+            con, cur = library.get.con_cur()
+            guild_id = library.get.guild_id(ctx)
+            room_id = ctx.channel.id
+            admin = library.get.author(ctx)
+            players = []
+            numbers = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
+            bad_flag = False
+            for name in args:
+                user_id = library.get.user_id(name)
+                if user_id in Const.black_list:
+                    bad_flag = True
+                    await ctx.send(f"Участник {name} не может принимать участие")
+                select = Const.selects.PlayersIdOrBtag
+                cur.execute(select, (user_id, name))
+                player = library.get.player(cur.fetchone())
+                if player is not None:
+                    players.append(player)
+                else:
+                    bad_flag = True
+                    await ctx.send(f"Участника {name} нет в базе")
+            if not bad_flag:
+                select = Const.selects.EHActive
+                cur.execute(select, (room_id, True))
+                record = cur.fetchone()
+                if record is None:
+
+                    team_one = players[:5]
+                    team_two = players[5:]
+                    now = str(datetime.now(pytz.timezone('Europe/Moscow')))[:19]
+                    insert = Const.inserts.Event
+                    cur.execute(insert, (now, admin, guild_id, True, room_id, '5x5',  # ctx.message.author.name
+                                         team_one[0].btag, team_one[1].btag, team_one[2].btag, team_one[3].btag,
+                                         team_one[4].btag,
+                                         team_two[0].btag, team_two[1].btag, team_two[2].btag, team_two[3].btag,
+                                         team_two[4].btag))
+                    library.commit(con)
+                    team_one_discord = ' '.join([library.get.player_data(player) for player in team_one])
+                    team_two_discord = ' '.join([library.get.player_data(player) for player in team_two])
+                    message_blue = await ctx.send(f"**Синяя команда:** \n{team_one_discord}")
+                    message_red = await ctx.send(f"**Красная команда:** \n{team_two_discord}")  # mean(team_blue):.2f
+                    await add_emojis(message_blue, numbers)
+                    await add_emojis(message_red, numbers)
+                else:
+                    await ctx.send(f"Для создания нового матча завершите предыдущий")
+
     @event.command(name="1x4")
     @check.is_lead()
     async def event_1x4(self, ctx, *args):
