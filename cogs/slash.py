@@ -37,9 +37,11 @@ class Slash(commands.Cog, name="Slash"):
     async def slash_voice_unlock(self, ctx: SlashContext):
         await voice.Voice.unlock(self, ctx)
 
+    '''
     @cog_ext.cog_slash(name="profile", description="Профиль игрока")
     async def slash_profile(self, ctx: SlashContext, user):
         await profile.Profile.profile_info(self, ctx, user)
+    '''
 
     @cog_ext.cog_slash(name="login", description="Авторизоваться на сервере")
     async def slash_login(self, ctx: SlashContext, battletag):
