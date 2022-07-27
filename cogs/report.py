@@ -5,6 +5,7 @@ from discord.ext.commands import command, Cog, errors
 from discord_components import DiscordComponents, Button, ButtonStyle, Select, SelectOption
 from discord_slash.context import ComponentContext, MenuContext
 from utils import check
+from utils.classes import Const
 from utils.classes.Const import config
 
 labels = {
@@ -91,28 +92,29 @@ class Report(commands.Cog, name="Report"):
 
     @Cog.listener()
     async def on_button_click(self, interaction):
-        if interaction.component.label == labels['Close']:
-            await interaction.channel.delete()
-        if interaction.component.label in labels['Questions'].values():
-            category = discord.utils.get(interaction.guild.categories, name=TICKET_CATEGORY)
-            name = f"{interaction.component.label}-{interaction.author.name}"
-            channel = await interaction.guild.create_text_channel(name, category=category, sync_permissions=True)
-            overwrite = discord.PermissionOverwrite()
-            overwrite.send_messages = True
-            overwrite.read_messages = True
-            await channel.set_permissions(target=interaction.author, overwrite=overwrite)
-            ticket_created_embed = discord.Embed(
-                title="Заявка открыта",
-                description=f"""Привет {interaction.author.name}! Напиши свое сообщение в данном чате.\n
-                Если вопрос решен, заявку можно закрыть нажав кнопку ниже""",
-            )
-            await channel.send(
-                interaction.author.mention, embed=ticket_created_embed, components=[remove_button]
-            )  # ping the user who pressed the button, and send the embed
-        try:
-            await interaction.respond()
-        except:
-            pass
+        if interaction.author.id not in [*Const.black_list]:
+            if interaction.component.label == labels['Close']:
+                await interaction.channel.delete()
+            if interaction.component.label in labels['Questions'].values():
+                category = discord.utils.get(interaction.guild.categories, name=TICKET_CATEGORY)
+                name = f"{interaction.component.label}-{interaction.author.name}"
+                channel = await interaction.guild.create_text_channel(name, category=category, sync_permissions=True)
+                overwrite = discord.PermissionOverwrite()
+                overwrite.send_messages = True
+                overwrite.read_messages = True
+                await channel.set_permissions(target=interaction.author, overwrite=overwrite)
+                ticket_created_embed = discord.Embed(
+                    title="Заявка открыта",
+                    description=f"""Привет {interaction.author.name}! Напиши свое сообщение в данном чате.\n
+                    Если вопрос решен, заявку можно закрыть нажав кнопку ниже""",
+                )
+                await channel.send(
+                    interaction.author.mention, embed=ticket_created_embed, components=[remove_button]
+                )  # ping the user who pressed the button, and send the embed
+            try:
+                await interaction.respond()
+            except:
+                pass
 
 
 def setup(bot):
