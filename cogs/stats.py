@@ -85,6 +85,8 @@ class Stats(commands.Cog, name="Stats"):
         """
         - Лидеры по ммр
         """
+        if count > 15:
+            count = 15
         test = library.get.league(league_type.capitalize())
         league = League(test)
         print(league, league.name, league.value)
@@ -114,6 +116,8 @@ class Stats(commands.Cog, name="Stats"):
         """
         - Лидеры по числу побед
         """
+        if count > 15:
+            count = 15
         con, cur = library.get.con_cur()
         guild_id = library.get.guild_id(ctx)
         select = Const.selects.USWins
@@ -137,6 +141,8 @@ class Stats(commands.Cog, name="Stats"):
         """
         - Лидеры по заработанным очкам
         """
+        if count > 15:
+            count = 15
         con, cur = library.get.con_cur()
         guild_id = library.get.guild_id(ctx)
         select = Const.selects.USPoints
