@@ -125,7 +125,7 @@ async def global_guild_only(ctx):
 
 
 # Приветствие при входе на сервер
-@bot.event
+'''@bot.event
 async def on_member_join(member):
     server = member.guild
     title = "Привет друг!"
@@ -141,8 +141,7 @@ async def on_member_join(member):
     try:
         await member.send(embed=embed)
     except Exception:
-        print(Exception)
-        print(f"Невозможно отправить сообщение пользователю {member.name}")
+        print(f"Невозможно отправить сообщение пользователю {member.name}")'''
 
 
 # Генерируем файл с именами героев
