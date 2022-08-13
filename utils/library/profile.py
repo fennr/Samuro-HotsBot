@@ -25,13 +25,16 @@ async def add_role(ctx, player: Player, role_name='5x5 player', message=True):
     try:
         member = ctx.guild.get_member(player.id)
         role = discord.utils.get(member.guild.roles, name=role_name)
+        if role is None and role_name in leagues.items():
+            role = discord.utils.get(member.guild.roles, name=leagues[role_name])
         await member.add_roles(role)
         if message:
             await ctx.send(f"Присвоена роль *{role.name}*")
     except Exception as e:
         #await ctx.send(f"Произошла ошибка. Обратитесь к <@{Const.config.owners[0]}>")
-        print(f"Вероятно не создана роль {role_name}")
-        print(e)
+        #print(f"Вероятно не создана роль {role_name}")
+        #print(e)
+        pass
 
 
 async def remove_role(ctx, player, role_name=Const.events.role):
