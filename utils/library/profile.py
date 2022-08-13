@@ -122,7 +122,7 @@ def winstreak_mmr_change(profile: Player, winstreak, winner):
     if winner and (winstreak > 2):
         mmr += int((winstreak * 2) / fix)
     if (not winner) and (winstreak < -2):
-        mmr -= int((winstreak * 2) / fix)
+        mmr += int((winstreak * 2) / fix)  # + потому что winstreak уже отрицательный
     return mmr
 
 
